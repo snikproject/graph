@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8">
+ <title>SNIK Ontology Graph</title>
+ <script src="cytoscape.js"></script>
+ <script src="blueorange.js"></script>
+ <script src="style.js"></script>
+</head>
+<body>
+<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
+<script>
+var cy = cytoscape({
+  container: document.getElementById('cy'),
+	style: style[0].style
+	});
+
+cy.add(blueorange.elements);
+var connectedEdges;
+cy.on('select',function(event){
+  console.log('selected');
+if(connectedEdges)
+{
+  console.log();
+  connectedEdges.style({'line-color': 'white', 'width': 1.0});
+}
+ connectedEdges = cy.$('node:selected').connectedEdges();
+  connectedEdges.style({'line-color': 'rgb(128,255,128)', 'width': 4.0});
+});
+
+//cy.elements().layout({ name: 'grid' });
+</script>
+	</body>
+</html>
