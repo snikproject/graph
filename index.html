@@ -11,21 +11,33 @@
 <div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 <script>
 var cy = cytoscape({
-  container: document.getElementById('cy'),
+	container: document.getElementById('cy'),
 	style: style[0].style
 	});
 
 cy.add(blueorange.elements);
 var connectedEdges;
-cy.on('select',function(event){
-  console.log('selected');
-if(connectedEdges)
+var selectedNode;
+var path;
+cy.on('select',function(event)
 {
-  console.log();
-  connectedEdges.style({'line-color': 'white', 'width': 1.0});
-}
- connectedEdges = cy.$('node:selected').connectedEdges();
-  connectedEdges.style({'line-color': 'rgb(128,255,128)', 'width': 4.0});
+	console.log('selected');
+	if(selectedNode) {oldNode = selectedNode;}
+	selectedNode = cy.$('node:selected');
+	if(connectedEdges)
+	{
+		console.log();
+		connectedEdges.style({'line-color': 'white', 'width': 1.0});
+		var aStar = cy.elements().aStar({ root: oldNode, goal: selectedNode });
+		if(path)
+		{
+			path.unselect();
+	  }
+		path = aStar.path;
+		path.select();
+	}
+	connectedEdges = selectedNode.connectedEdges();
+	connectedEdges.style({'line-color': 'rgb(128,255,128)', 'width': 4.0});
 });
 
 //cy.elements().layout({ name: 'grid' });
