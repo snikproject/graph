@@ -10,37 +10,72 @@
 <body>
 <div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 <script>
+var highlightedEdges = [];
+
+function highlight(edges)
+{
+	highlightedEdges = edges;
+	if(highlightedEdges.length)
+	{
+		//console.log(highlightedEdges);
+		highlightedEdges.style({'line-color': 'rgb(128,255,128)', 'width': 4.0});
+	}
+}
+
+function resetHighlighting()
+{
+	cy.filter('edge').style({'width':1,'line-color':'white','visibility':'visible'});
+
+	if(highlightedEdges.length)
+	{
+		//highlightedEdges.style({'line-color': 'white', 'width': 1.0});
+		highlightedEdges = [];
+	}
+}
+
+function showpath(event)
+{
+	if(selectedNode)
+	{
+		resetHighlighting();
+		var target = event.cyTarget;
+		var aStar = cy.elements().aStar({ root: selectedNode, goal: target });
+		path = aStar.path;
+		if(path)
+		{
+			cy.add(path);
+			//console.log(path);
+			cy.filter('edge').style({'visibility':'hidden'});
+			//path.filter('node').connectedEdges().style({'line-color': 'rgb(255,255,128)', 'width':1.0, 'opacity':'1','visibility':'visible'});
+			path.filter('edge').style({'line-color': 'rgb(128,255,128)', 'width':10.0, 'opacity':'1','visibility':'visible'});
+		}
+	}
+}
+
 var cy = cytoscape({
 	container: document.getElementById('cy'),
 	style: style[0].style
 	});
 
 cy.add(blueorange.elements);
-var connectedEdges;
+
 var selectedNode;
 var path;
-cy.on('select',function(event)
+cy.on('cxttap',"node",showpath);
+
+cy.on('unselect',"node",function(event)
 {
-	console.log('selected');
-	if(selectedNode) {oldNode = selectedNode;}
-	selectedNode = cy.$('node:selected');
-	if(connectedEdges)
-	{
-		console.log();
-		connectedEdges.style({'line-color': 'white', 'width': 1.0});
-		var aStar = cy.elements().aStar({ root: oldNode, goal: selectedNode });
-		if(path)
-		{
-			path.unselect();
-	  }
-		path = aStar.path;
-		path.select();
-	}
-	connectedEdges = selectedNode.connectedEdges();
-	connectedEdges.style({'line-color': 'rgb(128,255,128)', 'width': 4.0});
+	resetHighlighting();
 });
 
-//cy.elements().layout({ name: 'grid' });
+cy.on('select',"node",function(event)
+{
+	//console.log('selected');
+	selectedNode = event.cyTarget;
+	resetHighlighting();
+	highlight(selectedNode.connectedEdges());
+});
+
 </script>
 	</body>
 </html>
