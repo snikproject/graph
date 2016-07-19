@@ -10,31 +10,29 @@
 <body>
 <div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 <script>
-var highlightedEdges = [];
 
-function highlight(edges)
+function highlightEdges(edges)
 {
-	highlightedEdges = edges;
-	if(highlightedEdges.length)
-	{
-		//console.log(highlightedEdges);
-		highlightedEdges.style({'line-color': 'rgb(128,255,128)', 'width': 4.0});
-	}
+	if(edges.length)	{edges.style({'line-color': 'rgb(128,255,128)', 'width': 4.0});}
+}
+
+// should use the same color as "selector" : "node:selected" in style.js
+function highlightNodes(nodes)
+{
+	if(nodes.length)	{nodes.style({'background-color': 'rgb(255,255,0)'});}
 }
 
 function resetHighlighting()
 {
+	cy.startBatch();
 	cy.filter('edge').style({'width':1,'line-color':'white','visibility':'visible'});
 	cy.filter('node').style({'background-color':style[0].style[0].css['background-color']});
-	if(highlightedEdges.length)
-	{
-		//highlightedEdges.style({'line-color': 'white', 'width': 1.0});
-		highlightedEdges = [];
-	}
+	cy.endBatch();
 }
 
 function showpath(event)
 {
+	cy.startBatch();
 	if(selectedNode)
 	{
 		resetHighlighting();
@@ -51,6 +49,7 @@ function showpath(event)
 			path.filter('edge').style({'line-color': 'rgb(128,255,128)', 'width':10.0, 'opacity':'1','visibility':'visible'});
 		}
 	}
+	cy.endBatch();
 }
 
 var cy = cytoscape({
@@ -67,10 +66,13 @@ cy.on('unselect',"node",resetHighlighting);
 
 cy.on('select',"node",function(event)
 {
+	cy.startBatch();
 	//console.log('selected');
 	selectedNode = event.cyTarget;
 	resetHighlighting();
-	highlight(selectedNode.connectedEdges());
+	highlightEdges(selectedNode.connectedEdges());
+	highlightNodes(selectedNode.connectedEdges().connectedNodes());
+	cy.endBatch();
 });
 
 </script>
