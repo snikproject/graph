@@ -30,35 +30,20 @@ var style = [ {
   {
     "selector" : "node[Sources = 'Ammenwerth, E; Haux, R; Knaup-Gregori, P; Winter, A. IT-Projektmanagement im Gesundheitswesen. Stuttgart: Schattauer, 2015.']",
     "css" : {
-      "color" : "rgb(255,153,0)"
+			"color" : "rgb(255,153,0)",
+      "background-color" : "rgb(255,153,0)",
+			"border-width" : 2.0
     }
   },
   {
     "selector" : "node[Sources = 'Winter, A; Haux, R; Ammenwerth, E; Brigl, B; Hellrung, N; Jahn, F: Health Information Systems - Architectures and Strategies. London: Springer, 2011.']",
     "css" : {
-      "color" : "rgb(0,102,204)"
+			"color" : "rgb(255,153,0)",
+      "background-color" : "rgb(0,102,204)",
+			"border-width" : 2.0
     }
-  }, {
-    "selector" : "node[Sources = 'Ammenwerth, E; Haux, R; Knaup-Gregori, P; Winter, A. IT-Projektmanagement im Gesundheitswesen. Stuttgart: Schattauer, 2015.']",
-    "css" : {
-      "border-width" : 2.0
-    }
-  }, {
-    "selector" : "node[Sources = 'Winter, A; Haux, R; Ammenwerth, E; Brigl, B; Hellrung, N; Jahn, F: Health Information Systems - Architectures and Strategies. London: Springer, 2011.']",
-    "css" : {
-      "border-width" : 2.0
-    }
-  }, {
-    "selector" : "node[Sources = 'Ammenwerth, E; Haux, R; Knaup-Gregori, P; Winter, A. IT-Projektmanagement im Gesundheitswesen. Stuttgart: Schattauer, 2015.']",
-    "css" : {
-      "background-color" : "rgb(255,153,0)"
-    }
-  }, {
-    "selector" : "node[Sources = 'Winter, A; Haux, R; Ammenwerth, E; Brigl, B; Hellrung, N; Jahn, F: Health Information Systems - Architectures and Strategies. London: Springer, 2011.']",
-    "css" : {
-      "background-color" : "rgb(0,102,204)"
-    }
-  }, {
+  },
+	{
     "selector" : "node[Degree > 39]",
     "css" : {
       "font-size" : 1
@@ -130,7 +115,9 @@ var style = [ {
 			'label': 'data(interaction)',
       "color":"rgb(255,255,128)",
       "width": 4.0,
-      "line-color" : "rgb(255,255,128)"
+      "line-color" : "rgb(255,255,128)",
+			"edge-text-rotation": "autorotate",
+			"text-margin-y":"-1em",
     }
   },
    ]
