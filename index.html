@@ -25,7 +25,7 @@ function highlight(edges)
 function resetHighlighting()
 {
 	cy.filter('edge').style({'width':1,'line-color':'white','visibility':'visible'});
-
+	cy.filter('node').style({'background-color':style[0].style[0].css['background-color']});
 	if(highlightedEdges.length)
 	{
 		//highlightedEdges.style({'line-color': 'white', 'width': 1.0});
@@ -46,7 +46,8 @@ function showpath(event)
 			cy.add(path);
 			//console.log(path);
 			cy.filter('edge').style({'visibility':'hidden'});
-			//path.filter('node').connectedEdges().style({'line-color': 'rgb(255,255,128)', 'width':1.0, 'opacity':'1','visibility':'visible'});
+			target.connectedEdges().style({'line-color': 'rgb(50,150,50)', 'width':5.0, 'opacity':'1','visibility':'visible'});
+			target.connectedEdges().connectedNodes().style({'background-color':'rgb(128,255,128)'});
 			path.filter('edge').style({'line-color': 'rgb(128,255,128)', 'width':10.0, 'opacity':'1','visibility':'visible'});
 		}
 	}
@@ -62,11 +63,7 @@ cy.add(blueorange.elements);
 var selectedNode;
 var path;
 cy.on('cxttap',"node",showpath);
-
-cy.on('unselect',"node",function(event)
-{
-	resetHighlighting();
-});
+cy.on('unselect',"node",resetHighlighting);
 
 cy.on('select',"node",function(event)
 {
