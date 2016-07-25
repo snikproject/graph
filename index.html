@@ -1,127 +1,176 @@
 <!DOCTYPE html>
 <html>
+
 <head>
- <meta charset="utf-8">
- <title>SNIK Ontology Graph</title>
- <script src="cytoscape.js"></script>
- <script src="blueorange.js"></script>
- <script src="style.js"></script>
- <script src="jquery-3.1.0.min.js"></script>
- <script src="cytoscape-cxtmenu.js"></script>
+	<meta charset="utf-8">
+	<title>SNIK Ontology Graph</title>
+	<script src="cytoscape.js"></script>
+	<script src="blueorange.js"></script>
+	<script src="style.js"></script>
+	<script src="jquery-3.1.0.min.js"></script>
+	<script src="cytoscape-cxtmenu.js"></script>
 </head>
+
 <body>
-<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
-<script>
-var styledEdges = [];
-var styledNodes = [];
+	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
+	<script>
+		var styledEdges = [];
+		var styledNodes = [];
 
-function highlightEdges(edges)
-{
-	//styledEdges = styledEdges.concat(edges);
-	styledEdges = edges;
-	if(edges.length)	{edges.style({'line-color': 'rgb(128,255,128)', 'width': 4.0});}
-}
-
-// should use the same color as "selector" : "node:selected" in style.js
-function highlightNodes(nodes)
-{
-	console.log(nodes);
-	styledNodes = nodes;
-	if(nodes.length)	{nodes.style({'background-color': 'rgb(255,0,0)'});}
-}
-
-function resetStyle()
-{
-	cy.startBatch();
-	if(styledNodes.length>0)
-	{
-		console.log(styledNodes);
-		styledNodes.style({'background-color':'rgb(254,196,179)'}); // debug, see which ones have their style resetted
-		//styledNodes.style({'background-color':'rgb(254,196,79)'}); // production
-		styledNodes=[];
-	}
-	if(styledEdges.length>0)
-	{
-		styledEdges.style({'width':1,'line-color':'white','visibility':'visible'});
-		styledEdges=[];
-	}
-	cy.endBatch();
-}
-
-function showpath(from,to)
-{
-	cy.startBatch();
-	resetStyle();
-	var aStar = cy.elements().aStar({ root: from, goal: to });
-	path = aStar.path;
-	if(path)
-	{
-		cy.add(path);
-		//console.log(path);
-		var edges = cy.filter('edge');
-		edges.style({'visibility':'hidden'});
-		styledEdges = edges;
-
-		//to.connectedEdges().style({'line-color': 'rgb(50,150,50)', 'width':5.0, 'opacity':'1','visibility':'visible'});
-		//to.connectedEdges().connectedNodes().style({'background-color':'rgb(128,255,128)'});
-		path.filter('edge').style({'line-color': 'rgb(128,255,128)', 'width':10.0, 'opacity':'1','visibility':'visible'});
-		highlightNodes(path.connectedNodes());
-	}
-	cy.endBatch();
-}
-
-var cy = cytoscape({
-	container: document.getElementById('cy'),
-	style: style[0].style
-	});
-
-	var defaults = {
-	  menuRadius: 100, // the radius of the circular menu in pixels
-	  selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
-	  commands: [
+		function highlightEdges(edges)
+		{
+			edges.show();
+			styledEdges.push(edges);
+			edges.style(
 			{
-				content: 'test',
-				select: function(node) {console.log('test');}
-			},
-	    {
-	      //fillColor: 'rgba(200, 200, 200, 0.75)', // optional: custom background color for item
-	      content: 'shortest path to here',
-	      select: function(node) {console.log("pathing");if(selectedNode) {console.log("selected pathing");showpath(selectedNode,node);}}
-	    },
+				'line-color': 'rgb(128,255,128)',
+				'width': 4.0
+			});
+		}
+
+		// should use the same color as "selector" : "node:selected" in style.js
+		function highlightNodes(nodes)
+		{
+			nodes.show();
+			styledNodes.push(nodes);
+			nodes.style({'background-color': 'rgb(255,0,0)'});
+		}
+
+		function hideEdges(edges)
+		{
+			edges.hide();
+			styledEdges.push(edges);
+		}
+
+		function hideNodes(nodes)
+		{
+			nodes.hide();
+			styledNodes.push(nodes);
+		}
+
+		function resetStyle()
+		{
+			cy.startBatch();
+			for(var i=0;i<styledNodes.length;i++)
 			{
-				//fillColor: 'rgba(200, 200, 200, 0.75)', // optional: custom background color for item
-				content: 'spiderworm to here',
-				select: function(node) {console.log("worming");if(selectedNode) {console.log("selected worming");showpath(selectedNode,node);}}
+				styledNodes[i].show();
+				styledNodes[i].style(
+				{
+					//'background-color': 'rgb(254,196,179)' // debug, see which ones have their style resetted
+					'background-color': 'rgb(254,196,79)' // production
+				});
 			}
+			styledNodes = [];
+			for(var i=0;i<styledEdges.length;i++)
+			{
+				styledEdges[i].show();
+				styledEdges[i].style(
+				{
+					'width': 1,
+					'line-color': 'white',
+				});
+			}
+			cy.endBatch();
+		}
 
-	  ],
-	  fillColor: 'rgba(0, 0, 0, 0.75)', // the background colour of the menu
-	  activeFillColor: 'rgba(92, 194, 237, 0.75)', // the colour used to indicate the selected command
-	  openMenuEvents: 'cxttapstart taphold cxttap', // cytoscape events that will open the menu (space separated)
-	  itemColor: 'white', // the colour of text in the command's content
-	  itemTextShadowColor: 'black', // the text shadow colour of the command's content
-	};
+		function showpath(from, to)
+		{
+			cy.startBatch();
+			var aStar = cy.elements().aStar({root: from,goal: to});
+			path = aStar.path;
+			if (path)
+			{
+				cy.add(path);
+				hideEdges(cy.elements().edges());
+				highlightEdges(path.edges());
+				highlightNodes(path.nodes());
+			}
+			cy.endBatch();
+		}
 
-var cxtmenuApi = cy.cxtmenu(defaults);
+		function showworm(from, to)
+		{
+			hideNodes(cy.elements().nodes());
+			showpath(from,to);
+			var edges = to.connectedEdges();
+			highlightEdges(edges);
+			highlightNodes(edges.connectedNodes());
+		}
 
-cy.add(blueorange.elements);
+		var cy = cytoscape(
+		{
+			container: document.getElementById('cy'),
+			style: style[0].style
+		});
 
-var selectedNode;
-var path;
-//cy.on('cxttap',"node",function(event) {showpath(selectedNode,event.cyTarget);});
-cy.on('unselect',"node",resetStyle);
+		var defaults = {
+			menuRadius: 100, // the radius of the circular menu in pixels
+			selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
+			commands: [
+/*				{
+					content: 'test',
+					select: function(node)
+					{
+						console.log('test');
+					}
+				},*/
+				{
+					//fillColor: 'rgba(200, 200, 200, 0.75)', // optional: custom background color for item
+					content: 'shortest path to here',
+					select: function(node)
+					{
+						if (selectedNode)
+						{
+							resetStyle();
+							showpath(selectedNode, node);
+						}
+					}
+				},
+				{
+					//fillColor: 'rgba(200, 200, 200, 0.75)', // optional: custom background color for item
+					content: 'spiderworm to here',
+					select: function(node)
+					{
+						if (selectedNode)
+						{
+							resetStyle();
+							showworm(selectedNode, node);
+						}
+					}
+				}
 
-cy.on('select',"node",function(event)
-{
-	cy.startBatch();
-	selectedNode = event.cyTarget;
-	resetStyle();
-	highlightNodes(selectedNode);
-	//styledges(selectedNode.connectedEdges());
-	//highlightNodes(selectedNode.connectedEdges().connectedNodes());
-	cy.endBatch();
-});
+			],
+			fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
+			activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
+			openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
+			itemColor: 'white', // the colour of text in the command's content
+			itemTextShadowColor: 'gray', // the text shadow colour of the command's content
+			zIndex: 9999, // the z-index of the ui div
+		};
 
-</script>
-	</body>
+		var cxtmenuApi = cy.cxtmenu(defaults);
+
+		cy.add(blueorange.elements);
+
+		var selectedNode;
+		var path;
+		//cy.on('cxttap',"node",function(event) {showpath(selectedNode,event.cyTarget);});
+		//cy.on('unselect',"node",resetStyle);
+		// cy.on('unselect', "node", function(event)
+		// {
+		// 	console.log("unselect");
+		// });
+
+		cy.on('select', "node", function(event)
+		{
+			// console.log("select");
+			cy.startBatch();
+			selectedNode = event.cyTarget;
+			resetStyle();
+			highlightNodes(selectedNode);
+			cy.endBatch();
+		});
+	</script>
+</body>
+
 </html>
