@@ -7,6 +7,7 @@ var style = [ {
     {
     "selector" : "node",
     "css" : {
+			"min-zoomed-font-size" : 5,
       "font-size" : 5,
       "border-color" : "rgb(255,255,255)",
       "width" : "mapData(Degree,0,39,51,250)",
@@ -100,22 +101,27 @@ var style = [ {
 			'color':'white'
 		}
   },
-
   {
     "selector" : "edge[!selected]",
     "css" : {
       "opacity" : 0.5,
-      "width" : 2.0
+      "width" : 2.0,
+			'label': 'data(interaction)',
+			"edge-text-rotation": "autorotate",
+			"text-margin-y":"-1em",
+			"text-opacity":0,
+			"min-zoomed-font-size" : 8,
     }
   },
 {
     "selector" : "edge:selected",
     "css" : {
+			"text-opacity":1,
       "opacity" : 1.0,
-			'label': 'data(interaction)',
       "color":"rgb(255,255,128)",
       "width": 4.0,
       "line-color" : "rgb(255,255,128)",
+			'label': 'data(interaction)',
 			"edge-text-rotation": "autorotate",
 			"text-margin-y":"-1em",
     }

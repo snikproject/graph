@@ -21,8 +21,14 @@
 		{
 			edges.show();
 			styledEdges.push(edges);
+			console.log(edges);
 			edges.style(
 			{
+				"opacity" : 1.0,
+				"text-opacity":1,
+				"color":"rgb(128,255,128)",
+				'mid-target-arrow-color': 'rgb(128,255,128)',
+				'mid-target-arrow-shape': 'triangle',
 				'line-color': 'rgb(128,255,128)',
 				'width': 4.0
 			});
@@ -68,6 +74,8 @@
 				{
 					'width': 1,
 					'line-color': 'white',
+					'mid-target-arrow-shape': 'none',
+					"text-opacity":0,
 				});
 			}
 			cy.endBatch();
@@ -90,11 +98,13 @@
 
 		function showworm(from, to)
 		{
+			cy.startBatch();
 			hideNodes(cy.elements().nodes());
 			showpath(from,to);
 			var edges = to.connectedEdges();
 			highlightEdges(edges);
 			highlightNodes(edges.connectedNodes());
+			cy.endBatch();
 		}
 
 		var cy = cytoscape(
