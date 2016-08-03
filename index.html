@@ -39,7 +39,7 @@
 		{
 			nodes.show();
 			styledNodes.push(nodes);
-			nodes.style({'background-color': 'rgb(255,0,0)'});
+			nodes.style({'border-width': '10'});
 		}
 
 		function hideEdges(edges)
@@ -63,7 +63,8 @@
 				styledNodes[i].style(
 				{
 					//'background-color': 'rgb(254,196,179)' // debug, see which ones have their style resetted
-					'background-color': 'rgb(254,196,79)' // production
+					//'background-color': 'rgb(254,196,79)' // production
+					'border-width':'0'
 				});
 			}
 			styledNodes = [];
@@ -170,6 +171,14 @@
 		// {
 		// 	console.log("unselect");
 		// });
+		cy.on('select', "edge", function(event)
+		{
+			cy.startBatch();
+			resetStyle();
+			highlightEdges(event.cyTarget);
+			cy.endBatch();
+		});
+
 
 		cy.on('select', "node", function(event)
 		{

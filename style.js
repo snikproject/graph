@@ -28,20 +28,28 @@ var style = [ {
     }
   },
 
+	{
+		"selector" : "node[Sources='both']",
+		"css" : {
+			"color" : "rgb(255,153,255)",
+			"background-color" : "rgb(255,153,0)",
+			"border-width" : 0
+		}
+	},
   {
-    "selector" : "node[Sources = 'Ammenwerth, E; Haux, R; Knaup-Gregori, P; Winter, A. IT-Projektmanagement im Gesundheitswesen. Stuttgart: Schattauer, 2015.']",
+    "selector" : "node[Sources='ob']",
     "css" : {
 			"color" : "rgb(255,153,0)",
-      "background-color" : "rgb(255,153,0)",
-			"border-width" : 2.0
+			"background-color" : "rgb(255,153,0)",
+			"border-width" : 0
     }
   },
   {
-    "selector" : "node[Sources = 'Winter, A; Haux, R; Ammenwerth, E; Brigl, B; Hellrung, N; Jahn, F: Health Information Systems - Architectures and Strategies. London: Springer, 2011.']",
+    "selector" : "node[Sources = 'bb']",
     "css" : {
-			"color" : "rgb(255,153,0)",
+			"color" : "rgb(0,102,0)",
       "background-color" : "rgb(0,102,204)",
-			"border-width" : 2.0
+			"border-width" : 0
     }
   },
 	{
