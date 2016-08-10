@@ -1,3 +1,4 @@
+// Cytoscape CSS style file
 var style = [
 {
 	"format_version": "1.0",

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="utf-8">
 	<title>SNIK Ontology Graph</title>
@@ -9,9 +8,30 @@
 	<script src="style.js"></script>
 	<script src="jquery-3.1.0.min.js"></script>
 	<script src="cytoscape-cxtmenu.js"></script>
+	<script src="menu.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+<script>
+var MODIFIED = "2016-08-10";
+var ONTOLOGY_MODIFIED = "2016-07-13";
+</script>
 </head>
 
 <body>
+
+	<ul>
+		<li><a href="http://www.snik.eu/sparql" target="_blank">SPARQL</a></li>
+		<li><a href="http://linkedspending.aksw.org/snik" target="_blank">Browse</a></li>
+	  <li class="dropdown">
+	    <a href="javascript:void(0)" class="dropbtn" onclick="help()">Help</a>
+	    <div class="dropdown-content" id="help">
+				<a href="help.html" target="_blank">SNIK Graph Help</a>
+	      <a href="http://www.snik.eu/" target="_blank">Project Homepage</a>
+	      <a href="https://bitbucket.org/imise/snik-ontology/issues" target="_blank">Submit Feedback</a>
+				<a href="javascript:about()">About SNIK Graph</a>
+	    </div>
+	  </li>
+	</ul>
+
 	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 	<script>
 		var styledEdges = [];
@@ -39,7 +59,7 @@
 		{
 			nodes.show();
 			styledNodes.push(nodes);
-			nodes.style({'border-width': '10'});
+			nodes.style({'border-width': '5'});
 		}
 
 		function hideEdges(edges)
@@ -126,6 +146,14 @@
 				{
 					window.open(node._private.data.name
 					.replace("http://www.imise.uni-leipzig.de/snik.owl#","http://linkedspending.aksw.org/snik/"));
+				}
+			},
+			{
+				content: 'submit ticket',
+				select: function(node)
+				{
+					window.open("https://bitbucket.org/imise/snik-cytoscape.js/issues/new?title="
+						+encodeURIComponent(node._private.data.name).replace("http://www.imise.uni-leipzig.de/snik.owl#",""));
 				}
 			},
 				{
