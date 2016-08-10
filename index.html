@@ -120,15 +120,15 @@
 			menuRadius: 100, // the radius of the circular menu in pixels
 			selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
 			commands: [
-/*				{
-					content: 'test',
-					select: function(node)
-					{
-						console.log('test');
-					}
-				},*/
+			{
+				content: 'open in pubby',
+				select: function(node)
 				{
-					//fillColor: 'rgba(200, 200, 200, 0.75)', // optional: custom background color for item
+					window.open(node._private.data.name
+					.replace("http://www.imise.uni-leipzig.de/snik.owl#","http://linkedspending.aksw.org/snik/"));
+				}
+			},
+				{
 					content: 'shortest path to here',
 					select: function(node)
 					{
@@ -140,7 +140,6 @@
 					}
 				},
 				{
-					//fillColor: 'rgba(200, 200, 200, 0.75)', // optional: custom background color for item
 					content: 'spiderworm to here',
 					select: function(node)
 					{
