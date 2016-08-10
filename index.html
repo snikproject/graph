@@ -111,7 +111,9 @@
 		var cy = cytoscape(
 		{
 			container: document.getElementById('cy'),
-			style: style[0].style
+			style: style[0].style,
+
+
 		});
 
 		var defaults = {
@@ -166,7 +168,7 @@
 		var selectedNode;
 		var path;
 		//cy.on('cxttap',"node",function(event) {showpath(selectedNode,event.cyTarget);});
-		//cy.on('unselect',"node",resetStyle);
+		cy.on('unselect',resetStyle);
 		// cy.on('unselect', "node", function(event)
 		// {
 		// 	console.log("unselect");
