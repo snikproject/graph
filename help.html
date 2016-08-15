@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>SNIK Graph Help</title>
+		<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+	</head>
+	<body>
+<h1>SNIK Graph Help</h1>
+<img src="img/graph.png" style="width:100%"/>
+<h2>What is SNIK Graph?</h2>
+<p>
+SNIK Graph is the research prototype of a graph visualization of the Hospital Information Management ontology created by the SNIK research project of the IMISE research group of the medical faculty of the University of Leipzig.
+</p>
+The graph consists of nodes, which are concepts from the ontology, and edges between nodes, which are relationships (properties) between concepts. Select an edge to see the edge label (relationship type) and direction.
+
+<h2>Context Menu</h2>
+Right click on a node to open the context menu and choose among:
+<h3>Browse</h3>
+Opens the node in an RDF browser, which shows all its properties and values.
+<h3>Submit Feedback</h3>
+If you are a domain expert and notice incorrectly modelled facts or connections of a node.
+<h3>Shortest Path</h3>
+<img src="img/shortestpath.png"/><br/>
+Requires a selected source node.
+The shortest path highlights all nodes and edges in the shortest path between a selected source and the target node.
+Displaying a shortest path hides all other and edges.
+<h3>Spider Worm</h3>
+<img src="img/spiderworm.png"/><br/>
+Requires a selected source node.
+The so called Spider Worm consists of the shortest path between a selected source and target node plus all edges of the target node and the other node of each of those edges.
+Displaying a spiderworm hides all other nodes and edges.
+
+<h2>Requirements and Technical Problems</h2>
+SNIK Graph runs in your browser using JavaScript, so any modern browser with activated JavaScript should work. Obviously this includes deactivating noScript and similar extensions.
+If you encounter technical problems, please <a href="https://bitbucket.org/imise/snik-cytoscape.js/issues/new">submit a bug report ticket</a>.
+</body>
+</html>
