@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<title>SNIK Ontology Graph</title>
@@ -10,30 +11,58 @@
 	<script src="cytoscape-cxtmenu.js"></script>
 	<script src="menu.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
-<script>
-var MODIFIED = "2016-08-10";
-var ONTOLOGY_MODIFIED = "2016-07-13";
-</script>
+	<script>
+		var MODIFIED = "2016-08-16";
+		var ONTOLOGY_MODIFIED = "2016-07-13";
+		var ENDPOINT = "http://linkedspending.aksw.org/sparql";
+		var GRAPH = "http://www.imise.uni-leipzig.de/snik.owl";
+	</script>
 </head>
 
 <body>
-
-	<ul>
-		<li><a href="http://www.snik.eu/sparql" target="_blank">SPARQL</a></li>
-		<li><a href="http://linkedspending.aksw.org/snik" target="_blank">Browse</a></li>
-	  <li class="dropdown">
-	    <a href="javascript:void(0)" class="dropbtn" onclick="help()">Help</a>
-	    <div class="dropdown-content" id="help">
-				<a href="help.html" target="_blank">SNIK Graph Help</a>
-	      <a href="http://www.snik.eu/" target="_blank">Project Homepage</a>
-	      <a href="https://bitbucket.org/imise/snik-ontology/issues" target="_blank">Submit Feedback</a>
-				<a href="javascript:about()">About SNIK Graph</a>
-	    </div>
-	  </li>
-	</ul>
+	<div id="top">
+		<ul>
+			<li><a href="http://www.snik.eu/sparql" target="_blank">SPARQL</a></li>
+			<li><a href="http://linkedspending.aksw.org/snik" target="_blank">Browse</a></li>
+			<li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn" onclick="help()">Help</a>
+				<div class="dropdown-content" id="help">
+					<a href="help.html" target="_blank">SNIK Graph Help</a>
+					<a href="http://www.snik.eu/" target="_blank">Project Homepage</a>
+					<a href="https://bitbucket.org/imise/snik-ontology/issues" target="_blank">Submit Feedback</a>
+					<a href="javascript:about()">About SNIK Graph</a>
+				</div>
+			</li>
+		</ul>
+		<form id="search">
+			<input type="text" name="query" id="query" list="matches" />
+		</form>
+	</div>
 
 	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 	<script>
+		$('#search').submit(function()
+		{
+			// prevent invalid SPARQL query, make sure by just keeping basic characters
+			var input = document.getElementById('query').value.replace('/[^A-Za-z 0-9]/g', '');
+			console.log(input);
+			var sparql = 'select ?s ?l {{?s a owl:Class.} UNION {?s a rdf:Property.} ?s rdfs:label ?l. ?l <bif:contains> "' + input + '".} limit 11';
+			var http = ENDPOINT +
+				'?default-graph-uri=' + encodeURIComponent(GRAPH) +
+				'&query=' + escape(sparql) +
+				'&format=json';
+
+			$.getJSON(http, function(data)
+			{
+				console.log(data.results.bindings.length);
+				console.log(data);
+			}).fail(function(jqXHR, textStatus, errorThrown)
+			{
+				alert('getJSON request failed! ' + textStatus);
+			});
+			return false;
+		});
+
 		var styledEdges = [];
 		var styledNodes = [];
 
@@ -44,9 +73,9 @@ var ONTOLOGY_MODIFIED = "2016-07-13";
 			console.log(edges);
 			edges.style(
 			{
-				"opacity" : 1.0,
-				"text-opacity":1,
-				"color":"rgb(128,255,128)",
+				"opacity": 1.0,
+				"text-opacity": 1,
+				"color": "rgb(128,255,128)",
 				'mid-target-arrow-color': 'rgb(128,255,128)',
 				'mid-target-arrow-shape': 'triangle',
 				'line-color': 'rgb(128,255,128)',
@@ -59,7 +88,10 @@ var ONTOLOGY_MODIFIED = "2016-07-13";
 		{
 			nodes.show();
 			styledNodes.push(nodes);
-			nodes.style({'border-width': '5'});
+			nodes.style(
+			{
+				'border-width': '5'
+			});
 		}
 
 		function hideEdges(edges)
@@ -77,18 +109,18 @@ var ONTOLOGY_MODIFIED = "2016-07-13";
 		function resetStyle()
 		{
 			cy.startBatch();
-			for(var i=0;i<styledNodes.length;i++)
+			for (var i = 0; i < styledNodes.length; i++)
 			{
 				styledNodes[i].show();
 				styledNodes[i].style(
 				{
 					//'background-color': 'rgb(254,196,179)' // debug, see which ones have their style resetted
 					//'background-color': 'rgb(254,196,79)' // production
-					'border-width':'0'
+					'border-width': '0'
 				});
 			}
 			styledNodes = [];
-			for(var i=0;i<styledEdges.length;i++)
+			for (var i = 0; i < styledEdges.length; i++)
 			{
 				styledEdges[i].show();
 				styledEdges[i].style(
@@ -96,7 +128,7 @@ var ONTOLOGY_MODIFIED = "2016-07-13";
 					'width': 1,
 					'line-color': 'white',
 					'mid-target-arrow-shape': 'none',
-					"text-opacity":0,
+					"text-opacity": 0,
 				});
 			}
 			cy.endBatch();
@@ -105,7 +137,12 @@ var ONTOLOGY_MODIFIED = "2016-07-13";
 		function showpath(from, to)
 		{
 			cy.startBatch();
-			var aStar = cy.elements().aStar({root: from,goal: to});
+		  hideNodes(cy.elements().nodes());
+			var aStar = cy.elements().aStar(
+			{
+				root: from,
+				goal: to
+			});
 			path = aStar.path;
 			if (path)
 			{
@@ -121,7 +158,7 @@ var ONTOLOGY_MODIFIED = "2016-07-13";
 		{
 			cy.startBatch();
 			hideNodes(cy.elements().nodes());
-			showpath(from,to);
+			showpath(from, to);
 			var edges = to.connectedEdges();
 			highlightEdges(edges);
 			highlightNodes(edges.connectedNodes());
@@ -140,22 +177,22 @@ var ONTOLOGY_MODIFIED = "2016-07-13";
 			menuRadius: 100, // the radius of the circular menu in pixels
 			selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
 			commands: [
-			{
-				content: 'open in pubby',
-				select: function(node)
 				{
-					window.open(node._private.data.name
-					.replace("http://www.imise.uni-leipzig.de/snik.owl#","http://linkedspending.aksw.org/snik/"));
-				}
-			},
-			{
-				content: 'submit ticket',
-				select: function(node)
+					content: 'description',
+					select: function(node)
+					{
+						window.open(node._private.data.name
+							.replace("http://www.imise.uni-leipzig.de/snik.owl#", "http://linkedspending.aksw.org/snik/"));
+					}
+				},
 				{
-					window.open("https://bitbucket.org/imise/snik-cytoscape.js/issues/new?title="
-						+encodeURIComponent(node._private.data.name).replace("http://www.imise.uni-leipzig.de/snik.owl#",""));
-				}
-			},
+					content: 'submit ticket',
+					select: function(node)
+					{
+						window.open("https://bitbucket.org/imise/snik-cytoscape.js/issues/new?title=" +
+							encodeURIComponent(node._private.data.name).replace("http://www.imise.uni-leipzig.de/snik.owl#", ""));
+					}
+				},
 				{
 					content: 'shortest path to here',
 					select: function(node)
@@ -195,7 +232,7 @@ var ONTOLOGY_MODIFIED = "2016-07-13";
 		var selectedNode;
 		var path;
 		//cy.on('cxttap',"node",function(event) {showpath(selectedNode,event.cyTarget);});
-		cy.on('unselect',resetStyle);
+		cy.on('unselect', resetStyle);
 		// cy.on('unselect', "node", function(event)
 		// {
 		// 	console.log("unselect");
