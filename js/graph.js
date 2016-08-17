@@ -129,8 +129,8 @@ function initGraph(container)
 				content: 'submit ticket',
 				select: function(node)
 				{
-					window.open("https://bitbucket.org/imise/snik-cytoscape.js/issues/new?title=" +
-						encodeURIComponent(node._private.data.name).replace("http://www.imise.uni-leipzig.de/snik.owl#", ""));
+					window.open("https://github.com/IMISE/snik-ontology/issues/new");
+					//encodeURIComponent(node._private.data.name).replace("http://www.imise.uni-leipzig.de/snik.owl#", ""));
 				}
 			},
 			{
