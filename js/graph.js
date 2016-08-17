@@ -10,7 +10,6 @@ function highlightEdges(edges)
 {
 	edges.show();
 	styledEdges.push(edges);
-	console.log(edges);
 	edges.style(
 	{
 		"opacity": 1.0,
@@ -24,13 +23,13 @@ function highlightEdges(edges)
 }
 
 // should use the same color as "selector" : "node:selected" in style.js
-function highlightNodes(nodes)
+function highlightNodes(nodes,width=7)
 {
 	nodes.show();
 	styledNodes.push(nodes);
 	nodes.style(
 	{
-		'border-width': '5'
+		'border-width': width
 	});
 }
 
@@ -184,7 +183,6 @@ function initGraph(container)
 
 	cy.on('select', "node", function(event)
 	{
-		// console.log("select");
 		cy.startBatch();
 		selectedNode = event.cyTarget;
 		resetStyle();

@@ -11,16 +11,20 @@
 	<script src="js/cytoscape-cxtmenu.js"></script>
 	<script src="js/menu.js"></script>
 	<script>
-		const MODIFIED = "2016-08-16";
+		const MODIFIED = "2016-08-17";
 		const ONTOLOGY_MODIFIED = "2016-07-13";
-		const ENDPOINT = "http://linkedspending.aksw.org/sparql";
-		const GRAPH = "http://www.imise.uni-leipzig.de/snik.owl";
+		const SPARQL_ENDPOINT = "http://www.snik.eu/sparql";
+		const SPARQL_GRAPH = "http://www.imise.uni-leipzig.de/snik.owl";
+		const SPARQL_PREFIX = "http://www.imise.uni-leipzig.de/snik.owl#";
+		const SPARQL_LIMIT = 20;
 	</script>
 	<script src="js/graph.js"></script>
-	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen" />
 </head>
 
 <body>
+
 	<div id="top">
 		<ul>
 			<li><a href="http://www.snik.eu/sparql" target="_blank">SPARQL</a></li>
@@ -39,31 +43,16 @@
 			<input type="text" name="query" id="query" list="matches" />
 		</form>
 	</div>
+	<div id="overlay" class="overlay">
+		<h2 id="h2:searchresults">Search Results</h2>
+		<a href="javascript:void(0)" class="closebtn" onclick="hideSearchResults()">&times;</a>
+		<table id="tab:searchresults"></table>
+	</div>
+
+	<script src="js/search.js"></script>
 
 	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
-	<script>
-		initGraph(document.getElementById('cy'));
-		$('#search').submit(function()
-		{
-			// prevent invalid SPARQL query, make sure by just keeping basic characters
-			var input = document.getElementById('query').value.replace('/[^A-Za-z 0-9]/g', '');
-			console.log(input);
-			var sparql = 'select ?s ?l {{?s a owl:Class.} UNION {?s a rdf:Property.} ?s rdfs:label ?l. ?l <bif:contains> "' + input + '".} limit 11';
-			var http = ENDPOINT +
-				'?default-graph-uri=' + encodeURIComponent(GRAPH) +
-				'&query=' + escape(sparql) +
-				'&format=json';
 
-			$.getJSON(http, function(data)
-			{
-				console.log(data.results.bindings.length);
-				console.log(data);
-			}).fail(function(jqXHR, textStatus, errorThrown)
-			{
-				alert('getJSON request failed! ' + textStatus);
-			});
-			return false;
-		});
-</script>
+	<script>initGraph(document.getElementById('cy'));</script>
 </body>
 </html>
