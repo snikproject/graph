@@ -26,6 +26,7 @@ function highlightEdges(edges)
 function highlightNodes(nodes,width=7)
 {
 	nodes.show();
+	highlightEdges(nodes.connectedEdges());
 	styledNodes.push(nodes);
 	nodes.style(
 	{
