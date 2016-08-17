@@ -9,6 +9,7 @@ function presentUri(uri)
 	}
 	var node = nodes[0];
 	cy.center(node);
+	resetStyle();
 	highlightNodes(nodes)
 	hideSearchResults();
 }
@@ -24,13 +25,19 @@ function presentAll()
 		return false;
 	}
 	hideSearchResults();
+	resetStyle();
 	cy.fit(resultNodes);
 	highlightNodes(resultNodes,30)
 }
 
 function showSearchResults(query, bindings)
 {
+	resultNodes = [];
+	var table = document.getElementById("tab:searchresults");
+	for(var i = 0; i < table.rows.length;) {table.deleteRow(i);}
+
 	document.getElementById("overlay").style.width = "100%";
+
 	if(bindings.length===0)
 	{
 		document.getElementById("h2:searchresults").innerHTML=`No Search Results for "${query}"`;
@@ -48,10 +55,6 @@ function showSearchResults(query, bindings)
 	{
 		document.getElementById("h2:searchresults").innerHTML=`${bindings.length} Search Results for "${query}"`;
 	}
-
-
-	var table = document.getElementById("tab:searchresults");
-	for(var i = 0; i < table.rows.length;) {table.deleteRow(i);}
 
 	var uris = [];
 
