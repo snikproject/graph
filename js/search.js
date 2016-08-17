@@ -41,7 +41,14 @@ function showSearchResults(query, bindings)
 		presentUri(bindings[0].s.value);
 		return true;
 	}
-	document.getElementById("h2:searchresults").innerHTML=`Search Results for "${query}"`;
+	if(bindings.length===SPARQL_LIMIT)
+	{
+		document.getElementById("h2:searchresults").innerHTML=`First ${SPARQL_LIMIT} Search Results for "${query}"`;
+	} else
+	{
+		document.getElementById("h2:searchresults").innerHTML=`${bindings.length} Search Results for "${query}"`;
+	}
+
 
 	var table = document.getElementById("tab:searchresults");
 	for(var i = 0; i < table.rows.length;) {table.deleteRow(i);}
@@ -81,7 +88,7 @@ $('#search').submit(function()
 	// labels are not yet on SPARQL endpoint, so use URI in the meantime
 	var sparql =
 		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
-filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}")).}
+filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
 limit ${SPARQL_LIMIT}`;
 	//console.log(sparql);
 	var http = SPARQL_ENDPOINT +
