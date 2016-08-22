@@ -76,8 +76,6 @@ function resetStyle()
 
 function showpath(from, to)
 {
-	cy.startBatch();
-	hideNodes(cy.elements().nodes());
 	var aStar = cy.elements().aStar(
 	{
 		root: from,
@@ -86,23 +84,32 @@ function showpath(from, to)
 	path = aStar.path;
 	if (path)
 	{
+		cy.startBatch();
+		hideNodes(cy.elements().nodes());
 		cy.add(path);
-		hideEdges(cy.elements().edges());
 		highlightEdges(path.edges());
 		highlightNodes(path.nodes());
+		cy.endBatch();
 	}
-	cy.endBatch();
+	else
+	{
+		alert("no path found");
+		return false;
+	}
+	return true;
 }
 
 function showworm(from, to)
 {
-	cy.startBatch();
-	hideNodes(cy.elements().nodes());
-	showpath(from, to);
-	var edges = to.connectedEdges();
-	highlightEdges(edges);
-	highlightNodes(edges.connectedNodes());
-	cy.endBatch();
+	if(showpath(from, to))
+	{
+			cy.startBatch();
+			var edges = to.connectedEdges();
+			hideNodes(cy.elements().nodes());
+			highlightEdges(edges);
+			highlightNodes(edges.connectedNodes());
+			cy.endBatch();
+	}
 }
 
 function initGraph(container)
