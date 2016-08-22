@@ -161,8 +161,31 @@ function initGraph(container)
 						showworm(selectedNode, node);
 					}
 				}
-			}
+			},
+			{
+				content: 'book page (in development)',
+				select: function(node)
+				{
+					var page = node.data()['Definition_DE_Pages'][0];
+					if(!page) {page = node.data()['Definition_EN_Pages'][0];}
+					var source = node.data().Sources;
+					if(!page || !(source === 'bb' || source === 'ob'))
+					{
+						alert("no book page defined");
+						return;
+					}
+					switch(source)
+					{
+						case 'bb':
+						window.open("http://www.example.com/bb.pdf#page="+page);
+						break;
 
+						case 'ob':
+						window.open("http://www.example.com/ob.pdf#page="+page);
+						break;
+					}
+				}
+			}
 		],
 		fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
 		activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
