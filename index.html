@@ -42,8 +42,58 @@
 		</ul>
 		<form id="search">
 			<input type="text" name="query" id="query" list="matches" />
+
+			<input type="checkbox" class="filterbox" onclick="filter(this)" checked="true"
+				value="node[Sources='meta']"/>
+			meta
+
+			<input type="checkbox" class="filterbox" onclick="filter(this)" checked="true"
+				value="node[Sources='bb']"/>
+			BB
+
+			<input type="checkbox" class="filterbox" onclick="filter(this)" checked="true"
+				value="node[Sources='ob']"/>
+			OB
+<!--
+			<input type="checkbox" class="filterbox" onclick="filter(this)" checked="true"
+				value="node[Sources='ciox']"/>
+			CioX
+-->
+			<input type="checkbox" class="filterbox" onclick="filter(this)" checked="true"
+			value="edge[interaction='subClassOf']"/>
+			subClassOf
 		</form>
 	</div>
+
+	<script>
+	var removed = {};
+
+	function filter(checkbox)
+	{
+		var selector = checkbox.getAttribute("value");
+		//console.log(selector);
+		if(checkbox.checked)
+		{
+			var elements = removed[selector];
+			if(elements)
+			{
+				removed[selector] = undefined;
+				elements.restore();
+			}
+		}
+		else
+		{
+			var elements = cy.elements(selector);
+			if(elements)
+			{
+				// if just saving nodes then the edges get lost
+				removed[selector]=elements.union(elements.connectedEdges());
+				elements.remove();
+			}
+		}
+	}
+	</script>
+
 	<div id="overlay" class="overlay">
 		<h2 id="h2:searchresults">Search Results</h2>
 		<a href="javascript:void(0)" class="closebtn" onclick="hideSearchResults()">&times;</a>
