@@ -86,7 +86,7 @@
 			var elements = cy.elements(selector);
 			if(elements)
 			{
-				// if just saving nodes then the edges get lost
+				// if just saving nodes, then the edges get lost
 				removed[selector]=elements.union(elements.connectedEdges());
 				elements.remove();
 			}

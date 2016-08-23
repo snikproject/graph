@@ -48,6 +48,7 @@ function hideNodes(nodes)
 
 function resetStyle()
 {
+	$('body').addClass('waiting');
 	cy.startBatch();
 	for (var i = 0; i < styledNodes.length; i++)
 	{
@@ -72,10 +73,12 @@ function resetStyle()
 		});
 	}
 	cy.endBatch();
+	$('body').removeClass('waiting');
 }
 
 function showpath(from, to)
 {
+	$('body').addClass('waiting');
 	var aStar = cy.elements().aStar(
 	{
 		root: from,
@@ -94,13 +97,16 @@ function showpath(from, to)
 	else
 	{
 		alert("no path found");
+		$('body').removeClass('waiting');
 		return false;
 	}
+	$('body').removeClass('waiting');
 	return true;
 }
 
 function showworm(from, to)
 {
+	$('body').addClass('waiting');
 	if(showpath(from, to))
 	{
 			cy.startBatch();
@@ -110,6 +116,7 @@ function showworm(from, to)
 			highlightNodes(edges.connectedNodes());
 			cy.endBatch();
 	}
+	$('body').removeClass('waiting');
 }
 
 function initGraph(container)
