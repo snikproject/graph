@@ -118,6 +118,7 @@ function initGraph(container)
 	{
 		container: container,
 		style: style[0].style,
+		wheelSensitivity: 0.3,
 	});
 
 	var defaults = {
