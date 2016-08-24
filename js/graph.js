@@ -5,33 +5,55 @@ var styledEdges = [];
 var styledNodes = [];
 var selectedNode;
 var path;
+var pathSource;
+var pathTarget;
+
+function setSource(node)
+{
+	if(node === undefined) {return false;}
+	document.getElementById('centersource').hidden=false;
+	if(pathTarget !== undefined)
+	{
+		document.getElementById('shortestpath').hidden=false;
+		document.getElementById('spiderworm').hidden=false;
+	}
+	if(pathSource!==undefined) {pathSource.removeClass('source');}
+	pathSource = node;
+	pathSource.addClass('source');
+	document.getElementById('sourcelabel').innerHTML=
+		pathSource.data('name').replace(SPARQL_PREFIX,"");
+}
+
+function setTarget(node)
+{
+	if(node === undefined) {return false;}
+	document.getElementById('centertarget').hidden=false;
+	if(pathSource !== undefined)
+	{
+		document.getElementById('shortestpath').hidden=false;
+		document.getElementById('spiderworm').hidden=false;
+	}
+	if(pathTarget!==undefined) {pathTarget.removeClass('target');}
+	pathTarget = node;
+	pathTarget.addClass('target');
+	document.getElementById('targetlabel').innerHTML=
+		pathTarget.data('name').replace(SPARQL_PREFIX,"");
+}
 
 function highlightEdges(edges)
 {
 	edges.show();
 	styledEdges.push(edges);
-	edges.style(
-	{
-		"opacity": 1.0,
-		"text-opacity": 1,
-		"color": "rgb(128,255,128)",
-		'mid-target-arrow-color': 'rgb(128,255,128)',
-		'mid-target-arrow-shape': 'triangle',
-		'line-color': 'rgb(128,255,128)',
-		'width': 4.0
-	});
+	edges.addClass("highlighted");
 }
 
 // should use the same color as "selector" : "node:selected" in style.js
-function highlightNodes(nodes,width=7)
+function highlightNodes(nodes)
 {
 	nodes.show();
 	highlightEdges(nodes.edgesWith(nodes));
 	styledNodes.push(nodes);
-	nodes.style(
-	{
-		'border-width': width
-	});
+	nodes.addClass("highlighted");
 }
 
 function hideEdges(edges)
@@ -49,34 +71,24 @@ function hideNodes(nodes)
 function resetStyle()
 {
 	$('body').addClass('waiting');
+	selectedNode = undefined;
 	cy.startBatch();
 	for (var i = 0; i < styledNodes.length; i++)
 	{
 		styledNodes[i].show();
-		styledNodes[i].style(
-		{
-			//'background-color': 'rgb(254,196,179)' // debug, see which ones have their style resetted
-			//'background-color': 'rgb(254,196,79)' // production
-			'border-width': '0'
-		});
+		styledNodes[i].removeClass("highlighted");
 	}
 	styledNodes = [];
 	for (var i = 0; i < styledEdges.length; i++)
 	{
 		styledEdges[i].show();
-		styledEdges[i].style(
-		{
-			'width': 1,
-			'line-color': 'white',
-			'mid-target-arrow-shape': 'none',
-			"text-opacity": 0,
-		});
+		styledEdges[i].removeClass("highlighted");
 	}
 	cy.endBatch();
 	$('body').removeClass('waiting');
 }
 
-function showpath(from, to)
+function showPath(from, to)
 {
 	$('body').addClass('waiting');
 	var aStar = cy.elements().aStar(
@@ -104,19 +116,16 @@ function showpath(from, to)
 	return true;
 }
 
-function showworm(from, to)
+function showWorm(from, to)
 {
-	$('body').addClass('waiting');
-	if(showpath(from, to))
+	if(showPath(from, to))
 	{
 			cy.startBatch();
 			var edges = to.connectedEdges();
-			hideNodes(cy.elements().nodes());
 			highlightEdges(edges);
 			highlightNodes(edges.connectedNodes());
 			cy.endBatch();
 	}
-	$('body').removeClass('waiting');
 }
 
 function initGraph(container)
@@ -149,13 +158,22 @@ function initGraph(container)
 				}
 			},
 			{
+				content: 'set as path source',
+				select: function(node) {setSource(node);}
+			},
+			{
+				content: 'set as path target',
+				select: function(node) {setTarget(node);}
+			},
+/*
+			{
 				content: 'shortest path to here',
 				select: function(node)
 				{
 					if (selectedNode)
 					{
 						resetStyle();
-						showpath(selectedNode, node);
+						showPath(selectedNode, node);
 					}
 				}
 			},
@@ -166,10 +184,12 @@ function initGraph(container)
 					if (selectedNode)
 					{
 						resetStyle();
-						showworm(selectedNode, node);
+						showWorm(selectedNode, node);
 					}
 				}
 			},
+			*/
+			/* commented out until denethor pdf links in browser work
 			{
 				content: 'book page (in development)',
 				select: function(node)
@@ -185,15 +205,16 @@ function initGraph(container)
 					switch(source)
 					{
 						case 'bb':
-						window.open("http://www.example.com/bb.pdf#page="+page);
+						window.open("https://denethor.imise.uni-leipzig.de/remote.php/webdav/Shared/SNIK/bb.pdf#page="+page,"_blank");
 						break;
 
 						case 'ob':
-						window.open("http://www.example.com/ob.pdf#page="+page);
+						window.open("https://denethor.imise.uni-leipzig.de/remote.php/webdav/Shared/SNIK/ob.pdf#page="+page,"_blank");
 						break;
 					}
 				}
 			}
+			*/
 		],
 		fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
 		activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
@@ -204,8 +225,20 @@ function initGraph(container)
 	};
 
 	var cxtmenuApi = cy.cxtmenu(defaults);
+
+/*
+	function setSelectedNode(node)
+	{
+		lastSelectedNode = selectedNode;
+		selectedNode = node;
+		if(!lastSelectedNode) lastSelectedNode = selectedNode; // first selection
+		document.getElementById('lastselected').innerHTML=
+		 lastSelectedNode.data('name').replace(SPARQL_PREFIX,"");
+	}
+	*/
+
 	cy.add(blueorange.elements);
-	//cy.on('cxttap',"node",function(event) {showpath(selectedNode,event.cyTarget);});
+	//cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.cyTarget);});
 	cy.on('unselect', resetStyle);
 	// cy.on('unselect', "node", function(event)
 	// {
@@ -219,12 +252,17 @@ function initGraph(container)
 		cy.endBatch();
 	});
 
+	cy.on('tap', function(event)
+	{
+	  var evtTarget = event.cyTarget;
+	  if(evtTarget === cy) {resetStyle();} // background
+	});
 
 	cy.on('select', "node", function(event)
 	{
 		cy.startBatch();
-		selectedNode = event.cyTarget;
 		resetStyle();
+		selectedNode = event.cyTarget;
 		highlightNodes(selectedNode);
 		cy.endBatch();
 	});

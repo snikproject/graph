@@ -1,6 +1,7 @@
 /** When user selects a URI from the search candidates, this URI gets centered and highlighted.  */
 function presentUri(uri)
 {
+	cy.zoom(0.6);
 	var nodes = cy.elements().nodes().filter(`node[name= "${uri}"]`);
 	if(nodes.length<1)
 	{
@@ -10,6 +11,7 @@ function presentUri(uri)
 	var node = nodes[0];
 	cy.center(node);
 	resetStyle();
+	selectedNode = node;
 	highlightNodes(nodes)
 	hideSearchResults();
 }

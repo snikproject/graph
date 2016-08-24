@@ -93,6 +93,43 @@ var style = [
 				"background-color": "rgb(255,255,0)"
 			}
 		},
+		{
+			"selector": "node.source",
+			"css":
+			{
+				"border-width": 10.0,
+				"border-color": "rgb(128,255,128)"
+			}
+		},
+		{
+			"selector": "node.target",
+			"css":
+			{
+				"border-color": "rgb(255,90,90)",
+				"border-width": 10.0,
+			}
+		},
+		{
+			"selector": "node.highlighted",
+			"css":
+			{
+				"border-width": 10.0,
+			}
+		},
+		{
+			"selector": "edge.highlighted",
+			"css":
+			{
+				"opacity": 1.0,
+				"text-opacity": 1,
+				"color": "rgb(128,255,128)",
+				'mid-target-arrow-color': 'rgb(128,255,128)',
+				'mid-target-arrow-shape': 'triangle',
+				'line-color': 'rgb(128,255,128)',
+				'width': 4.0
+			}
+		},
+
 		/* {
 		  "selector" : "edge",
 		  "css" : {
