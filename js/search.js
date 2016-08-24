@@ -10,7 +10,7 @@ function presentUri(uri)
 	}
 	var node = nodes[0];
 	cy.center(node);
-	resetStyle();
+	if(!document.getElementById('cumulativesearch').checked) {resetStyle();}
 	selectedNode = node;
 	highlightNodes(nodes)
 	hideSearchResults();
@@ -27,7 +27,7 @@ function presentAll()
 		return false;
 	}
 	hideSearchResults();
-	resetStyle();
+	if(!document.getElementById('cumulativesearch').checked) {resetStyle();}
 	cy.fit(resultNodes);
 	highlightNodes(resultNodes,30)
 }

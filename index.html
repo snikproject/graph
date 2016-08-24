@@ -31,7 +31,7 @@
 		<li><a href="http://www.snik.eu/sparql" target="_blank">SPARQL</a></li>
 		<li><a href="http://linkedspending.aksw.org/snik" target="_blank">Browse</a></li>
 		<li class="dropdown">
-			<a href="javascript:void(0)" class="dropbtn" onclick="help()">Help</a>
+			<a href="javascript:void(0)" class="dropbtn" onclick="helpMenu()">Help</a>
 			<div class="dropdown-content" id="help">
 				<a href="manual.html" target="_blank">Manual</a>
 				<a href="troubleshooting.html" target="_blank">Troubleshooting</a>
@@ -42,15 +42,26 @@
 				<a href="https://github.com/IMISE/snik-cytoscape.js/issues" target="_blank">Submit Feedback about the Visualization</a>
 			</div>
 		</li>
+		<li class="dropdown">
+			<a href="javascript:void(0)" class="dropbtn" onclick="filterMenu()">Filter</a>
+			<div class="dropdown-content" id="filter">
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[Sources='meta']" /> meta</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[Sources='bb']" /> BB</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[Sources='ob']" /> OB</span>
+					<!--<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[Sources='ciox']"/>	CioX</span>-->
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='subClassOf']" /> subClassOf</span>
+			</div>
+		</li>
+		<li class="dropdown">
+			<a href="javascript:void(0)" class="dropbtn" onclick="optionsMenu()">Options</a>
+			<div class="dropdown-content" id="options">
+					<span><input type="checkbox" id="cumulativesearch"/>cumulative search</span>
+			</div>
+		</li>
 	</ul>
 
 	<form id="search">
 		<input type="text" name="query" id="query" list="matches" />
-		<input type="checkbox" class="filterbox" onclick="filter(this)" checked="true" value="node[Sources='meta']" /> meta
-		<input type="checkbox" class="filterbox" onclick="filter(this)" checked="true" value="node[Sources='bb']" /> BB
-		<input type="checkbox" class="filterbox" onclick="filter(this)" checked="true" value="node[Sources='ob']" /> OB
-		<!--<input type="checkbox" class="filterbox" onclick="filter(this)" checked="true" value="node[Sources='ciox']"/>	CioX-->
-		<input type="checkbox" class="filterbox" onclick="filter(this)" checked="true" value="edge[interaction='subClassOf']" /> subClassOf
 	</form>
 
 	<form>
