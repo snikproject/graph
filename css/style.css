@@ -17,7 +17,7 @@ body.waiting * {
 {
 }
 
-ul {
+ul.dropdown {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -25,7 +25,7 @@ ul {
     background-color: black;
 }
 
-li {
+ul.dropdown li {
     float: left;
 }
 
