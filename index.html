@@ -26,8 +26,8 @@
 <body>
 	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h2></noscript>
 	<script>
-	if ('function' !== typeof Map)
-		{alert("Your browser is outdated, please update it. Some features may not work.");}
+		try {eval('"use strict"; class foo {}');}
+		catch (e) {alert("Your browser is outdated, please update it. Some features may not work.");}
 	</script>
 <div id="top">
 	<ul class="dropdown">
