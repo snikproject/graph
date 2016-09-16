@@ -51,8 +51,11 @@ function highlightEdges(edges)
 function highlightNodes(nodes)
 {
 	nodes.show();
-	highlightEdges(nodes.edgesWith(nodes));
 	styledNodes.push(nodes);
+	// styled nodes is an array of arraylike objects
+	// show edges between new nodes and all other highlighted ones
+	for(var i=0;i<styledNodes.length;i++)
+			{highlightEdges(nodes.edgesWith(styledNodes[i]));}
 	nodes.addClass("highlighted");
 }
 
@@ -84,6 +87,7 @@ function resetStyle()
 		styledEdges[i].show();
 		styledEdges[i].removeClass("highlighted");
 	}
+	styledEdges = [];
 	cy.endBatch();
 	$('body').removeClass('waiting');
 }
@@ -239,7 +243,7 @@ function initGraph(container)
 
 	cy.add(blueorange.elements);
 	//cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.cyTarget);});
-	cy.on('unselect', resetStyle);
+	//cy.on('unselect', resetStyle);
 	// cy.on('unselect', "node", function(event)
 	// {
 	// 	console.log("unselect");

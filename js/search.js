@@ -1,3 +1,5 @@
+var firstCumulativeSearch = true;
+
 /** When user selects a URI from the search candidates, this URI gets centered and highlighted.  */
 function presentUri(uri)
 {
@@ -10,7 +12,18 @@ function presentUri(uri)
 	}
 	var node = nodes[0];
 	cy.center(node);
-	if(!document.getElementById('cumulativesearch').checked) {resetStyle();}
+	if(document.getElementById('cumulativesearch').checked)
+	{
+		if(firstCumulativeSearch)
+		{
+			firstCumulativeSearch=false;
+			hideNodes(cy.elements().nodes());
+		}
+	}
+	else
+	{
+		resetStyle();
+	}
 	selectedNode = node;
 	highlightNodes(nodes)
 	hideSearchResults();
@@ -27,9 +40,21 @@ function presentAll()
 		return false;
 	}
 	hideSearchResults();
-	if(!document.getElementById('cumulativesearch').checked) {resetStyle();}
+	if(document.getElementById('cumulativesearch').checked)
+	{
+		if(firstCumulativeSearch)
+		{
+			firstCumulativeSearch=false;
+			hideNodes(cy.elements().nodes());
+		}
+	}
+	else
+	{
+		resetStyle();
+		firstCumulativeSearch=true;
+	}
+	highlightNodes(resultNodes,30);
 	cy.fit(resultNodes);
-	highlightNodes(resultNodes,30)
 }
 
 function showSearchResults(query, bindings)
