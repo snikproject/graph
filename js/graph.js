@@ -74,6 +74,7 @@ function hideNodes(nodes)
 function resetStyle()
 {
 	$('body').addClass('waiting');
+	firstCumulativeSearch = true;
 	selectedNode = undefined;
 	cy.startBatch();
 	for (var i = 0; i < styledNodes.length; i++)
@@ -250,10 +251,10 @@ function initGraph(container)
 	// });
 	cy.on('select', "edge", function(event)
 	{
-		cy.startBatch();
-		resetStyle();
+		//cy.startBatch();
+		//resetStyle();
 		highlightEdges(event.cyTarget);
-		cy.endBatch();
+		//cy.endBatch();
 	});
 
 	cy.on('tap', function(event)
@@ -264,10 +265,10 @@ function initGraph(container)
 
 	cy.on('select', "node", function(event)
 	{
-		cy.startBatch();
-		resetStyle();
+		//cy.startBatch();
+		//resetStyle();
 		selectedNode = event.cyTarget;
 		highlightNodes(selectedNode);
-		cy.endBatch();
+		//cy.endBatch();
 	});
 }
