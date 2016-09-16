@@ -256,13 +256,13 @@ function initGraph(container)
 		highlightEdges(event.cyTarget);
 		//cy.endBatch();
 	});
-
+/*
 	cy.on('tap', function(event)
 	{
 	  var evtTarget = event.cyTarget;
 	  if(evtTarget === cy) {resetStyle();} // background
 	});
-
+*/
 	cy.on('select', "node", function(event)
 	{
 		//cy.startBatch();
