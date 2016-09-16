@@ -116,19 +116,6 @@ var style = [
 				"border-width": 10.0,
 			}
 		},
-		{
-			"selector": "edge.highlighted",
-			"css":
-			{
-				"opacity": 1.0,
-				"text-opacity": 1,
-				"color": "rgb(128,255,128)",
-				'mid-target-arrow-color': 'rgb(128,255,128)',
-				'mid-target-arrow-shape': 'triangle',
-				'line-color': 'rgb(128,255,128)',
-				'width': 4.0
-			}
-		},
 
 		/* {
 		  "selector" : "edge",
@@ -179,6 +166,22 @@ var style = [
 				"color": "rgb(255,255,128)",
 				"width": 4.0,
 				"line-color": "rgb(255,255,128)",
+				'label': 'data(interaction)',
+				"edge-text-rotation": "autorotate",
+				"text-margin-y": "-1em",
+			}
+		},
+		{
+			"selector": "edge.highlighted",
+			"css":
+			{
+				"opacity": 1.0,
+				"text-opacity": 1,
+				"color": "rgb(128,255,128)",
+				'mid-target-arrow-color': 'rgb(128,255,128)',
+				'mid-target-arrow-shape': 'triangle',
+				'line-color': 'rgb(128,255,128)',
+				'width': 4.0,
 				'label': 'data(interaction)',
 				"edge-text-rotation": "autorotate",
 				"text-margin-y": "-1em",
