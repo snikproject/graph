@@ -11,7 +11,6 @@ function presentUri(uri)
 		return false;
 	}
 	var node = nodes[0];
-	cy.center(node);
 	if(document.getElementById('cumulativesearch').checked)
 	{
 		if(firstCumulativeSearch)
@@ -27,6 +26,7 @@ function presentUri(uri)
 	selectedNode = node;
 	highlightNodes(nodes)
 	hideSearchResults();
+	cy.center(node);
 }
 
 var resultNodes = [];
