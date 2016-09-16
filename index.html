@@ -26,8 +26,29 @@
 <body>
 	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h2></noscript>
 	<script>
-		try {eval('"use strict"; class foo {}');}
-		catch (e) {alert("Your browser is outdated, please update it. Some features may not work.");}
+	navigator.sayswho= (function(){
+	    var ua= navigator.userAgent, tem,
+	    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+	    if(/trident/i.test(M[1])){
+	        tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+	        return {name:'IE',version:(tem[1] || '')};
+	    }
+	    if(M[1]=== 'Chrome'){
+	        tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+	        if(tem!= null) return {name:tem[1].replace('OPR', 'Opera'),version:tem[2]};
+	    }
+	    M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+	    if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+	    return {name:M[0],version:M[1]};
+	})();
+	alert(navigator.sayswho.name+" "+navigator.sayswho.version);
+	if
+	(
+		(navigator.sayswho == 'Firefox'&&navigator.sayswho.version<48)||
+		(navigator.sayswho == 'Internet Explorer')||
+		(navigator.sayswho == 'Chrome'&&navigator.sayswho.version<52)
+	)
+		{alert("Your browser is outdated, please update it. Graph may not work properly.");}
 	</script>
 <div id="top">
 	<ul class="dropdown">
