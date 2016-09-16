@@ -158,12 +158,12 @@ function initGraph(container)
 				}
 			},
 			{
-				content: 'set as path source',
-				select: function(node) {setSource(node);}
-			},
-			{
 				content: 'set as path target',
 				select: function(node) {setTarget(node);}
+			},
+			{
+				content: 'set as path source',
+				select: function(node) {setSource(node);}
 			},
 /*
 			{
