@@ -158,8 +158,14 @@ function initGraph(container)
 				content: 'submit ticket',
 				select: function(node)
 				{
-					window.open("https://github.com/IMISE/snik-ontology/issues/new");
-					//encodeURIComponent(node._private.data.name).replace("http://www.imise.uni-leipzig.de/snik.owl#", ""));
+					var b = confirm("Please only use this ticket tracker for problems with the ontology data, not the javascript visualization web application. Continue?");
+					//window.open("https://github.com/IMISE/snik-ontology/issues/new");
+					if(b)
+					{
+						window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
+						encodeURIComponent(node._private.data.name)+" v"+ONTOLOGY_MODIFIED);
+					}
+					//.replace("http://www.imise.uni-leipzig.de/snik.owl#", "")));
 				}
 			},
 			{
@@ -229,7 +235,30 @@ function initGraph(container)
 		zIndex: 9999, // the z-index of the ui div
 	};
 
+	var defaultsRelations = {
+		menuRadius: 100, // the radius of the circular menu in pixels
+		selector: 'edge', // elements matching this Cytoscape.js selector will trigger cxtmenus
+		commands: [
+			{
+				content: 'submit ticket',
+				select: function(edge)
+				{
+					window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
+					encodeURIComponent(edge._private.data.name)+" v"+ONTOLOGY_MODIFIED);
+				}
+			},
+		],
+		fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
+		activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
+		openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
+		itemColor: 'white', // the colour of text in the command's content
+		itemTextShadowColor: 'gray', // the text shadow colour of the command's content
+		zIndex: 9999, // the z-index of the ui div
+	};
+
+
 	var cxtmenuApi = cy.cxtmenu(defaults);
+	var cxtmenuApiRelations = cy.cxtmenu(defaultsRelations);
 
 /*
 	function setSelectedNode(node)
