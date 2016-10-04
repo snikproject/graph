@@ -271,7 +271,7 @@ function initGraph(container)
 	}
 	*/
 
-	cy.add(blueorange.elements);
+	cy.add(snik.elements);
 	//cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.cyTarget);});
 	//cy.on('unselect', resetStyle);
 	// cy.on('unselect', "node", function(event)

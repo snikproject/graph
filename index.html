@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>SNIK Ontology Graph</title>
 	<script src="js/cytoscape.js"></script>
-	<script src="js/blueorange.js"></script>
+	<script src="js/snik.js"></script>
 	<script src="js/style.js"></script>
 	<script src="js/jquery-3.1.0.min.js"></script>
 	<script src="js/cytoscape-cxtmenu.js"></script>
@@ -71,10 +71,10 @@
 		<li class="dropdown">
 			<a href="javascript:void(0)" class="dropbtn" onclick="filterMenu()">Filter</a>
 			<div class="dropdown-content" id="filter">
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[Sources='meta']" /> meta</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[Sources='bb']" /> BB</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[Sources='ob']" /> OB</span>
-					<!--<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[Sources='ciox']"/>	CioX</span>-->
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']" /> BB</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/meta']" /> meta</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']" /> OB</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>	CioX</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='subClassOf']" /> subClassOf</span>
 			</div>
 		</li>
