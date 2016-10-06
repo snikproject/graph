@@ -110,16 +110,26 @@ $('#search').submit(function()
 {
 	// prevent invalid SPARQL query, make sure by just keeping basic characters
 	// bif:contains only works with a single word
-	// for now use uris, so single words are not a problem
 	var query = document.getElementById('query').value.replace('/[^A-Z a-z0-9]/g', ''); //.split(' ')[0];
 	//console.log(query);
 	// use this when labels are available
-	//var sparql = 'select ?s ?l {{?s a owl:Class.} UNION {?s a rdf:Property.} ?s rdfs:label ?l. ?l <bif:contains> "' + input + '".} limit 11';
+	var sparql;
+	if(query.contains(' ')) // regex is slower but we have no choice with a space
+	{
+		sparql = `select ?s ?l { {?s a owl:Class.} UNION {?s a rdf:Property.}
+			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(str(?l),"${query}")) } limit SPARQL_LIMIT`;
+	} else // no space so we can use the faster bif:contains
+	{
+		sparql = `select ?s ?l { {?s a owl:Class.} UNION {?s a rdf:Property.}
+			{?s rdfs:label ?l.		?l <bif:contains> "${query}".} UNION
+			{?s skos:altLabel ?l.	?l <bif:contains> "${query}".}} limit SPARQL_LIMIT`;
+	}
+	console.log(sparql);
 	// labels are not yet on SPARQL endpoint, so use URI in the meantime
-	var sparql =
-		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
-filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
-limit ${SPARQL_LIMIT}`;
+	//	var sparql =
+	//		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
+	//filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
+	//limit ${SPARQL_LIMIT}`;
 	//console.log(sparql);
 	var http = SPARQL_ENDPOINT +
 		'?default-graph-uri=' + encodeURIComponent(SPARQL_GRAPH) +
