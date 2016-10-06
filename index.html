@@ -19,38 +19,14 @@
 		const SPARQL_LIMIT = 100;
 	</script>
 	<script src="js/graph.js"></script>
+	<script src="js/browsercheck.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
 	<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen" />
 </head>
 
 <body>
 	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h2></noscript>
-	<script>
-	// browser version checking
-	// very imprecise, just to cover the majority of cases
-	navigator.sayswho= (function(){
-	    var ua= navigator.userAgent, tem,
-	    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-	    if(/trident/i.test(M[1])){
-	        tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
-	        return {name:'IE',version:(tem[1] || '')};
-	    }
-	    if(M[1]=== 'Chrome'){
-	        tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
-	        if(tem!= null) return {name:tem[1].replace('OPR', 'Opera'),version:tem[2]};
-	    }
-	    M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-	    if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
-	    return {name:M[0],version:M[1]};
-	})();
-	if
-	(
-		(navigator.sayswho == 'Firefox'&&navigator.sayswho.version<48)||
-		(navigator.sayswho == 'Internet Explorer')||
-		(navigator.sayswho == 'Chrome'&&navigator.sayswho.version<52)
-	)
-		{alert("Your browser is outdated, please update it. Graph may not work properly.");}
-	</script>
+	<script>browsercheck();</script>
 <div id="top">
 	<ul class="dropdown">
 		<li><a href="http://www.snik.eu/sparql" target="_blank">SPARQL</a></li>
@@ -76,12 +52,15 @@
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']" /> OB</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>	CioX</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='subClassOf']" /> subClassOf</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='closeMatch'], [interaction='broadMatch']"/>inter-ontology-relations</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction!='closeMatch'][interaction!='broadMatch']"/>non-inter-ontology-relations</span>
 			</div>
 		</li>
 		<li class="dropdown">
 			<a href="javascript:void(0)" class="dropbtn" onclick="optionsMenu()">Options</a>
 			<div class="dropdown-content" id="options">
 					<span><input type="checkbox" id="cumulativesearch"/>cumulative search</span>
+					<span><input type="checkbox" value="false" id="daymode"/>day mode</span>
 			</div>
 		</li>
 	</ul>
