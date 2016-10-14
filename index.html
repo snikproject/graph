@@ -10,6 +10,7 @@
 	<script src="js/jquery-3.1.0.min.js"></script>
 	<script src="js/cytoscape-cxtmenu.js"></script>
 	<script src="js/menu.js"></script>
+	<script src="js/invert.js"></script>
 	<script>
 		const MODIFIED = "2016-10-06";
 		const ONTOLOGY_MODIFIED = "2016-10-04";
@@ -60,7 +61,7 @@
 			<a href="javascript:void(0)" class="dropbtn" onclick="optionsMenu()">Options</a>
 			<div class="dropdown-content" id="options">
 					<span><input type="checkbox" id="cumulativesearch"/>cumulative search</span>
-					<span><input type="checkbox" value="false" id="daymode"/>day mode</span>
+					<span><input type="checkbox" value="false" id="daymode" onclick="invert(this.checked)"/>day mode</span>
 			</div>
 		</li>
 	</ul>
