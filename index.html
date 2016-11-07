@@ -86,11 +86,11 @@
 	<script>
 	var removed = {};
 
+	//** Hide or show certain nodes or edges.**/
 	function filter(checkbox)
 	{
 		var selector = checkbox.getAttribute("value");
-		//console.log(selector);
-		if(checkbox.checked)
+		if(checkbox.checked) // selected means the elements shall be shown, undo the filter
 		{
 			var elements = removed[selector];
 			if(elements)
@@ -99,16 +99,33 @@
 				elements.restore();
 			}
 		}
-		else
+		else // unselected checkbox, hide elements by applying filter
 		{
 			var elements = cy.elements(selector);
 			if(elements)
 			{
-				// if just saving nodes, then the edges get lost
+				// if just saving nodes, the edges would get lost
 				removed[selector]=elements.union(elements.connectedEdges());
 				elements.remove();
 			}
 		}
+		// the more edges are shown, the more transparent they should be
+/*			"selector": "edge[!selected]",
+			"css":
+			{
+				"opacity": 0.5,
+				"width": 2.0,*/
+/*	 for(var i=0; i<document.styleSheets.length; i++)
+	 {
+	    var sheet = document.styleSheets[i];
+	  	console.log(sheet);
+	  }*/
+		// we overwrite js/style.js which is not listed, thus we just take any one of the .css style sheets
+		//r sheet = document.styleSheets[0];
+		// set to maximum opaqueness for testing
+		// something is wrong here
+		// sheet.insertRule("edge[!selected] { opacity:1.0;}", 0);
+		//console.log(cy.elements().edges().size());
 	}
 	</script>
 
