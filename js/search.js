@@ -114,15 +114,15 @@ $('#search').submit(function()
 	//console.log(query);
 	// use this when labels are available
 	var sparql;
-	if(query.contains(' ')) // regex is slower but we have no choice with a space
+	if(query.includes(' ')) // regex is slower but we have no choice with a space
 	{
 		sparql = `select ?s ?l { {?s a owl:Class.} UNION {?s a rdf:Property.}
-			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(str(?l),"${query}")) } limit SPARQL_LIMIT`;
+			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(str(?l),"${query}")) } limit ${SPARQL_LIMIT}`;
 	} else // no space so we can use the faster bif:contains
 	{
 		sparql = `select ?s ?l { {?s a owl:Class.} UNION {?s a rdf:Property.}
 			{?s rdfs:label ?l.		?l <bif:contains> "${query}".} UNION
-			{?s skos:altLabel ?l.	?l <bif:contains> "${query}".}} limit SPARQL_LIMIT`;
+			{?s skos:altLabel ?l.	?l <bif:contains> "${query}".}} limit ${SPARQL_LIMIT}`;
 	}
 	console.log(sparql);
 	// labels are not yet on SPARQL endpoint, so use URI in the meantime
