@@ -158,12 +158,18 @@ function initGraph(container)
 				content: 'submit ticket',
 				select: function(node)
 				{
-					var b = confirm("Please only use this ticket tracker for problems with the ontology data, not the javascript visualization web application. Continue?");
+					//var b = confirm("Please only use this ticket tracker for problems with the ontology data, not the javascript visualization web application. Continue?");
 					//window.open("https://github.com/IMISE/snik-ontology/issues/new");
-					if(b)
+					//if(b)
 					{
-						window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
-						encodeURIComponent(node._private.data.name)+" v"+ONTOLOGY_MODIFIED);
+						//window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
+						var url = "https://github.com/IMISE/snik-ontology/issues/new?title="+
+						encodeURIComponent(node._private.data.name)+" v"+ONTOLOGY_MODIFIED+
+						"&body="+encodeURIComponent("The class "+node._private.data.name+
+						" has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n");
+						console.log(url);
+						window.open(url);
+
 					}
 					//.replace("http://www.imise.uni-leipzig.de/snik.owl#", "")));
 				}
@@ -243,8 +249,13 @@ function initGraph(container)
 				content: 'submit ticket',
 				select: function(edge)
 				{
-					window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
-					encodeURIComponent(edge._private.data.name)+" v"+ONTOLOGY_MODIFIED);
+					//window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
+					window.open
+					(
+						"https://github.com/IMISE/snik-ontology/issues/new?title="+
+						encodeURIComponent(edge._private.data.name+" v"+ONTOLOGY_MODIFIED)+
+						"&body="+encodeURIComponent('The edge "'+edge._private.data.name+'" is incorrect.\n\n**Details**\n')
+					);
 				}
 			},
 		],
