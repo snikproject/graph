@@ -48,13 +48,14 @@
 		<li class="dropdown">
 			<a href="javascript:void(0)" class="dropbtn" onclick="filterMenu()">Filter</a>
 			<div class="dropdown-content" id="filter">
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']" /> BB</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/meta']" /> meta</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']" /> OB</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>	CioX</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='subClassOf']" /> subClassOf</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']"/>BB</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/meta']"/>meta</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']"/>OB</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>CioX</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='subClassOf']"/>subClassOf</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='closeMatch'], [interaction='broadMatch']"/>inter-ontology-relations</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction!='closeMatch'][interaction!='broadMatch']"/>non-inter-ontology-relations</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='subTopClass'][interaction!='broadMatch']"/>subTopClass</span>
 			</div>
 		</li>
 		<li class="dropdown">
@@ -121,10 +122,10 @@
 	  	console.log(sheet);
 	  }*/
 		// we overwrite js/style.js which is not listed, thus we just take any one of the .css style sheets
-		//r sheet = document.styleSheets[0];
+		// sheet = document.styleSheets[0];
 		// set to maximum opaqueness for testing
 		// something is wrong here
-		// sheet.insertRule("edge[!selected] { opacity:1.0;}", 0);
+		//sheet.insertRule("edge[!selected] { opacity:1.0;}", 0);
 		//console.log(cy.elements().edges().size());
 	}
 	</script>
