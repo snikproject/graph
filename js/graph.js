@@ -133,7 +133,7 @@ function showWorm(from, to)
 	}
 }
 
-function initGraph(container)
+function initGraph(container, graph)
 {
 	cy = cytoscape(
 	{
@@ -148,11 +148,7 @@ function initGraph(container)
 		commands: [
 			{
 				content: 'description',
-				select: function(node)
-				{
-					window.open(node._private.data.name
-						.replace("http://www.imise.uni-leipzig.de/snik.owl#", "http://linkedspending.aksw.org/snik/"));
-				}
+				select: function(node) {window.open(node._private.data.name);}
 			},
 			{
 				content: 'submit ticket',
@@ -169,9 +165,7 @@ function initGraph(container)
 						" has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n");
 						console.log(url);
 						window.open(url);
-
 					}
-					//.replace("http://www.imise.uni-leipzig.de/snik.owl#", "")));
 				}
 			},
 			{
@@ -282,7 +276,7 @@ function initGraph(container)
 	}
 	*/
 
-	cy.add(snik.elements);
+	cy.add(graph.elements);
 	//cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.cyTarget);});
 	//cy.on('unselect', resetStyle);
 	// cy.on('unselect', "node", function(event)

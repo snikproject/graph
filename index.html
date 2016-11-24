@@ -140,6 +140,23 @@
 
 	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 
-	<script>initGraph(document.getElementById('cy'));</script>
+	<script>
+	$.ajaxSetup({beforeSend:function(xhr){if (xhr.overrideMimeType)
+		{xhr.overrideMimeType("application/json");}}});
+
+	$.getJSON("js/snik-ciox.cyjs", function(graph)
+	{
+		initGraph(document.getElementById('cy'),graph);
+  })
+	.fail(function()
+  {
+		console.log('snik-ciox.cyjs not found, loading snik.cyjs');
+		$.getJSON("js/snik.cyjs", function(graph)
+		{
+			initGraph(document.getElementById('cy'),graph);
+		});
+
+	});
+	</script>
 </body>
 </html>

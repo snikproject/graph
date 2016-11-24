@@ -29,8 +29,8 @@ var style = [
 				"shape": "ellipse",
 				'label': function(ele)
 				{
+				  if(ele.data('Labels_EN')&&ele.data('Labels_EN')[0]) {return ele.data('Labels_EN')[0];}
 					if(ele.data('Labels_DE')&&ele.data('Labels_DE')[0]) {return ele.data('Labels_DE')[0];}
-					if(ele.data('Labels_EN')&&ele.data('Labels_EN')[0]) {return ele.data('Labels_EN')[0];}
 					if(ele.data('name')) {return ele.data('name');}
 					return "UNKNOWN URI, ID"+ele.data('id');
 			  },
@@ -153,7 +153,7 @@ var style = [
 				"opacity": 0.5,
 				"color": "rgb(255,255,255)",
 				"width": 2.0,
-				'label': 'data(interaction)',
+				'label': 'data(interactionLabel)',
 				"edge-text-rotation": "autorotate",
 				"text-margin-y": "-1em",
 				"text-opacity": 0,
@@ -169,7 +169,7 @@ var style = [
 				"color": "rgb(255,255,128)",
 				"width": 4.0,
 				"line-color": "rgb(255,255,128)",
-				'label': 'data(interaction)',
+				'label': 'data(interactionLabel)',
 				"edge-text-rotation": "autorotate",
 				"text-margin-y": "-1em",
 			}
