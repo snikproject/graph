@@ -27,7 +27,16 @@ var style = [
 				"background-opacity": 0.5882352941176471,
 				"text-opacity": 1.0,
 				"shape": "ellipse",
-				"content": "data(Labels[0])"
+				"content": "dies ist ein",
+				//"content": "data(Labels[0])"
+				//'label': "data(Labels)",
+				'label': function(ele)
+				{
+					if(ele.data('Labels_DE')&&ele.data('Labels_DE')[0]) {return ele.data('Labels_DE')[0];}
+					if(ele.data('Labels_EN')&&ele.data('Labels_EN')[0]) {return ele.data('Labels_EN')[0];}
+					return "UNKNOWN";
+			  },
+				'color': 'white'
 			}
 		},
 		{
