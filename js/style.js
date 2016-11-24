@@ -143,7 +143,7 @@ var style = [
 		    "line-style" : "solid",
 		    "target-arrow-color" : "rgb(255,255,255)",
 		    "width" : 0.45,
-		    "target-arrow-shape" : "data(interaction)"
+		    "target-arrow-shape" : "data(interactionLabel)"
 		  }
 		},*/
 		{
@@ -185,7 +185,7 @@ var style = [
 				'mid-target-arrow-shape': 'triangle',
 				'line-color': 'rgb(128,255,128)',
 				'width': 4.0,
-				'label': 'data(interaction)',
+				'label': 'data(interactionLabel)',
 				"edge-text-rotation": "autorotate",
 				"text-margin-y": "-1em",
 			}
