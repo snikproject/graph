@@ -154,6 +154,10 @@
 		$.getJSON("js/snik.cyjs", function(graph)
 		{
 			initGraph(document.getElementById('cy'),graph);
+		})
+		.fail(function()
+		{
+			alert('Did not find snik.cyjs, failed to load graph.');
 		});
 
 	});
