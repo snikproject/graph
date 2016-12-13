@@ -148,7 +148,11 @@ function initGraph(container, graph)
 		commands: [
 			{
 				content: 'description',
-				select: function(node) {window.open(node._private.data.name);}
+				//select: function(node) {window.open(node._private.data.name);}
+				select: function(node)
+				{
+					window.open("http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI="+encodeURIComponent(node._private.data.name));
+				}
 			},
 			{
 				content: 'submit ticket',
