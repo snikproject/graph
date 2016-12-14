@@ -30,8 +30,38 @@
 	<script>browsercheck();</script>
 <div id="top">
 	<ul class="dropdown">
-		<li><a href="http://www.snik.eu/sparql" target="_blank">SPARQL</a></li>
-		<li><a href="http://linkedspending.aksw.org/snik" target="_blank">Browse</a></li>
+
+		<li class="dropdown">
+			<a href="javascript:void(0)" class="dropbtn" onclick="servicesMenu()">Services</a>
+			<div class="dropdown-content" id="services">
+				<a href="http://www.snik.eu/sparql" target="_blank">SPARQL Endpoint</a>
+				<a href="http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop" target="_blank">RDF Browser</a>
+				<a href="http://snik.eu/evaluation" target="_blank">Data Quality Evaluation</a>
+			</div>
+		</li>
+
+		<li class="dropdown">
+			<a href="javascript:void(0)" class="dropbtn" onclick="filterMenu()">Filter</a>
+			<div class="dropdown-content" id="filter">
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']"/>BB</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/meta']"/>meta</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']"/>OB</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>CioX</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[shared_interaction='http://www.w3.org/2000/01/rdf-schema#subClassOf']"/>subClassOf</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='closeMatch'], [interaction='broadMatch']"/>inter-ontology-relations</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction!='closeMatch'][interaction!='broadMatch']"/>non-inter-ontology-relations</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='subTopClass'][interaction!='broadMatch']"/>subTopClass</span>
+			</div>
+		</li>
+
+		<li class="dropdown">
+			<a href="javascript:void(0)" class="dropbtn" onclick="optionsMenu()">Options</a>
+			<div class="dropdown-content" id="options">
+					<span><input type="checkbox" id="cumulativesearch"/>cumulative search</span>
+					<span><input type="checkbox" value="false" id="daymode" onclick="invert(this.checked)"/>day mode</span>
+			</div>
+		</li>
+
 		<li class="dropdown">
 			<a href="javascript:void(0)" class="dropbtn" onclick="helpMenu()">Help</a>
 			<div class="dropdown-content" id="help">
@@ -46,26 +76,7 @@
 				<a href="https://github.com/IMISE/snik-cytoscape.js/issues" target="_blank">Submit Feedback about the Visualization</a>
 			</div>
 		</li>
-		<li class="dropdown">
-			<a href="javascript:void(0)" class="dropbtn" onclick="filterMenu()">Filter</a>
-			<div class="dropdown-content" id="filter">
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']"/>BB</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/meta']"/>meta</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']"/>OB</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>CioX</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[shared_interaction='http://www.w3.org/2000/01/rdf-schema#subClassOf']"/>subClassOf</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='closeMatch'], [interaction='broadMatch']"/>inter-ontology-relations</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction!='closeMatch'][interaction!='broadMatch']"/>non-inter-ontology-relations</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='subTopClass'][interaction!='broadMatch']"/>subTopClass</span>
-			</div>
-		</li>
-		<li class="dropdown">
-			<a href="javascript:void(0)" class="dropbtn" onclick="optionsMenu()">Options</a>
-			<div class="dropdown-content" id="options">
-					<span><input type="checkbox" id="cumulativesearch"/>cumulative search</span>
-					<span><input type="checkbox" value="false" id="daymode" onclick="invert(this.checked)"/>day mode</span>
-			</div>
-		</li>
+
 	</ul>
 
 	<form id="search">
