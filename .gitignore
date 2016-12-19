@@ -1,4 +1,5 @@
 blueorange.cyjs
 .*
+!.github
 *~
 js/snik-ciox.cyjs
