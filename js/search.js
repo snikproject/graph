@@ -116,12 +116,12 @@ $('#search').submit(function()
 	var sparql;
 	if(!USE_BIF_CONTAINS||query.includes(' ')) // regex is slower but we have no choice with a space
 	{
-		sparql = `select ?s ?l { {?s a owl:Class.} UNION {?s a rdf:Property.}
+		sparql = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
 			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(str(?l),"${query}","i")) } limit ${SPARQL_LIMIT}`;
 	}
 	else // no space so we can use the faster bif:contains
 	{
-		sparql = `select ?s ?l { {?s a owl:Class.} UNION {?s a rdf:Property.}
+		sparql = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
 			{?s rdfs:label ?l.		?l <bif:contains> "${query}".} UNION
 			{?s skos:altLabel ?l.	?l <bif:contains> "${query}".}} limit ${SPARQL_LIMIT}`;
 	}
