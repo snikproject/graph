@@ -163,12 +163,15 @@ function initGraph(container, graph)
 					//if(b)
 					{
 						//window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
-						var url = "https://github.com/IMISE/snik-ontology/issues/new?title="+
-						encodeURIComponent(node._private.data.name)+" v"+ONTOLOGY_MODIFIED+
-						"&body="+encodeURIComponent("The class "+node._private.data.name+
-						" has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n");
-						console.log(url);
-						window.open(url);
+						if(confirm(ONTOLOGY_ISSUE_WARNING))
+						{
+							var url = "https://github.com/IMISE/snik-ontology/issues/new?title="+
+							encodeURIComponent(node._private.data.name)+" v"+ONTOLOGY_MODIFIED+
+							"&body="+encodeURIComponent("The class "+node._private.data.name+
+							" has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n");
+							console.log(url);
+							window.open(url);
+						}
 					}
 				}
 			},

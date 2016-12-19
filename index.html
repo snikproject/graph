@@ -18,6 +18,9 @@
 		const SPARQL_GRAPH = "http://www.snik.eu/ontology";
 		const SPARQL_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies
 		const SPARQL_LIMIT = 100;
+		const ONTOLOGY_ISSUE_WARNING = `Please note that this is only for feedback about the underlying ontology, not the web application. \
+This visualization is not a real time view on the ontology but a snapshot of version ${ONTOLOGY_MODIFIED}. \
+Please check if there is already an issue for your problem. If not, we will consider your feedback for the next milestone, which may take some time.`;
 	</script>
 	<script src="js/graph.js"></script>
 	<script src="js/browsercheck.js"></script>
@@ -71,8 +74,13 @@
 				<a href="http://www.snik.eu/" target="_blank">Project Homepage</a>
 				<a href="https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys" target="_blank">Download Cytoscape Graph</a>
 				<a href="javascript:about()">About SNIK Graph</a>
-				<a href="https://bitbucket.org/imise/snik-ontology/issues/new" target="_blank">Submit Feedback about the Ontology</a>
-				<!--<a href="https://github.com/IMISE/snik-ontology/issues" target="_blank">Submit Feedback about the Ontology</a>-->
+				<a href="" onclick="ontologyFeedback()">Submit Feedback about the Ontology</a>
+				<script>
+				function ontologyFeedback()
+				{
+					if(confirm(ONTOLOGY_ISSUE_WARNING)) {window.open("https://github.com/IMISE/snik-ontology/issues","_blank");}
+				}
+				</script>
 				<a href="https://github.com/IMISE/snik-cytoscape.js/issues" target="_blank">Submit Feedback about the Visualization</a>
 			</div>
 		</li>
