@@ -133,7 +133,7 @@ function showWorm(from, to)
 	}
 }
 
-function initGraph(container)
+function initGraph(container, graph)
 {
 	cy = cytoscape(
 	{
@@ -148,24 +148,31 @@ function initGraph(container)
 		commands: [
 			{
 				content: 'description',
+				//select: function(node) {window.open(node._private.data.name);}
 				select: function(node)
 				{
-					window.open(node._private.data.name
-						.replace("http://www.imise.uni-leipzig.de/snik.owl#", "http://linkedspending.aksw.org/snik/"));
+					window.open("http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI="+encodeURIComponent(node._private.data.name));
 				}
 			},
 			{
 				content: 'submit ticket',
 				select: function(node)
 				{
-					var b = confirm("Please only use this ticket tracker for problems with the ontology data, not the javascript visualization web application. Continue?");
+					//var b = confirm("Please only use this ticket tracker for problems with the ontology data, not the javascript visualization web application. Continue?");
 					//window.open("https://github.com/IMISE/snik-ontology/issues/new");
-					if(b)
+					//if(b)
 					{
-						window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
-						encodeURIComponent(node._private.data.name)+" v"+ONTOLOGY_MODIFIED);
+						//window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
+						if(confirm(ONTOLOGY_ISSUE_WARNING))
+						{
+							var url = "https://github.com/IMISE/snik-ontology/issues/new?title="+
+							encodeURIComponent(node._private.data.name)+" v"+ONTOLOGY_MODIFIED+
+							"&body="+encodeURIComponent("The class "+node._private.data.name+
+							" has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n");
+							console.log(url);
+							window.open(url);
+						}
 					}
-					//.replace("http://www.imise.uni-leipzig.de/snik.owl#", "")));
 				}
 			},
 			{
@@ -243,8 +250,13 @@ function initGraph(container)
 				content: 'submit ticket',
 				select: function(edge)
 				{
-					window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
-					encodeURIComponent(edge._private.data.name)+" v"+ONTOLOGY_MODIFIED);
+					//window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
+					window.open
+					(
+						"https://github.com/IMISE/snik-ontology/issues/new?title="+
+						encodeURIComponent(edge._private.data.name+" v"+ONTOLOGY_MODIFIED)+
+						"&body="+encodeURIComponent('The edge "'+edge._private.data.name+'" is incorrect.\n\n**Details**\n')
+					);
 				}
 			},
 		],
@@ -271,7 +283,7 @@ function initGraph(container)
 	}
 	*/
 
-	cy.add(snik.elements);
+	cy.add(graph.elements);
 	//cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.cyTarget);});
 	//cy.on('unselect', resetStyle);
 	// cy.on('unselect', "node", function(event)

@@ -5,19 +5,21 @@
 	<meta charset="utf-8">
 	<title>SNIK Ontology Graph</title>
 	<script src="js/cytoscape.js"></script>
-	<script src="js/snik.js"></script>
 	<script src="js/style.js"></script>
 	<script src="js/jquery-3.1.0.min.js"></script>
 	<script src="js/cytoscape-cxtmenu.js"></script>
 	<script src="js/menu.js"></script>
 	<script src="js/invert.js"></script>
 	<script>
-		const MODIFIED = "2016-10-06";
-		const ONTOLOGY_MODIFIED = "2016-10-04";
+		const MODIFIED = "2016-12-19";
+		const ONTOLOGY_MODIFIED = "0.3.0, 2016-11-18";
 		const SPARQL_ENDPOINT = "http://www.snik.eu/sparql";
 		const SPARQL_GRAPH = "http://www.snik.eu/ontology";
 		const SPARQL_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies
 		const SPARQL_LIMIT = 100;
+		const ONTOLOGY_ISSUE_WARNING = `Please note that this is only for feedback about the underlying ontology, not the web application. \
+This visualization is not a real time view on the ontology but a snapshot of version ${ONTOLOGY_MODIFIED}. \
+Please check if there is already an issue for your problem. If not, we will consider your feedback for the next milestone, which may take some time.`;
 	</script>
 	<script src="js/graph.js"></script>
 	<script src="js/browsercheck.js"></script>
@@ -30,36 +32,33 @@
 	<script>browsercheck();</script>
 <div id="top">
 	<ul class="dropdown">
-		<li><a href="http://www.snik.eu/sparql" target="_blank">SPARQL</a></li>
-		<li><a href="http://linkedspending.aksw.org/snik" target="_blank">Browse</a></li>
+
 		<li class="dropdown">
-			<a href="javascript:void(0)" class="dropbtn" onclick="helpMenu()">Help</a>
-			<div class="dropdown-content" id="help">
-				<a href="manual.html" target="_blank">Manual</a>
-				<a href="troubleshooting.html" target="_blank">Troubleshooting</a>
-				<a href="contribute.html" target="_blank">Contribute</a>
-				<a href="http://www.snik.eu/" target="_blank">Project Homepage</a>
-				<a href="javascript:about()">About SNIK Graph</a>
-				<a href="https://bitbucket.org/imise/snik-ontology/issues/new" target="_blank">Submit Feedback about the Ontology</a>
-				<!--<a href="https://github.com/IMISE/snik-ontology/issues" target="_blank">Submit Feedback about the Ontology</a>-->
-				<a href="https://github.com/IMISE/snik-cytoscape.js/issues" target="_blank">Submit Feedback about the Visualization</a>
+			<a href="javascript:void(0)" class="dropbtn" onclick="servicesMenu()">Services</a>
+			<div class="dropdown-content" id="services">
+				<a href="http://www.snik.eu/sparql" target="_blank">SPARQL Endpoint</a>
+				<a href="http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop" target="_blank">RDF Browser</a>
+				<a href="http://snik.eu/evaluation" target="_blank">Data Quality Evaluation</a>
 			</div>
 		</li>
+
 		<li class="dropdown">
 			<a href="javascript:void(0)" class="dropbtn" onclick="filterMenu()">Filter</a>
 			<div class="dropdown-content" id="filter">
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']" /> BB</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/meta']" /> meta</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']" /> BB</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']" /> OB</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>	CioX</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='subClassOf']" /> subClassOf</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='closeMatch'], [interaction='broadMatch']"/>inter-ontology-relations</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction!='closeMatch'][interaction!='broadMatch']"/>non-inter-ontology-relations</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/EntityType']"/>EntityType</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Role']"/>Role</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Function']"/>Function</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='http://www.w3.org/2000/01/rdf-schema#subClassOf']"/>subClassOf</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction^='http://www.w3.org/2004/02/skos/core#']"/>inter-ontology-relations</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction!^='http://www.w3.org/2004/02/skos/core#']"/>non-inter-ontology-relations</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='http://www.snik.eu/ontology/meta/subTopClass']"/>subTopClass</span>
 			</div>
 		</li>
+
 		<li class="dropdown">
 			<a href="javascript:void(0)" class="dropbtn" onclick="optionsMenu()">Options</a>
 			<div class="dropdown-content" id="options">
@@ -67,6 +66,27 @@
 					<span><input type="checkbox" value="false" id="daymode" onclick="invert(this.checked)"/>day mode</span>
 			</div>
 		</li>
+
+		<li class="dropdown">
+			<a href="javascript:void(0)" class="dropbtn" onclick="helpMenu()">Help</a>
+			<div class="dropdown-content" id="help">
+				<a href="manual.html" target="_blank">Manual</a>
+				<a href="troubleshooting.html" target="_blank">Troubleshooting</a>
+				<a href="contribute.html" target="_blank">Contribute</a>
+				<a href="http://www.snik.eu/" target="_blank">Project Homepage</a>
+				<a href="https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys" target="_blank">Download Cytoscape Graph</a>
+				<a href="javascript:about()">About SNIK Graph</a>
+				<a href="" onclick="ontologyFeedback()">Submit Feedback about the Ontology</a>
+				<script>
+				function ontologyFeedback()
+				{
+					if(confirm(ONTOLOGY_ISSUE_WARNING)) {window.open("https://github.com/IMISE/snik-ontology/issues","_blank");}
+				}
+				</script>
+				<a href="https://github.com/IMISE/snik-cytoscape.js/issues" target="_blank">Submit Feedback about the Visualization</a>
+			</div>
+		</li>
+
 	</ul>
 
 	<form id="search">
@@ -89,11 +109,11 @@
 	<script>
 	var removed = {};
 
+	//** Hide or show certain nodes or edges.**/
 	function filter(checkbox)
 	{
 		var selector = checkbox.getAttribute("value");
-		//console.log(selector);
-		if(checkbox.checked)
+		if(checkbox.checked) // selected means the elements shall be shown, undo the filter
 		{
 			var elements = removed[selector];
 			if(elements)
@@ -102,16 +122,33 @@
 				elements.restore();
 			}
 		}
-		else
+		else // unselected checkbox, hide elements by applying filter
 		{
 			var elements = cy.elements(selector);
 			if(elements)
 			{
-				// if just saving nodes, then the edges get lost
+				// if just saving nodes, the edges would get lost
 				removed[selector]=elements.union(elements.connectedEdges());
 				elements.remove();
 			}
 		}
+		// the more edges are shown, the more transparent they should be
+/*			"selector": "edge[!selected]",
+			"css":
+			{
+				"opacity": 0.5,
+				"width": 2.0,*/
+/*	 for(var i=0; i<document.styleSheets.length; i++)
+	 {
+	    var sheet = document.styleSheets[i];
+	  	console.log(sheet);
+	  }*/
+		// we overwrite js/style.js which is not listed, thus we just take any one of the .css style sheets
+		// sheet = document.styleSheets[0];
+		// set to maximum opaqueness for testing
+		// something is wrong here
+		//sheet.insertRule("edge[!selected] { opacity:1.0;}", 0);
+		//console.log(cy.elements().edges().size());
 	}
 	</script>
 
@@ -125,6 +162,27 @@
 
 	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 
-	<script>initGraph(document.getElementById('cy'));</script>
+	<script>
+	$.ajaxSetup({beforeSend:function(xhr){if (xhr.overrideMimeType)
+		{xhr.overrideMimeType("application/json");}}});
+
+	$.getJSON("js/snik-ciox.cyjs", function(graph)
+	{
+		initGraph(document.getElementById('cy'),graph);
+  })
+	.fail(function()
+  {
+		console.log('snik-ciox.cyjs not found, loading snik.cyjs');
+		$.getJSON("js/snik.cyjs", function(graph)
+		{
+			initGraph(document.getElementById('cy'),graph);
+		})
+		.fail(function()
+		{
+			alert('Did not find snik.cyjs, failed to load graph.');
+		});
+
+	});
+	</script>
 </body>
 </html>

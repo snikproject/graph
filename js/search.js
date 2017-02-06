@@ -1,3 +1,4 @@
+const USE_BIF_CONTAINS = false; // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 var firstCumulativeSearch = true;
 
 /** When user selects a URI from the search candidates, this URI gets centered and highlighted.  */
@@ -109,20 +110,20 @@ function hideSearchResults() {document.getElementById("overlay").style.width = "
 $('#search').submit(function()
 {
 	// prevent invalid SPARQL query, make sure by just keeping basic characters
-	// bif:contains only works with a single word
 	var query = document.getElementById('query').value.replace('/[^A-Z a-z0-9]/g', ''); //.split(' ')[0];
 	//console.log(query);
 	// use this when labels are available
 	var sparql;
-	if(query.contains(' ')) // regex is slower but we have no choice with a space
+	if(!USE_BIF_CONTAINS||query.includes(' ')) // regex is slower but we have no choice with a space
 	{
-		sparql = `select ?s ?l { {?s a owl:Class.} UNION {?s a rdf:Property.}
-			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(str(?l),"${query}")) } limit SPARQL_LIMIT`;
-	} else // no space so we can use the faster bif:contains
+		sparql = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
+			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(str(?l),"${query}","i")) } limit ${SPARQL_LIMIT}`;
+	}
+	else // no space so we can use the faster bif:contains
 	{
-		sparql = `select ?s ?l { {?s a owl:Class.} UNION {?s a rdf:Property.}
+		sparql = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
 			{?s rdfs:label ?l.		?l <bif:contains> "${query}".} UNION
-			{?s skos:altLabel ?l.	?l <bif:contains> "${query}".}} limit SPARQL_LIMIT`;
+			{?s skos:altLabel ?l.	?l <bif:contains> "${query}".}} limit ${SPARQL_LIMIT}`;
 	}
 	console.log(sparql);
 	// labels are not yet on SPARQL endpoint, so use URI in the meantime

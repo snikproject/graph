@@ -13,8 +13,8 @@ var style = [
 				"min-zoomed-font-size": 5,
 				"font-size": 5,
 				"border-color": "rgb(255,255,255)",
-				"width": "mapData(Degree,0,39,51,250)",
-				"height": "mapData(Degree,0,39,51,250)",
+				"width": "mapData(degree,0,39,51,250)",
+				"height": "mapData(degree,0,39,51,250)",
 				//"height" : 88.5,
 				"color": "rgb(0,0,0)",
 				"text-valign": "center",
@@ -27,14 +27,20 @@ var style = [
 				"background-opacity": 0.5882352941176471,
 				"text-opacity": 1.0,
 				"shape": "ellipse",
-				"content": "data(Labels[0])"
+				'label': function(ele)
+				{
+				  if(ele.data('Labels_EN')&&ele.data('Labels_EN')[0]) {return ele.data('Labels_EN')[0];}
+					if(ele.data('Labels_DE')&&ele.data('Labels_DE')[0]) {return ele.data('Labels_DE')[0];}
+					if(ele.data('name')) {return ele.data('name');}
+					return "UNKNOWN URI, ID"+ele.data('id');
+			  },
+				'color': 'white'
 			}
 		},
 		{
 			"selector": "node[source_original='http://www.snik.eu/ontology/ciox']",
 			"css":
 			{
-				"color": "rgb(50,255,250)",
 				"background-color": "rgb(50,255,250)",
 				"border-width": 0
 			}
@@ -43,7 +49,6 @@ var style = [
 			"selector": "node[source_original='http://www.snik.eu/ontology/meta']",
 			"css":
 			{
-				"color": "rgb(255,50,50)",
 				"background-color": "rgb(255,50,50)",
 				"border-width": 0
 			}
@@ -52,7 +57,6 @@ var style = [
 			"selector": "node[source_original='http://www.snik.eu/ontology/ob']",
 			"css":
 			{
-				"color": "rgb(255,153,0)",
 				"background-color": "rgb(255,153,0)",
 				"border-width": 0
 			}
@@ -61,34 +65,33 @@ var style = [
 			"selector": "node[source_original = 'http://www.snik.eu/ontology/bb']",
 			"css":
 			{
-				"color": "rgb(0,102,0)",
 				"background-color": "rgb(0,102,204)",
 				"border-width": 0
 			}
 		},
 		{
-			"selector": "node[Degree >= 39]",
+			"selector": "node[degree >= 39]",
 			"css":
 			{
 				"font-size": 51
 			}
 		},
 		{
-			"selector": "node[Degree > 0][Degree < 39]",
+			"selector": "node[degree > 0][degree < 39]",
 			"css":
 			{
-				"font-size": "mapData(Degree,0,39,11,51)"
+				"font-size": "mapData(degree,0,39,11,51)"
 			}
 		},
 		{
-			"selector": "node[Degree = 0]",
+			"selector": "node[degree = 0]",
 			"css":
 			{
 				"font-size": 11
 			}
 		},
 		{
-			"selector": "node[Degree < 0]",
+			"selector": "node[degree < 0]",
 			"css":
 			{
 				"font-size": 1
@@ -124,7 +127,6 @@ var style = [
 				"border-width": 10.0,
 			}
 		},
-
 		/* {
 		  "selector" : "edge",
 		  "css" : {
@@ -141,24 +143,17 @@ var style = [
 		    "line-style" : "solid",
 		    "target-arrow-color" : "rgb(255,255,255)",
 		    "width" : 0.45,
-		    "target-arrow-shape" : "data(interaction)"
+		    "target-arrow-shape" : "data(interactionLabel)"
 		  }
 		},*/
-		{
-			selector: 'node',
-			style:
-			{
-				'label': 'data(Labels)',
-				'color': 'white'
-			}
-		},
 		{
 			"selector": "edge[!selected]",
 			"css":
 			{
 				"opacity": 0.5,
+				"color": "rgb(255,255,255)",
 				"width": 2.0,
-				'label': 'data(interaction)',
+				'label': 'data(interactionLabel)',
 				"edge-text-rotation": "autorotate",
 				"text-margin-y": "-1em",
 				"text-opacity": 0,
@@ -166,7 +161,7 @@ var style = [
 			}
 		},
 		{
-			"selector": "edge:selected",
+			"selector": "edge.selected",
 			"css":
 			{
 				"text-opacity": 1,
@@ -174,7 +169,7 @@ var style = [
 				"color": "rgb(255,255,128)",
 				"width": 4.0,
 				"line-color": "rgb(255,255,128)",
-				'label': 'data(interaction)',
+				'label': 'data(interactionLabel)',
 				"edge-text-rotation": "autorotate",
 				"text-margin-y": "-1em",
 			}
@@ -190,7 +185,7 @@ var style = [
 				'mid-target-arrow-shape': 'triangle',
 				'line-color': 'rgb(128,255,128)',
 				'width': 4.0,
-				'label': 'data(interaction)',
+				'label': 'data(interactionLabel)',
 				"edge-text-rotation": "autorotate",
 				"text-margin-y": "-1em",
 			}
