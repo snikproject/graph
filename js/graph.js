@@ -203,6 +203,10 @@ function initGraph(container, graph)
 				select: function(node) {setSource(node);}
 			},
 			{
+				content: 'LodLive',
+				select: function(node) {window.open('http://en.lodlive.it/?'+node._private.data.name);}
+			},
+			{
 				content: 'star',
 				select: function(node) {showWorm(node,node);}
 			},
