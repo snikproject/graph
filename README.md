@@ -11,3 +11,7 @@ Requires a browser with JavaScript support, uses ES6 constants.
 
 #### Verified Browsers
 - Firefox 48
+
+#### Folder structure
+`lib` contains external libraries. `js` contains self created javascript files. `data` contains the graph with layout information, either the public (snik.cyjs) or the private (snik-ciox.cyjs) version.
+The root folder contains all the HTML files.

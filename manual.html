@@ -16,21 +16,27 @@ The graph consists of nodes, which are concepts from the ontology, and edges bet
 
 <h2>Context Menu</h2>
 Right click on a node to open the context menu and choose among:
-<h3>Browse</h3>
+<h3>Description</h3>
 Opens the node in an RDF browser, which shows all its properties and values.
-<h3>Submit Feedback</h3>
+<h3>Star</h3>
+Highlights the node and all it's directly connected nodes.
+<h3>Submit Ticket</h3>
 If you are a domain expert and notice incorrectly modelled facts or connections of a node.
+
+<h2>Menu</h2>
 <h3>Shortest Path</h3>
 <img src="img/shortestpath.png"/><br/>
-Requires a selected source node.
+Is only shown when source and target nodes are set.
 The shortest path highlights all nodes and edges in the shortest path between a selected source and the target node.
 Displaying a shortest path hides all other and edges.
 <h3>Spider Worm</h3>
 <img src="img/spiderworm.png"/><br/>
-Requires a selected source node.
-The so called Spider Worm consists of the shortest path between a selected source and target node plus all edges of the target node and the other node of each of those edges.
+Is only shown when source and target nodes are set.
+The <i>Spider Worm</i> consists of the shortest path between a selected source and target node plus all edges of the target node and the other node of each of those edges.
 Displaying a spiderworm hides all other nodes and edges.
-
+<h3>Double Star</h3>
+Is only shown when source and target nodes are set.
+The double star is like the spiderworm but shows connected nodes for both source and target, not just the target.
 <h2>Requirements and Technical Problems</h2>
 SNIK Graph runs in your browser using JavaScript, so any modern browser with activated JavaScript should work. Obviously this includes deactivating noScript and similar extensions.
 If you encounter technical problems, please <a href="https://bitbucket.org/imise/snik-cytoscape.js/issues/new">submit a bug report ticket</a>.

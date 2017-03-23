@@ -1,5 +1,6 @@
 // browser version checking
 // very imprecise, just to cover the majority of cases
+// gotten from somewhere (Stack Overflow?)
 navigator.sayswho= (function(){
 		var ua= navigator.userAgent, tem,
 		M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];

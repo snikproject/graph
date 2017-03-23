@@ -202,6 +202,11 @@ function initGraph(container, graph)
 				content: 'set as path source',
 				select: function(node) {setSource(node);}
 			},
+			{
+				content: 'star',
+				select: function(node) {showWorm(node,node);}
+			},
+
 /*
 			{
 				content: 'shortest path to here',

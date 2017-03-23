@@ -4,10 +4,10 @@
 <head>
 	<meta charset="utf-8">
 	<title>SNIK Ontology Graph</title>
-	<script src="js/cytoscape.min.js"></script>
+	<script src="lib/jquery-3.1.0.min.js"></script>
+	<script src="lib/cytoscape.min.js"></script>
+	<script src="lib/cytoscape-cxtmenu.js"></script>
 	<script src="js/style.js"></script>
-	<script src="js/jquery-3.1.0.min.js"></script>
-	<script src="js/cytoscape-cxtmenu.js"></script>
 	<script src="js/menu.js"></script>
 	<script src="js/invert.js"></script>
 	<script>
@@ -167,14 +167,14 @@ Please check if there is already an issue for your problem. If not, we will cons
 	$.ajaxSetup({beforeSend:function(xhr){if (xhr.overrideMimeType)
 		{xhr.overrideMimeType("application/json");}}});
 
-	$.getJSON("js/snik-ciox.cyjs", function(graph)
+	$.getJSON("data/snik-ciox.cyjs", function(graph)
 	{
 		initGraph(document.getElementById('cy'),graph);
   })
 	.fail(function()
   {
 		console.log('snik-ciox.cyjs not found, loading snik.cyjs');
-		$.getJSON("js/snik.cyjs", function(graph)
+		$.getJSON("data/snik.cyjs", function(graph)
 		{
 			initGraph(document.getElementById('cy'),graph);
 		})
