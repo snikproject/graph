@@ -151,7 +151,14 @@ var style = [
 			"css":
 			{
 				"opacity": 0.5,
-				"color": "rgb(255,255,255)",
+				'line-color': function(edge)
+				{
+					if((String(edge.data('interaction')).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
+					{
+						return "rgb(255,128,128)";
+					}
+					return "rgb(128,128,128)";
+				},
 				"width": 2.0,
 				'label': 'data(interactionLabel)',
 				"edge-text-rotation": "autorotate",
@@ -166,8 +173,8 @@ var style = [
 			{
 				"text-opacity": 1,
 				"opacity": 1.0,
-				"color": "rgb(255,255,128)",
 				"width": 4.0,
+				"color": "rgb(255,255,128)",
 				"line-color": "rgb(255,255,128)",
 				'label': 'data(interactionLabel)',
 				"edge-text-rotation": "autorotate",
@@ -180,9 +187,9 @@ var style = [
 			{
 				"opacity": 1.0,
 				"text-opacity": 1,
-				"color": "rgb(128,255,128)",
 				'mid-target-arrow-color': 'rgb(128,255,128)',
 				'mid-target-arrow-shape': 'triangle',
+				'color': 'rgb(128,255,128)',
 				'line-color': 'rgb(128,255,128)',
 				'width': 4.0,
 				'label': 'data(interactionLabel)',
