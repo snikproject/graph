@@ -1,6 +1,32 @@
 const USE_BIF_CONTAINS = false; // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 var firstCumulativeSearch = true;
 
+   function createFailDialog(title, text,uri) {
+    return $("<div class='dialog' title='" + title + "'><p>" + text + "</p></div>")
+    .dialog({
+        resizable: false,
+        height:240,
+				width:600,
+        modal: true,
+        buttons: {
+            "Browse on LodView": function()
+						{
+							window.open(uri);
+              $( this ).dialog( "close" );
+            },
+            "LodLive": function()
+						{
+							window.open('http://en.lodlive.it/?'+uri);
+            	$( this ).dialog( "close" );
+						},
+            "Close": function()
+						{
+              $( this ).dialog( "close" );
+            },
+        }
+    });
+}
+
 /** When user selects a URI from the search candidates, this URI gets centered and highlighted.  */
 function presentUri(uri)
 {
@@ -8,22 +34,26 @@ function presentUri(uri)
 	var nodes = cy.elements().nodes().filter(`node[name= "${uri}"]`);
 	if(nodes.length<1)
 	{
-		alert("This search result is only available on the SPARQL endpoint but not in the graph.");
-		return false;
-	}
-	var node = nodes[0];
-	if(document.getElementById('cumulativesearch').checked)
-	{
-		if(firstCumulativeSearch)
-		{
-			firstCumulativeSearch=false;
-			hideNodes(cy.elements().nodes());
-		}
+		//alert(uri+' is only available on the SPARQL endpoint but not in the graph.');
+		createFailDialog("Class not in Graph",uri+' is only available on the SPARQL endpoint but not in the graph.',uri);
+		//return false;
 	}
 	else
 	{
-		resetStyle();
-	}
+		var node = nodes[0];
+		if(document.getElementById('cumulativesearch').checked)
+		{
+			if(firstCumulativeSearch)
+			{
+				firstCumulativeSearch=false;
+				hideNodes(cy.elements().nodes());
+			}
+		}
+		else
+		{
+			resetStyle();
+		}
+  }
 	selectedNode = node;
 	highlightNodes(nodes)
 	hideSearchResults();
