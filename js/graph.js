@@ -16,6 +16,7 @@ function setSource(node)
 	{
 		document.getElementById('shortestpath').hidden=false;
 		document.getElementById('spiderworm').hidden=false;
+		document.getElementById('doublestar').hidden=false;
 	}
 	if(pathSource!==undefined) {pathSource.removeClass('source');}
 	pathSource = node;
@@ -32,6 +33,7 @@ function setTarget(node)
 	{
 		document.getElementById('shortestpath').hidden=false;
 		document.getElementById('spiderworm').hidden=false;
+		document.getElementById('doublestar').hidden=false;
 	}
 	if(pathTarget!==undefined) {pathTarget.removeClass('target');}
 	pathTarget = node;
@@ -130,8 +132,25 @@ function showWorm(from, to)
 			highlightEdges(edges);
 			highlightNodes(edges.connectedNodes());
 			cy.endBatch();
+			return true;
 	}
+	return false;
 }
+
+function showDoubleStar(from, to)
+{
+	if(showWorm(from, to))
+	{
+			cy.startBatch();
+			var edges = from.connectedEdges();
+			highlightEdges(edges);
+			highlightNodes(edges.connectedNodes());
+			cy.endBatch();
+			return true;
+	}
+	return false;
+}
+
 
 function initGraph(container, graph)
 {
