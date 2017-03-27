@@ -7,6 +7,7 @@ var selectedNode;
 var path;
 var pathSource;
 var pathTarget;
+var starMode=false;
 
 function setSource(node)
 {
@@ -75,6 +76,7 @@ function hideNodes(nodes)
 
 function resetStyle()
 {
+	starMode=false;
 	$('body').addClass('waiting');
 	firstCumulativeSearch = true;
 	selectedNode = undefined;
@@ -97,6 +99,7 @@ function resetStyle()
 
 function showPath(from, to)
 {
+	starMode=false;
 	$('body').addClass('waiting');
 	var aStar = cy.elements().aStar(
 	{
@@ -135,6 +138,18 @@ function showWorm(from, to)
 			return true;
 	}
 	return false;
+}
+
+function showStar(node)
+{
+		if(!starMode) {hideNodes(cy.elements().nodes());}
+		starMode=true;
+		cy.startBatch();
+		highlightNodes(node);
+		var edges = node.connectedEdges();
+		highlightEdges(edges);
+		highlightNodes(edges.connectedNodes());
+		cy.endBatch();
 }
 
 function showDoubleStar(from, to)
@@ -208,7 +223,7 @@ function initGraph(container, graph)
 			},
 			{
 				content: 'star',
-				select: function(node) {showWorm(node,node);}
+				select: function(node) {showStar(node);}
 			},
 			{
 				content: 'hide',
