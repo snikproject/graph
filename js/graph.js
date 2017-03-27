@@ -210,7 +210,10 @@ function initGraph(container, graph)
 				content: 'star',
 				select: function(node) {showWorm(node,node);}
 			},
-
+			{
+				content: 'hide',
+				select: function(node) {hideNodes(node);}
+			},
 /*
 			{
 				content: 'shortest path to here',
@@ -238,7 +241,7 @@ function initGraph(container, graph)
 			/* commented out until denethor pdf links in browser work
 			{
 				content: 'book page (in development)',
-				select: function(node)
+				select: functiocxttn(node)
 				{
 					var page = node.data()['Definition_DE_Pages'][0];
 					if(!page) {page = node.data()['Definition_EN_Pages'][0];}
