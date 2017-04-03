@@ -41,7 +41,7 @@ var style = [
 			"selector": "node[source_original='http://www.snik.eu/ontology/ciox']",
 			"css":
 			{
-				"background-color": "rgb(50,255,250)",
+				"background-color": "rgb(80,255,250)",
 				"border-width": 0
 			}
 		},
@@ -49,7 +49,7 @@ var style = [
 			"selector": "node[source_original='http://www.snik.eu/ontology/meta']",
 			"css":
 			{
-				"background-color": "rgb(255,50,50)",
+				"background-color": "rgb(255,80,80)",
 				"border-width": 0
 			}
 		},
@@ -57,7 +57,7 @@ var style = [
 			"selector": "node[source_original='http://www.snik.eu/ontology/ob']",
 			"css":
 			{
-				"background-color": "rgb(255,153,0)",
+				"background-color": "rgb(255,173,30)",
 				"border-width": 0
 			}
 		},
@@ -65,7 +65,15 @@ var style = [
 			"selector": "node[source_original = 'http://www.snik.eu/ontology/bb']",
 			"css":
 			{
-				"background-color": "rgb(0,102,204)",
+				"background-color": "rgb(30,152,255)",
+				"border-width": 0
+			}
+		},
+		{
+			"selector": "node[source_original='http://www.snik.eu/ontology/he']",
+			"css":
+			{
+				"background-color": "rgb(120,255,120)",
 				"border-width": 0
 			}
 		},
