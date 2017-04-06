@@ -59,6 +59,8 @@ Please check if there is already an issue for your problem. If not, we will cons
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction!^='http://www.w3.org/2004/02/skos/core#']"/>non-inter-ontology-relations</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='http://www.snik.eu/ontology/meta/subTopClass']"/>subTopClass</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[consolidated<=0]"/>unverified</span>
+					<span><input type="text" value="node[name='http://www.snik.eu/ontology/meta/Top']" id="customfilter"/>
+								<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;filter(this);"/>custom filter</span>
 			</div>
 		</li>
 
