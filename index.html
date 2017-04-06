@@ -175,6 +175,9 @@ Please check if there is already an issue for your problem. If not, we will cons
 	$.getJSON("data/snik-ciox.cyjs", function(graph)
 	{
 		initGraph(document.getElementById('cy'),graph);
+		cy.zoom(0.1);
+		cy.center(cy.elements().nodes().filter(`node[name= "http://www.snik.eu/ontology/meta/EntityType"]`)[0]);
+
   })
 	.fail(function()
   {
