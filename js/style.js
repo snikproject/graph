@@ -73,10 +73,11 @@ var style = [
 			"selector": "node[source_original='http://www.snik.eu/ontology/he']",
 			"css":
 			{
-				"background-color": "rgb(120,255,120)",
+				"background-color": "rgb(150,255,120)",
 				"border-width": 0
 			}
 		},
+		// limit node scaling to prevent huge nodes
 		{
 			"selector": "node[degree >= 39]",
 			"css":
@@ -98,6 +99,7 @@ var style = [
 				"font-size": 11
 			}
 		},
+		// degree should always be at least 0, so <0 will only occurr erroneously
 		{
 			"selector": "node[degree < 0]",
 			"css":
@@ -116,7 +118,7 @@ var style = [
 			"selector": "node.source",
 			"css":
 			{
-				"border-width": 10.0,
+				"border-width": 5.0,
 				"border-color": "rgb(128,255,128)"
 			}
 		},
@@ -125,14 +127,14 @@ var style = [
 			"css":
 			{
 				"border-color": "rgb(255,90,90)",
-				"border-width": 10.0,
+				"border-width": 5.0,
 			}
 		},
 		{
 			"selector": "node.highlighted",
 			"css":
 			{
-				"border-width": 10.0,
+				"border-width": 5.0,
 			}
 		},
 		/* {
@@ -161,6 +163,7 @@ var style = [
 				"opacity": 0.5,
 				'line-color': function(edge)
 				{
+					// highlight skos interlinks
 					if((String(edge.data('interaction')).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
 					{
 						return "rgb(255,128,128)";
