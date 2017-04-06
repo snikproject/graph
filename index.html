@@ -8,6 +8,8 @@
 	<script src="lib/jquery-ui.min.js"></script>
 	<script src="lib/cytoscape.min.js"></script>
 	<script src="lib/cytoscape-cxtmenu.js"></script>
+	<script src="lib/cola.min.js"></script>
+	<script src="lib/cytoscape-cola.js"></script>
 	<script src="js/style.js"></script>
 	<script src="js/menu.js"></script>
 	<script src="js/invert.js"></script>
@@ -109,10 +111,29 @@ Please check if there is already an issue for your problem. If not, we will cons
 		<input type="button" id="spiderworm" value="Spider Worm" onclick="showWorm(pathSource,pathTarget)" hidden/>
 		<input type="button" id="doublestar" value="Double Star" onclick="showDoubleStar(pathSource,pathTarget)" hidden/>
 		<input type="button" id="resetstyle" value="Reset View" onclick="resetStyle()"/>
+		<input type="button" value="Eval" onclick="window.open('http://www.snik.eu/evaluation','_blank')"/>
+	  <input type="button" value="Grid" onclick="layout('grid')"/>
+		<input type="button" value="Force (Slow)" onclick="layout('cola')"/>
+		<input type="button" value="Spring (Slow)" onclick="layout('cose')"/>
+		<input type="button" value="Breadthfirst (Slow)" onclick="layout('breadthfirst')"/>
+	  <!--<input type="button" value="Load" onclick="loadSparql()"/>-->
 	</form>
 </div>
 
 	<script>
+
+function layout(name)
+{
+	console.log(styledNodes);
+	cy.nodes(":visible").layout({ name: name });
+}
+
+function loadSparql()
+{
+	// load graph from SPARQL endpoint instead of from the .cyjs file
+	// not yet implemented
+}
+
 	var removed = {};
 
 	//** Hide or show certain nodes or edges.**/
