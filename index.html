@@ -36,7 +36,6 @@ Please check if there is already an issue for your problem. If not, we will cons
 	<script>browsercheck();</script>
 <div id="top">
 	<ul class="dropdown">
-
 		<li class="dropdown">
 			<a href="javascript:void(0)" class="dropbtn" onclick="servicesMenu()">Services</a>
 			<div class="dropdown-content" id="services">
@@ -116,11 +115,19 @@ Please check if there is already an issue for your problem. If not, we will cons
 		<input type="button" value="Force (Slow)" onclick="layout('cola')"/>
 		<input type="button" value="Spring (Slow)" onclick="layout('cose')"/>
 		<input type="button" value="Breadthfirst (Slow)" onclick="layout('breadthfirst')"/>
+		<input type="button" value="Hide" onclick="hide()"/>
 	  <!--<input type="button" value="Load" onclick="loadSparql()"/>-->
 	</form>
 </div>
 
 	<script>
+
+function hide()
+{
+ selected = cy.$('node:selected');
+ selected.remove();
+ hidden.push(selected);
+}
 
 function layout(name)
 {

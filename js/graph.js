@@ -3,6 +3,7 @@ var cy;
 
 var styledEdges = [];
 var styledNodes = [];
+var hidden = [];
 var selectedNode;
 var path;
 var pathSource;
@@ -81,6 +82,11 @@ function resetStyle()
 	firstCumulativeSearch = true;
 	selectedNode = undefined;
 	cy.startBatch();
+	for (var i = 0; i < hidden.length; i++)
+	{
+		hidden[i].restore();
+  }
+	hidden = [];
 	for (var i = 0; i < styledNodes.length; i++)
 	{
 		styledNodes[i].show();
