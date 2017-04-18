@@ -19,6 +19,7 @@ function setSource(node)
 		document.getElementById('shortestpath').hidden=false;
 		document.getElementById('spiderworm').hidden=false;
 		document.getElementById('doublestar').hidden=false;
+		document.getElementById('starpath').hidden=false;
 	}
 	if(pathSource!==undefined) {pathSource.removeClass('source');}
 	pathSource = node;
@@ -36,6 +37,7 @@ function setTarget(node)
 		document.getElementById('shortestpath').hidden=false;
 		document.getElementById('spiderworm').hidden=false;
 		document.getElementById('doublestar').hidden=false;
+		document.getElementById('starpath').hidden=false;
 	}
 	if(pathTarget!==undefined) {pathTarget.removeClass('target');}
 	pathTarget = node;
@@ -136,11 +138,13 @@ function showWorm(from, to)
 {
 	if(showPath(from, to))
 	{
+			$('body').addClass('waiting');
 			cy.startBatch();
 			var edges = to.connectedEdges();
 			highlightEdges(edges);
 			highlightNodes(edges.connectedNodes());
 			cy.endBatch();
+			$('body').removeClass('waiting');
 			return true;
 	}
 	return false;
@@ -148,6 +152,7 @@ function showWorm(from, to)
 
 function showStar(node)
 {
+		$('body').addClass('waiting');
 		if(!starMode) {hideNodes(cy.elements().nodes());}
 		starMode=true;
 		cy.startBatch();
@@ -160,22 +165,57 @@ function showStar(node)
 		console.log(closeMatch);
 		highlightEdges(closeMatch);
 		highlightNodes(closeMatch.connectedNodes());
-
 		cy.endBatch();
+		$('body').removeClass('waiting');
 }
 
 function showDoubleStar(from, to)
 {
 	if(showWorm(from, to))
 	{
+			$('body').addClass('waiting');
 			cy.startBatch();
 			var edges = from.connectedEdges();
 			highlightEdges(edges);
 			highlightNodes(edges.connectedNodes());
 			cy.endBatch();
+			$('body').removeClass('waiting');
 			return true;
 	}
 	return false;
+}
+
+// Extended all along the path
+function showStarPath(from, to)
+{
+	starMode=true;
+	$('body').addClass('waiting');
+	var aStar = cy.elements().aStar(
+	{
+		root: from,
+		goal: to
+	});
+	path = aStar.path;
+	if (path)
+	{
+		cy.startBatch();
+		hideNodes(cy.elements().nodes());
+		cy.add(path);
+		highlightEdges(path.edges());
+		highlightNodes(path.nodes());
+		var edges = path.nodes().connectedEdges();
+		highlightEdges(edges);
+		highlightNodes(edges.connectedNodes());
+		cy.endBatch();
+	}
+	else
+	{
+		alert("no path found");
+		$('body').removeClass('waiting');
+		return false;
+	}
+	$('body').removeClass('waiting');
+	return true;
 }
 
 
