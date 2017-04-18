@@ -155,6 +155,12 @@ function showStar(node)
 		var edges = node.connectedEdges();
 		highlightEdges(edges);
 		highlightNodes(edges.connectedNodes());
+		// open 2 levels deep on closeMatch
+		var closeMatch = edges.filter('edge[interactionLabel="closeMatch"]').connectedNodes().connectedEdges();
+		console.log(closeMatch);
+		highlightEdges(closeMatch);
+		highlightNodes(closeMatch.connectedNodes());
+
 		cy.endBatch();
 }
 
