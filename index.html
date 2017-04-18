@@ -120,7 +120,14 @@ Please check if there is already an issue for your problem. If not, we will cons
 	</form>
 </div>
 
-	<script>
+<script>
+
+$(document).ready(function()
+{
+    $(document).bind('keydown',function(e){
+       if(e.keyCode == 46) {hide();}
+    });
+});
 
 function hide()
 {
