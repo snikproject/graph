@@ -6,7 +6,7 @@ function optionsMenu() {document.getElementById("options").classList.toggle("sho
 function about() {window.alert("SNIK Graph version "+MODIFIED+"\nOntology version "+ONTOLOGY_MODIFIED);}
 
 // Close the dropdown if the user clicks outside of it
-window.onclick = function(e) {console.log(e);
+window.onclick = function(e) {//console.log(e);
   // don't close while user edits the text field of the custom filter
   if (!e.target.matches('.dropbtn')&&!e.target.matches('input#customfilter')) {
 

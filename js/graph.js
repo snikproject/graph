@@ -86,11 +86,6 @@ function resetStyle()
 	firstCumulativeSearch = true;
 	selectedNode = undefined;
 	cy.startBatch();
-	for (var i = 0; i < removed.length; i++)
-	{
-		removed[i].restore();
-  }
-	removed = [];
 	for (var i = 0; i < styledNodes.length; i++)
 	{
 		styledNodes[i].show();
@@ -384,7 +379,7 @@ function initGraph(container, graph)
 	*/
 
 	cy.add(graph.elements);
-	//cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.cyTarget);});
+	//cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.target);});
 	//cy.on('unselect', resetStyle);
 	// cy.on('unselect', "node", function(event)
 	// {
@@ -394,13 +389,13 @@ function initGraph(container, graph)
 	{
 		//cy.startBatch();
 		//resetStyle();
-		highlightEdges(event.cyTarget);
+		highlightEdges(event.target);
 		//cy.endBatch();
 	});
 /*
 	cy.on('tap', function(event)
 	{
-	  var evtTarget = event.cyTarget;
+	  var evtTarget = event.target;
 	  if(evtTarget === cy) {resetStyle();} // background
 	});
 */
@@ -408,7 +403,7 @@ function initGraph(container, graph)
 	{
 		//cy.startBatch();
 		//resetStyle();
-		selectedNode = event.cyTarget;
+		selectedNode = event.target;
 		highlightNodes(selectedNode);
 		//cy.endBatch();
 	});

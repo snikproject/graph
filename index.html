@@ -131,12 +131,14 @@ $(document).ready(function()
     });
 });
 
+var removed = [];
+
 function remove()
 {
  $('body').addClass('waiting');
  cy.startBatch();
  selected = cy.$('node:selected');
- //removed.push(selected);
+ removed.push(selected);
  selected.remove();
  cy.endBatch();
  $('body').removeClass('waiting');
@@ -167,7 +169,7 @@ function loadSparql()
 	// not yet implemented
 }
 
-	var removed = {};
+	var filtered = {};
 
 	//** Hide or show certain nodes or edges.**/
 	function filter(checkbox)
@@ -175,10 +177,10 @@ function loadSparql()
 		var selector = checkbox.getAttribute("value");
 		if(checkbox.checked) // selected means the elements shall be shown, undo the filter
 		{
-			var elements = removed[selector];
+			var elements = filtered[selector];
 			if(elements)
 			{
-				removed[selector] = undefined;
+				filtered[selector] = undefined;
 				elements.restore();
 			}
 		}
@@ -188,7 +190,7 @@ function loadSparql()
 			if(elements)
 			{
 				// if just saving nodes, the edges would get lost
-				removed[selector]=elements.union(elements.connectedEdges());
+				filtered[selector]=elements.union(elements.connectedEdges());
 				elements.remove();
 			}
 		}
