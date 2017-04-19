@@ -109,7 +109,7 @@ function resetStyle()
 
 function showPath(from, to)
 {
-	starMode=false;
+	starMode=true;
 	$('body').addClass('waiting');
 	var aStar = cy.elements().aStar(
 	{
