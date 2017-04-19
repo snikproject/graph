@@ -131,14 +131,16 @@ $(document).ready(function()
     });
 });
 
-var removed = [];
+var removedNodes = [];
+var removedEdges = [];
 
 function remove()
 {
  $('body').addClass('waiting');
  cy.startBatch();
  selected = cy.$('node:selected');
- removed.push(selected);
+ removedNodes.push(selected);
+ removedEdges.push(selected.connectedEdges());
  selected.remove();
  cy.endBatch();
  $('body').removeClass('waiting');
@@ -148,11 +150,11 @@ function restore()
 {
 	$('body').addClass('waiting');
 	cy.startBatch();
-	for (var i = 0; i < removed.length; i++)
-	{
-		removed[i].restore();
-  }
-	removed = [];
+  // all nodes first so that edges have their sources and targets
+	for (var i = 0; i < removedNodes.length; i++)	{removedNodes[i].restore();}
+	for (var i = 0; i < removedEdges.length; i++)	{removedEdges[i].restore();}
+	removedNodes = [];
+	removedEdges = [];
 	cy.endBatch();
 	$('body').removeClass('waiting');
 }
