@@ -116,7 +116,8 @@ Please check if there is already an issue for your problem. If not, we will cons
 		<input type="button" value="Force (Slow)" onclick="layout('cola')"/>
 		<input type="button" value="Spring (Slow)" onclick="layout('cose')"/>
 		<input type="button" value="Breadthfirst (Slow)" onclick="layout('breadthfirst')"/>
-		<input type="button" value="Hide" onclick="hide()"/>
+		<input type="button" value="Remove" onclick="remove()"/>
+		<input type="button" value="Restore" onclick="restore()"/>
 	  <!--<input type="button" value="Load" onclick="loadSparql()"/>-->
 	</form>
 </div>
@@ -126,15 +127,32 @@ Please check if there is already an issue for your problem. If not, we will cons
 $(document).ready(function()
 {
     $(document).bind('keydown',function(e){
-       if(e.keyCode == 46) {hide();}
+       if(e.keyCode == 46) {remove();}
     });
 });
 
-function hide()
+function remove()
 {
+ $('body').addClass('waiting');
+ cy.startBatch();
  selected = cy.$('node:selected');
+ //removed.push(selected);
  selected.remove();
- hidden.push(selected);
+ cy.endBatch();
+ $('body').removeClass('waiting');
+}
+
+function restore()
+{
+	$('body').addClass('waiting');
+	cy.startBatch();
+	for (var i = 0; i < removed.length; i++)
+	{
+		removed[i].restore();
+  }
+	removed = [];
+	cy.endBatch();
+	$('body').removeClass('waiting');
 }
 
 function layout(name)
