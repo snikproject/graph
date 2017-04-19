@@ -20,6 +20,7 @@ function setSource(node)
 		document.getElementById('spiderworm').hidden=false;
 		document.getElementById('doublestar').hidden=false;
 		document.getElementById('starpath').hidden=false;
+		cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
 	}
 	if(pathSource!==undefined) {pathSource.removeClass('source');}
 	pathSource = node;
@@ -38,6 +39,7 @@ function setTarget(node)
 		document.getElementById('spiderworm').hidden=false;
 		document.getElementById('doublestar').hidden=false;
 		document.getElementById('starpath').hidden=false;
+		cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
 	}
 	if(pathTarget!==undefined) {pathTarget.removeClass('target');}
 	pathTarget = node;
