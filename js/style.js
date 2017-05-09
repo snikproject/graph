@@ -22,7 +22,7 @@ var style = [
 				"border-opacity": 1.0,
 				"border-width": 0.0,
 				"background-color": "rgb(254,196,79)",
-				"font-family": "SansSerif.plain",
+				"font-family": "sans-serif",
 				"font-weight": "normal",
 				"background-opacity": 0.5882352941176471,
 				"text-opacity": 1.0,
