@@ -130,9 +130,8 @@ function showSearchResults(query, bindings)
 	cell.innerHTML = `<a href="javascript:presentAll();void(0)">
 										Highlight All</a>`;
 
-	resultNodes = cy.elements().nodes().filter(
-		function() {return uris.indexOf(this.data("name")) >= 0;});
-
+	resultNodes = cy.elements().nodes().filter((node)=>
+		{return uris.indexOf(node.data("name")) >= 0; });
 }
 
 function hideSearchResults() {document.getElementById("overlay").style.width = "0%";}
