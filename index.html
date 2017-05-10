@@ -222,13 +222,13 @@ function layout(name)
 	<script>
 	$.ajaxSetup({beforeSend:function(xhr){if (xhr.overrideMimeType)
 		{xhr.overrideMimeType("application/json");}}});
-
+	$('body').addClass('waiting');
 	$.getJSON("data/snik-ciox.cyjs", function(graph)
 	{
 		initGraph(document.getElementById('cy'),graph);
 		cy.zoom(0.1);
 		cy.center(cy.elements().nodes().filter(`node[name= "http://www.snik.eu/ontology/meta/EntityType"]`)[0]);
-
+		$('body').removeClass('waiting');
   })
 	.fail(function()
   {
@@ -236,12 +236,13 @@ function layout(name)
 		$.getJSON("data/snik.cyjs", function(graph)
 		{
 			initGraph(document.getElementById('cy'),graph);
+			$('body').removeClass('waiting');
 		})
 		.fail(function()
 		{
 			alert('Did not find snik.cyjs, failed to load graph.');
+			$('body').removeClass('waiting');
 		});
-
 	});
 	</script>
 </body>
