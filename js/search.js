@@ -138,41 +138,28 @@ function hideSearchResults() {document.getElementById("overlay").style.width = "
 
 $('#search').submit(function()
 {
-	// prevent invalid SPARQL query, make sure by just keeping basic characters
-	var query = document.getElementById('query').value.replace('/[^A-Z a-z0-9]/g', ''); //.split(' ')[0];
+	// prevent invalid SPARQL query and injection by just keeping basic characters
+	var searchQuery = document.getElementById('query').value.replace('/[^A-Z a-z0-9]/g', ''); //.split(' ')[0];
 	//console.log(query);
 	// use this when labels are available
-	var sparql;
+	let sparqlQuery;
 	if(!USE_BIF_CONTAINS||query.includes(' ')) // regex is slower but we have no choice with a space
 	{
-		sparql = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
-			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(str(?l),"${query}","i")) } limit ${SPARQL_LIMIT}`;
+		sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
+			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(str(?l),"${searchQuery}","i")) } limit ${SPARQL_LIMIT}`;
 	}
 	else // no space so we can use the faster bif:contains
 	{
-		sparql = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
-			{?s rdfs:label ?l.		?l <bif:contains> "${query}".} UNION
-			{?s skos:altLabel ?l.	?l <bif:contains> "${query}".}} limit ${SPARQL_LIMIT}`;
+		sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
+			{?s rdfs:label ?l.		?l <bif:contains> "${searchQuery}".} UNION
+			{?s skos:altLabel ?l.	?l <bif:contains> "${searchQuery}".}} limit ${SPARQL_LIMIT}`;
 	}
-	console.log(sparql);
 	// labels are not yet on SPARQL endpoint, so use URI in the meantime
 	//	var sparql =
 	//		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
 	//filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
 	//limit ${SPARQL_LIMIT}`;
 	//console.log(sparql);
-	var http = SPARQL_ENDPOINT +
-		'?default-graph-uri=' + encodeURIComponent(SPARQL_GRAPH) +
-		'&query=' + escape(sparql) +
-		'&format=json';
-	//console.log(http);
-	$.getJSON(http, function(data)
-	{
-		//console.log(data.results.bindings.length+" results");
-		showSearchResults(query, data.results.bindings);
-	}).fail(function(jqXHR, textStatus, errorThrown)
-	{
-		alert('getJSON request failed! ' + textStatus);
-	});
-	return false;
+	sparql(sparqlQuery).then(bindings => {showSearchResults(searchQuery, bindings);});
+   return false; // prevent page reload triggered by submit
 });
