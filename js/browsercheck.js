@@ -24,5 +24,5 @@ function browsercheck()
 		(navigator.sayswho.name == 'Internet Explorer') ||
 		(navigator.sayswho.name == 'Chrome' && navigator.sayswho.version < 52)
 	)
-	{alert("Your browser is outdated, please update it. Graph may not work properly.");}
+	{alert(`Your browser ${navigator.sayswho.name} version ${navigator.sayswho.version} is outdated, please update it. Graph may not work properly.`);}
 }
