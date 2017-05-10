@@ -222,28 +222,35 @@ function layout(name)
 	<script>
 	$.ajaxSetup({beforeSend:function(xhr){if (xhr.overrideMimeType)
 		{xhr.overrideMimeType("application/json");}}});
+
 	$('body').addClass('waiting');
-	$.getJSON("data/snik-ciox.cyjs", function(graph)
-	{
-		initGraph(document.getElementById('cy'),graph);
-		cy.zoom(0.1);
-		cy.center(cy.elements().nodes().filter(`node[name= "http://www.snik.eu/ontology/meta/EntityType"]`)[0]);
-		$('body').removeClass('waiting');
-  })
-	.fail(function()
-  {
-		console.log('snik-ciox.cyjs not found, loading snik.cyjs');
-		$.getJSON("data/snik.cyjs", function(graph)
-		{
-			initGraph(document.getElementById('cy'),graph);
-			$('body').removeClass('waiting');
+	fetch("data/snik-ciox.cyjs")
+		.then(response => {return response.json();})
+		.then(json =>
+			{
+				initGraph(document.getElementById('cy'),json);
+				cy.zoom(0.1);
+				cy.center(cy.elements().nodes().filter(`node[name= "http://www.snik.eu/ontology/meta/EntityType"]`)[0]);
+				$('body').removeClass('waiting');
 		})
-		.fail(function()
-		{
-			alert('Did not find snik.cyjs, failed to load graph.');
-			$('body').removeClass('waiting');
-		});
-	});
+		.catch(err =>
+			{
+				console.log('snik-ciox.cyjs not found, loading snik.cyjs');
+				fetch("data/snik.cyjs")
+					.then(response => {return response.json();})
+					.then(json =>
+						{
+							initGraph(document.getElementById('cy'),json);
+							cy.zoom(0.1);
+							cy.center(cy.elements().nodes().filter(`node[name= "http://www.snik.eu/ontology/meta/EntityType"]`)[0]);
+							$('body').removeClass('waiting');
+						})
+					.catch(err =>
+						{
+							alert('Did not find graph file snik.cyjs, failed to load graph.');
+							$('body').removeClass('waiting');
+						});
+			});
 	</script>
 </body>
 </html>
