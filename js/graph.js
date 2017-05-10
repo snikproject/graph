@@ -3,7 +3,6 @@ var cy;
 
 var styledEdges = [];
 var styledNodes = [];
-var removed = [];
 var selectedNode;
 var path;
 var pathSource;
