@@ -51,6 +51,7 @@ Please check if there is already an issue for your problem. If not, we will cons
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']" /> BB</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']" /> OB</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>	CioX</span>
+					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/he']"/>	HE</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/EntityType']"/>EntityType</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Role']"/>Role</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Function']"/>Function</span>
@@ -220,10 +221,15 @@ function layout(name)
 	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 
 	<script>
+$('body').addClass('waiting');
+
+window.onload = function ()
+{
 	$.ajaxSetup({beforeSend:function(xhr){if (xhr.overrideMimeType)
 		{xhr.overrideMimeType("application/json");}}});
 
-	$('body').addClass('waiting');
+
+
 	fetch("data/snik-ciox.cyjs")
 		.then(response => {return response.json();})
 		.then(json =>
@@ -251,6 +257,7 @@ function layout(name)
 							$('body').removeClass('waiting');
 						});
 			});
+}
 	</script>
 </body>
 </html>
