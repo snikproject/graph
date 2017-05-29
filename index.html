@@ -228,9 +228,14 @@ window.onload = function ()
 	$.ajaxSetup({beforeSend:function(xhr){if (xhr.overrideMimeType)
 		{xhr.overrideMimeType("application/json");}}});
 
+  var headers = new Headers();
+  var init = { method: 'GET',
+               headers: myHeaders,
+               mode: 'cors',
+               cache: 'default'
+						 	 credentials: 'include'};
 
-
-	fetch("data/snik-ciox.cyjs")
+	fetch("data/snik-ciox.cyjs",init)
 		.then(response => {return response.json();})
 		.then(json =>
 			{
