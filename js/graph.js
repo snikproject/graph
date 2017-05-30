@@ -81,7 +81,7 @@ function hideNodes(nodes)
 function resetStyle()
 {
 	starMode=false;
-	$('body').addClass('waiting');
+	progress(0);
 	firstCumulativeSearch = true;
 	selectedNode = undefined;
 	cy.startBatch();
@@ -98,13 +98,13 @@ function resetStyle()
 	}
 	styledEdges = [];
 	cy.endBatch();
-	$('body').removeClass('waiting');
+	progress(100);
 }
 
 function showPath(from, to)
 {
 	starMode=true;
-	$('body').addClass('waiting');
+	progress(0);
 	var aStar = cy.elements().aStar(
 	{
 		root: from,
@@ -123,10 +123,10 @@ function showPath(from, to)
 	else
 	{
 		alert("no path found");
-		$('body').removeClass('waiting');
+		progress(100);
 		return false;
 	}
-	$('body').removeClass('waiting');
+	progress(100);
 	return true;
 }
 
@@ -134,13 +134,13 @@ function showWorm(from, to)
 {
 	if(showPath(from, to))
 	{
-			$('body').addClass('waiting');
+			progress(0);
 			cy.startBatch();
 			var edges = to.connectedEdges();
 			highlightEdges(edges);
 			highlightNodes(edges.connectedNodes());
 			cy.endBatch();
-			$('body').removeClass('waiting');
+			progress(100);
 			return true;
 	}
 	return false;
@@ -148,7 +148,7 @@ function showWorm(from, to)
 
 function showStar(node)
 {
-		$('body').addClass('waiting');
+		progress(0);
 		if(!starMode) {hideNodes(cy.elements().nodes());}
 		starMode=true;
 		cy.startBatch();
@@ -162,20 +162,20 @@ function showStar(node)
 		highlightEdges(closeMatch);
 		highlightNodes(closeMatch.connectedNodes());
 		cy.endBatch();
-		$('body').removeClass('waiting');
+		progress(100);
 }
 
 function showDoubleStar(from, to)
 {
 	if(showWorm(from, to))
 	{
-			$('body').addClass('waiting');
+			progress(0);
 			cy.startBatch();
 			var edges = from.connectedEdges();
 			highlightEdges(edges);
 			highlightNodes(edges.connectedNodes());
 			cy.endBatch();
-			$('body').removeClass('waiting');
+			progress(100);
 			return true;
 	}
 	return false;
@@ -185,7 +185,7 @@ function showDoubleStar(from, to)
 function showStarPath(from, to)
 {
 	starMode=true;
-	$('body').addClass('waiting');
+	progress(0);
 	var aStar = cy.elements().aStar(
 	{
 		root: from,
@@ -196,21 +196,25 @@ function showStarPath(from, to)
 	{
 		cy.startBatch();
 		hideNodes(cy.elements().nodes());
+		progress(10);
 		cy.add(path);
 		highlightEdges(path.edges());
+		progress(20);
 		highlightNodes(path.nodes());
+		progress(30);
 		var edges = path.nodes().connectedEdges();
 		highlightEdges(edges);
 		highlightNodes(edges.connectedNodes());
 		cy.endBatch();
+		progress(50);
 	}
 	else
 	{
 		alert("no path found");
-		$('body').removeClass('waiting');
+		progress(100);
 		return false;
 	}
-	$('body').removeClass('waiting');
+	progress(100);
 	return true;
 }
 

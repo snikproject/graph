@@ -32,7 +32,6 @@ Please check if there is already an issue for your problem. If not, we will cons
 </head>
 
 <body>
-	<script>$('body').addClass('waiting');</script>
 	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h2></noscript>
 	<script>browsercheck();</script>
 <div id="top">
@@ -123,8 +122,26 @@ Please check if there is already an issue for your problem. If not, we will cons
 	  <input type="button" value="Load" onclick="loadSparql()"/>
 	</form>
 </div>
+<div id="progressbar" style="width:99%;position:absolute;top:45%;z-index:1000;">
+</div>
 
 <script>
+function progress(p)
+{
+	if(p<100)
+	{
+		$('body').addClass('waiting');
+		$( "#progressbar" ).show();
+	}
+	$( "#progressbar" ).progressbar({value: p});
+	if(p>=100)
+	{
+		$('body').removeClass('waiting');
+		$( "#progressbar" ).fadeOut("slow");
+	}
+}
+
+progress(0);
 
 $(document).ready(function()
 {
@@ -138,19 +155,22 @@ var removedEdges = [];
 
 function remove()
 {
- $('body').addClass('waiting');
+ progress(0);
  cy.startBatch();
  selected = cy.$('node:selected');
  removedNodes.push(selected);
+ progress(10);
  removedEdges.push(selected.connectedEdges());
+ progress(20);
  selected.remove();
+ progress(80);
  cy.endBatch();
- $('body').removeClass('waiting');
+ progress(100);
 }
 
 function restore()
 {
-	$('body').addClass('waiting');
+	progress(0);
 	cy.startBatch();
   // all nodes first so that edges have their sources and targets
 	for (var i = 0; i < removedNodes.length; i++)	{removedNodes[i].restore();}
@@ -158,7 +178,7 @@ function restore()
 	removedNodes = [];
 	removedEdges = [];
 	cy.endBatch();
-	$('body').removeClass('waiting');
+	progress(100);
 }
 
 function layout(name)
@@ -226,6 +246,7 @@ function layout(name)
 
 window.onload = function ()
 {
+	progress(5);
 	$.ajaxSetup({beforeSend:function(xhr){if (xhr.overrideMimeType)
 		{xhr.overrideMimeType("application/json");}}});
 
@@ -240,10 +261,11 @@ window.onload = function ()
 		.then(response => {return response.json();})
 		.then(json =>
 			{
+				progress(90);
 				initGraph(document.getElementById('cy'),json);
 				cy.zoom(0.1);
 				cy.center(cy.elements().nodes().filter(`node[name= "http://www.snik.eu/ontology/meta/EntityType"]`)[0]);
-				$('body').removeClass('waiting');
+				progress(100);
 		})
 		.catch(err =>
 			{
@@ -252,15 +274,16 @@ window.onload = function ()
 					.then(response => {return response.json();})
 					.then(json =>
 						{
+							progress(90);
 							initGraph(document.getElementById('cy'),json);
 							cy.zoom(0.1);
 							cy.center(cy.elements().nodes().filter(`node[name= "http://www.snik.eu/ontology/meta/EntityType"]`)[0]);
-							$('body').removeClass('waiting');
+							progress(100);
 						})
 					.catch(err =>
 						{
 							alert('Did not find graph file snik.cyjs, failed to load graph.');
-							$('body').removeClass('waiting');
+							progress(100);
 						});
 			});
 }
