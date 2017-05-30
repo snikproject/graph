@@ -4,6 +4,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>SNIK Ontology Graph</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen" />
+
 	<script src="lib/jquery-3.1.0.min.js"></script>
 	<script src="lib/jquery-ui.min.js"></script>
 	<script src="lib/cytoscape.min.js"></script>
@@ -25,12 +28,11 @@ Please check if there is already an issue for your problem. If not, we will cons
 	</script>
 	<script src="js/graph.js"></script>
 	<script src="js/browsercheck.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen" />
 	<link href ="css/jquery-ui.css" rel = "stylesheet">
 </head>
 
 <body>
+	<script>$('body').addClass('waiting');</script>
 	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h2></noscript>
 	<script>browsercheck();</script>
 <div id="top">
@@ -221,7 +223,6 @@ function layout(name)
 	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 
 	<script>
-$('body').addClass('waiting');
 
 window.onload = function ()
 {
