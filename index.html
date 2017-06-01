@@ -122,8 +122,8 @@ Please check if there is already an issue for your problem. If not, we will cons
 	  <input type="button" value="Load" onclick="loadSparql()"/>
 	</form>
 </div>
-<div id="progressbar" style="width:99%;position:absolute;top:45%;z-index:1000;">
-</div>
+<div id="progressbar" style="width:99%;position:absolute;top:45%;z-index:1000;"></div>
+<!--<progress id="progress" style="width:99%;position:absolute;top:45%;z-index:1000;"></progress>-->
 
 <script>
 function progress(p)
@@ -133,7 +133,7 @@ function progress(p)
 		$('body').addClass('waiting');
 		$( "#progressbar" ).show();
 	}
-	$( "#progressbar" ).progressbar({value: p});
+	$( "#progressbar" ).progressbar({value: false});
 	if(p>=100)
 	{
 		$('body').removeClass('waiting');
