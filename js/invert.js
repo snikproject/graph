@@ -1,7 +1,10 @@
-const CSS = '#cy {-webkit-filter: invert(100%);' +
-	'-moz-filter: invert(100%);' +
-	'-o-filter: invert(100%);' +
-	'-ms-filter: invert(100%); }';
+const CSS =
+`#cy {
+ -webkit-filter: invert(100%);
+ -moz-filter: invert(100%);
+ -o-filter: invert(100%);
+ -ms-filter: invert(100%);
+}`;
 
 let head = $('head')[0];
 
@@ -20,5 +23,10 @@ function invert(enabled)
 		style.appendChild(document.createTextNode(CSS));
 		//injecting the css to the head
 		head.appendChild(style);
+		cy.style().fromJson(styleday.style).update();
+	}
+	else
+	{
+		cy.style().fromJson(stylenight.style).update();
 	}
 }

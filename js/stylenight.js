@@ -1,5 +1,5 @@
 // Cytoscape CSS style file
-var style = [
+var stylenight =
 {
 	"format_version": "1.0",
 	"generated_by": "cytoscape-3.4.0",
@@ -209,4 +209,4 @@ var style = [
 			}
 		},
 	]
-}];
+};

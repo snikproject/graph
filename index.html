@@ -13,7 +13,8 @@
 	<script src="lib/cytoscape-cxtmenu.js"></script>
 	<script src="lib/cola.min.js"></script>
 	<script src="lib/cytoscape-cola.js"></script>
-	<script src="js/style.js"></script>
+	<script src="js/stylenight.js"></script>
+	<script src="js/styleday.js"></script>
 	<script src="js/menu.js"></script>
 	<script src="js/invert.js"></script>
 	<script src="js/sparql.js"></script>
@@ -62,15 +63,18 @@ Please check if there is already an issue for your problem. If not, we will cons
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='http://www.snik.eu/ontology/meta/subTopClass']"/>subTopClass</span>
 					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[consolidated<=0]"/>unverified</span>
 					<span><input type="text" value="node[name='http://www.snik.eu/ontology/meta/Top']" id="customfilter"/>
-								<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;filter(this);"/>custom filter</span>
+								<input type="checkbox" class="filterbox" autocomplete="off" name="ffnocheck-customfilter"
+											 onclick="this.value=document.getElementById('customfilter').value;filter(this);"/> <!-- Firefox checks unnamed boxes sometimes. -->
+								custom filter
+				  </span>
 			</div>
 		</li>
 
 		<li class="dropdown">
 			<a href="javascript:void(0)" class="dropbtn" onclick="optionsMenu()">Options</a>
 			<div class="dropdown-content" id="options">
-					<span><input type="checkbox" id="cumulativesearch"/>cumulative search</span>
-					<span><input type="checkbox" value="false" id="daymode" onclick="invert(this.checked)"/>day mode</span>
+					<span><input type="checkbox" autocomplete="off" name="ffnocheck-cumulativesearch" id="cumulativesearch"/>cumulative search</span>
+					<span><input type="checkbox" autocomplete="off" name="ffnocheck-daymode" id="daymode" onclick="invert(this.checked)"/>day mode</span>
 			</div>
 		</li>
 
@@ -257,7 +261,7 @@ window.onload = function ()
                cache: 'default',
 						 	 credentials: 'include'};
 
-	fetch("data/snik-ciox.cyjs",init)
+/*	fetch("data/snik-ciox.cyjs",init)
 		.then(response => {return response.json();})
 		.then(json =>
 			{
@@ -269,7 +273,7 @@ window.onload = function ()
 		})
 		.catch(err =>
 			{
-				console.log('snik-ciox.cyjs not found, loading snik.cyjs');
+				console.log('snik-ciox.cyjs not found, loading snik.cyjs');*/
 				fetch("data/snik.cyjs",init)
 					.then(response => {return response.json();})
 					.then(json =>
@@ -285,7 +289,7 @@ window.onload = function ()
 							alert('Did not find graph file snik.cyjs, failed to load graph.');
 							progress(100);
 						});
-			});
+//			});
 }
 	</script>
 </body>

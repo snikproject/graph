@@ -224,7 +224,7 @@ function initGraph(container, graph)
 	cy = cytoscape(
 	{
 		container: container,
-		style: style[0].style,
+		style: stylenight.style,
 		wheelSensitivity: 0.3,
 	});
 
