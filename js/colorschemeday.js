@@ -1,3 +1,4 @@
+'use strict';
 // Cytoscape CSS style file
 // intended for inverted view
 var colorschemeday =

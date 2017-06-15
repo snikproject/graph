@@ -1,3 +1,4 @@
+'use strict';
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
 var cy;
 
@@ -222,8 +223,8 @@ function mergeJsonArraysByKey(a1,a2)
 {
 	let map1 = new Map();
 	let map2 = new Map();
-	for(i=0;i<a1.length;i++) {if(a1[i].selector) {map1.set(a1[i].selector,a1[i]);}}
-	for(i=0;i<a2.length;i++) {if(a2[i].selector) {map2.set(a2[i].selector,a2[i]);}}
+	for(let i=0;i<a1.length;i++) {if(a1[i].selector) {map1.set(a1[i].selector,a1[i]);}}
+	for(let i=0;i<a2.length;i++) {if(a2[i].selector) {map2.set(a2[i].selector,a2[i]);}}
 	let merged = [];
 	map1.forEach((value,key,map) =>
 	{

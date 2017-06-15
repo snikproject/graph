@@ -1,3 +1,5 @@
+'use strict';
+
 function servicesMenu() {document.getElementById("services").classList.toggle("show");}
 function helpMenu() {document.getElementById("help").classList.toggle("show");}
 function filterMenu() {document.getElementById("filter").classList.toggle("show");}

@@ -1,3 +1,5 @@
+'use strict';
+
 // Cytoscape CSS style file
 var style =
 {

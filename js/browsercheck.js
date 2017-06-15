@@ -1,3 +1,4 @@
+'use strict';
 // browser version checking
 // very imprecise, just to cover the majority of cases
 // gotten from somewhere (Stack Overflow?)

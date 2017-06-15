@@ -1,0 +1,24 @@
+{
+	"parserOptions":
+	{
+		"ecmaVersion": 6,
+		"sourceType": "script",
+		"ecmaFeatures":
+		{
+			"impliedStrict": true
+		},
+		"rules":
+		{
+			"indent": [2,"space"],
+			"semi": [2,"always"],
+			"no-use-before-define": [2,"always"],
+			"no-shadow": [2,"always"]
+		},
+		"env":
+		{
+			"es6": true,
+			"node": false
+		},
+		"extends": "eslint:recommended"
+	}
+}

@@ -1,3 +1,5 @@
+'use strict';
+
 const USE_BIF_CONTAINS = false; // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 var firstCumulativeSearch = true;
 

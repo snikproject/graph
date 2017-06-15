@@ -1,3 +1,5 @@
+'use strict';
+
 const SPARQL_ENDPOINT = "http://www.snik.eu/sparql";
 const SPARQL_GRAPH = "http://www.snik.eu/ontology";
 const SPARQL_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies

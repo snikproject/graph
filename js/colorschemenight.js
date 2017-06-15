@@ -1,3 +1,4 @@
+'use strict';
 // Cytoscape CSS style file
 var colorschemenight =
 [
