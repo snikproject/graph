@@ -13,8 +13,9 @@
 	<script src="lib/cytoscape-cxtmenu.js"></script>
 	<script src="lib/cola.min.js"></script>
 	<script src="lib/cytoscape-cola.js"></script>
-	<script src="js/stylenight.js"></script>
-	<script src="js/styleday.js"></script>
+	<script src="js/style.js"></script>
+	<script src="js/colorschemenight.js"></script>
+	<script src="js/colorschemeday.js"></script>
 	<script src="js/menu.js"></script>
 	<script src="js/invert.js"></script>
 	<script src="js/sparql.js"></script>
@@ -274,7 +275,8 @@ window.onload = function ()
 		.catch(err =>
 			{
 				console.log('snik-ciox.cyjs not found, loading snik.cyjs');*/
-				fetch("data/snik.cyjs",init)
+				var graphurl = "data/snik.cyjs";
+				fetch(graphurl,init)
 					.then(response => {return response.json();})
 					.then(json =>
 						{
@@ -284,10 +286,18 @@ window.onload = function ()
 							cy.center(cy.elements().nodes().filter(`node[name= "http://www.snik.eu/ontology/meta/EntityType"]`)[0]);
 							progress(100);
 						})
-					.catch(err =>
+					.catch(e =>
 						{
-							alert('Did not find graph file snik.cyjs, failed to load graph.');
+							if(e instanceof TypeError)
+							{
+							alert(`Failed to load graph ${graphurl}:\n${e}`);
+							}
+							else
+							{
+								alert(`Graph ${graphurl} loaded but failed to initialize:\n${e}`);
+							}
 							progress(100);
+							return false;
 						});
 //			});
 }

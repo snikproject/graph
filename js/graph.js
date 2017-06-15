@@ -7,11 +7,11 @@ var selectedNode;
 var path;
 var pathSource;
 var pathTarget;
-var starMode=false;
+var starMode = false;
 
 function setSource(node)
 {
-	if(node === undefined) {return false;}
+  if(node === undefined) {return false;}
 	document.getElementById('centersource').hidden=false;
 	if(pathTarget !== undefined)
 	{
@@ -218,15 +218,43 @@ function showStarPath(from, to)
 	return true;
 }
 
+function mergeJsonArraysByKey(a1,a2)
+{
+	let map1 = new Map();
+	let map2 = new Map();
+	for(i=0;i<a1.length;i++) {if(a1[i].selector) {map1.set(a1[i].selector,a1[i]);}}
+	for(i=0;i<a2.length;i++) {if(a2[i].selector) {map2.set(a2[i].selector,a2[i]);}}
+	let merged = [];
+	map1.forEach((value,key,map) =>
+	{
+		if(map2.has(key))
+		{
+			merged.push($.extend(true,{},value,map2.get(key)));
+		} else
+		{
+			merged.push(value);
+		}
+	});
+	map2.forEach((value,key,map) =>
+	{
+		if(!map1.has(key))
+		{
+			merged.push(value);
+		}
+	});
+	return merged;
+}
 
 function initGraph(container, graph)
 {
+	let merged = mergeJsonArraysByKey(style.style,colorschemenight);
 	cy = cytoscape(
 	{
 		container: container,
-		style: stylenight.style,
+		style: merged,
 		wheelSensitivity: 0.3,
 	});
+
 
 	var defaults = {
 		menuRadius: 100, // the radius of the circular menu in pixels
@@ -410,4 +438,41 @@ function initGraph(container, graph)
 		highlightNodes(selectedNode);
 		//cy.endBatch();
 	});
+}
+
+const CSS =
+`#cy {
+ -webkit-filter: invert(100%);
+ -moz-filter: invert(100%);
+ -o-filter: invert(100%);
+ -ms-filter: invert(100%);
+}`;
+
+let head = $('head')[0];
+
+function invert(enabled)
+{
+	let invertStyle = $('#invert')[0];
+	if (invertStyle)
+	{
+    head.removeChild(invertStyle);
+	}
+	if (enabled)
+	{
+		{
+			let style = document.createElement('style');
+			style.type = 'text/css';
+			style.id = 'invert';
+			style.appendChild(document.createTextNode(CSS));
+			//injecting the css to the head
+			head.appendChild(style);
+		}
+		let merged = mergeJsonArraysByKey(style.style,colorschemeday);
+		cy.style().fromJson(merged).update();
+	}
+	else
+	{
+		let merged = mergeJsonArraysByKey(style.style,colorschemenight);
+		cy.style().fromJson(merged).update();
+	}
 }
