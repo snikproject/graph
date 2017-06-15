@@ -1,24 +1,24 @@
 {
 	"parserOptions":
 	{
-		"ecmaVersion": 6,
-		"sourceType": "script",
+		"ecmaVersion":6,
 		"ecmaFeatures":
 		{
 			"impliedStrict": true
-		},
-		"rules":
-		{
-			"indent": [2,"space"],
-			"semi": [2,"always"],
-			"no-use-before-define": [2,"always"],
-			"no-shadow": [2,"always"]
-		},
-		"env":
-		{
-			"es6": true,
-			"node": false
-		},
-		"extends": "eslint:recommended"
+		}
+	},
+	"env":
+	{
+		"browser": true,
+		"es6": true
+	},
+	"extends": "eslint:recommended",
+	"rules":
+	{
+		"indent": ["error",2],
+		"quotes": ["warn","single"],
+		"semi": ["error","always"],
+		"no-use-before-define": ["error"],
+		"no-shadow": ["warn"]
 	}
 }
