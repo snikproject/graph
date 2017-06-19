@@ -23,7 +23,7 @@ var colorschemenight =
       "css": {"background-color": "rgb(255,173,30)"}
     },
     {
-      "sIelector": "node[source_original = 'http://www.snik.eu/ontology/bb']",
+      "selector": "node[source_original = 'http://www.snik.eu/ontology/bb']",
       "css": {"background-color": "rgb(30,152,255)"}
     },
     {
