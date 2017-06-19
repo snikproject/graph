@@ -1,479 +1,587 @@
-'use strict';
+/*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
+import {progress} from "./progress.js";
+import {style} from "./style.js";
+import {colorschemenight} from "./colorschemenight.js";
+import {colorschemeday} from "./colorschemeday.js";
+import {SPARQL_PREFIX} from "./sparql.js";
+//import {setFirstCumulativeSearch} from "./search.js";
+import {ONTOLOGY_MODIFIED,ONTOLOGY_ISSUE_WARNING} from "./about.js";
+
+
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
 var cy;
-
+var removedNodes = [];
+var removedEdges = [];
 var styledEdges = [];
 var styledNodes = [];
 var selectedNode;
 var path;
 var pathSource;
 var pathTarget;
-var starMode = false;
+var starMode=false;
 
-function setSource(node)
+function mergeJsonArraysByKey(a1,a2)
 {
-  if(node === undefined) {return false;}
-	document.getElementById('centersource').hidden=false;
-	if(pathTarget !== undefined)
-	{
-		document.getElementById('shortestpath').hidden=false;
-		document.getElementById('spiderworm').hidden=false;
-		document.getElementById('doublestar').hidden=false;
-		document.getElementById('starpath').hidden=false;
-		cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
-	}
-	if(pathSource!==undefined) {pathSource.removeClass('source');}
-	pathSource = node;
-	pathSource.addClass('source');
-	document.getElementById('sourcelabel').innerHTML=
-		pathSource.data('name').replace(SPARQL_PREFIX,"");
+  let map1 = new Map();
+  let map2 = new Map();
+  for(let i=0;i<a1.length;i++)
+  {
+    if(a1[i].selector)
+    {
+      map1.set(a1[i].selector,a1[i]);
+    }
+  }
+  for(let i=0;i<a2.length;i++)
+  {
+    if(a2[i].selector)
+    {
+      map2.set(a2[i].selector,a2[i]);
+    }
+  }
+  let merged = [];
+  map1.forEach((value,key,_) =>
+  {
+    if(map2.has(key))
+    {
+      merged.push($.extend(true,{},value,map2.get(key)));
+    }
+    else
+    {
+      merged.push(value);
+    }
+  });
+  map2.forEach((value,key,_) =>
+  {
+    if(!map1.has(key))
+    {
+      merged.push(value);
+    }
+  });
+  return merged;
 }
 
-function setTarget(node)
+function hideNodes(nodes)
 {
-	if(node === undefined) {return false;}
-	document.getElementById('centertarget').hidden=false;
-	if(pathSource !== undefined)
-	{
-		document.getElementById('shortestpath').hidden=false;
-		document.getElementById('spiderworm').hidden=false;
-		document.getElementById('doublestar').hidden=false;
-		document.getElementById('starpath').hidden=false;
-		cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
-	}
-	if(pathTarget!==undefined) {pathTarget.removeClass('target');}
-	pathTarget = node;
-	pathTarget.addClass('target');
-	document.getElementById('targetlabel').innerHTML=
-		pathTarget.data('name').replace(SPARQL_PREFIX,"");
+  nodes.hide();
+  styledNodes.push(nodes);
 }
 
 function highlightEdges(edges)
 {
-	edges.show();
-	styledEdges.push(edges);
-	edges.addClass("highlighted");
+  edges.show();
+  styledEdges.push(edges);
+  edges.addClass('highlighted');
 }
 
 // should use the same color as "selector" : "node:selected" in style.js
 function highlightNodes(nodes)
 {
-	nodes.show();
-	styledNodes.push(nodes);
-	// styled nodes is an array of arraylike objects
-	// show edges between new nodes and all other highlighted ones
-	for(var i=0;i<styledNodes.length;i++)
-			{highlightEdges(nodes.edgesWith(styledNodes[i]));}
-	nodes.addClass("highlighted");
-}
-
-function hideEdges(edges)
-{
-	edges.hide();
-	styledEdges.push(edges);
-}
-
-function hideNodes(nodes)
-{
-	nodes.hide();
-	styledNodes.push(nodes);
-}
-
-function resetStyle()
-{
-	starMode=false;
-	progress(0);
-	firstCumulativeSearch = true;
-	selectedNode = undefined;
-	cy.startBatch();
-	for (var i = 0; i < styledNodes.length; i++)
-	{
-		styledNodes[i].show();
-		styledNodes[i].removeClass("highlighted");
-	}
-	styledNodes = [];
-	for (var i = 0; i < styledEdges.length; i++)
-	{
-		styledEdges[i].show();
-		styledEdges[i].removeClass("highlighted");
-	}
-	styledEdges = [];
-	cy.endBatch();
-	progress(100);
+  nodes.show();
+  styledNodes.push(nodes);
+  // styled nodes is an array of arraylike objects
+  // show edges between new nodes and all other highlighted ones
+  for(var i=0;i<styledNodes.length;i++)
+  {
+    highlightEdges(nodes.edgesWith(styledNodes[i]));
+  }
+  nodes.addClass('highlighted');
 }
 
 function showPath(from, to)
 {
-	starMode=true;
-	progress(0);
-	var aStar = cy.elements().aStar(
-	{
-		root: from,
-		goal: to
-	});
-	path = aStar.path;
-	if (path)
-	{
-		cy.startBatch();
-		hideNodes(cy.elements().nodes());
-		cy.add(path);
-		highlightEdges(path.edges());
-		highlightNodes(path.nodes());
-		cy.endBatch();
-	}
-	else
-	{
-		alert("no path found");
-		progress(100);
-		return false;
-	}
-	progress(100);
-	return true;
+  starMode=true;
+  progress(0);
+  var aStar = cy.elements().aStar(
+    {
+      root: from,
+      goal: to
+    });
+  path = aStar.path;
+  if (path)
+  {
+    cy.startBatch();
+    hideNodes(cy.elements().nodes());
+    cy.add(path);
+    highlightEdges(path.edges());
+    highlightNodes(path.nodes());
+    cy.endBatch();
+  }
+  else
+  {
+    alert('no path found');
+    progress(100);
+    return false;
+  }
+  progress(100);
+  return true;
 }
 
 function showWorm(from, to)
 {
-	if(showPath(from, to))
-	{
-			progress(0);
-			cy.startBatch();
-			var edges = to.connectedEdges();
-			highlightEdges(edges);
-			highlightNodes(edges.connectedNodes());
-			cy.endBatch();
-			progress(100);
-			return true;
-	}
-	return false;
+  if(showPath(from, to))
+  {
+    progress(0);
+    cy.startBatch();
+    var edges = to.connectedEdges();
+    highlightEdges(edges);
+    highlightNodes(edges.connectedNodes());
+    cy.endBatch();
+    progress(100);
+    return true;
+  }
+  return false;
 }
 
 function showStar(node)
 {
-		progress(0);
-		if(!starMode) {hideNodes(cy.elements().nodes());}
-		starMode=true;
-		cy.startBatch();
-		highlightNodes(node);
-		var edges = node.connectedEdges();
-		highlightEdges(edges);
-		highlightNodes(edges.connectedNodes());
-		// open 2 levels deep on closeMatch
-		var closeMatch = edges.filter('edge[interactionLabel="closeMatch"]').connectedNodes().connectedEdges();
-		console.log(closeMatch);
-		highlightEdges(closeMatch);
-		highlightNodes(closeMatch.connectedNodes());
-		cy.endBatch();
-		progress(100);
+  progress(0);
+  if(!starMode)
+  {
+    hideNodes(cy.elements().nodes());
+  }
+  starMode=true;
+  cy.startBatch();
+  highlightNodes(node);
+  var edges = node.connectedEdges();
+  highlightEdges(edges);
+  highlightNodes(edges.connectedNodes());
+  // open 2 levels deep on closeMatch
+  var closeMatch = edges.filter('edge[interactionLabel="closeMatch"]').connectedNodes().connectedEdges();
+  highlightEdges(closeMatch);
+  highlightNodes(closeMatch.connectedNodes());
+  cy.endBatch();
+  progress(100);
 }
 
 function showDoubleStar(from, to)
 {
-	if(showWorm(from, to))
-	{
-			progress(0);
-			cy.startBatch();
-			var edges = from.connectedEdges();
-			highlightEdges(edges);
-			highlightNodes(edges.connectedNodes());
-			cy.endBatch();
-			progress(100);
-			return true;
-	}
-	return false;
+  if(showWorm(from, to))
+  {
+    progress(0);
+    cy.startBatch();
+    var edges = from.connectedEdges();
+    highlightEdges(edges);
+    highlightNodes(edges.connectedNodes());
+    cy.endBatch();
+    progress(100);
+    return true;
+  }
+  return false;
 }
 
 // Extended all along the path
 function showStarPath(from, to)
 {
-	starMode=true;
-	progress(0);
-	var aStar = cy.elements().aStar(
-	{
-		root: from,
-		goal: to
-	});
-	path = aStar.path;
-	if (path)
-	{
-		cy.startBatch();
-		hideNodes(cy.elements().nodes());
-		progress(10);
-		cy.add(path);
-		highlightEdges(path.edges());
-		progress(20);
-		highlightNodes(path.nodes());
-		progress(30);
-		var edges = path.nodes().connectedEdges();
-		highlightEdges(edges);
-		highlightNodes(edges.connectedNodes());
-		cy.endBatch();
-		progress(50);
-	}
-	else
-	{
-		alert("no path found");
-		progress(100);
-		return false;
-	}
-	progress(100);
-	return true;
+  starMode=true;
+  progress(0);
+  var aStar = cy.elements().aStar(
+    {
+      root: from,
+      goal: to
+    });
+  path = aStar.path;
+  if (path)
+  {
+    cy.startBatch();
+    hideNodes(cy.elements().nodes());
+    progress(10);
+    cy.add(path);
+    highlightEdges(path.edges());
+    progress(20);
+    highlightNodes(path.nodes());
+    progress(30);
+    var edges = path.nodes().connectedEdges();
+    highlightEdges(edges);
+    highlightNodes(edges.connectedNodes());
+    cy.endBatch();
+    progress(50);
+  }
+  else
+  {
+    alert('no path found');
+    progress(100);
+    return false;
+  }
+  progress(100);
+  return true;
 }
 
-function mergeJsonArraysByKey(a1,a2)
+function setSource(node)
 {
-	let map1 = new Map();
-	let map2 = new Map();
-	for(let i=0;i<a1.length;i++) {if(a1[i].selector) {map1.set(a1[i].selector,a1[i]);}}
-	for(let i=0;i<a2.length;i++) {if(a2[i].selector) {map2.set(a2[i].selector,a2[i]);}}
-	let merged = [];
-	map1.forEach((value,key,map) =>
-	{
-		if(map2.has(key))
-		{
-			merged.push($.extend(true,{},value,map2.get(key)));
-		} else
-		{
-			merged.push(value);
-		}
-	});
-	map2.forEach((value,key,map) =>
-	{
-		if(!map1.has(key))
-		{
-			merged.push(value);
-		}
-	});
-	return merged;
+  if(node === undefined)
+  {
+    return false;
+  }
+  document.getElementById('centersource').hidden=false;
+  if(pathTarget !== undefined)
+  {
+    document.getElementById('shortestpath').hidden=false;
+    document.getElementById('spiderworm').hidden=false;
+    document.getElementById('doublestar').hidden=false;
+    document.getElementById('starpath').hidden=false;
+    cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
+  }
+  if(pathSource!==undefined)
+  {
+    pathSource.removeClass('source');
+  }
+  pathSource = node;
+  pathSource.addClass('source');
+  document.getElementById('sourcelabel').innerHTML=
+ pathSource.data('name').replace(SPARQL_PREFIX,'');
+}
+
+function setTarget(node)
+{
+  if(node === undefined)
+  {
+    return false;
+  }
+  document.getElementById('centertarget').hidden=false;
+  if(pathSource !== undefined)
+  {
+    document.getElementById('shortestpath').hidden=false;
+    document.getElementById('spiderworm').hidden=false;
+    document.getElementById('doublestar').hidden=false;
+    document.getElementById('starpath').hidden=false;
+    cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
+  }
+  if(pathTarget!==undefined)
+  {
+    pathTarget.removeClass('target');
+  }
+  pathTarget = node;
+  pathTarget.addClass('target');
+  document.getElementById('targetlabel').innerHTML=
+ pathTarget.data('name').replace(SPARQL_PREFIX,'');
+}
+
+function resetStyle()
+{
+  starMode=false;
+  progress(0);
+  //setFirstCumulativeSearch(true);
+  selectedNode = undefined;
+  cy.startBatch();
+  for (let i = 0; i < styledNodes.length; i++)
+  {
+    styledNodes[i].show();
+    styledNodes[i].removeClass('highlighted');
+  }
+  styledNodes = [];
+  for (let i = 0; i < styledEdges.length; i++)
+  {
+    styledEdges[i].show();
+    styledEdges[i].removeClass('highlighted');
+  }
+  styledEdges = [];
+  cy.endBatch();
+  progress(100);
+}
+
+function invert(enabled)
+{
+  const CSS =
+ `#cy {
+		-webkit-filter: invert(100%);
+		-moz-filter: invert(100%);
+		-o-filter: invert(100%);
+		-ms-filter: invert(100%);
+	}`;
+  let head = $('head')[0];
+
+  let invertStyle = $('#invert')[0];
+  if (invertStyle)
+  {
+    head.removeChild(invertStyle);
+  }
+  if (enabled)
+  {
+    {
+      let styleElement = document.createElement('style');
+      styleElement.type = 'text/css';
+      styleElement.id = 'invert';
+      styleElement.appendChild(document.createTextNode(CSS));
+      //injecting the css to the head
+      head.appendChild(styleElement);
+    }
+    let merged = mergeJsonArraysByKey(style.style,colorschemeday);
+    cy.style().fromJson(merged).update();
+  }
+  else
+  {
+    let merged = mergeJsonArraysByKey(style.style,colorschemenight);
+    cy.style().fromJson(merged).update();
+  }
+}
+
+function remove()
+{
+  $('body').addClass('waiting');
+  cy.startBatch();
+  let selected = cy.$('node:selected');
+  removedNodes.push(selected);
+  removedEdges.push(selected.connectedEdges());
+  selected.remove();
+  cy.endBatch();
+  $('body').removeClass('waiting');
+}
+
+function restore()
+{
+  $('body').addClass('waiting');
+  cy.startBatch();
+  // all nodes first so that edges have their sources and targets
+  for (let i = 0; i < removedNodes.length; i++)	{removedNodes[i].restore();}
+  for (let i = 0; i < removedEdges.length; i++)	{removedEdges[i].restore();}
+  removedNodes = [];
+  removedEdges = [];
+  cy.endBatch();
+  $('body').removeClass('waiting');
+}
+
+function layout(name)
+{
+  cy.nodes(":visible").layout({ name: name });
+}
+
+var filtered = {};
+
+//** Hide or show certain nodes or edges.**/
+function filter(checkbox)
+{
+  var selector = checkbox.getAttribute("value");
+  if(checkbox.checked) // selected means the elements shall be shown, undo the filter
+  {
+    let elements = filtered[selector];
+    if(elements)
+    {
+      filtered[selector] = undefined;
+      elements.restore();
+    }
+  }
+  else // unselected checkbox, hide elements by applying filter
+  {
+    let elements = cy.elements(selector);
+    if(elements)
+    {
+      // if just saving nodes, the edges would get lost
+      filtered[selector]=elements.union(elements.connectedEdges());
+      elements.remove();
+    }
+  }
 }
 
 function initGraph(container, graph)
 {
-	let merged = mergeJsonArraysByKey(style.style,colorschemenight);
-	cy = cytoscape(
-	{
-		container: container,
-		style: merged,
-		wheelSensitivity: 0.3,
-	});
+  let merged = mergeJsonArraysByKey(style.style,colorschemenight);
+  cy = cytoscape(
+    {
+      container: container,
+      style: merged,
+      wheelSensitivity: 0.3,
+    });
 
 
-	var defaults = {
-		menuRadius: 100, // the radius of the circular menu in pixels
-		selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
-		commands: [
-			{
-				content: 'description',
-				//select: function(node) {window.open(node._private.data.name);}
-				select: function(node)
-				{
-					window.open(node._private.data.name);
-				}
-			},
-			{
-				content: 'submit ticket',
-				select: function(node)
-				{
-					//var b = confirm("Please only use this ticket tracker for problems with the ontology data, not the javascript visualization web application. Continue?");
-					//window.open("https://github.com/IMISE/snik-ontology/issues/new");
-					//if(b)
-					{
-						//window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
-						if(confirm(ONTOLOGY_ISSUE_WARNING))
+  var defaults = {
+    menuRadius: 100, // the radius of the circular menu in pixels
+    selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
+    commands: [
+      {
+        content: 'description',
+        //select: function(node) {window.open(node._private.data.name);}
+        select: function(node)
+        {
+          window.open(node._private.data.name);
+        }
+      },
+      {
+        content: 'submit ticket',
+        select: function(node)
+        {
+          //var b = confirm("Please only use this ticket tracker for problems with the ontology data, not the javascript visualization web application. Continue?");
+          //window.open("https://github.com/IMISE/snik-ontology/issues/new");
+          //if(b)
+          {
+            //window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
+            if(confirm(ONTOLOGY_ISSUE_WARNING))
+            {
+              var url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
+          encodeURIComponent(node._private.data.name)+' v'+ONTOLOGY_MODIFIED+
+          '&body='+encodeURIComponent('The class '+node._private.data.name+
+          ' has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n');
+              window.open(url);
+            }
+          }
+        }
+      },
+      {
+        content: 'set as path target',
+        select: function(node)
+        {
+          setTarget(node);
+        }
+      },
+      {
+        content: 'set as path source',
+        select: function(node)
+        {
+          setSource(node);
+        }
+      },
+      {
+        content: 'LodLive',
+        select: function(node)
+        {
+          window.open('http://en.lodlive.it/?'+node._private.data.name);
+        }
+      },
+      {
+        content: 'star',
+        select: function(node)
+        {
+          showStar(node);
+        }
+      },
+      {
+        content: 'hide',
+        select: function(node)
+        {
+          hideNodes(node);
+        }
+      },
+      /*
 						{
-							var url = "https://github.com/IMISE/snik-ontology/issues/new?title="+
-							encodeURIComponent(node._private.data.name)+" v"+ONTOLOGY_MODIFIED+
-							"&body="+encodeURIComponent("The class "+node._private.data.name+
-							" has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n");
-							console.log(url);
-							window.open(url);
-						}
-					}
-				}
-			},
-			{
-				content: 'set as path target',
-				select: function(node) {setTarget(node);}
-			},
-			{
-				content: 'set as path source',
-				select: function(node) {setSource(node);}
-			},
-			{
-				content: 'LodLive',
-				select: function(node) {window.open('http://en.lodlive.it/?'+node._private.data.name);}
-			},
-			{
-				content: 'star',
-				select: function(node) {showStar(node);}
-			},
-			{
-				content: 'hide',
-				select: function(node) {hideNodes(node);}
-			},
-/*
-			{
-				content: 'shortest path to here',
-				select: function(node)
-				{
-					if (selectedNode)
-					{
+						content: 'shortest path to here',
+						select: function(node)
+						{
+						if (selectedNode)
+						{
 						resetStyle();
 						showPath(selectedNode, node);
 					}
 				}
 			},
 			{
-				content: 'spiderworm to here',
-				select: function(node)
-				{
-					if (selectedNode)
-					{
-						resetStyle();
-						showWorm(selectedNode, node);
-					}
-				}
-			},
-			*/
-			/* commented out until denethor pdf links in browser work
+			content: 'spiderworm to here',
+			select: function(node)
 			{
-				content: 'book page (in development)',
-				select: functiocxttn(node)
-				{
-					var page = node.data()['Definition_DE_Pages'][0];
-					if(!page) {page = node.data()['Definition_EN_Pages'][0];}
-					var source = node.data().Sources;
-					if(!page || !(source === 'bb' || source === 'ob'))
-					{
-						alert("no book page defined");
-						return;
-					}
-					switch(source)
-					{
-						case 'bb':
-						window.open("https://denethor.imise.uni-leipzig.de/remote.php/webdav/Shared/SNIK/bb.pdf#page="+page,"_blank");
-						break;
-
-						case 'ob':
-						window.open("https://denethor.imise.uni-leipzig.de/remote.php/webdav/Shared/SNIK/ob.pdf#page="+page,"_blank");
-						break;
-					}
-				}
-			}
-			*/
-		],
-		fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
-		activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
-		openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
-		itemColor: 'white', // the colour of text in the command's content
-		itemTextShadowColor: 'gray', // the text shadow colour of the command's content
-		zIndex: 9999, // the z-index of the ui div
-	};
-
-	var defaultsRelations = {
-		menuRadius: 100, // the radius of the circular menu in pixels
-		selector: 'edge', // elements matching this Cytoscape.js selector will trigger cxtmenus
-		commands: [
+			if (selectedNode)
 			{
-				content: 'submit ticket',
-				select: function(edge)
-				{
-					//window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
-					window.open
-					(
-						"https://github.com/IMISE/snik-ontology/issues/new?title="+
-						encodeURIComponent(edge._private.data.name+" v"+ONTOLOGY_MODIFIED)+
-						"&body="+encodeURIComponent('The edge "'+edge._private.data.name+'" is incorrect.\n\n**Details**\n')
-					);
-				}
-			},
-		],
-		fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
-		activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
-		openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
-		itemColor: 'white', // the colour of text in the command's content
-		itemTextShadowColor: 'gray', // the text shadow colour of the command's content
-		zIndex: 9999, // the z-index of the ui div
-	};
-
-
-	var cxtmenuApi = cy.cxtmenu(defaults);
-	var cxtmenuApiRelations = cy.cxtmenu(defaultsRelations);
-
-/*
-	function setSelectedNode(node)
-	{
-		lastSelectedNode = selectedNode;
-		selectedNode = node;
-		if(!lastSelectedNode) lastSelectedNode = selectedNode; // first selection
-		document.getElementById('lastselected').innerHTML=
-		 lastSelectedNode.data('name').replace(SPARQL_PREFIX,"");
-	}
-	*/
-
-	cy.add(graph.elements);
-	//cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.target);});
-	//cy.on('unselect', resetStyle);
-	// cy.on('unselect', "node", function(event)
-	// {
-	// 	console.log("unselect");
-	// });
-	cy.on('select', "edge", function(event)
-	{
-		//cy.startBatch();
-		//resetStyle();
-		highlightEdges(event.target);
-		//cy.endBatch();
-	});
-/*
-	cy.on('tap', function(event)
-	{
-	  var evtTarget = event.target;
-	  if(evtTarget === cy) {resetStyle();} // background
-	});
-*/
-	cy.on('select', "node", function(event)
-	{
-		//cy.startBatch();
-		//resetStyle();
-		selectedNode = event.target;
-		highlightNodes(selectedNode);
-		//cy.endBatch();
-	});
-}
-
-const CSS =
-`#cy {
- -webkit-filter: invert(100%);
- -moz-filter: invert(100%);
- -o-filter: invert(100%);
- -ms-filter: invert(100%);
-}`;
-
-let head = $('head')[0];
-
-function invert(enabled)
-{
-	let invertStyle = $('#invert')[0];
-	if (invertStyle)
-	{
-    head.removeChild(invertStyle);
-	}
-	if (enabled)
-	{
-		{
-			let style = document.createElement('style');
-			style.type = 'text/css';
-			style.id = 'invert';
-			style.appendChild(document.createTextNode(CSS));
-			//injecting the css to the head
-			head.appendChild(style);
+			resetStyle();
+			showWorm(selectedNode, node);
 		}
-		let merged = mergeJsonArraysByKey(style.style,colorschemeday);
-		cy.style().fromJson(merged).update();
 	}
-	else
-	{
-		let merged = mergeJsonArraysByKey(style.style,colorschemenight);
-		cy.style().fromJson(merged).update();
-	}
+},
+*/
+      /* commented out until denethor pdf links in browser work
+{
+content: 'book page (in development)',
+select: functiocxttn(node)
+{
+var page = node.data()['Definition_DE_Pages'][0];
+if(!page) {page = node.data()['Definition_EN_Pages'][0];}
+var source = node.data().Sources;
+if(!page || !(source === 'bb' || source === 'ob'))
+{
+alert("no book page defined");
+return;
 }
+switch(source)
+{
+case 'bb':
+window.open("https://denethor.imise.uni-leipzig.de/remote.php/webdav/Shared/SNIK/bb.pdf#page="+page,"_blank");
+break;
+
+case 'ob':
+window.open("https://denethor.imise.uni-leipzig.de/remote.php/webdav/Shared/SNIK/ob.pdf#page="+page,"_blank");
+break;
+}
+}
+}
+*/
+    ],
+    fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
+    activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
+    openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
+    itemColor: 'white', // the colour of text in the command's content
+    itemTextShadowColor: 'gray', // the text shadow colour of the command's content
+    zIndex: 9999, // the z-index of the ui div
+  };
+
+  var defaultsRelations = {
+    menuRadius: 100, // the radius of the circular menu in pixels
+    selector: 'edge', // elements matching this Cytoscape.js selector will trigger cxtmenus
+    commands: [
+      {
+        content: 'submit ticket',
+        select: function(edge)
+        {
+          //window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
+          window.open
+          (
+            'https://github.com/IMISE/snik-ontology/issues/new?title='+
+     encodeURIComponent(edge._private.data.name+' v'+ONTOLOGY_MODIFIED)+
+     '&body='+encodeURIComponent('The edge "'+edge._private.data.name+'" is incorrect.\n\n**Details**\n')
+          );
+        }
+      },
+    ],
+    fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
+    activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
+    openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
+    itemColor: 'white', // the colour of text in the command's content
+    itemTextShadowColor: 'gray', // the text shadow colour of the command's content
+    zIndex: 9999, // the z-index of the ui div
+  };
+
+
+  /*let cxtmenuApi = */cy.cxtmenu(defaults);
+  /*let cxtmenuApiRelations = */cy.cxtmenu(defaultsRelations);
+
+
+  /*
+function setSelectedNode(node)
+{
+lastSelectedNode = selectedNode;
+selectedNode = node;
+if(!lastSelectedNode) lastSelectedNode = selectedNode; // first selection
+document.getElementById('lastselected').innerHTML=
+lastSelectedNode.data('name').replace(SPARQL_PREFIX,"");
+}
+*/
+
+  cy.add(graph.elements);
+  //cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.target);});
+  //cy.on('unselect', resetStyle);
+  // cy.on('unselect', "node", function(event)
+  // {
+  // 	console.log("unselect");
+  // });
+  cy.on('select', 'edge', function(event)
+  {
+    //cy.startBatch();
+    //resetStyle();
+    highlightEdges(event.target);
+    //cy.endBatch();
+  });
+  /*
+cy.on('tap', function(event)
+{
+var evtTarget = event.target;
+if(evtTarget === cy) {resetStyle();} // background
+});
+*/
+  cy.on('select', 'node', function(event)
+  {
+    //cy.startBatch();
+    //resetStyle();
+    selectedNode = event.target;
+    highlightNodes(selectedNode);
+    //cy.endBatch();
+  });
+}
+
+function setSelectedNode(node) {selectedNode=node;}
+
+export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,remove,restore,layout,filter,pathSource,pathTarget,highlightNodes,setSelectedNode};

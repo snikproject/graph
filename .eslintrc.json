@@ -2,6 +2,7 @@
 	"parserOptions":
 	{
 		"ecmaVersion":6,
+		"sourceType":"module",
 		"ecmaFeatures":
 		{
 			"impliedStrict": true
@@ -10,15 +11,36 @@
 	"env":
 	{
 		"browser": true,
+		"jquery": true,
 		"es6": true
+	},
+	"globals":
+	{
+"cytoscape": false
 	},
 	"extends": "eslint:recommended",
 	"rules":
 	{
 		"indent": ["error",2],
-		"quotes": ["warn","single"],
 		"semi": ["error","always"],
 		"no-use-before-define": ["error"],
-		"no-shadow": ["warn"]
+		"no-shadow": ["warn"],
+		"no-console": ["warn"],
+		"no-duplicate-imports": ["error"],
+		"dot-notation": ["error"],
+		"eqeqeq": ["error"],
+		"eol-last": ["error"],
+		"max-len": ["warn",220],
+		"padded-blocks": ["error","never"],
+		"space-in-parens": ["error"],
+		"brace-style": ["error","allman",{"allowSingleLine":true}],
+		"array-bracket-spacing": ["error"],
+		"no-nested-ternary": ["error"],
+		"no-unneeded-ternary": ["error"],
+		"no-unexpected-multiline": ["off"],
+		"no-undef": ["error"],
+		"curly": ["error"],
+		"camelcase": ["error"]
 	}
 }
+

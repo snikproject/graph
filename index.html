@@ -6,88 +6,81 @@
 	<title>SNIK Ontology Graph</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
 	<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen" />
-
 	<script src="lib/jquery-3.1.0.min.js"></script>
 	<script src="lib/jquery-ui.min.js"></script>
 	<script src="lib/cytoscape.min.js"></script>
 	<script src="lib/cytoscape-cxtmenu.js"></script>
 	<script src="lib/cola.min.js"></script>
 	<script src="lib/cytoscape-cola.js"></script>
-	<script src="js/style.js"></script>
-	<script src="js/colorschemenight.js"></script>
-	<script src="js/colorschemeday.js"></script>
-	<script src="js/menu.js"></script>
-	<script src="js/invert.js"></script>
-	<script src="js/sparql.js"></script>
-  <script src="js/load.js"></script>
-
-	<script>
-		const MODIFIED = "2016-05-10";
-		const ONTOLOGY_MODIFIED = "0.3.3, 2017-04-18";
-		const ONTOLOGY_ISSUE_WARNING = `Please note that this is only for feedback about the underlying ontology, not the web application. \
-This visualization is not a real time view on the ontology but a snapshot of version ${ONTOLOGY_MODIFIED}. \
-Please check if there is already an issue for your problem. If not, we will consider your feedback for the next milestone, which may take some time.`;
-	</script>
-	<script src="js/graph.js"></script>
-	<script src="js/browsercheck.js"></script>
-	<link href ="css/jquery-ui.css" rel = "stylesheet">
+  <link href ="css/jquery-ui.css" rel = "stylesheet">
 </head>
 
 <body>
 	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h2></noscript>
-	<script>browsercheck();</script>
-<div id="top">
-	<ul class="dropdown">
-		<li class="dropdown">
-			<a href="javascript:void(0)" class="dropbtn" onclick="servicesMenu()">Services</a>
-			<div class="dropdown-content" id="services">
-				<a href="http://www.snik.eu/sparql" target="_blank">SPARQL Endpoint</a>
-				<a href="http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop" target="_blank">RDF Browser</a>
-				<a href="http://snik.eu/evaluation" target="_blank">Data Quality Evaluation</a>
-			</div>
-		</li>
+		<script type="module" src="./js/browsercheck.js"></script>
+		<script type="module" src="./js/main.js"></script>
+		<script>
+			var graph, search, menu;
+		</script>
+		<script type="module">
+			import * as searchImport from "./js/search.js";
+			import * as menuImport from "./js/menu.js";
+		  import * as graphImport from "./js/graph.js";
+			// place into global scope to allow onclick access
+			graph=graphImport;
+			menu=menuImport;
+			search=searchImport;
+			document.querySelector('#closelink').addEventListener('click', search.hideSearchResults); // for unknown reasons, using onclick directly results in an undefined function
+		</script>
 
-		<li class="dropdown">
-			<a href="javascript:void(0)" class="dropbtn" onclick="filterMenu()">Filter</a>
+		<div id="top">
+			<ul class="dropdown">
+				<li class="dropdown">
+					<a href="javascript:void(0)" class="dropbtn" onclick="menu.servicesMenu()">Services</a>
+					<div class="dropdown-content" id="services">
+						<a href="http://www.snik.eu/sparql" target="_blank">SPARQL Endpoint</a>
+						<a href="http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop" target="_blank">RDF Browser</a>
+						<a href="http://snik.eu/evaluation" target="_blank">Data Quality Evaluation</a>
+					</div>
+				</li>
+				<li class="dropdown">
+			<a href="javascript:void(0)" class="dropbtn" onclick="menu.filterMenu()">Filter</a>
 			<div class="dropdown-content" id="filter">
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/meta']" /> meta</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']" /> BB</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']" /> OB</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>	CioX</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/he']"/>	HE</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/EntityType']"/>EntityType</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Role']"/>Role</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Function']"/>Function</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='http://www.w3.org/2000/01/rdf-schema#subClassOf']"/>subClassOf</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction^='http://www.w3.org/2004/02/skos/core#']"/>inter-ontology-relations</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction!^='http://www.w3.org/2004/02/skos/core#']"/>non-inter-ontology-relations</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="edge[interaction='http://www.snik.eu/ontology/meta/subTopClass']"/>subTopClass</span>
-					<span><input type="checkbox" class="filterbox" onclick="filter(this)" checked value="node[consolidated<=0]"/>unverified</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/meta']" /> meta</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']" /> BB</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']" /> OB</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>	CioX</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/he']"/>	HE</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/EntityType']"/>EntityType</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Role']"/>Role</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Function']"/>Function</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction='http://www.w3.org/2000/01/rdf-schema#subClassOf']"/>subClassOf</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction^='http://www.w3.org/2004/02/skos/core#']"/>inter-ontology-relations</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction!^='http://www.w3.org/2004/02/skos/core#']"/>non-inter-ontology-relations</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction='http://www.snik.eu/ontology/meta/subTopClass']"/>subTopClass</span>
+					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[consolidated<=0]"/>unverified</span>
 					<span><input type="text" value="node[name='http://www.snik.eu/ontology/meta/Top']" id="customfilter"/>
-								<input type="checkbox" class="filterbox" autocomplete="off" name="ffnocheck-customfilter"
-											 onclick="this.value=document.getElementById('customfilter').value;filter(this);"/> <!-- Firefox checks unnamed boxes sometimes. -->
-								custom filter
-				  </span>
+								<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;graph.filter(this);"/>custom filter</span>
 			</div>
 		</li>
 
 		<li class="dropdown">
-			<a href="javascript:void(0)" class="dropbtn" onclick="optionsMenu()">Options</a>
+			<a href="javascript:void(0)" class="dropbtn" onclick="menu.optionsMenu()">Options</a>
 			<div class="dropdown-content" id="options">
-					<span><input type="checkbox" autocomplete="off" name="ffnocheck-cumulativesearch" id="cumulativesearch"/>cumulative search</span>
-					<span><input type="checkbox" autocomplete="off" name="ffnocheck-daymode" id="daymode" onclick="invert(this.checked)"/>day mode</span>
+					<span><input type="checkbox" id="cumulativesearch"/>cumulative search</span>
+					<span><input type="checkbox" value="false" id="daymode" onclick="graph.invert(this.checked)"/>day mode</span>
 			</div>
 		</li>
 
 		<li class="dropdown">
-			<a href="javascript:void(0)" class="dropbtn" onclick="helpMenu()">Help</a>
+			<a href="javascript:void(0)" class="dropbtn" onclick="menu.helpMenu()">Help</a>
 			<div class="dropdown-content" id="help">
 				<a href="manual.html" target="_blank">Manual</a>
 				<a href="troubleshooting.html" target="_blank">Troubleshooting</a>
 				<a href="contribute.html" target="_blank">Contribute</a>
 				<a href="http://www.snik.eu/" target="_blank">Project Homepage</a>
 				<a href="https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys" target="_blank">Download Cytoscape Graph</a>
-				<a href="javascript:about()">About SNIK Graph</a>
+				<a href="javascript:menu.about()">About SNIK Graph</a>
 				<a href="" onclick="ontologyFeedback()">Submit Feedback about the Ontology</a>
 				<script>
 				function ontologyFeedback()
@@ -101,206 +94,42 @@ Please check if there is already an issue for your problem. If not, we will cons
 
 	</ul>
 
-	<form id="search" method="post">
+	<form id="search" method="post" onsubmit="search.hideSearchResults();search.search(this.children.query.value);return false;"><!-- Return false to prevent page reload. -->
 		<input type="text" name="query" id="query" list="matches" placeholder="🔍 Class Name"/>
 	</form>
 
 	<form>
 		<span id="sourcelabel">no source</span>
-		<input type="button" value="Set Source" onclick="setSource(selectedNode)" />
-		<input type="button" id="centersource" value="Center Source" onclick="cy.center(pathSource)" hidden/>
+		<input type="button" value="Set Source" onclick="graph.setSource(selectedNode)" />
+		<input type="button" id="centersource" value="Center Source" onclick="graph.cy.center(graph.graph.pathSource)" hidden/>
 		<span id="targetlabel">no target </span>
-		<input type="button" value="Set Target" onclick="setTarget(selectedNode)" />
-		<input type="button" id="centertarget" value="Center Target" onclick="cy.center(pathTarget);" hidden/>
-		<input type="button" id="shortestpath" value="Shortest Path" onclick="showPath(pathSource,pathTarget)" hidden/>
-		<input type="button" id="spiderworm" value="Spider Worm" onclick="showWorm(pathSource,pathTarget)" hidden/>
-		<input type="button" id="starpath" value="Starpath" onclick="showStarPath(pathSource,pathTarget)" hidden/>
-		<input type="button" id="doublestar" value="Double Star" onclick="showDoubleStar(pathSource,pathTarget)" hidden/>
-		<input type="button" id="resetstyle" value="Reset View" onclick="resetStyle()"/>
+		<input type="button" value="Set Target" onclick="graph.setTarget(selectedNode)" />
+		<input type="button" id="centertarget" value="Center Target" onclick="graph.cy.center(graph.pathTarget);" hidden/>
+		<input type="button" id="shortestpath" value="Shortest Path" onclick="graph.showPath(graph.pathSource,graph.pathTarget)" hidden/>
+		<input type="button" id="spiderworm" value="Spider Worm" onclick="graph.showWorm(graph.pathSource,graph.pathTarget)" hidden/>
+		<input type="button" id="starpath" value="Starpath" onclick="graph.showStarPath(graph.pathSource,graph.pathTarget)" hidden/>
+		<input type="button" id="doublestar" value="Double Star" onclick="graph.showDoubleStar(graph.pathSource,graph.pathTarget)" hidden/>
+		<input type="button" id="resetstyle" value="Reset View" onclick="graph.resetStyle()"/>
 		<input type="button" value="Eval" onclick="window.open('http://www.snik.eu/evaluation','_blank')"/>
-	  <input type="button" value="Grid" onclick="layout('grid')"/>
-		<input type="button" value="Force (Slow)" onclick="layout('cola')"/>
-		<input type="button" value="Spring (Slow)" onclick="layout('cose')"/>
-		<input type="button" value="Breadthfirst (Slow)" onclick="layout('breadthfirst')"/>
-		<input type="button" value="Remove" onclick="remove()"/>
-		<input type="button" value="Restore" onclick="restore()"/>
+	  <input type="button" value="Grid" onclick="graph.layout('grid')"/>
+		<input type="button" value="Force (Slow)" onclick="graph.layout('cola')"/>
+		<!--<input type="button" value="Spring (Slow)" onclick="graph.layout('cose')"/>
+		<input type="button" value="Breadthfirst (Slow)" onclick="graph.layout('breadthfirst')"/>-->
+		<input type="button" value="Remove" onclick="graph.remove()"/>
+		<input type="button" value="Restore" onclick="graph.restore()"/>
 	  <input type="button" value="Load" onclick="loadSparql()"/>
 	</form>
 </div>
-<div id="progressbar" style="width:99%;position:absolute;top:45%;z-index:1000;"></div>
-<!--<progress id="progress" style="width:99%;position:absolute;top:45%;z-index:1000;"></progress>-->
-
-<script>
-function progress(p)
-{
-	if(p<100)
-	{
-		$('body').addClass('waiting');
-		$( "#progressbar" ).show();
-	}
-	$( "#progressbar" ).progressbar({value: false});
-	if(p>=100)
-	{
-		$('body').removeClass('waiting');
-		$( "#progressbar" ).fadeOut("slow");
-	}
-}
-
-progress(0);
-
-$(document).ready(function()
-{
-    $(document).bind('keydown',function(e){
-       if(e.keyCode == 46) {remove();}
-    });
-});
-
-var removedNodes = [];
-var removedEdges = [];
-
-function remove()
-{
- progress(0);
- cy.startBatch();
- selected = cy.$('node:selected');
- removedNodes.push(selected);
- progress(10);
- removedEdges.push(selected.connectedEdges());
- progress(20);
- selected.remove();
- progress(80);
- cy.endBatch();
- progress(100);
-}
-
-function restore()
-{
-	progress(0);
-	cy.startBatch();
-  // all nodes first so that edges have their sources and targets
-	for (var i = 0; i < removedNodes.length; i++)	{removedNodes[i].restore();}
-	for (var i = 0; i < removedEdges.length; i++)	{removedEdges[i].restore();}
-	removedNodes = [];
-	removedEdges = [];
-	cy.endBatch();
-	progress(100);
-}
-
-function layout(name)
-{
-	console.log(styledNodes);
-	cy.nodes(":visible").layout({ name: name });
-}
-
-	var filtered = {};
-
-	//** Hide or show certain nodes or edges.**/
-	function filter(checkbox)
-	{
-		var selector = checkbox.getAttribute("value");
-		if(checkbox.checked) // selected means the elements shall be shown, undo the filter
-		{
-			var elements = filtered[selector];
-			if(elements)
-			{
-				filtered[selector] = undefined;
-				elements.restore();
-			}
-		}
-		else // unselected checkbox, hide elements by applying filter
-		{
-			var elements = cy.elements(selector);
-			if(elements)
-			{
-				// if just saving nodes, the edges would get lost
-				filtered[selector]=elements.union(elements.connectedEdges());
-				elements.remove();
-			}
-		}
-		// the more edges are shown, the more transparent they should be
-/*			"selector": "edge[!selected]",
-			"css":
-			{
-				"opacity": 0.5,
-				"width": 2.0,*/
-/*	 for(var i=0; i<document.styleSheets.length; i++)
-	 {
-	    var sheet = document.styleSheets[i];
-	  	console.log(sheet);
-	  }*/
-		// we overwrite js/style.js which is not listed, thus we just take any one of the .css style sheets
-		// sheet = document.styleSheets[0];
-		// set to maximum opaqueness for testing
-		// something is wrong here
-		//sheet.insertRule("edge[!selected] { opacity:1.0;}", 0);
-		//console.log(cy.elements().edges().size());
-	}
-	</script>
 
 	<div id="overlay" class="overlay">
 		<h2 id="h2:searchresults">Search Results</h2>
-		<a href="javascript:void(0)" class="closebtn" onclick="hideSearchResults()">&times;</a>
+		<a href="javascript:void(0)" id="closelink" class="closebtn">&times;</a>
 		<table id="tab:searchresults"></table>
 	</div>
 
-	<script src="js/search.js"></script> <!-- Needs to be defined here and not in the preamble to access the required elements. -->
 
 	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 
-	<script>
 
-window.onload = function ()
-{
-	progress(5);
-	$.ajaxSetup({beforeSend:function(xhr){if (xhr.overrideMimeType)
-		{xhr.overrideMimeType("application/json");}}});
-
-  var headers = new Headers();
-  var init = { method: 'GET',
-               headers: headers,
-               mode: 'cors',
-               cache: 'default',
-						 	 credentials: 'include'};
-
-/*	fetch("data/snik-ciox.cyjs",init)
-		.then(response => {return response.json();})
-		.then(json =>
-			{
-				progress(90);
-				initGraph(document.getElementById('cy'),json);
-				cy.zoom(0.1);
-				cy.center(cy.elements().nodes().filter(`node[name= "http://www.snik.eu/ontology/meta/EntityType"]`)[0]);
-				progress(100);
-		})
-		.catch(err =>
-			{
-				console.log('snik-ciox.cyjs not found, loading snik.cyjs');*/
-				var graphurl = "data/snik.cyjs";
-				fetch(graphurl,init)
-					.then(response => {return response.json();})
-					.then(json =>
-						{
-							progress(90);
-							initGraph(document.getElementById('cy'),json);
-							cy.zoom(0.1);
-							cy.center(cy.elements().nodes().filter(`node[name= "http://www.snik.eu/ontology/meta/EntityType"]`)[0]);
-							progress(100);
-						})
-					.catch(e =>
-						{
-							if(e instanceof TypeError)
-							{
-							alert(`Failed to load graph ${graphurl}:\n${e}`);
-							}
-							else
-							{
-								alert(`Graph ${graphurl} loaded but failed to initialize:\n${e}`);
-							}
-							progress(100);
-							return false;
-						});
-//			});
-}
-	</script>
 </body>
 </html>
