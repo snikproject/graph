@@ -21,7 +21,23 @@ var style =
           'font-weight': 'normal',
           'background-opacity': 0.5882352941176471,
           'text-opacity': 1.0,
-          'shape': 'ellipse',
+          'shape': function(ele)
+					{
+            switch(ele.data('subTop'))
+						{
+            case 'http://www.snik.eu/ontology/meta/EntityType': {return 'rectangle';}
+            case 'http://www.snik.eu/ontology/meta/Role': {return 'ellipse';}
+            case 'http://www.snik.eu/ontology/meta/Function': {return 'triangle';}
+            }
+						// the subtops don't have themselves as a subtop but should be shaped as such
+            switch(ele.data('name'))
+						{
+            case 'http://www.snik.eu/ontology/meta/EntityType': {return 'rectangle';}
+            case 'http://www.snik.eu/ontology/meta/Role': {return 'ellipse';}
+            case 'http://www.snik.eu/ontology/meta/Function': {return 'triangle';}
+            default: {return 'hexagon';}
+            }
+          },
           'label': function(ele)
           {
             if(ele.data('Labels_EN')&&ele.data('Labels_EN')[0]) {return ele.data('Labels_EN')[0];}
