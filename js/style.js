@@ -40,10 +40,12 @@ var style =
           },
           'label': function(ele)
           {
-            if(ele.data('Labels_EN')&&ele.data('Labels_EN')[0]) {return ele.data('Labels_EN')[0];}
-            if(ele.data('Labels_DE')&&ele.data('Labels_DE')[0]) {return ele.data('Labels_DE')[0];}
-            if(ele.data('name')) {return ele.data('name');}
-            return 'UNKNOWN URI, ID'+ele.data('id');
+            let label;
+            if(ele.data('Labels_EN')&&ele.data('Labels_EN')[0]) {label = ele.data('Labels_EN')[0];}
+            else if(ele.data('Labels_DE')&&ele.data('Labels_DE')[0]) {label = ele.data('Labels_DE')[0];}
+            else if(ele.data('name')) {label = ele.data('name');}
+            else {label = 'UNKNOWN URI, ID'+ele.data('id');}
+            return label+"\n\u25CB\u25CF\u25CB\u25CB\u25CF";
           },
         }
       },
