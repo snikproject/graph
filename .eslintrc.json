@@ -40,7 +40,7 @@
 		"no-unexpected-multiline": ["off"],
 		"no-undef": ["error"],
 		"curly": ["error"],
-		"camelcase": ["error"]
+		"camelcase": ["warn"]
 	}
 }
 
