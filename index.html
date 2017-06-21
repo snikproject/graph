@@ -6,12 +6,13 @@
 	<title>SNIK Ontology Graph</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
 	<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen" />
+	<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script> <!-- support older browsers -->
 	<script src="lib/jquery-3.1.0.min.js"></script>
 	<script src="lib/jquery-ui.min.js"></script>
 	<script src="lib/cytoscape.min.js"></script>
 	<script src="lib/cytoscape-cxtmenu.js"></script>
-	<script src="lib/cola.min.js"></script>
-	<script src="lib/cytoscape-cola.js"></script>
+<!--	<script src="lib/cola.min.js"></script>
+	<script src="lib/cytoscape-cola.js"></script>--> <!-- Additional layouts. -->
   <link href ="css/jquery-ui.css" rel = "stylesheet">
 </head>
 
@@ -20,16 +21,18 @@
 		<script type="module" src="./js/browsercheck.js"></script>
 		<script type="module" src="./js/main.js"></script>
 		<script>
-			var graph, search, menu;
+			var graph, search, menu,load;
 		</script>
 		<script type="module">
 			import * as searchImport from "./js/search.js";
 			import * as menuImport from "./js/menu.js";
 		  import * as graphImport from "./js/graph.js";
+			import * as loadImport from "./js/load.js";
 			// place into global scope to allow onclick access
 			graph=graphImport;
-			menu=menuImport;
+			menu=menuImport
 			search=searchImport;
+			load=loadImport;
 			document.querySelector('#closelink').addEventListener('click', search.hideSearchResults); // for unknown reasons, using onclick directly results in an undefined function
 		</script>
 
@@ -117,7 +120,7 @@
 		<input type="button" value="Breadthfirst (Slow)" onclick="graph.layout('breadthfirst')"/>-->
 		<input type="button" value="Remove" onclick="graph.remove()"/>
 		<input type="button" value="Restore" onclick="graph.restore()"/>
-	  <input type="button" value="Load" onclick="loadSparql()"/>
+	  <input type="button" value="Load" onclick="load.loadSparql()"/>
 	</form>
 </div>
 

@@ -551,7 +551,7 @@ lastSelectedNode.data('name').replace(SPARQL_PREFIX,"");
 }
 */
 
-  cy.add(graph.elements);
+  if(graph!==undefined) {{cy.add(graph.elements);}}
   //cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.target);});
   //cy.on('unselect', resetStyle);
   // cy.on('unselect', "node", function(event)

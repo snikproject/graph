@@ -3,10 +3,11 @@ const SPARQL_GRAPH = "http://www.snik.eu/ontology";
 const SPARQL_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies
 const SPARQL_LIMIT = 100;
 
-function sparql(query)
+function sparql(query,graphOpt)
 {
+  let graph = (graphOpt===undefined)?SPARQL_GRAPH:graphOpt;
   const url = SPARQL_ENDPOINT +
- '?default-graph-uri=' + encodeURIComponent(SPARQL_GRAPH) +
+ '?default-graph-uri=' + encodeURIComponent(graph) +
  '&query=' + escape(query) +
  '&format=json';
   return fetch(url).then(response => {return response.json();})

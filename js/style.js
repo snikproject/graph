@@ -40,12 +40,14 @@ var style =
           },
           'label': function(ele)
           {
+            const SHOW_QUALITY=false;
             let label;
             if(ele.data('Labels_EN')&&ele.data('Labels_EN')[0]) {label = ele.data('Labels_EN')[0];}
             else if(ele.data('Labels_DE')&&ele.data('Labels_DE')[0]) {label = ele.data('Labels_DE')[0];}
             else if(ele.data('name')) {label = ele.data('name');}
             else {label = 'UNKNOWN URI, ID'+ele.data('id');}
-            return label+"\n\u25CB\u25CF\u25CB\u25CB\u25CF";
+            if(SHOW_QUALITY) {label=+"\n\u25CB\u25CF\u25CB\u25CB\u25CF";}
+            return label;
           },
         }
       },
