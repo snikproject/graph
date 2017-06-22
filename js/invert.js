@@ -1,5 +1,3 @@
-import {style} from "./style.js";
-
 const CSS = '#cy {-webkit-filter: invert(100%);' +
 '-moz-filter: invert(100%);' +
 '-o-filter: invert(100%);' +
