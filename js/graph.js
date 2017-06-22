@@ -22,8 +22,8 @@ var starMode=false;
 
 function mergeJsonArraysByKey(a1,a2)
 {
-  let map1 = new Map();
-  let map2 = new Map();
+  const map1 = new Map();
+  const map2 = new Map();
   for(let i=0;i<a1.length;i++)
   {
     if(a1[i].selector)
@@ -38,7 +38,7 @@ function mergeJsonArraysByKey(a1,a2)
       map2.set(a2[i].selector,a2[i]);
     }
   }
-  let merged = [];
+  const merged = [];
   map1.forEach((value,key,_) =>
   {
     if(map2.has(key))
@@ -288,9 +288,9 @@ function invert(enabled)
 		-o-filter: invert(100%);
 		-ms-filter: invert(100%);
 	}`;
-  let head = $('head')[0];
+  const head = $('head')[0];
 
-  let invertStyle = $('#invert')[0];
+  const invertStyle = $('#invert')[0];
   if (invertStyle)
   {
     head.removeChild(invertStyle);
@@ -298,19 +298,19 @@ function invert(enabled)
   if (enabled)
   {
     {
-      let styleElement = document.createElement('style');
+      const styleElement = document.createElement('style');
       styleElement.type = 'text/css';
       styleElement.id = 'invert';
       styleElement.appendChild(document.createTextNode(CSS));
       //injecting the css to the head
       head.appendChild(styleElement);
     }
-    let merged = mergeJsonArraysByKey(style.style,colorschemeday);
+    const merged = mergeJsonArraysByKey(style.style,colorschemeday);
     cy.style().fromJson(merged).update();
   }
   else
   {
-    let merged = mergeJsonArraysByKey(style.style,colorschemenight);
+    const merged = mergeJsonArraysByKey(style.style,colorschemenight);
     cy.style().fromJson(merged).update();
   }
 }
@@ -319,7 +319,7 @@ function remove()
 {
   $('body').addClass('waiting');
   cy.startBatch();
-  let selected = cy.$('node:selected');
+  const selected = cy.$('node:selected');
   removedNodes.push(selected);
   removedEdges.push(selected.connectedEdges());
   selected.remove();
@@ -353,7 +353,7 @@ function filter(checkbox)
   var selector = checkbox.getAttribute("value");
   if(checkbox.checked) // selected means the elements shall be shown, undo the filter
   {
-    let elements = filtered[selector];
+    const elements = filtered[selector];
     if(elements)
     {
       filtered[selector] = undefined;
@@ -362,7 +362,7 @@ function filter(checkbox)
   }
   else // unselected checkbox, hide elements by applying filter
   {
-    let elements = cy.elements(selector);
+    const elements = cy.elements(selector);
     if(elements)
     {
       // if just saving nodes, the edges would get lost
@@ -374,7 +374,7 @@ function filter(checkbox)
 
 function initGraph(container, graph)
 {
-  let merged = mergeJsonArraysByKey(style.style,colorschemenight);
+  const merged = mergeJsonArraysByKey(style.style,colorschemenight);
   cy = cytoscape(
     {
       container: container,

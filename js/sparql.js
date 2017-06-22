@@ -5,7 +5,7 @@ const SPARQL_LIMIT = 100;
 
 function sparql(query,graphOpt)
 {
-  let graph = (graphOpt===undefined)?SPARQL_GRAPH:graphOpt;
+  const graph = (graphOpt===undefined)?SPARQL_GRAPH:graphOpt;
   const url = SPARQL_ENDPOINT +
  '?default-graph-uri=' + encodeURIComponent(graph) +
  '&query=' + escape(query) +
