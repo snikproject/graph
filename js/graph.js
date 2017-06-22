@@ -228,7 +228,7 @@ function setSource(node)
   pathSource = node;
   pathSource.addClass('source');
   document.getElementById('sourcelabel').innerHTML=
- pathSource.data('name').replace(SPARQL_PREFIX,'');
+   pathSource.data('name').replace(SPARQL_PREFIX,'');
 }
 
 function setTarget(node)
@@ -253,7 +253,7 @@ function setTarget(node)
   pathTarget = node;
   pathTarget.addClass('target');
   document.getElementById('targetlabel').innerHTML=
- pathTarget.data('name').replace(SPARQL_PREFIX,'');
+   pathTarget.data('name').replace(SPARQL_PREFIX,'');
 }
 
 function resetStyle()
@@ -282,12 +282,12 @@ function resetStyle()
 function invert(enabled)
 {
   const CSS =
- `#cy {
-		-webkit-filter: invert(100%);
-		-moz-filter: invert(100%);
-		-o-filter: invert(100%);
-		-ms-filter: invert(100%);
-	}`;
+   `#cy {
+				-webkit-filter: invert(100%);
+				-moz-filter: invert(100%);
+				-o-filter: invert(100%);
+				-ms-filter: invert(100%);
+			}`;
   const head = $('head')[0];
 
   const invertStyle = $('#invert')[0];
@@ -342,7 +342,9 @@ function restore()
 
 function layout(name)
 {
-  cy.nodes(":visible").layout({ name: name });
+  cy
+  //.nodes(":visible")
+  .layout({ name: name }).run();
 }
 
 var filtered = {};
@@ -372,12 +374,22 @@ function filter(checkbox)
   }
 }
 
-function initGraph(container, graph)
+function initGraph()
 {
+  $(document).bind('keydown',function(e)
+  {
+    if(e.keyCode === 46) {remove();}
+  });
+  $.ajaxSetup({beforeSend:function(xhr)
+  {
+    if (xhr.overrideMimeType)
+    {xhr.overrideMimeType("application/json");}
+  }});
+
   const merged = mergeJsonArraysByKey(style.style,colorschemenight);
   cy = cytoscape(
     {
-      container: container,
+      container: document.getElementById('cy'),
       style: merged,
       wheelSensitivity: 0.3,
     });
@@ -407,9 +419,9 @@ function initGraph(container, graph)
             if(confirm(ONTOLOGY_ISSUE_WARNING))
             {
               var url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
-          encodeURIComponent(node._private.data.name)+' v'+ONTOLOGY_MODIFIED+
-          '&body='+encodeURIComponent('The class '+node._private.data.name+
-          ' has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n');
+           encodeURIComponent(node._private.data.name)+' v'+ONTOLOGY_MODIFIED+
+           '&body='+encodeURIComponent('The class '+node._private.data.name+
+           ' has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n');
               window.open(url);
             }
           }
@@ -451,41 +463,41 @@ function initGraph(container, graph)
         }
       },
       /*
-						{
-						content: 'shortest path to here',
-						select: function(node)
-						{
-						if (selectedNode)
-						{
-						resetStyle();
-						showPath(selectedNode, node);
+							{
+							content: 'shortest path to here',
+							select: function(node)
+							{
+							if (selectedNode)
+							{
+							resetStyle();
+							showPath(selectedNode, node);
+						}
 					}
-				}
-			},
-			{
-			content: 'spiderworm to here',
-			select: function(node)
-			{
-			if (selectedNode)
-			{
-			resetStyle();
-			showWorm(selectedNode, node);
+				},
+				{
+				content: 'spiderworm to here',
+				select: function(node)
+				{
+				if (selectedNode)
+				{
+				resetStyle();
+				showWorm(selectedNode, node);
+			}
 		}
-	}
-},
-*/
+	},
+	*/
       /* commented out until denethor pdf links in browser work
-{
-content: 'book page (in development)',
-select: functiocxttn(node)
-{
-var page = node.data()['Definition_DE_Pages'][0];
-if(!page) {page = node.data()['Definition_EN_Pages'][0];}
-var source = node.data().Sources;
-if(!page || !(source === 'bb' || source === 'ob'))
-{
-alert("no book page defined");
-return;
+	{
+	content: 'book page (in development)',
+	select: functiocxttn(node)
+	{
+	var page = node.data()['Definition_DE_Pages'][0];
+	if(!page) {page = node.data()['Definition_EN_Pages'][0];}
+	var source = node.data().Sources;
+	if(!page || !(source === 'bb' || source === 'ob'))
+	{
+	alert("no book page defined");
+	return;
 }
 switch(source)
 {
@@ -550,8 +562,6 @@ document.getElementById('lastselected').innerHTML=
 lastSelectedNode.data('name').replace(SPARQL_PREFIX,"");
 }
 */
-
-  if(graph!==undefined) {{cy.add(graph.elements);}}
   //cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.target);});
   //cy.on('unselect', resetStyle);
   // cy.on('unselect', "node", function(event)

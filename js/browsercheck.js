@@ -23,7 +23,7 @@ navigator.sayswho= (function()
 function browsercheck()
 {
   if (
-  (navigator.sayswho.name === 'Firefox' && navigator.sayswho.version < 54) ||
+    (navigator.sayswho.name === 'Firefox' && navigator.sayswho.version < 54) ||
   (navigator.sayswho.name === 'Internet Explorer') ||
   (navigator.sayswho.name === 'Chrome' && navigator.sayswho.version < 60)
   )

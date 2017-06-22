@@ -6,33 +6,37 @@
 	<title>SNIK Ontology Graph</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
 	<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen" />
-	<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script> <!-- support older browsers -->
+	<!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>--> <!-- support older browsers -->
 	<script src="lib/jquery-3.1.0.min.js"></script>
 	<script src="lib/jquery-ui.min.js"></script>
 	<script src="lib/cytoscape.min.js"></script>
 	<script src="lib/cytoscape-cxtmenu.js"></script>
-<!--	<script src="lib/cola.min.js"></script>
-	<script src="lib/cytoscape-cola.js"></script>--> <!-- Additional layouts. -->
+	<script src="lib/cola.min.js"></script> <!-- Additional layouts. -->
+	<script src="lib/cytoscape-cola.js"></script>
   <link href ="css/jquery-ui.css" rel = "stylesheet">
 </head>
 
 <body>
 	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h2></noscript>
-		<script type="module" src="./js/browsercheck.js"></script>
-		<script type="module" src="./js/main.js"></script>
 		<script>
-			var graph, search, menu,load;
+		const INIT_GRAPH_FROM_SPARQL = true;
+		</script>
+		<script type="module" src="./js/browsercheck.js"></script>
+		<script>
+			var graph, search, menu
 		</script>
 		<script type="module">
+			import {initGraphFromFile} from "./js/initGraphFromFile.js";
+			import {initGraphFromSparql} from "./js/initGraphFromSparql.js";
+			INIT_GRAPH_FROM_SPARQL?initGraphFromSparql():initGraphFromFile();
+
 			import * as searchImport from "./js/search.js";
 			import * as menuImport from "./js/menu.js";
 		  import * as graphImport from "./js/graph.js";
-			import * as loadImport from "./js/load.js";
 			// place into global scope to allow onclick access
 			graph=graphImport;
 			menu=menuImport
 			search=searchImport;
-			load=loadImport;
 			document.querySelector('#closelink').addEventListener('click', search.hideSearchResults); // for unknown reasons, using onclick directly results in an undefined function
 		</script>
 
@@ -47,25 +51,25 @@
 					</div>
 				</li>
 				<li class="dropdown">
-			<a href="javascript:void(0)" class="dropbtn" onclick="menu.filterMenu()">Filter</a>
-			<div class="dropdown-content" id="filter">
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/meta']" /> meta</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']" /> BB</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']" /> OB</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>	CioX</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/he']"/>	HE</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/EntityType']"/>EntityType</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Role']"/>Role</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Function']"/>Function</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction='http://www.w3.org/2000/01/rdf-schema#subClassOf']"/>subClassOf</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction^='http://www.w3.org/2004/02/skos/core#']"/>inter-ontology-relations</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction!^='http://www.w3.org/2004/02/skos/core#']"/>non-inter-ontology-relations</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction='http://www.snik.eu/ontology/meta/subTopClass']"/>subTopClass</span>
-					<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[consolidated<=0]"/>unverified</span>
-					<span><input type="text" value="node[name='http://www.snik.eu/ontology/meta/Top']" id="customfilter"/>
-								<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;graph.filter(this);"/>custom filter</span>
-			</div>
-		</li>
+					<a href="javascript:void(0)" class="dropbtn" onclick="menu.filterMenu()">Filter</a>
+					<div class="dropdown-content" id="filter">
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/meta']" /> meta</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']" /> BB</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']" /> OB</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>	CioX</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/he']"/>	HE</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/EntityType']"/>EntityType</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Role']"/>Role</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Function']"/>Function</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction='http://www.w3.org/2000/01/rdf-schema#subClassOf']"/>subClassOf</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction^='http://www.w3.org/2004/02/skos/core#']"/>inter-ontology-relations</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction!^='http://www.w3.org/2004/02/skos/core#']"/>non-inter-ontology-relations</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction='http://www.snik.eu/ontology/meta/subTopClass']"/>subTopClass</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[consolidated<=0]"/>unverified</span>
+						<span><input type="text" value="node[name='http://www.snik.eu/ontology/meta/Top']" id="customfilter"/>
+							<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;graph.filter(this);"/>custom filter</span>
+						</div>
+					</li>
 
 		<li class="dropdown">
 			<a href="javascript:void(0)" class="dropbtn" onclick="menu.optionsMenu()">Options</a>
@@ -120,7 +124,7 @@
 		<input type="button" value="Breadthfirst (Slow)" onclick="graph.layout('breadthfirst')"/>-->
 		<input type="button" value="Remove" onclick="graph.remove()"/>
 		<input type="button" value="Restore" onclick="graph.restore()"/>
-	  <input type="button" value="Load" onclick="load.loadSparql()"/>
+	  <!--<input type="button" value="Load" onclick="load.loadSparql()"/>-->
 	</form>
 </div>
 

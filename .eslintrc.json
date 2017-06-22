@@ -41,6 +41,7 @@
 		"no-undef": ["error"],
 		"curly": ["error"],
 		"camelcase": ["warn"],
+		"no-unused-vars": ["warn"],
 		"prefer-const": ["error"]
 	}
 }
