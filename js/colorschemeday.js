@@ -12,35 +12,35 @@ var colorschemeday =
       }
     },
     {
-      "selector": "node[source_original='http://www.snik.eu/ontology/ciox']",
+      "selector": "node[source='ciox']",
       "css":
       {
         "background-color": "rgb(175,0,5)",
       }
     },
     {
-      "selector": "node[source_original='http://www.snik.eu/ontology/meta']",
+      "selector": "node[source='meta']",
       "css":
       {
         "background-color": "rgb(0,170,170)",
       }
     },
     {
-      "selector": "node[source_original='http://www.snik.eu/ontology/ob']",
+      "selector": "node[source='ob']",
       "css":
       {
         "background-color": "rgb(0,82,225)",
       }
     },
     {
-      "selector": "node[source_original = 'http://www.snik.eu/ontology/bb']",
+      "selector": "node[src = 'bb']",
       "css":
       {
         "background-color": "rgb(225,103,0)",
       }
     },
     {
-      "selector": "node[source_original='http://www.snik.eu/ontology/he']",
+      "selector": "node[source='he']",
       "css":
       {
         "background-color": "rgb(105,0,130)",

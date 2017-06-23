@@ -11,23 +11,23 @@ var colorschemenight =
       }
     },
     {
-      "selector": "node[source_original='http://www.snik.eu/ontology/ciox']",
+      "selector": "node[source='ciox']",
       "css": {"background-color": "rgb(80,255,250)",}
     },
     {
-      "selector": "node[source_original='http://www.snik.eu/ontology/meta']",
+      "selector": "node[source='meta']",
       "css": {"background-color": "rgb(255,80,80)"}
     },
     {
-      "selector": "node[source_original='http://www.snik.eu/ontology/ob']",
+      "selector": "node[source='ob']",
       "css": {"background-color": "rgb(255,173,30)"}
     },
     {
-      "selector": "node[source_original = 'http://www.snik.eu/ontology/bb']",
+      "selector": "node[src = 'bb']",
       "css": {"background-color": "rgb(30,152,255)"}
     },
     {
-      "selector": "node[source_original='http://www.snik.eu/ontology/he']",
+      "selector": "node[source='he']",
       "css": {"background-color": "rgb(150,255,120)"}
     },
 

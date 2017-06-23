@@ -23,18 +23,18 @@ var style =
           'text-opacity': 1.0,
           'shape': function(ele)
           {
-            switch(ele.data('subTop'))
+            switch(ele.data('st'))
             {
-            case 'http://www.snik.eu/ontology/meta/EntityType': {return 'rectangle';}
-            case 'http://www.snik.eu/ontology/meta/Role': {return 'ellipse';}
-            case 'http://www.snik.eu/ontology/meta/Function': {return 'triangle';}
+            case 'EntityType': {return 'rectangle';}
+            case 'Role': {return 'ellipse';}
+            case 'Function': {return 'triangle';}
             }
             // the subtops don't have themselves as a subtop but should be shaped as such
             switch(ele.data('name'))
             {
-            case 'http://www.snik.eu/ontology/meta/EntityType': {return 'rectangle';}
-            case 'http://www.snik.eu/ontology/meta/Role': {return 'ellipse';}
-            case 'http://www.snik.eu/ontology/meta/Function': {return 'triangle';}
+            case 'EntityType': {return 'rectangle';}
+            case 'Role': {return 'ellipse';}
+            case 'Function': {return 'triangle';}
             default: {return 'hexagon';}
             }
           },
@@ -42,8 +42,8 @@ var style =
           {
             const SHOW_QUALITY=false;
             let label;
-            if(ele.data('Labels_EN')&&ele.data('Labels_EN')[0]) {label = ele.data('Labels_EN')[0];}
-            else if(ele.data('Labels_DE')&&ele.data('Labels_DE')[0]) {label = ele.data('Labels_DE')[0];}
+            if(ele.data('le')&&ele.data('le')[0]) {label = ele.data('le')[0];}
+            else if(ele.data('ld')&&ele.data('ld')[0]) {label = ele.data('ld')[0];}
             else if(ele.data('name')) {label = ele.data('name');}
             else {label = 'UNKNOWN URI, ID'+ele.data('id');}
             if(SHOW_QUALITY) {label=+"\n\u25CB\u25CF\u25CB\u25CB\u25CF";}
