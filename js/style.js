@@ -32,9 +32,9 @@ var style =
             // the subtops don't have themselves as a subtop but should be shaped as such
             switch(ele.data('name'))
             {
-            case 'EntityType': {return 'rectangle';}
-            case 'Role': {return 'ellipse';}
-            case 'Function': {return 'triangle';}
+            case 'http://www.snik.eu/ontology/meta/EntityType': {return 'rectangle';}
+            case 'http://www.snik.eu/ontology/meta/Role': {return 'ellipse';}
+            case 'http://www.snik.eu/ontology/meta/Function': {return 'triangle';}
             default: {return 'hexagon';}
             }
           },
