@@ -7,11 +7,13 @@ function initGraphFromSparql()
   // load graph from SPARQL endpoint instead of from the .cyjs file
   // only show classes with labels, use any one if more than one
   const query =
-  `select ?c str(sample(?l)) as ?l replace(str(sample(?subTop)),".*[#/]","") as ?subTop replace(str(?source),".*[#/]","") as ?source
-  from <http://www.snik.eu/ontology/ciox>
+  `select ?c str(sample(?l)) as ?l replace(str(sample(?subTop)),".*[#/]","") as ?subTop replace(str(?source),".*[#/]","") as ?source count(?o) as ?degree
+  from <http://www.snik.eu/ontology/it4it>
+  from <http://www.snik.eu/ontology/virtual>
   from <http://www.snik.eu/ontology/meta>
   {
     ?c a owl:Class.
+    {?c ?p ?o.} UNION {?o ?p ?c}.
     OPTIONAL {?source ov:defines ?c.}
     OPTIONAL {?c meta:subTopClass ?subTop.}
     OPTIONAL {?c rdfs:label ?l.}
@@ -26,9 +28,11 @@ function initGraphFromSparql()
           group: "nodes",
           data: {
             id: json[i].c.value,
+            name: json[i].c.value,
             ld: [(json[i].l===undefined)?json[i].c.value:json[i].l.value],
             st: (json[i].subTop===undefined)?undefined:json[i].subTop.value,
-            src: (json[i].source===undefined)?undefined:json[i].source.value
+            source: (json[i].source===undefined)?undefined:json[i].source.value,
+            degree: parseInt(json[i].degree.value),
           },
           //position: { x: 200, y: 200 }
         });
@@ -39,7 +43,7 @@ function initGraphFromSparql()
   const triplesPromise = sparql.sparql(
       // only show classes with labels, use any one if more than one
       `select ?c replace(str(?p),".*[#/]","") as ?p ?d
-      from <http://www.snik.eu/ontology/ciox>
+      from <http://www.snik.eu/ontology/it4it>
       from <http://www.snik.eu/ontology/virtual>
       from <http://www.snik.eu/ontology/meta>
       {
