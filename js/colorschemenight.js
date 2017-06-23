@@ -23,14 +23,21 @@ var colorschemenight =
       "css": {"background-color": "rgb(255,173,30)"}
     },
     {
-      "selector": "node[src = 'bb']",
+      "selector": "node[source = 'bb']",
       "css": {"background-color": "rgb(30,152,255)"}
     },
     {
       "selector": "node[source='he']",
       "css": {"background-color": "rgb(150,255,120)"}
     },
-
+    {
+      "selector": "node[source='it']",
+      "css": {"background-color": "rgb(204, 0, 204)"}
+    },
+    {
+      "selector": "node[source='it4it']",
+      "css": {"background-color": "rgb(255, 255, 0)"}
+    },
     {
       "selector": "node:selected",
       "css": {"background-color": "rgb(255,255,0)"}

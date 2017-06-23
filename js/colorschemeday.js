@@ -33,7 +33,7 @@ var colorschemeday =
       }
     },
     {
-      "selector": "node[src = 'bb']",
+      "selector": "node[source = 'bb']",
       "css":
       {
         "background-color": "rgb(225,103,0)",
@@ -45,6 +45,14 @@ var colorschemeday =
       {
         "background-color": "rgb(105,0,130)",
       }
+    },
+    {
+      "selector": "node[source='it']",
+      "css": {"background-color": "rgb(51, 255, 51)"}
+    },
+    {
+      "selector": "node[source='it4it']",
+      "css": {"background-color": "rgb(0, 0, 255)"}
     },
     {
       "selector": "node:selected",
@@ -73,10 +81,10 @@ var colorschemeday =
       {
         "opacity": 0.5,
         'line-color': function(edge)
-        {
-          // highlight skos interlinks
+      {
+        // highlight skos interlinks
           if((String(edge.data('interaction')).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
-          {
+        {
             return "rgb(255,128,128)";
           }
           return "rgb(128,128,128)";
