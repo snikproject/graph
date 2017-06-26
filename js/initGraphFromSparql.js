@@ -40,7 +40,7 @@ function initGraphFromSparql()
   const classes = localStorage.getItem('classes');
   // if not in cache, load
   const classesPromise = (classes===undefined)?
-        sparql.sparql(query):Promise.resolve(classes);
+  sparql.sparql(query):Promise.resolve(classes);
 
   const classesAddedPromise = classesPromise.then((json)=>
   {

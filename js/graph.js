@@ -3,7 +3,8 @@ import {progress} from "./progress.js";
 import {style} from "./style.js";
 import {colorschemenight} from "./colorschemenight.js";
 import {colorschemeday} from "./colorschemeday.js";
-import {SPARQL_PREFIX} from "./sparql.js";
+import * as sparql from "./sparql.js";
+import {roleUse} from "./classuse.js";
 //import {setFirstCumulativeSearch} from "./search.js";
 import {ONTOLOGY_MODIFIED,ONTOLOGY_ISSUE_WARNING} from "./about.js";
 
@@ -228,7 +229,7 @@ function setSource(node)
   pathSource = node;
   pathSource.addClass('source');
   document.getElementById('sourcelabel').innerHTML=
-   pathSource.data('name').replace(SPARQL_PREFIX,'');
+   pathSource.data('name').replace(sparql.SPARQL_PREFIX,'');
 }
 
 function setTarget(node)
@@ -253,7 +254,7 @@ function setTarget(node)
   pathTarget = node;
   pathTarget.addClass('target');
   document.getElementById('targetlabel').innerHTML=
-   pathTarget.data('name').replace(SPARQL_PREFIX,'');
+   pathTarget.data('name').replace(sparql.SPARQL_PREFIX,'');
 }
 
 function resetStyle()
@@ -428,6 +429,13 @@ function initGraph()
         }
       },
       {
+        content: 'roleUse',
+        select: function(node)
+        {
+          roleUse(node.data().name);
+        }
+      },
+      {
         content: 'set as path target',
         select: function(node)
         {
@@ -559,7 +567,7 @@ lastSelectedNode = selectedNode;
 selectedNode = node;
 if(!lastSelectedNode) lastSelectedNode = selectedNode; // first selection
 document.getElementById('lastselected').innerHTML=
-lastSelectedNode.data('name').replace(SPARQL_PREFIX,"");
+lastSelectedNode.data('name').replace(sparql.SPARQL_PREFIX,"");
 }
 */
   //cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.target);});

@@ -19,11 +19,11 @@
 <body>
 	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h2></noscript>
 		<script>
-		const INIT_GRAPH_FROM_SPARQL = true;
+		const INIT_GRAPH_FROM_SPARQL = false;
 		</script>
 		<script type="module" src="./js/browsercheck.js"></script>
 		<script>
-			var graph, search, menu
+			var graph, search, menu,sparql
 		</script>
 		<script type="module">
 			import {initGraphFromFile} from "./js/initGraphFromFile.js";
@@ -33,10 +33,12 @@
 			import * as searchImport from "./js/search.js";
 			import * as menuImport from "./js/menu.js";
 		  import * as graphImport from "./js/graph.js";
+			import * as sparqlImport from "./js/sparql.js";
 			// place into global scope to allow onclick access
 			graph=graphImport;
 			menu=menuImport
 			search=searchImport;
+			sparql=sparqlImport;
 			document.querySelector('#closelink').addEventListener('click', search.hideSearchResults); // for unknown reasons, using onclick directly results in an undefined function
 		</script>
 
