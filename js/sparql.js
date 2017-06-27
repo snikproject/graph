@@ -5,7 +5,6 @@ const SPARQL_LIMIT = 100;
 
 function sparql(query,graphOpt)
 {
-  if(graphOpt) {console.log(graphOpt);}
   const url = SPARQL_ENDPOINT +
   '?query=' + escape(query) +
   '&format=json'+
