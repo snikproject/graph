@@ -92,6 +92,7 @@ function roleUse(role)
         minNodeSpacing: 2,
         concentric: function(node)
         {
+          if(node.data().name===role) {return 5;}
           switch(node.data().st)
           {
           case "EntityType": return 1;
