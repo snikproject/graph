@@ -3,6 +3,7 @@ import * as graph from "./graph.js";
 
 function roleUse(role)
 {
+  graph.resetStyle();
   // TODO dirkekt von
   const query =
   `select distinct ?role ?function ?entitytype
