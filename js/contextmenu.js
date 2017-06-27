@@ -4,7 +4,7 @@ import * as graph from "./graph.js";
 
 const defaultsNodes = {
   menuRadius: 100, // the radius of the circular menu in pixels
-  selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
+  selector: 'node[st!="Role"]', // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: [
     {
       content: 'description',
@@ -32,13 +32,6 @@ const defaultsNodes = {
             window.open(url);
           }
         }
-      }
-    },
-    {
-      content: 'roleUse',
-      select: function(node)
-      {
-        roleUse(node.data().name);
       }
     },
     {
@@ -128,7 +121,7 @@ break;
   zIndex: 9999, // the z-index of the ui div
 };
 
-var defaultsRelations = {
+const defaultsRelations = {
   menuRadius: 100, // the radius of the circular menu in pixels
   selector: 'edge', // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: [
@@ -156,6 +149,17 @@ var defaultsRelations = {
 
 function registerMenu()
 {
+  graph.cy.cxtmenu(defaultsNodes);
+  defaultsNodes.selector="node[st='Role']";
+  defaultsNodes.commands.push(
+    {
+      content: 'roleUse',
+      select: function(node)
+        {
+        roleUse(node.data().name);
+      }
+    }
+  );
   graph.cy.cxtmenu(defaultsNodes);
   graph.cy.cxtmenu(defaultsRelations);
 }
