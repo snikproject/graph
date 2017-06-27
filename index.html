@@ -124,7 +124,7 @@
 		<input type="button" value="Force (Slow)" onclick="graph.layout('cola')"/>
 		<!--<input type="button" value="Spring (Slow)" onclick="graph.layout('cose')"/>
 		<input type="button" value="Breadthfirst (Slow)" onclick="graph.layout('breadthfirst')"/>-->
-		<input type="button" value="Remove" onclick="graph.remove()"/>
+		<input type="button" value="Remove" onclick="graph.remove(graph.cy.$('node:selected'));"/>
 		<input type="button" value="Restore" onclick="graph.restore()"/>
 	  <!--<input type="button" value="Load" onclick="load.loadSparql()"/>-->
 	</form>

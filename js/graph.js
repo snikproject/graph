@@ -316,14 +316,13 @@ function invert(enabled)
   }
 }
 
-function remove()
+function remove(nodes)
 {
   $('body').addClass('waiting');
   cy.startBatch();
-  const selected = cy.$('node:selected');
-  removedNodes.push(selected);
-  removedEdges.push(selected.connectedEdges());
-  selected.remove();
+  removedNodes.push(nodes);
+  removedEdges.push(nodes.connectedEdges());
+  nodes.remove();
   cy.endBatch();
   $('body').removeClass('waiting');
 }
@@ -379,7 +378,7 @@ function initGraph()
 {
   $(document).bind('keydown',function(e)
   {
-    if(e.keyCode === 46) {remove();}
+    if(e.keyCode === 46) {remove(cy.$('node:selected'));}
   });
   $.ajaxSetup({beforeSend:function(xhr)
   {
