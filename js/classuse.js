@@ -66,6 +66,9 @@ function roleUse(role)
         },
       }
     ).run();
+    const roleNode = graph.cy.nodes(`node[name='${role}']`);
+    graph.cy.center(roleNode);
+    graph.cy.fit();
   }
 );
 }
