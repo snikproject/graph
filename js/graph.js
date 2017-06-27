@@ -332,7 +332,8 @@ function restore()
   $('body').addClass('waiting');
   cy.startBatch();
   // all nodes first so that edges have their sources and targets
-  for (let i = 0; i < removedNodes.length; i++)	{removedNodes[i].restore();}
+  for (let i = 0; i < removedNodes.length; i++)
+  {removedNodes[i].restore();}
   for (let i = 0; i < removedEdges.length; i++)	{removedEdges[i].restore();}
   removedNodes = [];
   removedEdges = [];
