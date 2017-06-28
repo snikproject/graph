@@ -42,19 +42,22 @@ function roleUse(role)
     ?role meta:subTopClass meta:Role.
     #bind (<${role}> as ?role)
 
-    ?role ?p ?function.
-    ?function meta:subTopClass meta:Function.
-    #?role ?p ?f.
-    #?f meta:subTopClass meta:Function.
-    #?f (skos:closeMatch|^rdfs:subClassOf)* ?function.
-
-    #?function ?q ?et
-    #?et meta:subTopClass meta:EntityType.
     OPTIONAL
     {
-     ?function ?q ?et.
-     ?et meta:subTopClass meta:EntityType.
-     OPTIONAL {?et (skos:closeMatch|^rdfs:subClassOf)+ ?etx.}
+      ?role ?p ?function.
+      ?function meta:subTopClass meta:Function.
+      #?role ?p ?f.
+      #?f meta:subTopClass meta:Function.
+      #?f (skos:closeMatch|^rdfs:subClassOf)* ?function.
+
+      OPTIONAL
+      {
+        #?function ?q ?et
+        #?et meta:subTopClass meta:EntityType.
+        ?function ?q ?et.
+        ?et meta:subTopClass meta:EntityType.
+        OPTIONAL {?et (skos:closeMatch|^rdfs:subClassOf)+ ?etx.}
+      }
     }
   }`;
   sparql.sparql(query,"http://www.snik.eu/ontology").then((json)=>
@@ -67,7 +70,7 @@ function roleUse(role)
     for(let i=0;i<json.length;i++)
     {
       roles.add(json[i].role.value);
-      functions.add(json[i].function.value);
+      if(json[i].function) {functions.add(json[i].function.value);}
       if(json[i].et) {ets.add(json[i].et.value);}
       if(json[i].etx) {etxs.add(json[i].etx.value);}
     }
