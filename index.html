@@ -55,19 +55,20 @@
 				<li class="dropdown">
 					<a href="javascript:void(0)" class="dropbtn" onclick="menu.filterMenu()">Filter</a>
 					<div class="dropdown-content" id="filter">
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/meta']" /> meta</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/bb']" /> BB</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ob']" /> OB</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/ciox']"/>	CioX</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[source_original='http://www.snik.eu/ontology/he']"/>	HE</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/EntityType']"/>EntityType</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Role']"/>Role</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[name='http://www.snik.eu/ontology/meta/Function']"/>Function</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction='http://www.w3.org/2000/01/rdf-schema#subClassOf']"/>subClassOf</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction^='http://www.w3.org/2004/02/skos/core#']"/>inter-ontology-relations</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction!^='http://www.w3.org/2004/02/skos/core#']"/>non-inter-ontology-relations</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="edge[interaction='http://www.snik.eu/ontology/meta/subTopClass']"/>subTopClass</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" checked value="node[consolidated<=0]"/>unverified</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='meta']" /> meta</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='bb']" /> BB</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='ob']" /> OB</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='ciox']"/>	CioX</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='he']"/>	HE</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='it4it']"/>	IT4IT</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[name='http://www.snik.eu/ontology/meta/EntityType']"/>EntityType</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[name='http://www.snik.eu/ontology/meta/Role']"/>Role</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[name='http://www.snik.eu/ontology/meta/Function']"/>Function</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="edge[interaction='http://www.w3.org/2000/01/rdf-schema#subClassOf']"/>subClassOf</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="edge[interaction^='http://www.w3.org/2004/02/skos/core#']"/>inter-ontology-relations</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="edge[interaction!^='http://www.w3.org/2004/02/skos/core#']"/>non-inter-ontology-relations</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="edge[interaction='http://www.snik.eu/ontology/meta/subTopClass']"/>subTopClass</span>
+						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[consolidated<=0]"/>unverified</span>
 						<span><input type="text" value="node[name='http://www.snik.eu/ontology/meta/Top']" id="customfilter"/>
 							<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;graph.filter(this);"/>custom filter</span>
 						</div>
