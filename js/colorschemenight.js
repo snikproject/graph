@@ -11,31 +11,31 @@ var colorschemenight =
       }
     },
     {
-      "selector": "node[source='ciox']",
+      "selector": "node[prefix='ciox']",
       "css": {"background-color": "rgb(80,255,250)",}
     },
     {
-      "selector": "node[source='meta']",
+      "selector": "node[prefix='meta']",
       "css": {"background-color": "rgb(255,80,80)"}
     },
     {
-      "selector": "node[source='ob']",
+      "selector": "node[prefix='ob']",
       "css": {"background-color": "rgb(255,173,30)"}
     },
     {
-      "selector": "node[source = 'bb']",
+      "selector": "node[prefix = 'bb']",
       "css": {"background-color": "rgb(30,152,255)"}
     },
     {
-      "selector": "node[source='he']",
+      "selector": "node[prefix='he']",
       "css": {"background-color": "rgb(150,255,120)"}
     },
     {
-      "selector": "node[source='it']",
+      "selector": "node[prefix='it']",
       "css": {"background-color": "rgb(204, 0, 204)"}
     },
     {
-      "selector": "node[source='it4it']",
+      "selector": "node[prefix='it4it']",
       "css": {"background-color": "rgb(255, 255, 0)"}
     },
     {

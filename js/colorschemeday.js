@@ -12,46 +12,46 @@ var colorschemeday =
       }
     },
     {
-      "selector": "node[source='ciox']",
+      "selector": "node[prefix='ciox']",
       "css":
       {
         "background-color": "rgb(175,0,5)",
       }
     },
     {
-      "selector": "node[source='meta']",
+      "selector": "node[prefix='meta']",
       "css":
       {
         "background-color": "rgb(0,170,170)",
       }
     },
     {
-      "selector": "node[source='ob']",
+      "selector": "node[prefix='ob']",
       "css":
       {
         "background-color": "rgb(0,82,225)",
       }
     },
     {
-      "selector": "node[source = 'bb']",
+      "selector": "node[prefix = 'bb']",
       "css":
       {
         "background-color": "rgb(225,103,0)",
       }
     },
     {
-      "selector": "node[source='he']",
+      "selector": "node[prefix='he']",
       "css":
       {
         "background-color": "rgb(105,0,130)",
       }
     },
     {
-      "selector": "node[source='it']",
+      "selector": "node[prefix='it']",
       "css": {"background-color": "rgb(51, 255, 51)"}
     },
     {
-      "selector": "node[source='it4it']",
+      "selector": "node[prefix='it4it']",
       "css": {"background-color": "rgb(0, 0, 255)"}
     },
     {
