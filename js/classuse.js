@@ -38,7 +38,7 @@ function roleUse(role)
   const query =
   `select distinct ?role ?function ?et ?etx
   {
-    <${role}> (rdfs:subClassOf|skos:closeMatch)* ?role.
+    <${role}> (rdfs:subClassOf|skos:closeMatch|^skos:closeMatch)* ?role.
     ?role meta:subTopClass meta:Role.
     #bind (<${role}> as ?role)
 
@@ -48,7 +48,7 @@ function roleUse(role)
       ?function meta:subTopClass meta:Function.
       #?role ?p ?f.
       #?f meta:subTopClass meta:Function.
-      #?f (skos:closeMatch|^rdfs:subClassOf)* ?function.
+      #?f (skos:closeMatch|^skos:closeMatch|^rdfs:subClassOf)* ?function.
 
       OPTIONAL
       {
@@ -56,7 +56,7 @@ function roleUse(role)
         #?et meta:subTopClass meta:EntityType.
         ?function ?q ?et.
         ?et meta:subTopClass meta:EntityType.
-        OPTIONAL {?et (skos:closeMatch|^rdfs:subClassOf)+ ?etx.}
+        OPTIONAL {?et (skos:closeMatch|^skos:closeMatch|^rdfs:subClassOf)+ ?etx.}
       }
     }
   }`;
