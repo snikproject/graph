@@ -44,6 +44,7 @@ var style =
             let label;
             if(ele.data('le')&&ele.data('le')[0]) {label = ele.data('le')[0];}
             else if(ele.data('ld')&&ele.data('ld')[0]) {label = ele.data('ld')[0];}
+            else if(ele.data('la')&&ele.data('la')[0]) {label = ele.data('la')[0];}
             else if(ele.data('name')) {label = ele.data('name');}
             else {label = 'UNKNOWN URI, ID'+ele.data('id');}
             if(SHOW_QUALITY) {label=+"\n\u25CB\u25CF\u25CB\u25CB\u25CF";}
