@@ -118,7 +118,7 @@ var style =
 		"line-style" : "solid",
 		"target-arrow-color" : "rgb(255,255,255)",
 		"width" : 0.45,
-		"target-arrow-shape" : "data(interactionLabel)"
+		"target-arrow-shape" : "data(pl)"
 	}
 },*/
       {
@@ -127,7 +127,7 @@ var style =
         {
           'opacity': 0.5,
           'width': 2.0,
-          'label': 'data(interactionLabel)',
+          'label': 'data(pl)',
           'edge-text-rotation': 'autorotate',
           'text-margin-y': '-1em',
           'text-opacity': 0,
@@ -141,7 +141,7 @@ var style =
           'text-opacity': 1,
           'opacity': 1.0,
           'width': 4.0,
-          'label': 'data(interactionLabel)',
+          'label': 'data(pl)',
           'edge-text-rotation': 'autorotate',
           'text-margin-y': '-1em',
         }
@@ -155,7 +155,7 @@ var style =
           'mid-target-arrow-color': 'rgb(128,255,128)',
           'mid-target-arrow-shape': 'triangle',
           'width': 4.0,
-          'label': 'data(interactionLabel)',
+          'label': 'data(pl)',
           'edge-text-rotation': 'autorotate',
           'text-margin-y': '-1em',
         }
