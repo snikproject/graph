@@ -34,9 +34,9 @@ function enableConsole()
 function roleUse(role)
 {
   graph.resetStyle();
-  // TODO dirkekt von
+  // TODO direkt von
   const query =
-  `select distinct ?role ?function ?entitytype
+  `select distinct ?role ?function ?et ?entitytype
   {
     <${role}> (rdfs:subClassOf|skos:closeMatch)* ?role.
     ?role meta:subTopClass meta:Role.
@@ -48,25 +48,28 @@ function roleUse(role)
     #?f meta:subTopClass meta:Function.
     #?f (skos:closeMatch|^rdfs:subClassOf)* ?function.
 
-    ?function ?q ?entitytype.
-    ?entitytype meta:subTopClass meta:EntityType.
-    #?function ?q ?et.
-    #?et meta:subTopClass meta:EntityType.
-    #?et (skos:closeMatch|^rdfs:subClassOf)* ?entitytype.
+    #?function ?q ?entitytype.
+    #?entitytype meta:subTopClass meta:EntityType.
+    ?function ?q ?et.
+    ?et meta:subTopClass meta:EntityType.
+    OPTIONAL {?et (skos:closeMatch|^rdfs:subClassOf)+ ?entitytype.}
   }`;
   sparql.sparql(query,"http://www.snik.eu/ontology").then((json)=>
   {
     const roles = new Set();
     const functions = new Set();
     const entitytypes = new Set();
+    const expandedEntitytypes = new Set();
+
     for(let i=0;i<json.length;i++)
     {
       roles.add(json[i].role.value);
       functions.add(json[i].function.value);
-      entitytypes.add(json[i].entitytype.value);
+      entitytypes.add(json[i].et.value);
+      if(json[i].entitytype) { expandedEntitytypes.add(json[i].entitytype.value);}
     }
     //console.log(roles);
-    const classes = new Set([...roles, ...functions,...entitytypes]);
+    const classes = new Set([...roles, ...functions,...entitytypes,...expandedEntitytypes]);
     const selectedNodes = [];
     const selectedEdges = [];
     for(const c of classes)
@@ -92,7 +95,14 @@ function roleUse(role)
         minNodeSpacing: 2,
         concentric: function(node)
         {
-          if(node.data().name===role) {return 5;}
+          const uri = node.data().name;
+          if(uri===role) {return 10;}
+          if(roles.has(uri)) {return 9;}
+          if(functions.has(uri)) {return 8;}
+          if(entitytypes.has(uri)) {return 7;}
+          if(expandedEntitytypes.has(uri)) {return 6;}
+          return 10; // temporary workaround for roles without subtop
+          /*
           switch(node.data().st)
           {
           case "EntityType": return 1;
@@ -100,6 +110,7 @@ function roleUse(role)
           case "Role": return 3;
           default: return 3; // temporary workaround for roles without subtop
           }
+          */
         },
       }
     ).run();
