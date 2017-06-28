@@ -36,7 +36,7 @@ function roleUse(role)
   graph.resetStyle();
   // TODO direkt von
   const query =
-  `select distinct ?role ?function ?et ?entitytype
+  `select distinct ?role ?function ?et ?etx
   {
     <${role}> (rdfs:subClassOf|skos:closeMatch)* ?role.
     ?role meta:subTopClass meta:Role.
@@ -48,28 +48,31 @@ function roleUse(role)
     #?f meta:subTopClass meta:Function.
     #?f (skos:closeMatch|^rdfs:subClassOf)* ?function.
 
-    #?function ?q ?entitytype.
-    #?entitytype meta:subTopClass meta:EntityType.
-    ?function ?q ?et.
-    ?et meta:subTopClass meta:EntityType.
-    OPTIONAL {?et (skos:closeMatch|^rdfs:subClassOf)+ ?entitytype.}
+    #?function ?q ?et
+    #?et meta:subTopClass meta:EntityType.
+    OPTIONAL
+    {
+     ?function ?q ?et.
+     ?et meta:subTopClass meta:EntityType.
+     OPTIONAL {?et (skos:closeMatch|^rdfs:subClassOf)+ ?etx.}
+    }
   }`;
   sparql.sparql(query,"http://www.snik.eu/ontology").then((json)=>
   {
     const roles = new Set();
     const functions = new Set();
-    const entitytypes = new Set();
-    const expandedEntitytypes = new Set();
+    const ets = new Set();
+    const etxs = new Set();
 
     for(let i=0;i<json.length;i++)
     {
       roles.add(json[i].role.value);
       functions.add(json[i].function.value);
-      entitytypes.add(json[i].et.value);
-      if(json[i].entitytype) { expandedEntitytypes.add(json[i].entitytype.value);}
+      if(json[i].et) {ets.add(json[i].et.value);}
+      if(json[i].etx) {etxs.add(json[i].etx.value);}
     }
     //console.log(roles);
-    const classes = new Set([...roles, ...functions,...entitytypes,...expandedEntitytypes]);
+    const classes = new Set([...roles, ...functions,...ets,...etxs]);
     const selectedNodes = [];
     const selectedEdges = [];
     for(const c of classes)
@@ -91,7 +94,7 @@ function roleUse(role)
       {
         name: 'concentric',
         fit: true,
-        levelWidth: function(nodes) {return 1;},
+        levelWidth: function() {return 1;},
         minNodeSpacing: 2,
         concentric: function(node)
         {
@@ -99,10 +102,11 @@ function roleUse(role)
           if(uri===role) {return 10;}
           if(roles.has(uri)) {return 9;}
           if(functions.has(uri)) {return 8;}
-          if(entitytypes.has(uri)) {return 7;}
-          if(expandedEntitytypes.has(uri)) {return 6;}
+          if(ets.has(uri)) {return 7;}
+          if(etxs.has(uri)) {return 6;}
           return 10; // temporary workaround for roles without subtop
           /*
+          // faster but can't discern expanded entity types from directly connected ones
           switch(node.data().st)
           {
           case "EntityType": return 1;
