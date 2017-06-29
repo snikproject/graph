@@ -8,18 +8,22 @@ import {registerMenu} from "./contextmenu.js";
 //import {setFirstCumulativeSearch} from "./search.js";
 
 
-
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
 var cy;
-var removedNodes = [];
-var removedEdges = [];
-var styledEdges = [];
-var styledNodes = [];
+var removedNodes ;
+var removedEdges ;
+var styledEdges ;
+var styledNodes ;
 var selectedNode;
 var path;
 var pathSource;
 var pathTarget;
 var starMode=false;
+
+// todo: find a more elegant solution
+function emptyCollection() {return cy.nodes("node[makeme='empty']");}
+
+function setStarMode(mode) {starMode=mode;}
 
 function mergeJsonArraysByKey(a1,a2)
 {
@@ -64,13 +68,19 @@ function mergeJsonArraysByKey(a1,a2)
 function hideNodes(nodes)
 {
   nodes.hide();
-  styledNodes.push(nodes);
+  styledNodes = styledNodes.union(nodes);
+}
+
+function showNodes(nodes)
+{
+  nodes.show();
+  styledNodes = styledNodes.subtract(nodes);
 }
 
 function highlightEdges(edges)
 {
   edges.show();
-  styledEdges.push(edges);
+  styledEdges = styledEdges.union(edges);
   edges.addClass('highlighted');
 }
 
@@ -78,13 +88,10 @@ function highlightEdges(edges)
 function highlightNodes(nodes)
 {
   nodes.show();
-  styledNodes.push(nodes);
+  styledNodes = styledNodes.union(nodes);
   // styled nodes is an array of arraylike objects
   // show edges between new nodes and all other highlighted ones
-  for(var i=0;i<styledNodes.length;i++)
-  {
-    highlightEdges(nodes.edgesWith(styledNodes[i]));
-  }
+  highlightEdges(nodes.edgesWith(styledNodes));
   nodes.addClass('highlighted');
 }
 
@@ -264,18 +271,12 @@ function resetStyle()
   //setFirstCumulativeSearch(true);
   selectedNode = undefined;
   cy.startBatch();
-  for (let i = 0; i < styledNodes.length; i++)
-  {
-    styledNodes[i].show();
-    styledNodes[i].removeClass('highlighted');
-  }
-  styledNodes = [];
-  for (let i = 0; i < styledEdges.length; i++)
-  {
-    styledEdges[i].show();
-    styledEdges[i].removeClass('highlighted');
-  }
-  styledEdges = [];
+  styledNodes.show();
+  styledNodes.removeClass('highlighted');
+  styledNodes = emptyCollection();
+  styledEdges.show();
+  styledEdges.removeClass('highlighted');
+  styledEdges = emptyCollection();
   cy.endBatch();
   progress(100);
 }
@@ -320,8 +321,8 @@ function remove(nodes)
 {
   $('body').addClass('waiting');
   cy.startBatch();
-  removedNodes.push(nodes);
-  removedEdges.push(nodes.connectedEdges());
+  removedNodes.add(nodes);
+  removedEdges.add(nodes.connectedEdges());
   nodes.remove();
   cy.endBatch();
   $('body').removeClass('waiting');
@@ -335,8 +336,8 @@ function restore()
   for (let i = 0; i < removedNodes.length; i++)
   {removedNodes[i].restore();}
   for (let i = 0; i < removedEdges.length; i++)	{removedEdges[i].restore();}
-  removedNodes = [];
-  removedEdges = [];
+  removedNodes = emptyCollection();
+  removedEdges = emptyCollection();
   cy.endBatch();
   $('body').removeClass('waiting');
 }
@@ -396,22 +397,6 @@ function initGraph()
     });
   registerMenu();
 
-  /*
-function setSelectedNode(node)
-{
-lastSelectedNode = selectedNode;
-selectedNode = node;
-if(!lastSelectedNode) lastSelectedNode = selectedNode; // first selection
-document.getElementById('lastselected').innerHTML=
-lastSelectedNode.data('name').replace(sparql.SPARQL_PREFIX,"");
-}
-*/
-  //cy.on('cxttap',"node",function(event) {showPath(selectedNode,event.target);});
-  //cy.on('unselect', resetStyle);
-  // cy.on('unselect', "node", function(event)
-  // {
-  // 	console.log("unselect");
-  // });
   cy.on('select', 'edge', function(event)
   {
     //cy.startBatch();
@@ -419,13 +404,7 @@ lastSelectedNode.data('name').replace(sparql.SPARQL_PREFIX,"");
     highlightEdges(event.target);
     //cy.endBatch();
   });
-  /*
-cy.on('tap', function(event)
-{
-var evtTarget = event.target;
-if(evtTarget === cy) {resetStyle();} // background
-});
-*/
+
   cy.on('select', 'node', function(event)
   {
     //cy.startBatch();
@@ -434,8 +413,14 @@ if(evtTarget === cy) {resetStyle();} // background
     highlightNodes(selectedNode);
     //cy.endBatch();
   });
+
+  // workaround to create empty collections until better known
+  removedNodes = emptyCollection() ;
+  removedEdges = emptyCollection() ;
+  styledEdges = emptyCollection();
+  styledNodes = emptyCollection();
 }
 
 function setSelectedNode(node) {selectedNode=node;}
 
-export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,remove,restore,layout,filter,pathSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar};
+export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,remove,restore,layout,filter,pathSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar,setStarMode,hideNodes,showNodes};

@@ -1,39 +1,10 @@
 import * as sparql from "./sparql.js";
 import * as graph from "./graph.js";
 
-var consoleEnabled = true;
-var consoleFunctions = [];
-
-function disableConsole()
-{
-  /* eslint-disable no-console */
-  consoleFunctions = [console.log,console.trace,console.error];
-  if(consoleEnabled)
-  {
-    console.log = function() {};
-    console.trace = function() {};
-    console.error = function() {};
-  }
-  consoleEnabled=false;
-  /* eslint-enable no-console */
-}
-
-function enableConsole()
-{
-  /* eslint-disable no-console */
-  if(!consoleEnabled)
-  {
-    console.log = consoleFunctions[0];
-    console.trace = consoleFunctions[1];
-    console.error = consoleFunctions[2];
-  }
-  consoleEnabled=true;
-  /* eslint-enable no-console */
-}
-
 function roleUse(role)
 {
   graph.resetStyle();
+  graph.setStarMode(true);
   // TODO direkt von
   const query =
   `select distinct ?role ?function ?et ?etx
@@ -76,16 +47,17 @@ function roleUse(role)
     }
     //console.log(roles);
     const classes = new Set([...roles, ...functions,...ets,...etxs]);
-    const selectedNodes = [];
-    const selectedEdges = [];
+    let selectedNodes = graph.cy.nodes("node[noth='ing']");
+    //let selectedEdges = graph.cy.nodes("node[noth='ing']");
     for(const c of classes)
     {
       const cNodes = graph.cy.nodes(`node[name='${c}']`);
-      selectedNodes.push(cNodes);
-      selectedEdges.push(cNodes.connectedEdges());
+      selectedNodes = selectedNodes.union(cNodes);
+      //selectedEdges = selectedEdges.union(cNodes.connectedEdges());
     }
-    graph.remove(graph.cy.nodes());
-    for (let i = 0; i < selectedNodes.length; i++)	{selectedNodes[i].restore();}
+    graph.hideNodes(graph.cy.nodes());
+    for (let i = 0; i < selectedNodes.length; i++)	{graph.showNodes(selectedNodes[i]);/*selectedNodes[i].restore();*/}
+    /*
     for (let i = 0; i < selectedEdges.length; i++)
     {
       // ignore cytoscape warnings for edges with only one endpointin the active nodes
@@ -93,7 +65,8 @@ function roleUse(role)
       selectedEdges[i].restore();
       enableConsole();
     }
-    graph.cy.layout(
+    */
+    selectedNodes.layout(
       {
         name: 'concentric',
         fit: true,
@@ -124,7 +97,7 @@ function roleUse(role)
 
     const roleNode = graph.cy.nodes(`node[name='${role}']`);
     graph.cy.center(roleNode);
-    graph.cy.fit();
+    graph.cy.fit(selectedNodes);
   }
 );
 }
