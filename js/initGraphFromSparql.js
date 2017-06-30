@@ -40,7 +40,7 @@ function initGraphFromSparql()
   const classes = localStorage.getItem('classes');
   // if not in cache, load
   const classesPromise = (classes===undefined)?
-  sparql.sparql(query):Promise.resolve(classes);
+    sparql.sparql(query):Promise.resolve(classes);
 
   const classesAddedPromise = classesPromise.then((json)=>
   {
@@ -60,14 +60,14 @@ function initGraphFromSparql()
           },
           //position: { x: 200, y: 200 }
         });
-        /*console.log(json[i].l);
+      /*console.log(json[i].l);
         console.log(json[i].l.value);*/
     }
   });
   const sparqlPropertiesTimer = timer("sparql-properties");
   const triplesPromise = sparql.sparql(
-      // only show classes with labels, use any one if more than one
-      `select ?c replace(str(?p),".*[#/]","") as ?p ?d
+    // only show classes with labels, use any one if more than one
+    `select ?c replace(str(?p),".*[#/]","") as ?p ?d
       from <http://www.snik.eu/ontology/it>
       from <http://www.snik.eu/ontology/it4it>
       from <http://www.snik.eu/ontology/virtual>
@@ -77,11 +77,11 @@ function initGraphFromSparql()
         ?c ?p ?d.
       }`);
   Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
-      {
+  {
     sparqlPropertiesTimer.stop();
     const json = values[1];
     for(let i=0;i<json.length;i++)
-        {
+    {
       graph.cy.add(
         {
           group: "edges",
@@ -91,11 +91,11 @@ function initGraphFromSparql()
             id: i,
             interactionLabel: json[i].p.value,//Labels_DE: [json[i].l.value]
           },
-              //position: { x: 200, y: 200 }
+          //position: { x: 200, y: 200 }
         });
     }
     console.log("Loaded. Layouting...");
-          /*graph.cy.layout(
+    /*graph.cy.layout(
           {
           name:"cose",
           animate: true,
@@ -105,15 +105,15 @@ function initGraphFromSparql()
           initialTemp: 2000,
 
         }).run();*/
-        /*
+    /*
         graph.cy.layout(
         {
         name:"cola",
         maxSimulationTime: 200,
         fit: true
       }).run();*/
-      //graph.cy.zoom(graph.cy.zoom()*0.2);
-      /*graph.cy.layout(
+    //graph.cy.zoom(graph.cy.zoom()*0.2);
+    /*graph.cy.layout(
       {
       name:"cola",
       infinite: true,

@@ -99,7 +99,7 @@ function roleUse(role)
     graph.cy.center(roleNode);
     graph.cy.fit(selectedNodes);
   }
-);
+  );
 }
 
 export {roleUse};

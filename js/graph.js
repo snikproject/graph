@@ -346,7 +346,7 @@ function layout(name)
 {
   cy
   //.nodes(":visible")
-  .layout({ name: name }).run();
+    .layout({ name: name }).run();
 }
 
 var filtered = {};
@@ -423,4 +423,5 @@ function initGraph()
 
 function setSelectedNode(node) {selectedNode=node;}
 
-export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,remove,restore,layout,filter,pathSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar,setStarMode,hideNodes,showNodes};
+export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,remove,restore,layout,filter,
+  pathSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar,setStarMode,hideNodes,showNodes};

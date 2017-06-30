@@ -13,133 +13,125 @@
 	<script src="lib/cytoscape-cxtmenu.js"></script>
 	<script src="lib/cola.min.js"></script> <!-- Additional layouts. -->
 	<script src="lib/cytoscape-cola.js"></script>
-  <link href ="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel = "stylesheet">
+	<link href ="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel = "stylesheet">
 </head>
 
 <body>
-	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h2></noscript>
-		<script>
-		const INIT_GRAPH_FROM_SPARQL = false;
-		</script>
-		<script src="./js/browsercheck.js"></script>
-		<script>
-			var graph, search, menu,sparql
-		</script>
-		<script type="module">
-			import {initGraphFromFile} from "./js/initGraphFromFile.js";
-			import {initGraphFromSparql} from "./js/initGraphFromSparql.js";
-			INIT_GRAPH_FROM_SPARQL?initGraphFromSparql():initGraphFromFile();
+	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h1></noscript>
+	<script>
+	const INIT_GRAPH_FROM_SPARQL = false;
+	</script>
+	<script src="./js/browsercheck.js"></script>
+	<script>
+	var graph, search, menu,sparql
+	</script>
+	<script type="module">
+	import {initGraphFromFile} from "./js/initGraphFromFile.js";
+	import {initGraphFromSparql} from "./js/initGraphFromSparql.js";
+	import addFilterEntries from "./js/filter.js";
+	//INIT_GRAPH_FROM_SPARQL?initGraphFromSparql():initGraphFromFile();
+	initGraphFromFile()
+	.then(()=>
+	{
+		console.log(graph.cy);
+		addFilterEntries(graph.cy,document.getElementById("filter"));
+	});
 
-			import * as searchImport from "./js/search.js";
-			import * as menuImport from "./js/menu.js";
-		  import * as graphImport from "./js/graph.js";
-			import * as sparqlImport from "./js/sparql.js";
-			// place into global scope to allow onclick access
-			graph=graphImport;
-			menu=menuImport
-			search=searchImport;
-			sparql=sparqlImport;
-			document.querySelector('#closelink').addEventListener('click', search.hideSearchResults); // for unknown reasons, using onclick directly results in an undefined function
-		</script>
 
-		<div id="top">
-			<ul class="dropdown">
-				<li class="dropdown">
-					<a href="javascript:void(0)" class="dropbtn" onclick="menu.servicesMenu()">Services</a>
-					<div class="dropdown-content" id="services">
-						<a href="http://www.snik.eu/sparql" target="_blank">SPARQL Endpoint</a>
-						<a href="http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop" target="_blank">RDF Browser</a>
-						<a href="http://snik.eu/evaluation" target="_blank">Data Quality Evaluation</a>
+	import * as searchImport from "./js/search.js";
+	import * as menuImport from "./js/menu.js";
+	import * as graphImport from "./js/graph.js";
+	import * as sparqlImport from "./js/sparql.js";
+	// place into global scope to allow onclick access
+	graph=graphImport;
+	menu=menuImport
+	search=searchImport;
+	sparql=sparqlImport;
+	document.querySelector('#closelink').addEventListener('click', search.hideSearchResults); // for unknown reasons, using onclick directly results in an undefined function
+	</script>
+
+	<div id="top">
+		<ul class="dropdown">
+			<li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn" onclick="menu.servicesMenu()">Services</a>
+				<div class="dropdown-content" id="services">
+					<a href="http://www.snik.eu/sparql" target="_blank">SPARQL Endpoint</a>
+					<a href="http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop" target="_blank">RDF Browser</a>
+					<a href="http://snik.eu/evaluation" target="_blank">Data Quality Evaluation</a>
+				</div>
+			</li>
+			<li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn" onclick="menu.filterMenu()">Filter</a>
+				<div class="dropdown-content" id="filter">
+					<span><input type="text" value="node[name='http://www.snik.eu/ontology/meta/Top']" id="customfilter"/>
+						<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;graph.filter(this);"/>custom filter</span>
 					</div>
 				</li>
+
 				<li class="dropdown">
-					<a href="javascript:void(0)" class="dropbtn" onclick="menu.filterMenu()">Filter</a>
-					<div class="dropdown-content" id="filter">
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='meta']" /> meta</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='bb']" /> BB</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='ob']" /> OB</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='ciox']"/>	CioX</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='he']"/>	HE</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[prefix='it4it']"/>	IT4IT</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[name='http://www.snik.eu/ontology/meta/EntityType']"/>EntityType</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[name='http://www.snik.eu/ontology/meta/Role']"/>Role</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[name='http://www.snik.eu/ontology/meta/Function']"/>Function</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="edge[interaction='http://www.w3.org/2000/01/rdf-schema#subClassOf']"/>subClassOf</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="edge[interaction^='http://www.w3.org/2004/02/skos/core#']"/>inter-ontology-relations</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="edge[interaction!^='http://www.w3.org/2004/02/skos/core#']"/>non-inter-ontology-relations</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="edge[interaction='http://www.snik.eu/ontology/meta/subTopClass']"/>subTopClass</span>
-						<span><input type="checkbox" class="filterbox" onclick="graph.filter(this)" autocomplete="off" checked value="node[consolidated<=0]"/>unverified</span>
-						<span><input type="text" value="node[name='http://www.snik.eu/ontology/meta/Top']" id="customfilter"/>
-							<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;graph.filter(this);"/>custom filter</span>
-						</div>
-					</li>
+					<a href="javascript:void(0)" class="dropbtn" onclick="menu.optionsMenu()">Options</a>
+					<div class="dropdown-content" id="options">
+						<span><input type="checkbox" id="cumulativesearch"/>cumulative search</span>
+						<span><input type="checkbox" value="false" id="daymode" onclick="graph.invert(this.checked)"/>day mode</span>
+					</div>
+				</li>
 
-		<li class="dropdown">
-			<a href="javascript:void(0)" class="dropbtn" onclick="menu.optionsMenu()">Options</a>
-			<div class="dropdown-content" id="options">
-					<span><input type="checkbox" id="cumulativesearch"/>cumulative search</span>
-					<span><input type="checkbox" value="false" id="daymode" onclick="graph.invert(this.checked)"/>day mode</span>
-			</div>
-		</li>
+				<li class="dropdown">
+					<a href="javascript:void(0)" class="dropbtn" onclick="menu.helpMenu()">Help</a>
+					<div class="dropdown-content" id="help">
+						<a href="manual.html" target="_blank">Manual</a>
+						<a href="troubleshooting.html" target="_blank">Troubleshooting</a>
+						<a href="contribute.html" target="_blank">Contribute</a>
+						<a href="http://www.snik.eu/" target="_blank">Project Homepage</a>
+						<a href="https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys" target="_blank">Download Cytoscape Graph</a>
+						<a href="javascript:menu.about()">About SNIK Graph</a>
+						<a href="" onclick="ontologyFeedback()">Submit Feedback about the Ontology</a>
+						<script>
+						function ontologyFeedback()
+						{
+							if(confirm(ONTOLOGY_ISSUE_WARNING)) {window.open("https://github.com/IMISE/snik-ontology/issues","_blank");}
+						}
+						</script>
+						<a href="https://github.com/IMISE/snik-cytoscape.js/issues" target="_blank">Submit Feedback about the Visualization</a>
+					</div>
+				</li>
 
-		<li class="dropdown">
-			<a href="javascript:void(0)" class="dropbtn" onclick="menu.helpMenu()">Help</a>
-			<div class="dropdown-content" id="help">
-				<a href="manual.html" target="_blank">Manual</a>
-				<a href="troubleshooting.html" target="_blank">Troubleshooting</a>
-				<a href="contribute.html" target="_blank">Contribute</a>
-				<a href="http://www.snik.eu/" target="_blank">Project Homepage</a>
-				<a href="https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys" target="_blank">Download Cytoscape Graph</a>
-				<a href="javascript:menu.about()">About SNIK Graph</a>
-				<a href="" onclick="ontologyFeedback()">Submit Feedback about the Ontology</a>
-				<script>
-				function ontologyFeedback()
-				{
-					if(confirm(ONTOLOGY_ISSUE_WARNING)) {window.open("https://github.com/IMISE/snik-ontology/issues","_blank");}
-				}
-				</script>
-				<a href="https://github.com/IMISE/snik-cytoscape.js/issues" target="_blank">Submit Feedback about the Visualization</a>
-			</div>
-		</li>
+			</ul>
 
-	</ul>
+			<form id="search" method="post" onsubmit="search.hideSearchResults();search.search(this.children.query.value);return false;"><!-- Return false to prevent page reload. -->
+				<input type="text" name="query" id="query" list="matches" placeholder="🔍 Class Name"/>
+			</form>
 
-	<form id="search" method="post" onsubmit="search.hideSearchResults();search.search(this.children.query.value);return false;"><!-- Return false to prevent page reload. -->
-		<input type="text" name="query" id="query" list="matches" placeholder="🔍 Class Name"/>
-	</form>
+			<form>
+				<span id="sourcelabel">no source</span>
+				<input type="button" value="Set Source" onclick="graph.setSource(selectedNode)" />
+				<input type="button" id="centersource" value="Center Source" onclick="graph.cy.center(graph.graph.pathSource)" hidden/>
+				<span id="targetlabel">no target </span>
+				<input type="button" value="Set Target" onclick="graph.setTarget(selectedNode)" />
+				<input type="button" id="centertarget" value="Center Target" onclick="graph.cy.center(graph.pathTarget);" hidden/>
+				<input type="button" id="shortestpath" value="Shortest Path" onclick="graph.showPath(graph.pathSource,graph.pathTarget)" hidden/>
+				<input type="button" id="spiderworm" value="Spider Worm" onclick="graph.showWorm(graph.pathSource,graph.pathTarget)" hidden/>
+				<input type="button" id="starpath" value="Starpath" onclick="graph.showStarPath(graph.pathSource,graph.pathTarget)" hidden/>
+				<input type="button" id="doublestar" value="Double Star" onclick="graph.showDoubleStar(graph.pathSource,graph.pathTarget)" hidden/>
+				<input type="button" id="resetstyle" value="Reset View" onclick="graph.resetStyle()"/>
+				<input type="button" value="Eval" onclick="window.open('http://www.snik.eu/evaluation','_blank')"/>
+				<input type="button" value="Grid" onclick="graph.layout('grid')"/>
+				<input type="button" value="Force (Slow)" onclick="graph.layout('cola')"/>
+				<!--<input type="button" value="Spring (Slow)" onclick="graph.layout('cose')"/>
+				<input type="button" value="Breadthfirst (Slow)" onclick="graph.layout('breadthfirst')"/>-->
+				<input type="button" value="Remove" onclick="graph.remove(graph.cy.$('node:selected'));"/>
+				<input type="button" value="Restore" onclick="graph.restore()"/>
+				<!--<input type="button" value="Load" onclick="load.loadSparql()"/>-->
+			</form>
+		</div>
 
-	<form>
-		<span id="sourcelabel">no source</span>
-		<input type="button" value="Set Source" onclick="graph.setSource(selectedNode)" />
-		<input type="button" id="centersource" value="Center Source" onclick="graph.cy.center(graph.graph.pathSource)" hidden/>
-		<span id="targetlabel">no target </span>
-		<input type="button" value="Set Target" onclick="graph.setTarget(selectedNode)" />
-		<input type="button" id="centertarget" value="Center Target" onclick="graph.cy.center(graph.pathTarget);" hidden/>
-		<input type="button" id="shortestpath" value="Shortest Path" onclick="graph.showPath(graph.pathSource,graph.pathTarget)" hidden/>
-		<input type="button" id="spiderworm" value="Spider Worm" onclick="graph.showWorm(graph.pathSource,graph.pathTarget)" hidden/>
-		<input type="button" id="starpath" value="Starpath" onclick="graph.showStarPath(graph.pathSource,graph.pathTarget)" hidden/>
-		<input type="button" id="doublestar" value="Double Star" onclick="graph.showDoubleStar(graph.pathSource,graph.pathTarget)" hidden/>
-		<input type="button" id="resetstyle" value="Reset View" onclick="graph.resetStyle()"/>
-		<input type="button" value="Eval" onclick="window.open('http://www.snik.eu/evaluation','_blank')"/>
-	  <input type="button" value="Grid" onclick="graph.layout('grid')"/>
-		<input type="button" value="Force (Slow)" onclick="graph.layout('cola')"/>
-		<!--<input type="button" value="Spring (Slow)" onclick="graph.layout('cose')"/>
-		<input type="button" value="Breadthfirst (Slow)" onclick="graph.layout('breadthfirst')"/>-->
-		<input type="button" value="Remove" onclick="graph.remove(graph.cy.$('node:selected'));"/>
-		<input type="button" value="Restore" onclick="graph.restore()"/>
-	  <!--<input type="button" value="Load" onclick="load.loadSparql()"/>-->
-	</form>
-</div>
+		<div id="overlay" class="overlay">
+			<h2 id="h2:searchresults">Search Results</h2>
+			<a href="javascript:void(0)" id="closelink" class="closebtn">&times;</a>
+			<table id="tab:searchresults"></table>
+		</div>
 
-	<div id="overlay" class="overlay">
-		<h2 id="h2:searchresults">Search Results</h2>
-		<a href="javascript:void(0)" id="closelink" class="closebtn">&times;</a>
-		<table id="tab:searchresults"></table>
-	</div>
+		<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 
-
-	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
-
-
-</body>
-</html>
+	</body>
+	</html>

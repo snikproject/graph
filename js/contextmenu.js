@@ -86,7 +86,7 @@ showWorm(selectedNode, node);
 }
 },
 */
-/* commented out until denethor pdf links in browser work
+    /* commented out until denethor pdf links in browser work
 {
 content: 'book page (in development)',
 select: functiocxttn(node)
@@ -155,7 +155,7 @@ function registerMenu()
     {
       content: 'roleUse',
       select: function(node)
-        {
+      {
         roleUse(node.data().name);
       }
     }
