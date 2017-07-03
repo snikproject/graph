@@ -29,14 +29,16 @@
 	import {initGraphFromFile} from "./js/initGraphFromFile.js";
 	import {initGraphFromSparql} from "./js/initGraphFromSparql.js";
 	import addFilterEntries from "./js/filter.js";
+	import createMenuBar from "./js/menu.js";
 	//INIT_GRAPH_FROM_SPARQL?initGraphFromSparql():initGraphFromFile();
+
+	createMenuBar();
 	initGraphFromFile()
 	.then(()=>
 	{
 		console.log(graph.cy);
 		addFilterEntries(graph.cy,document.getElementById("filter"));
 	});
-
 
 	import * as searchImport from "./js/search.js";
 	import * as menuImport from "./js/menu.js";
@@ -51,52 +53,6 @@
 	</script>
 
 	<div id="top">
-		<ul class="dropdown">
-			<li class="dropdown">
-				<a href="javascript:void(0)" class="dropbtn" onclick="menu.servicesMenu()">Services</a>
-				<div class="dropdown-content" id="services">
-					<a href="http://www.snik.eu/sparql" target="_blank">SPARQL Endpoint</a>
-					<a href="http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop" target="_blank">RDF Browser</a>
-					<a href="http://snik.eu/evaluation" target="_blank">Data Quality Evaluation</a>
-				</div>
-			</li>
-			<li class="dropdown">
-				<a href="javascript:void(0)" class="dropbtn" onclick="menu.filterMenu()">Filter</a>
-				<div class="dropdown-content" id="filter">
-					<span><input type="text" value="node[name='http://www.snik.eu/ontology/meta/Top']" id="customfilter"/>
-						<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;graph.filter(this);"/>custom filter</span>
-					</div>
-				</li>
-
-				<li class="dropdown">
-					<a href="javascript:void(0)" class="dropbtn" onclick="menu.optionsMenu()">Options</a>
-					<div class="dropdown-content" id="options">
-						<span><input type="checkbox" id="cumulativesearch"/>cumulative search</span>
-						<span><input type="checkbox" value="false" id="daymode" onclick="graph.invert(this.checked)"/>day mode</span>
-					</div>
-				</li>
-
-				<li class="dropdown">
-					<a href="javascript:void(0)" class="dropbtn" onclick="menu.helpMenu()">Help</a>
-					<div class="dropdown-content" id="help">
-						<a href="manual.html" target="_blank">Manual</a>
-						<a href="troubleshooting.html" target="_blank">Troubleshooting</a>
-						<a href="contribute.html" target="_blank">Contribute</a>
-						<a href="http://www.snik.eu/" target="_blank">Project Homepage</a>
-						<a href="https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys" target="_blank">Download Cytoscape Graph</a>
-						<a href="javascript:menu.about()">About SNIK Graph</a>
-						<a href="" onclick="ontologyFeedback()">Submit Feedback about the Ontology</a>
-						<script>
-						function ontologyFeedback()
-						{
-							if(confirm(ONTOLOGY_ISSUE_WARNING)) {window.open("https://github.com/IMISE/snik-ontology/issues","_blank");}
-						}
-						</script>
-						<a href="https://github.com/IMISE/snik-cytoscape.js/issues" target="_blank">Submit Feedback about the Visualization</a>
-					</div>
-				</li>
-
-			</ul>
 
 			<form id="search" method="post" onsubmit="search.hideSearchResults();search.search(this.children.query.value);return false;"><!-- Return false to prevent page reload. -->
 				<input type="text" name="query" id="query" list="matches" placeholder="🔍 Class Name"/>

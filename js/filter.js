@@ -58,4 +58,7 @@ export default function addFilterEntries(cy, parent)
   {
     parent.appendChild(new Filter(cy,filter[0],filter[1]).span);
   }
+  // TODO: add custom filter
+  //'http://www.snik.eu/ontology/meta/Top']" id="customfilter"
+  //<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;graph.filter(this);"/>custom filter</span>
 }
