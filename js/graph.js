@@ -391,6 +391,8 @@ function initGraph()
       container: document.getElementById('cy'),
       style: merged,
       wheelSensitivity: 0.3,
+      minZoom: 0.02,
+      maxZoom: 7,
     });
   registerMenu();
 
