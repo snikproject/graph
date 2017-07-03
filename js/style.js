@@ -103,25 +103,12 @@ var style =
           'border-width': 5.0,
         }
       },
-      /* {
-		"selector" : "edge",
-		"css" : {
-		"source-arrow-color" : "rgb(255,255,255)",
-		"line-color" : "rgb(255,255,255)",
-		"source-arrow-shape" : "none",
-		"font-family" : "SansSerif.plain",
-		"font-weight" : "normal",
-		"content" : "",
-		"font-size" : 10,
-		"color" : "rgb(0,0,0)",
-		"opacity" : 0.29411764705882354,
-		"text-opacity" : 1.0,
-		"line-style" : "solid",
-		"target-arrow-color" : "rgb(255,255,255)",
-		"width" : 0.45,
-		"target-arrow-shape" : "data(pl)"
-	}
-},*/
+      {
+        "selector" : "edge",
+        "css" : {
+          'min-zoomed-font-size': 9,
+        }
+      },
       {
         'selector': 'edge[!selected]',
         'css':
@@ -132,7 +119,6 @@ var style =
           'edge-text-rotation': 'autorotate',
           'text-margin-y': '-1em',
           'text-opacity': 0,
-          'min-zoomed-font-size': 8,
         }
       },
       {
