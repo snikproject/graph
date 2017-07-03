@@ -392,8 +392,7 @@ function initGraph()
       style: merged,
       wheelSensitivity: 0.3,
       minZoom: 0.02,
-      maxZoom: 7,
-      hideEdgesOnViewport: true,
+      maxZoom: 7
     });
   registerMenu();
 
