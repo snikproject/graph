@@ -20,9 +20,6 @@ var pathSource;
 var pathTarget;
 var starMode=false;
 
-// todo: find a more elegant solution
-function emptyCollection() {return cy.nodes("node[makeme='empty']");}
-
 function setStarMode(mode) {starMode=mode;}
 
 function mergeJsonArraysByKey(a1,a2)
@@ -273,10 +270,10 @@ function resetStyle()
   cy.startBatch();
   styledNodes.show();
   styledNodes.removeClass('highlighted');
-  styledNodes = emptyCollection();
+  styledNodes = cy.collection();
   styledEdges.show();
   styledEdges.removeClass('highlighted');
-  styledEdges = emptyCollection();
+  styledEdges = cy.collection();
   cy.endBatch();
   progress(100);
 }
@@ -336,8 +333,8 @@ function restore()
   for (let i = 0; i < removedNodes.length; i++)
   {removedNodes[i].restore();}
   for (let i = 0; i < removedEdges.length; i++)	{removedEdges[i].restore();}
-  removedNodes = emptyCollection();
-  removedEdges = emptyCollection();
+  removedNodes = cy.collection();
+  removedEdges = cy.collection();
   cy.endBatch();
   $('body').removeClass('waiting');
 }
@@ -415,10 +412,10 @@ function initGraph()
   });
 
   // workaround to create empty collections until better known
-  removedNodes = emptyCollection() ;
-  removedEdges = emptyCollection() ;
-  styledEdges = emptyCollection();
-  styledNodes = emptyCollection();
+  removedNodes = cy.collection() ;
+  removedEdges = cy.collection() ;
+  styledEdges = cy.collection();
+  styledNodes = cy.collection();
 }
 
 function setSelectedNode(node) {selectedNode=node;}
