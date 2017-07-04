@@ -1,22 +1,10 @@
 import * as sparql from "./sparql.js";
 import * as graph from "./graph.js";
-
-function timer(name)
-{
-  var start = new Date();
-  return {
-    stop: function()
-    {
-      var end  = new Date();
-      var time = end.getTime() - start.getTime();
-      console.log('Timer:', name, 'finished in', time, 'ms');
-    }
-  };
-}
+import timer from "./timer.js";
 
 function initGraphFromSparql()
 {
-  const initTimer = timer("init");
+  const initTimer = timer("graph-init");
   graph.initGraph(document.getElementById('cy'));
   initTimer.stop();
   // load graph from SPARQL endpoint instead of from the .cyjs file
@@ -25,7 +13,7 @@ function initGraphFromSparql()
   const query =
   `select ?c str(sample(?l)) as ?l replace(str(sample(?subTop)),".*[#/]","") as ?subTop replace(str(?source),".*[#/]","") as ?source
   #count(?o) as ?degree
-  from <http://www.snik.eu/ontology/it>
+  #from <http://www.snik.eu/ontology/it>
   from <http://www.snik.eu/ontology/it4it>
   from <http://www.snik.eu/ontology/virtual>
   from <http://www.snik.eu/ontology/meta>
@@ -37,12 +25,14 @@ function initGraphFromSparql()
     OPTIONAL {?c rdfs:label ?l.}
   }`;
   const sparqlClassesTimer = timer("sparql-classes");
-  const classes = localStorage.getItem('classes');
+  let sparqlPropertiesTimer;
+  const classes = undefined;//localStorage.getItem('classes');
   // if not in cache, load
   const classesPromise = (classes===undefined)?
-    sparql.sparql(query):Promise.resolve(classes);
+  sparql.sparql(query):Promise.resolve(classes);
 
-  const classesAddedPromise = classesPromise.then((json)=>
+  //const classesAddedPromise =
+  return classesPromise.then((json)=>
   {
     sparqlClassesTimer.stop();
     for(let i=0;i<json.length;i++)
@@ -60,28 +50,31 @@ function initGraphFromSparql()
           },
           //position: { x: 200, y: 200 }
         });
-      /*console.log(json[i].l);
+        /*console.log(json[i].l);
         console.log(json[i].l.value);*/
     }
-  });
-  const sparqlPropertiesTimer = timer("sparql-properties");
-  const triplesPromise = sparql.sparql(
-    // only show classes with labels, use any one if more than one
-    `select ?c replace(str(?p),".*[#/]","") as ?p ?d
-      from <http://www.snik.eu/ontology/it>
-      from <http://www.snik.eu/ontology/it4it>
-      from <http://www.snik.eu/ontology/virtual>
-      from <http://www.snik.eu/ontology/meta>
-      {
-        owl:Class ^a ?c,?d.
-        ?c ?p ?d.
-      }`);
-  Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
-  {
-    sparqlPropertiesTimer.stop();
-    const json = values[1];
-    for(let i=0;i<json.length;i++)
+  }).then(()=>
     {
+    sparqlPropertiesTimer = timer("sparql-properties");
+      //const triplesPromise =
+    return sparql.sparql(
+        // only show classes with labels, use any one if more than one
+        `select ?c replace(str(?p),".*[#/]","") as ?p ?d
+        #from <http://www.snik.eu/ontology/it>
+        from <http://www.snik.eu/ontology/it4it>
+        from <http://www.snik.eu/ontology/virtual>
+        from <http://www.snik.eu/ontology/meta>
+        {
+          owl:Class ^a ?c,?d.
+          ?c ?p ?d.
+        }`);
+  }).then(json=>
+        //return Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
+        {
+    sparqlPropertiesTimer.stop();
+          //const json = values[1];
+    for(let i=0;i<json.length;i++)
+          {
       graph.cy.add(
         {
           group: "edges",
@@ -91,35 +84,40 @@ function initGraphFromSparql()
             id: i,
             interactionLabel: json[i].p.value,//Labels_DE: [json[i].l.value]
           },
-          //position: { x: 200, y: 200 }
+                //position: { x: 200, y: 200 }
         });
     }
-    console.log("Loaded. Layouting...");
-    /*graph.cy.layout(
-          {
-          name:"cose",
-          animate: true,
-          animationThreshold: 250,
-          nodeDimensionsIncludeLabels: false,
-          nodeRepulsion: function(node){ return 400000; },
-          initialTemp: 2000,
-
-        }).run();*/
-    /*
-        graph.cy.layout(
-        {
-        name:"cola",
-        maxSimulationTime: 200,
-        fit: true
-      }).run();*/
-    //graph.cy.zoom(graph.cy.zoom()*0.2);
-    /*graph.cy.layout(
+    const layoutTimer = timer("layout");
+    graph.cy.layout(
       {
-      name:"cola",
-      infinite: true,
-      fit: false,
-      nodeSpacing: function(node) {return 40;}
-    }).run();*/
+        name:"cose",
+        animate: true,
+        animationThreshold: 250,
+        numIter: 50,
+        nodeDimensionsIncludeLabels: false,
+        nodeRepulsion: function(node){ return 400000; },
+        initialTemp: 2000,
+      }).run();
+    layoutTimer.stop();
+  // cola produces elongated result, so we can't use it
+  /*graph.cy.layout(
+  {
+  name:"cola",
+  maxSimulationTime: 400,
+  fit: true
+}).run();
+layoutTimer.stop();
+//graph.cy.zoom(graph.cy.zoom()*0.2);
+/*graph.cy.layout(
+{
+name:"cola",
+infinite: true,
+fit: false,
+nodeSpacing: function(node) {return 40;}
+}).run();*/
+  }).catch(e=>
+      {
+    console.error(e,query);
   });
 }
 
