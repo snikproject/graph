@@ -45,7 +45,7 @@ function initGraphFromSparql()
             name: json[i].c.value,
             ld: [(json[i].l===undefined)?json[i].c.value:json[i].l.value],
             st: (json[i].subTop===undefined)?undefined:json[i].subTop.value,
-            source: (json[i].source===undefined)?undefined:json[i].source.value,
+            prefix: (json[i].source===undefined)?undefined:json[i].source.value,
             //degree: parseInt(json[i].degree.value),
           },
           //position: { x: 200, y: 200 }
@@ -115,6 +115,7 @@ infinite: true,
 fit: false,
 nodeSpacing: function(node) {return 40;}
 }).run();*/
+    return graph.cy;
   }).catch(e=>
       {
     console.error(e,query);

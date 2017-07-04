@@ -18,9 +18,7 @@
 
 <body>
 	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h1></noscript>
-	<script>
-	const INIT_GRAPH_FROM_SPARQL = false;
-	</script>
+
 	<script src="./js/browsercheck.js"></script>
 	<script>
 	var graph, search, menu,sparql
@@ -33,60 +31,35 @@
 
 	const INIT_GRAPH_FROM_SPARQL = true;
 	(INIT_GRAPH_FROM_SPARQL?initGraphFromSparql():initGraphFromFile())
-	.then(()=>
+	.then((cy)=>
 	{
 		addMenu();
-		addFilterEntries(graph.cy,document.getElementById("filter"));
+		addFilterEntries(cy,document.getElementById("filter"));
+	})
+	.catch(e=>
+	{
+		console.error(e,"menu init error");
 	});
-
-	import * as searchImport from "./js/search.js";
-	import * as menuImport from "./js/menu.js";
-	import * as graphImport from "./js/graph.js";
-	import * as sparqlImport from "./js/sparql.js";
-	// place into global scope to allow onclick access
-	graph=graphImport;
-	menu=menuImport
-	search=searchImport;
-	sparql=sparqlImport;
 	document.querySelector('#closelink').addEventListener('click', search.hideSearchResults); // for unknown reasons, using onclick directly results in an undefined function
 	</script>
 
 	<div id="top">
 
-			<form id="search" method="post" onsubmit="search.hideSearchResults();search.search(this.children.query.value);return false;"><!-- Return false to prevent page reload. -->
-				<input type="text" name="query" id="query" list="matches" placeholder="🔍 Class Name"/>
-			</form>
+		<form id="search" method="post" onsubmit="search.hideSearchResults();search.search(this.children.query.value);return false;"><!-- Return false to prevent page reload. -->
+			<input type="text" name="query" id="query" list="matches" placeholder="🔍 Class Name"/>
+		</form>
 
-			<form>
-				<span id="sourcelabel">no source</span>
-				<input type="button" value="Set Source" onclick="graph.setSource(selectedNode)" />
-				<input type="button" id="centersource" value="Center Source" onclick="graph.cy.center(graph.graph.pathSource)" hidden/>
-				<span id="targetlabel">no target </span>
-				<input type="button" value="Set Target" onclick="graph.setTarget(selectedNode)" />
-				<input type="button" id="centertarget" value="Center Target" onclick="graph.cy.center(graph.pathTarget);" hidden/>
-				<input type="button" id="shortestpath" value="Shortest Path" onclick="graph.showPath(graph.pathSource,graph.pathTarget)" hidden/>
-				<input type="button" id="spiderworm" value="Spider Worm" onclick="graph.showWorm(graph.pathSource,graph.pathTarget)" hidden/>
-				<input type="button" id="starpath" value="Starpath" onclick="graph.showStarPath(graph.pathSource,graph.pathTarget)" hidden/>
-				<input type="button" id="doublestar" value="Double Star" onclick="graph.showDoubleStar(graph.pathSource,graph.pathTarget)" hidden/>
-				<input type="button" id="resetstyle" value="Reset View" onclick="graph.resetStyle()"/>
-				<input type="button" value="Eval" onclick="window.open('http://www.snik.eu/evaluation','_blank')"/>
-				<input type="button" value="Grid" onclick="graph.layout('grid')"/>
-				<input type="button" value="Force (Slow)" onclick="graph.layout('cola')"/>
-				<!--<input type="button" value="Spring (Slow)" onclick="graph.layout('cose')"/>
-				<input type="button" value="Breadthfirst (Slow)" onclick="graph.layout('breadthfirst')"/>-->
-				<input type="button" value="Remove" onclick="graph.remove(graph.cy.$('node:selected'));"/>
-				<input type="button" value="Restore" onclick="graph.restore()"/>
-				<!--<input type="button" value="Load" onclick="load.loadSparql()"/>-->
-			</form>
-		</div>
+		<form id="buttons">
+		</form>
+	</div>
 
-		<div id="overlay" class="overlay">
-			<h2 id="h2:searchresults">Search Results</h2>
-			<a href="javascript:void(0)" id="closelink" class="closebtn">&times;</a>
-			<table id="tab:searchresults"></table>
-		</div>
+	<div id="overlay" class="overlay">
+		<h2 id="h2:searchresults">Search Results</h2>
+		<a href="javascript:void(0)" id="closelink" class="closebtn">&times;</a>
+		<table id="tab:searchresults"></table>
+	</div>
 
-		<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
+	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
 
-	</body>
-	</html>
+</body>
+</html>

@@ -36,13 +36,14 @@ console.log('snik-ciox.cyjs not found, loading snik.cyjs. Details: '+err);
       graph.cy.add(json.elements);
     //cy.zoom(0.1);
     //cy.center(cy.elements().nodes().filter(`node[name= "http://www.snik.eu/ontology/meta/EntityType"]`)[0]);
+      return graph.cy;
     })
     .catch(err2=>
     {
       alert('Did not find graph file snik.cyjs, failed to load graph. Details: '+err2);
       progress(100);
     })
-    .then(()=>
+    .finally(()=>
     {
       progress(100);
     });

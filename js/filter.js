@@ -9,14 +9,14 @@ const filters = [
   ["node[prefix='ciox']","CioX"],
   ["node[prefix='he']","HE"],
   ["node[prefix='it4it']","IT4IT"],
-  ["node[name='http://www.snik.eu/ontology/meta/EntityType']","EntityType"],
-  ["node[name='http://www.snik.eu/ontology/meta/Role']","Role"],
-  ["node[name='http://www.snik.eu/ontology/meta/Function']","Function"],
-  ["edge[interaction='http://www.w3.org/2000/01/rdf-schema#subClassOf']","subClassOf"],
-  ["edge[interaction^='http://www.w3.org/2004/02/skos/core#']","inter-ontology-relations"],
-  ["edge[interaction!^='http://www.w3.org/2004/02/skos/core#']","non-inter-ontology-relations"],
-  ["edge[interaction='http://www.snik.eu/ontology/meta/subTopClass']","subTopClass"],
-  ["node[consolidated<=0]","unverified"]
+  ["node[st='EntityType']","EntityType"],
+  ["node[st='Role']","Role"],
+  ["node[st='Function']","Function"],
+  ["edge[p='http://www.w3.org/2000/01/rdf-schema#subClassOf']","subClassOf"],
+  ["edge[p^='http://www.w3.org/2004/02/skos/core#']","inter-ontology-relations"],
+  ["edge[p!^='http://www.w3.org/2004/02/skos/core#']","non-inter-ontology-relations"],
+  ["edge[p='http://www.snik.eu/ontology/meta/subTopClass']","subTopClass"],
+  //["node[consolidated<=0]","unverified"]
 ];
 
 class Filter
@@ -52,7 +52,7 @@ class Filter
   }
 }
 
-export default function addFilterEntries(cy, parent)
+function addFilterEntries(cy, parent)
 {
   for(const filter of filters)
   {
@@ -62,3 +62,5 @@ export default function addFilterEntries(cy, parent)
   //'http://www.snik.eu/ontology/meta/Top']" id="customfilter"
   //<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;graph.filter(this);"/>custom filter</span>
 }
+
+export default addFilterEntries;
