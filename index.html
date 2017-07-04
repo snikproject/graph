@@ -29,14 +29,13 @@
 	import {initGraphFromFile} from "./js/initGraphFromFile.js";
 	import {initGraphFromSparql} from "./js/initGraphFromSparql.js";
 	import addFilterEntries from "./js/filter.js";
-	import createMenuBar from "./js/menu.js";
-	//INIT_GRAPH_FROM_SPARQL?initGraphFromSparql():initGraphFromFile();
+	import addMenu from "./js/menu.js";
 
-	createMenuBar();
-	initGraphFromFile()
+	const INIT_GRAPH_FROM_SPARQL = true;
+	(INIT_GRAPH_FROM_SPARQL?initGraphFromSparql():initGraphFromFile())
 	.then(()=>
 	{
-		console.log(graph.cy);
+		addMenu();
 		addFilterEntries(graph.cy,document.getElementById("filter"));
 	});
 

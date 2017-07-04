@@ -1,9 +1,12 @@
 import {MODIFIED,ONTOLOGY_MODIFIED} from "./about.js";
+import {cy} from "./graph.js";
 
 function about() {window.alert("SNIK Graph version "+MODIFIED+"\nOntology version "+ONTOLOGY_MODIFIED);}
+/**entries is an array of arrays of size two, entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed. entries[i][1] is a label as a string.  */
 
-const menus =
-  [
+function menuData()
+{
+  return [
     {
       "label": "Services",
       "id":"services",
@@ -25,6 +28,17 @@ const menus =
       "entries": [] // filled by addOptions()
     },
     {
+      "label": "Layouts",
+      "id": "layouts",
+      "entries":
+      [
+      [()=>cy.$('node:visible').layout('cola'),"Force (Experimental)"],
+      [()=>cy.$('node:visible').layout('cose'),"Spring (Experimental)"],
+      [()=>cy.$('node:visible').layout('breadthfirst'),"Breadthfirst (Experimental)"],
+      [()=>cy.$('node:visible').layout('grid'),"Grid"],
+      ]
+    },
+    {
       "label": "Help",
       "id": "help",
       "entries":
@@ -40,6 +54,7 @@ const menus =
       ]
     },
   ];
+}
 
 function addOptions()
 {
@@ -48,12 +63,12 @@ function addOptions()
   <span><input type="checkbox" value="false" id="daymode" onclick="graph.invert(this.checked)"/>day mode</span> `;
 }
 
-export default function createMenuBar()
+function addMenu()
 {
   //const frag = new DocumentFragment();
   const ul = document.createElement("ul");
   ul.classList.add("dropdown");
-  for(const menu of menus)
+  for(const menu of menuData())
   {
     const li = document.createElement("li");
     ul.append(li);
@@ -76,12 +91,26 @@ export default function createMenuBar()
       const a = document.createElement("a");
       div.append(a);
       a.innerText=entry[1];
+      switch(typeof entry[0])
+      {
+      case 'string':
+        {
+          a.href=entry[0];
+          a.target="_blank";
+          break;
+        }
+      case 'function':
+        {
+          a.addEventListener("click",entry[0]);
+          break;
+        }
+      default: console.error("unknown menu entry action type: "+typeof entry[0]);
+      }
       //
     }
   }
   document.getElementById("top").prepend(ul);
   addOptions();
-  return ul;
 }
 
 // Close the dropdown if the user clicks outside of it
@@ -101,3 +130,5 @@ window.onclick = function(e)
     }
   }
 };
+
+export default addMenu;
