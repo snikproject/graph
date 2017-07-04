@@ -18,39 +18,16 @@
 
 <body>
 	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h1></noscript>
-
 	<script src="./js/browsercheck.js"></script>
-	<script>
-	var graph, search, menu,sparql
-	</script>
-	<script type="module">
-	import {initGraphFromFile} from "./js/initGraphFromFile.js";
-	import {initGraphFromSparql} from "./js/initGraphFromSparql.js";
-	import addFilterEntries from "./js/filter.js";
-	import addMenu from "./js/menu.js";
-
-	const INIT_GRAPH_FROM_SPARQL = true;
-	(INIT_GRAPH_FROM_SPARQL?initGraphFromSparql():initGraphFromFile())
-	.then((cy)=>
-	{
-		addMenu();
-		addFilterEntries(cy,document.getElementById("filter"));
-	})
-	.catch(e=>
-	{
-		console.error(e,"menu init error");
-	});
-	document.querySelector('#closelink').addEventListener('click', search.hideSearchResults); // for unknown reasons, using onclick directly results in an undefined function
-	</script>
+	<script type="module" src="./js/main.js"></script>
 
 	<div id="top">
 
-		<form id="search" method="post" onsubmit="search.hideSearchResults();search.search(this.children.query.value);return false;"><!-- Return false to prevent page reload. -->
+		<form id="search" method="post">
 			<input type="text" name="query" id="query" list="matches" placeholder="🔍 Class Name"/>
 		</form>
 
-		<form id="buttons">
-		</form>
+		<form id="buttons"/>
 	</div>
 
 	<div id="overlay" class="overlay">

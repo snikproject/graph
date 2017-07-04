@@ -186,4 +186,15 @@ function setFirstCumulativeSearch(value)
   firstCumulativeSearch=value;
 }
 
-export {search,setFirstCumulativeSearch,hideSearchResults};
+function addSearch()
+{
+  document.getElementById('closelink').addEventListener("click", hideSearchResults);
+  document.getElementById("search").addEventListener("submit",(event)=>
+  {
+    event.preventDefault();
+    hideSearchResults();
+    search(event.target.children.query.value);
+  });
+}
+
+export default addSearch;
