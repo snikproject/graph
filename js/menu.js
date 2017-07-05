@@ -1,5 +1,5 @@
 import {MODIFIED,ONTOLOGY_MODIFIED} from "./about.js";
-import {cy} from "./graph.js";
+import * as layout from "./layout.js";
 
 function about() {window.alert("SNIK Graph version "+MODIFIED+"\nOntology version "+ONTOLOGY_MODIFIED);}
 /**entries is an array of arrays of size two, entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed. entries[i][1] is a label as a string.  */
@@ -32,10 +32,12 @@ function menuData()
       "id": "layouts",
       "entries":
       [
-      [()=>cy.$('node:visible').layout('cola'),"Force (Experimental)"],
-      [()=>cy.$('node:visible').layout('cose'),"Spring (Experimental)"],
-      [()=>cy.$('node:visible').layout('breadthfirst'),"Breadthfirst (Experimental)"],
-      [()=>cy.$('node:visible').layout('grid'),"Grid"],
+      [()=>layout.run(layout.colaInf),"Cola-Infinite (Experimental)"],
+      [()=>layout.run(layout.cola),"Cola (Experimental)"],
+      [()=>layout.run(layout.cose),"Cose (Experimental)"],
+      [()=>layout.run(layout.coseBilkent),"Cose-Bilkent (Experimental)"],
+      [()=>layout.run(layout.breadthfirst),"Breadthfirst (Experimental)"],
+      [()=>layout.run(layout.grid),"Grid"],
       ]
     },
     {

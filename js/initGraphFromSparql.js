@@ -1,5 +1,6 @@
 import * as sparql from "./sparql.js";
 import * as graph from "./graph.js";
+import * as layout from "./layout.js";
 import timer from "./timer.js";
 
 function initGraphFromSparql()
@@ -88,36 +89,11 @@ function initGraphFromSparql()
         });
     }
     const layoutTimer = timer("layout");
-    graph.cy.layout(
-      {
-        name:"cose",
-        animate: true,
-        animationThreshold: 250,
-        numIter: 50,
-        nodeDimensionsIncludeLabels: false,
-        nodeRepulsion: function(node){ return 400000; },
-        initialTemp: 2000,
-      }).run();
+    layout.run(layout.cose);
     layoutTimer.stop();
-  // cola produces elongated result, so we can't use it
-  /*graph.cy.layout(
-  {
-  name:"cola",
-  maxSimulationTime: 400,
-  fit: true
-}).run();
-layoutTimer.stop();
-//graph.cy.zoom(graph.cy.zoom()*0.2);
-/*graph.cy.layout(
-{
-name:"cola",
-infinite: true,
-fit: false,
-nodeSpacing: function(node) {return 40;}
-}).run();*/
     return graph.cy;
   }).catch(e=>
-      {
+            {
     console.error(e,query);
   });
 }
