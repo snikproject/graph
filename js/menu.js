@@ -1,5 +1,6 @@
 import {MODIFIED,ONTOLOGY_MODIFIED} from "./about.js";
 import * as layout from "./layout.js";
+import {invert} from "./graph.js";
 
 function about() {window.alert("SNIK Graph version "+MODIFIED+"\nOntology version "+ONTOLOGY_MODIFIED);}
 /**entries is an array of arrays of size two, entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed. entries[i][1] is a label as a string.  */
@@ -61,8 +62,10 @@ function menuData()
 function addOptions()
 {
   document.getElementById("options").innerHTML =
-  `<span><input type="checkbox" id="cumulativesearch"/>cumulative search</span>
-  <span><input type="checkbox" value="false" id="daymode" onclick="graph.invert(this.checked)"/>day mode</span> `;
+  `<span><input type="checkbox" autocomplete="off" id="cumulativesearch"/>cumulative search</span>
+  <span><input type="checkbox"  autocomplete="off" id="daymode"/>day mode</span> `;
+  const daymode = document.getElementById("daymode");
+  daymode.addEventListener("input",()=>invert(daymode.checked));
 }
 
 function addMenu()
