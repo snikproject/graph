@@ -1,4 +1,12 @@
+import * as graph from "./graph.js";
 
+export default function addButtons()
+{
+  const resetView = document.createElement("button");
+  document.getElementById("buttons").append(resetView);
+  resetView.innerText = "Reset View";
+  resetView.addEventListener("click",graph.resetStyle);
+}
 
 /*
 "Grid","graph.layout('grid')"/>
@@ -6,7 +14,7 @@
 "Spring (Slow)","graph.layout('cose')"/>
 "Breadthfirst (Slow)","graph.layout('breadthfirst')"/>-->
 
-"Reset View","graph. id="resetstyle"
+
 
 "Eval","window.open('http://www.snik.eu/evaluation','_blank')"/>
 "Remove","graph.remove(graph.cy.$('node:selected'));"/>

@@ -217,13 +217,15 @@ function setSource(node)
   {
     return false;
   }
-  document.getElementById('centersource').hidden=false;
+  //document.getElementById('centersource').hidden=false;
   if(pathTarget !== undefined)
   {
+    /*
     document.getElementById('shortestpath').hidden=false;
     document.getElementById('spiderworm').hidden=false;
     document.getElementById('doublestar').hidden=false;
     document.getElementById('starpath').hidden=false;
+    */
     cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
   }
   if(pathSource!==undefined)
@@ -232,8 +234,10 @@ function setSource(node)
   }
   pathSource = node;
   pathSource.addClass('source');
+  /*
   document.getElementById('sourcelabel').innerHTML=
    pathSource.data('name').replace(sparql.SPARQL_PREFIX,'');
+    */
 }
 
 function setTarget(node)

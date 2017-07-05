@@ -34,59 +34,76 @@ const defaultsNodes = {
         }
       }
     },
+    /*    {
+    content: 'set as path target',
+    select: function(node)
     {
-      content: 'set as path target',
-      select: function(node)
-      {
-        graph.setTarget(node);
-      }
-    },
+    graph.setTarget(node);
+  }
+},*/
     {
       content: 'set as path source',
       select: function(node)
-      {
+  {
         graph.setSource(node);
       }
     },
     {
       content: 'LodLive',
       select: function(node)
-      {
+  {
         window.open('http://en.lodlive.it/?'+node._private.data.name);
       }
     },
     {
       content: 'star',
       select: function(node)
-      {
+  {
         graph.showStar(node);
       }
     },
-    /*
     {
-    content: 'shortest path to here',
-    select: function(node)
+      content: 'shortest path to here',
+      select: function(node)
+  {
+        if (graph.pathSource)
     {
-    if (selectedNode)
+          graph.showPath(graph.pathSource, node);
+        }
+      }
+    },
     {
-    resetStyle();
-    showPath(selectedNode, node);
-  }
-}
-},
-{
-content: 'spiderworm to here',
-select: function(node)
-{
-if (selectedNode)
-{
-resetStyle();
-showWorm(selectedNode, node);
-}
-}
-},
-*/
-    /* commented out until denethor pdf links in browser work
+      content: 'spiderworm to here',
+      select: function(node)
+  {
+        if (graph.selectedNode)
+    {
+          graph.showWorm(graph.pathSource, node);
+        }
+      }
+    },
+    {
+      content: 'doublestar to here',
+      select: function(node)
+    {
+        if (graph.selectedNode)
+    {
+          graph.showDoubleStar(graph.pathSource, node);
+        }
+      }
+    },
+    {
+      content: 'starpath to here',
+      select: function(node)
+    {
+        if (graph.selectedNode)
+    {
+          graph.showStarPath(graph.pathSource, node);
+        }
+      }
+    },
+
+/* commented out until denethor pdf links in browser work
 {
 content: 'book page (in development)',
 select: functiocxttn(node)
