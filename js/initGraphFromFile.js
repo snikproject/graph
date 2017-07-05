@@ -18,13 +18,16 @@ function initGraphFromFile()
     {
     graph.initGraph();
     graph.cy.add(json.elements);
-    return graph.cy;
   })
     .catch(e=>
       {
       alert('Error loading snik.cyjs: '+e);
     })
-      .then(()=> {progress(100);});
+      .then(()=>
+      {
+        progress(100);
+        return graph.cy;
+      });
 }
 
 export {initGraphFromFile};
