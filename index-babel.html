@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>SNIK Ontology Graph</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen" />
+	<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.1.2/cytoscape.min.js"></script>
+	<script src="lib/cytoscape-cxtmenu.js"></script>
+	<script src="lib/cola.min.js"></script>
+	<script src="lib/cytoscape-cola.js"></script>
+	<link href ="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel = "stylesheet">
+</head>
+
+<body>
+	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h1></noscript>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.20.14/system.js"></script>
+	<script>
+	System.config({ "baseURL": "target" });
+	System.import("main.js");
+	</script>
+
+	<div id="top">
+
+		<form id="search" method="post">
+			<input type="text" name="query" id="query" list="matches" placeholder="🔍 Class Name"/>
+		</form>
+
+				<span id="buttons"/>
+	</div>
+
+	<div id="overlay" class="overlay">
+		<h2 id="h2:searchresults">Search Results</h2>
+		<a href="javascript:void(0)" id="closelink" class="closebtn">&times;</a>
+		<table id="tab:searchresults"></table>
+	</div>
+
+	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
+
+</body>
+</html>
