@@ -65,7 +65,7 @@ function addOptions()
   `<span><input type="checkbox" autocomplete="off" id="cumulativesearch"/>cumulative search</span>
   <span><input type="checkbox"  autocomplete="off" id="daymode"/>day mode</span> `;
   const daymode = document.getElementById("daymode");
-  daymode.addEventListener("input",()=>invert(daymode.checked));
+  daymode.addEventListener("change",()=>invert(daymode.checked));
 }
 
 function addMenu()
