@@ -32,7 +32,7 @@ function createFailDialog(title, text,uri)
         {
           $(this).dialog("close");
         },
-      }
+      },
     });
 }
 

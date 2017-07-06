@@ -8,72 +8,72 @@ var colorschemeday =
       {
         "border-color": "rgb(255,255,255)",
         "background-color": "rgb(254,196,79)",
-        'color': 'white'
-      }
+        'color': 'white',
+      },
     },
     {
       "selector": "node[prefix='ciox']",
       "css":
       {
         "background-color": "rgb(175,0,5)",
-      }
+      },
     },
     {
       "selector": "node[prefix='meta']",
       "css":
       {
         "background-color": "rgb(0,170,170)",
-      }
+      },
     },
     {
       "selector": "node[prefix='ob']",
       "css":
       {
         "background-color": "rgb(0,82,225)",
-      }
+      },
     },
     {
       "selector": "node[prefix = 'bb']",
       "css":
       {
         "background-color": "rgb(225,103,0)",
-      }
+      },
     },
     {
       "selector": "node[prefix='he']",
       "css":
       {
         "background-color": "rgb(105,0,130)",
-      }
+      },
     },
     {
       "selector": "node[prefix='it']",
-      "css": {"background-color": "rgb(51, 255, 51)"}
+      "css": {"background-color": "rgb(51, 255, 51)"},
     },
     {
       "selector": "node[prefix='it4it']",
-      "css": {"background-color": "rgb(0, 0, 255)"}
+      "css": {"background-color": "rgb(0, 0, 255)"},
     },
     {
       "selector": "node:selected",
       "css":
       {
-        "background-color": "rgb(255,255,0)"
-      }
+        "background-color": "rgb(255,255,0)",
+      },
     },
     {
       "selector": "node.source",
       "css":
       {
-        "border-color": "rgb(128,255,128)"
-      }
+        "border-color": "rgb(128,255,128)",
+      },
     },
     {
       "selector": "node.target",
       "css":
       {
         "border-color": "rgb(255,90,90)",
-      }
+      },
     },
     {
       "selector": "edge[!selected]",
@@ -89,7 +89,7 @@ var colorschemeday =
           }
           return "rgb(128,128,128)";
         },
-      }
+      },
     },
     {
       "selector": "edge.selected",
@@ -97,7 +97,7 @@ var colorschemeday =
       {
         "color": "rgb(255,255,128)",
         "line-color": "rgb(255,255,128)",
-      }
+      },
     },
     {
       "selector": "edge.highlighted",
@@ -105,7 +105,7 @@ var colorschemeday =
       {
         'color': 'rgb(128,255,128)',
         'line-color': 'rgb(128,255,128)',
-      }
+      },
     },
   ];
 

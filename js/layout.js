@@ -39,7 +39,7 @@ export var colaInf =
     name:"cola",
     infinite: true,
     fit: false,
-    nodeSpacing: function(node) {return 40;}
+    nodeSpacing: function(node) {return 40;},
   };
 
 export var cola =
@@ -47,5 +47,5 @@ export var cola =
     name:"cola",
     maxSimulationTime: 4000,
     nodeSpacing: function(node) {return 40;},
-    fit:false
+    fit:false,
   };

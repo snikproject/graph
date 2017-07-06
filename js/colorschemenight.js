@@ -7,48 +7,48 @@ var colorschemenight =
       {
         "border-color": "rgb(255,255,255)",
         "background-color": "rgb(254,196,79)",
-        'color': 'white'
-      }
+        'color': 'white',
+      },
     },
     {
       "selector": "node[prefix='ciox']",
-      "css": {"background-color": "rgb(80,255,250)",}
+      "css": {"background-color": "rgb(80,255,250)"},
     },
     {
       "selector": "node[prefix='meta']",
-      "css": {"background-color": "rgb(255,80,80)"}
+      "css": {"background-color": "rgb(255,80,80)"},
     },
     {
       "selector": "node[prefix='ob']",
-      "css": {"background-color": "rgb(255,173,30)"}
+      "css": {"background-color": "rgb(255,173,30)"},
     },
     {
       "selector": "node[prefix = 'bb']",
-      "css": {"background-color": "rgb(30,152,255)"}
+      "css": {"background-color": "rgb(30,152,255)"},
     },
     {
       "selector": "node[prefix='he']",
-      "css": {"background-color": "rgb(150,255,120)"}
+      "css": {"background-color": "rgb(150,255,120)"},
     },
     {
       "selector": "node[prefix='it']",
-      "css": {"background-color": "rgb(204, 0, 204)"}
+      "css": {"background-color": "rgb(204, 0, 204)"},
     },
     {
       "selector": "node[prefix='it4it']",
-      "css": {"background-color": "rgb(255, 255, 0)"}
+      "css": {"background-color": "rgb(255, 255, 0)"},
     },
     {
       "selector": "node:selected",
-      "css": {"background-color": "rgb(255,255,0)"}
+      "css": {"background-color": "rgb(255,255,0)"},
     },
     {
       "selector": "node.source",
-      "css": {"border-color": "rgb(128,255,128)"}
+      "css": {"border-color": "rgb(128,255,128)"},
     },
     {
       "selector": "node.target",
-      "css": {"border-color": "rgb(255,90,90)"}
+      "css": {"border-color": "rgb(255,90,90)"},
     },
     {
       "selector": "edge[!selected]",
@@ -63,7 +63,7 @@ var colorschemenight =
           }
           return "rgb(128,128,128)";
         },
-      }
+      },
     },
     {
       "selector": "edge.selected",
@@ -71,7 +71,7 @@ var colorschemenight =
       {
         "color": "rgb(255,255,128)",
         "line-color": "rgb(255,255,128)",
-      }
+      },
     },
     {
       "selector": "edge.highlighted",
@@ -79,7 +79,7 @@ var colorschemenight =
       {
         'color': 'rgb(128,255,128)',
         'line-color': 'rgb(128,255,128)',
-      }
+      },
     },
   ];
 

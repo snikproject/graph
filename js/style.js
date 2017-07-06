@@ -50,64 +50,64 @@ var style =
             if(SHOW_QUALITY) {label=+"\n\u25CB\u25CF\u25CB\u25CB\u25CF";}
             return label;
           },
-        }
+        },
       },
       {
         'selector': 'node.source',
         'css':
         {
           'border-width': 5.0,
-        }
+        },
       },
       {
         'selector': 'node.target',
         'css':
         {
           'border-width': 5.0,
-        }
+        },
       },
       // limit node scaling to prevent huge nodes
       {
         'selector': 'node[degree >= 39]',
         'css':
         {
-          'font-size': 51
-        }
+          'font-size': 51,
+        },
       },
       {
         'selector': 'node[degree > 0][degree < 39]',
         'css':
         {
-          'font-size': 'mapData(degree,0,39,11,51)'
-        }
+          'font-size': 'mapData(degree,0,39,11,51)',
+        },
       },
       {
         'selector': 'node[degree = 0]',
         'css':
         {
-          'font-size': 11
-        }
+          'font-size': 11,
+        },
       },
       // degree should always be at least 0, so <0 will only occurr erroneously
       {
         'selector': 'node[degree < 0]',
         'css':
         {
-          'font-size': 1
-        }
+          'font-size': 1,
+        },
       },
       {
         'selector': 'node.highlighted',
         'css':
         {
           'border-width': 5.0,
-        }
+        },
       },
       {
         "selector" : "edge",
         "css" : {
           'min-zoomed-font-size': 9,
-        }
+        },
       },
       {
         'selector': 'edge[!selected]',
@@ -119,7 +119,7 @@ var style =
           'edge-text-rotation': 'autorotate',
           'text-margin-y': '-1em',
           'text-opacity': 0,
-        }
+        },
       },
       {
         'selector': 'edge.selected',
@@ -131,7 +131,7 @@ var style =
           'label': 'data(pl)',
           'edge-text-rotation': 'autorotate',
           'text-margin-y': '-1em',
-        }
+        },
       },
       {
         'selector': 'edge.highlighted',
@@ -145,9 +145,9 @@ var style =
           'label': 'data(pl)',
           'edge-text-rotation': 'autorotate',
           'text-margin-y': '-1em',
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
 
 export {style};

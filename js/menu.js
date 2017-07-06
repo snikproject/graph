@@ -15,18 +15,18 @@ function menuData()
       [
         ["http://www.snik.eu/sparql","SPARQL Endpoint"],
         ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser"],
-        ["http://snik.eu/evaluation","Data Quality Evaluation"]
-      ]
+        ["http://snik.eu/evaluation","Data Quality Evaluation"],
+      ],
     },
     {
       "label": "Filter",
       "id": "filter",
-      "entries": [] // filled by addFilterEntries() from filter.js
+      "entries": [], // filled by addFilterEntries() from filter.js
     },
     {
       "label": "Options",
       "id": "options",
-      "entries": [] // filled by addOptions()
+      "entries": [], // filled by addOptions()
     },
     {
       "label": "Layouts",
@@ -39,7 +39,7 @@ function menuData()
         [()=>layout.run(layout.coseBilkent),"Cose-Bilkent (Experimental)"],
         [()=>layout.run(layout.breadthfirst),"Breadthfirst (Experimental)"],
         [()=>layout.run(layout.grid),"Grid"],
-      ]
+      ],
     },
     {
       "label": "Help",
@@ -53,8 +53,8 @@ function menuData()
         ["https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys","Download Cytoscape Graph"],
         [about,"About SNIK Graph"],
         ["https://github.com/IMISE/snik-ontology/issues","Submit Feedback about the Ontology"],
-        ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"]
-      ]
+        ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"],
+      ],
     },
   ];
 }

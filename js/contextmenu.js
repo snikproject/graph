@@ -12,7 +12,7 @@ const defaultsNodes = {
       select: node=>
       {
         window.open(node._private.data.name);
-      }
+      },
     },
     {
       content: 'submit ticket',
@@ -32,7 +32,7 @@ const defaultsNodes = {
             window.open(url);
           }
         }
-      }
+      },
     },
     /*    {
     content: 'set as path target',
@@ -46,21 +46,21 @@ const defaultsNodes = {
       select: node=>
       {
         graph.setSource(node);
-      }
+      },
     },
     {
       content: 'LodLive',
       select: node=>
       {
         window.open('http://en.lodlive.it/?'+node._private.data.name);
-      }
+      },
     },
     {
       content: 'star',
       select: node=>
       {
         graph.showStar(node);
-      }
+      },
     },
     {
       content: 'shortest path to here',
@@ -70,7 +70,7 @@ const defaultsNodes = {
         {
           graph.showPath(graph.getSource(), node);
         }
-      }
+      },
     },
     {
       content: 'spiderworm to here',
@@ -80,7 +80,7 @@ const defaultsNodes = {
         {
           graph.showWorm(graph.getSource(), node);
         }
-      }
+      },
     },
     {
       content: 'doublestar to here',
@@ -90,7 +90,7 @@ const defaultsNodes = {
         {
           graph.showDoubleStar(graph.getSource(), node);
         }
-      }
+      },
     },
     {
       content: 'starpath to here',
@@ -100,7 +100,7 @@ const defaultsNodes = {
         {
           graph.showStarPath(graph.getSource(), node);
         }
-      }
+      },
     },
 
     /* commented out until denethor pdf links in browser work
@@ -153,7 +153,7 @@ const defaultsRelations = {
           encodeURIComponent(edge._private.data.name+' v'+ONTOLOGY_MODIFIED)+
           '&body='+encodeURIComponent('The edge "'+edge._private.data.name+'" is incorrect.\n\n**Details**\n')
         );
-      }
+      },
     },
   ],
   fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
@@ -174,7 +174,7 @@ function registerMenu()
       select: node=>
       {
         roleUse(node.data().name);
-      }
+      },
     }
   );
   graph.cy.cxtmenu(defaultsNodes);

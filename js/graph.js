@@ -99,7 +99,7 @@ function showPath(from, to)
   var aStar = cy.elements().aStar(
     {
       root: from,
-      goal: to
+      goal: to,
     });
   path = aStar.path;
   if (path)
@@ -182,7 +182,7 @@ function showStarPath(from, to)
   var aStar = cy.elements().aStar(
     {
       root: from,
-      goal: to
+      goal: to,
     });
   path = aStar.path;
   if (path)
@@ -405,7 +405,7 @@ function initGraph()
       style: merged,
       wheelSensitivity: 0.3,
       minZoom: 0.02,
-      maxZoom: 7
+      maxZoom: 7,
     });
   registerMenu();
 

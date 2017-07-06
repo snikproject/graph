@@ -45,6 +45,7 @@
 		"prefer-const": ["error"],
 		"eol-last": ["error"],
 		"padded-blocks": ["error","never"],
+		"comma-dangle": ["error","always-multiline"],
 		"comma-style": ["error","last"]
 	}
 }
