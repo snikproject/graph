@@ -1,0 +1,37 @@
+{
+  "name": "snikgraph",
+  "version": "0.3.1",
+  "description": "SNIK Graph",
+  "main": "js/main.js",
+  "homepage": "https://github.com/IMISE/snik-cytoscape.js#readme",
+  "dependencies": {
+    "babel-polyfill": "^6.23.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-systemjs": "^6.24.1",
+    "babel-preset-env": "^1.6.0"
+  },
+  "keywords": [
+    "graph",
+    "visualisation",
+    "visualization",
+    "ontology",
+    "snik",
+    "hospital information management",
+    "cytoscape"
+  ],
+  "bugs": {
+    "url": "https://github.com/IMISE/snik-cytoscape.js/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel js -d target"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IMISE/snik-cytoscape.js.git"
+  },
+  "author": "Konrad Höffner",
+  "license": "CC-BY-SA-4.0"
+}
