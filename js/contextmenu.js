@@ -44,30 +44,30 @@ const defaultsNodes = {
     {
       content: 'set as path source',
       select: node=>
-  {
+      {
         graph.setSource(node);
       }
     },
     {
       content: 'LodLive',
       select: node=>
-  {
+      {
         window.open('http://en.lodlive.it/?'+node._private.data.name);
       }
     },
     {
       content: 'star',
       select: node=>
-  {
+      {
         graph.showStar(node);
       }
     },
     {
       content: 'shortest path to here',
       select: node=>
-  {
+      {
         if(graph.getSource()&&graph.getSource()!==node)
-    {
+        {
           graph.showPath(graph.getSource(), node);
         }
       }
@@ -75,9 +75,9 @@ const defaultsNodes = {
     {
       content: 'spiderworm to here',
       select: node=>
-  {
+      {
         if(graph.getSource()&&graph.getSource()!==node)
-    {
+        {
           graph.showWorm(graph.getSource(), node);
         }
       }
@@ -85,9 +85,9 @@ const defaultsNodes = {
     {
       content: 'doublestar to here',
       select: node=>
-  {
+      {
         if(graph.getSource()&&graph.getSource()!==node)
-    {
+        {
           graph.showDoubleStar(graph.getSource(), node);
         }
       }
@@ -95,15 +95,15 @@ const defaultsNodes = {
     {
       content: 'starpath to here',
       select: node=>
-  {
+      {
         if(graph.getSource()&&graph.getSource()!==node)
-    {
+        {
           graph.showStarPath(graph.getSource(), node);
         }
       }
     },
 
-/* commented out until denethor pdf links in browser work
+    /* commented out until denethor pdf links in browser work
 {
 content: 'book page (in development)',
 select: functiocxttn(node)

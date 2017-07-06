@@ -103,7 +103,7 @@ function showPath(from, to)
     });
   path = aStar.path;
   if (path)
-    {
+  {
     cy.startBatch();
     hideNodes(cy.elements().nodes());
     cy.add(path);
@@ -112,7 +112,7 @@ function showPath(from, to)
     cy.endBatch();
   }
   else
-    {
+  {
     alert('no path found');
     progress(100);
     return false;
@@ -122,9 +122,9 @@ function showPath(from, to)
 }
 
 function showWorm(from, to)
-  {
+{
   if(showPath(from, to))
-    {
+  {
     progress(0);
     cy.startBatch();
     var edges = to.connectedEdges();
@@ -138,10 +138,10 @@ function showWorm(from, to)
 }
 
 function showStar(node)
-  {
+{
   progress(0);
   if(!starMode)
-    {
+  {
     hideNodes(cy.elements().nodes());
   }
   starMode=true;
@@ -150,7 +150,7 @@ function showStar(node)
   var edges = node.connectedEdges();
   highlightEdges(edges);
   highlightNodes(edges.connectedNodes());
-    // open 2 levels deep on closeMatch
+  // open 2 levels deep on closeMatch
   var closeMatch = edges.filter('edge[interactionLabel="closeMatch"]').connectedNodes().connectedEdges();
   highlightEdges(closeMatch);
   highlightNodes(closeMatch.connectedNodes());
@@ -159,9 +159,9 @@ function showStar(node)
 }
 
 function showDoubleStar(from, to)
-  {
+{
   if(showWorm(from, to))
-    {
+  {
     progress(0);
     cy.startBatch();
     var edges = from.connectedEdges();
@@ -174,9 +174,9 @@ function showDoubleStar(from, to)
   return false;
 }
 
-  // Extended all along the path
+// Extended all along the path
 function showStarPath(from, to)
-  {
+{
   starMode=true;
   progress(0);
   var aStar = cy.elements().aStar(
@@ -186,7 +186,7 @@ function showStarPath(from, to)
     });
   path = aStar.path;
   if (path)
-      {
+  {
     cy.startBatch();
     hideNodes(cy.elements().nodes());
     progress(10);
@@ -202,7 +202,7 @@ function showStarPath(from, to)
     progress(50);
   }
   else
-      {
+  {
     alert('no path found');
     progress(100);
     return false;
@@ -211,24 +211,24 @@ function showStarPath(from, to)
   return true;
 }
 
-    /** Get the starting node for a path operation. If there is no starting node defined, use the selected node. If that is not defined as well, return null. */
+/** Get the starting node for a path operation. If there is no starting node defined, use the selected node. If that is not defined as well, return null. */
 function getSource(node)
-    {
+{
   if(pathSource) {return pathSource;}
   if(selectedNode) {return selectedNode;}
   return null;
 }
 
 function setSource(node)
-    {
+{
   if(!node)
-      {
+  {
     return false;
   }
-      //document.getElementById('centersource').hidden=false;
+  //document.getElementById('centersource').hidden=false;
   if(pathTarget !== undefined)
-      {
-        /*
+  {
+    /*
         document.getElementById('shortestpath').hidden=false;
         document.getElementById('spiderworm').hidden=false;
         document.getElementById('doublestar').hidden=false;
@@ -237,12 +237,12 @@ function setSource(node)
     cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
   }
   if(pathSource!==undefined)
-      {
+  {
     pathSource.removeClass('source');
   }
   pathSource = node;
   pathSource.addClass('source');
-      /*
+  /*
       document.getElementById('sourcelabel').innerHTML=
       pathSource.data('name').replace(sparql.SPARQL_PREFIX,'');
       */
@@ -250,14 +250,14 @@ function setSource(node)
 }
 
 function setTarget(node)
-    {
+{
   if(node === undefined)
-      {
+  {
     return false;
   }
   document.getElementById('centertarget').hidden=false;
   if(pathSource !== undefined)
-      {
+  {
     document.getElementById('shortestpath').hidden=false;
     document.getElementById('spiderworm').hidden=false;
     document.getElementById('doublestar').hidden=false;
@@ -265,7 +265,7 @@ function setTarget(node)
     cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
   }
   if(pathTarget!==undefined)
-      {
+  {
     pathTarget.removeClass('target');
   }
   pathTarget = node;
@@ -275,10 +275,10 @@ function setTarget(node)
 }
 
 function resetStyle()
-    {
+{
   starMode=false;
   progress(0);
-      //setFirstCumulativeSearch(true);
+  //setFirstCumulativeSearch(true);
   selectedNode = undefined;
   cy.startBatch();
   styledNodes.show();
@@ -292,7 +292,7 @@ function resetStyle()
 }
 
 function invert(enabled)
-    {
+{
   const CSS =
       `#cy {
         -webkit-filter: invert(100%);
@@ -304,31 +304,31 @@ function invert(enabled)
 
   const invertStyle = $('#invert')[0];
   if (invertStyle)
-      {
+  {
     head.removeChild(invertStyle);
   }
   if (enabled)
-      {
+  {
     {
       const styleElement = document.createElement('style');
       styleElement.type = 'text/css';
       styleElement.id = 'invert';
       styleElement.appendChild(document.createTextNode(CSS));
-          //injecting the css to the head
+      //injecting the css to the head
       head.appendChild(styleElement);
     }
     const merged = mergeJsonArraysByKey(style.style,colorschemeday);
     cy.style().fromJson(merged).update();
   }
   else
-      {
+  {
     const merged = mergeJsonArraysByKey(style.style,colorschemenight);
     cy.style().fromJson(merged).update();
   }
 }
 
 function remove(nodes)
-    {
+{
   $('body').addClass('waiting');
   cy.startBatch();
   removedNodes.add(nodes);
@@ -339,12 +339,12 @@ function remove(nodes)
 }
 
 function restore()
-    {
+{
   $('body').addClass('waiting');
   cy.startBatch();
-      // all nodes first so that edges have their sources and targets
+  // all nodes first so that edges have their sources and targets
   for (let i = 0; i < removedNodes.length; i++)
-      {removedNodes[i].restore();}
+  {removedNodes[i].restore();}
   for (let i = 0; i < removedEdges.length; i++)	{removedEdges[i].restore();}
   removedNodes = cy.collection();
   removedEdges = cy.collection();
@@ -353,33 +353,33 @@ function restore()
 }
 
 function layout(name)
-    {
+{
   cy
-      //.nodes(":visible")
-      .layout({ name: name }).run();
+  //.nodes(":visible")
+    .layout({ name: name }).run();
 }
 
 var filtered = {};
 
-    //** Hide or show certain nodes or edges.**/
+//** Hide or show certain nodes or edges.**/
 function filter(checkbox)
-    {
+{
   var selector = checkbox.getAttribute("value");
   if(checkbox.checked) // selected means the elements shall be shown, undo the filter
-      {
+  {
     const elements = filtered[selector];
     if(elements)
-        {
+    {
       filtered[selector] = undefined;
       elements.restore();
     }
   }
   else // unselected checkbox, hide elements by applying filter
-      {
+  {
     const elements = cy.elements(selector);
     if(elements)
-        {
-          // if just saving nodes, the edges would get lost
+    {
+      // if just saving nodes, the edges would get lost
       filtered[selector]=elements.union(elements.connectedEdges());
       elements.remove();
     }
@@ -387,15 +387,15 @@ function filter(checkbox)
 }
 
 function initGraph()
-    {
+{
   $(document).bind('keydown',function(e)
-      {
+  {
     if(e.keyCode === 46) {remove(cy.$('node:selected'));}
   });
   $.ajaxSetup({beforeSend:function(xhr)
-        {
+  {
     if (xhr.overrideMimeType)
-          {xhr.overrideMimeType("application/json");}
+    {xhr.overrideMimeType("application/json");}
   }});
 
   const merged = mergeJsonArraysByKey(style.style,colorschemenight);
@@ -410,23 +410,23 @@ function initGraph()
   registerMenu();
 
   cy.on('select', 'edge', function(event)
-          {
-            //cy.startBatch();
-            //resetStyle();
+  {
+    //cy.startBatch();
+    //resetStyle();
     highlightEdges(event.target);
-            //cy.endBatch();
+    //cy.endBatch();
   });
 
   cy.on('select', 'node', function(event)
-          {
-            //cy.startBatch();
-            //resetStyle();
+  {
+    //cy.startBatch();
+    //resetStyle();
     selectedNode = event.target;
     highlightNodes(selectedNode);
-            //cy.endBatch();
+    //cy.endBatch();
   });
 
-          // workaround to create empty collections until better known
+  // workaround to create empty collections until better known
   removedNodes = cy.collection() ;
   removedEdges = cy.collection() ;
   styledEdges = cy.collection();
@@ -436,4 +436,4 @@ function initGraph()
 function setSelectedNode(node) {selectedNode=node;}
 
 export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,remove,restore,layout,filter,
-          getSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar,setStarMode,hideNodes,showNodes};
+  getSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar,setStarMode,hideNodes,showNodes};

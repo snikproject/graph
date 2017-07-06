@@ -13,21 +13,21 @@ function initGraphFromFile()
     credentials: 'include'};
 
   return fetch("data/snik.cyjs",init)
-  .then(response=>response.json())
-  .then(json=>
+    .then(response=>response.json())
+    .then(json=>
     {
-    graph.initGraph();
-    graph.cy.add(json.elements);
-  })
+      graph.initGraph();
+      graph.cy.add(json.elements);
+    })
     .catch(e=>
-      {
+    {
       alert('Error loading snik.cyjs: '+e);
     })
-      .then(()=>
-      {
-        progress(100);
-        return graph.cy;
-      });
+    .then(()=>
+    {
+      progress(100);
+      return graph.cy;
+    });
 }
 
 export {initGraphFromFile};

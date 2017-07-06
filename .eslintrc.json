@@ -42,7 +42,9 @@
 		"curly": ["error"],
 		"camelcase": ["warn"],
 		"no-unused-vars": ["warn"],
-		"prefer-const": ["error"]
+		"prefer-const": ["error"],
+		"eol-last": ["error"],
+		"padded-blocks": ["error","never"]
 	}
 }
 

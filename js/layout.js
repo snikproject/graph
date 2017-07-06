@@ -19,8 +19,8 @@ export var cose =
     animationThreshold: 250,
     numIter: 5000,
     nodeDimensionsIncludeLabels: false,
-	//nodeRepulsion: function(node){ return 400; },
-	//initialTemp: 2000,
+    //nodeRepulsion: function(node){ return 400; },
+    //initialTemp: 2000,
   };
 
 export var coseBilkent =
@@ -30,8 +30,8 @@ export var coseBilkent =
     animationThreshold: 250,
     numIter: 5000,
     nodeDimensionsIncludeLabels: false,
-	//nodeRepulsion: function(node){ return 400; },
-	//initialTemp: 2000,
+    //nodeRepulsion: function(node){ return 400; },
+    //initialTemp: 2000,
   };
 
 export var colaInf =

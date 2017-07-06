@@ -30,7 +30,7 @@ function initGraphFromSparql()
   const classes = undefined;//localStorage.getItem('classes');
   // if not in cache, load
   const classesPromise = (classes===undefined)?
-  sparql.sparql(query):Promise.resolve(classes);
+    sparql.sparql(query):Promise.resolve(classes);
 
   //const classesAddedPromise =
   return classesPromise.then((json)=>
@@ -51,16 +51,16 @@ function initGraphFromSparql()
           },
           //position: { x: 200, y: 200 }
         });
-        /*console.log(json[i].l);
+      /*console.log(json[i].l);
         console.log(json[i].l.value);*/
     }
   }).then(()=>
-    {
+  {
     sparqlPropertiesTimer = timer("sparql-properties");
-      //const triplesPromise =
+    //const triplesPromise =
     return sparql.sparql(
-        // only show classes with labels, use any one if more than one
-        `select ?c replace(str(?p),".*[#/]","") as ?p ?d
+      // only show classes with labels, use any one if more than one
+      `select ?c replace(str(?p),".*[#/]","") as ?p ?d
         #from <http://www.snik.eu/ontology/it>
         from <http://www.snik.eu/ontology/it4it>
         from <http://www.snik.eu/ontology/virtual>
@@ -70,12 +70,12 @@ function initGraphFromSparql()
           ?c ?p ?d.
         }`);
   }).then(json=>
-        //return Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
-        {
+    //return Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
+  {
     sparqlPropertiesTimer.stop();
-          //const json = values[1];
+    //const json = values[1];
     for(let i=0;i<json.length;i++)
-          {
+    {
       graph.cy.add(
         {
           group: "edges",
@@ -85,7 +85,7 @@ function initGraphFromSparql()
             id: i,
             interactionLabel: json[i].p.value,//Labels_DE: [json[i].l.value]
           },
-                //position: { x: 200, y: 200 }
+          //position: { x: 200, y: 200 }
         });
     }
     const layoutTimer = timer("layout");
@@ -93,7 +93,7 @@ function initGraphFromSparql()
     layoutTimer.stop();
     return graph.cy;
   }).catch(e=>
-            {
+  {
     console.error(e,query);
   });
 }

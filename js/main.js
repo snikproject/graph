@@ -7,14 +7,14 @@ import addButtons from "./button.js";
 
 const INIT_GRAPH_FROM_SPARQL = false;
 (INIT_GRAPH_FROM_SPARQL?initGraphFromSparql():initGraphFromFile())
-	.then((cy)=>
-	{
-  addMenu();
-  addFilterEntries(cy,document.getElementById("filter"));
-  addSearch();
-  addButtons();
-})
-	.catch(e=>
-	{
-  console.error(e,"menu init error");
-});
+  .then((cy)=>
+  {
+    addMenu();
+    addFilterEntries(cy,document.getElementById("filter"));
+    addSearch();
+    addButtons();
+  })
+  .catch(e=>
+  {
+    console.error(e,"menu init error");
+  });

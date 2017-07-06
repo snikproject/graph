@@ -13,9 +13,9 @@ function menuData()
       "id":"services",
       "entries":
       [
-      ["http://www.snik.eu/sparql","SPARQL Endpoint"],
-      ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser"],
-      ["http://snik.eu/evaluation","Data Quality Evaluation"]
+        ["http://www.snik.eu/sparql","SPARQL Endpoint"],
+        ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser"],
+        ["http://snik.eu/evaluation","Data Quality Evaluation"]
       ]
     },
     {
@@ -33,12 +33,12 @@ function menuData()
       "id": "layouts",
       "entries":
       [
-      [()=>layout.run(layout.colaInf),"Cola-Infinite (Experimental)"],
-      [()=>layout.run(layout.cola),"Cola (Experimental)"],
-      [()=>layout.run(layout.cose),"Cose (Experimental)"],
-      [()=>layout.run(layout.coseBilkent),"Cose-Bilkent (Experimental)"],
-      [()=>layout.run(layout.breadthfirst),"Breadthfirst (Experimental)"],
-      [()=>layout.run(layout.grid),"Grid"],
+        [()=>layout.run(layout.colaInf),"Cola-Infinite (Experimental)"],
+        [()=>layout.run(layout.cola),"Cola (Experimental)"],
+        [()=>layout.run(layout.cose),"Cose (Experimental)"],
+        [()=>layout.run(layout.coseBilkent),"Cose-Bilkent (Experimental)"],
+        [()=>layout.run(layout.breadthfirst),"Breadthfirst (Experimental)"],
+        [()=>layout.run(layout.grid),"Grid"],
       ]
     },
     {
@@ -46,14 +46,14 @@ function menuData()
       "id": "help",
       "entries":
       [
-      ["manual.html","Manual"],
-      ["troubleshooting.html","Troubleshooting"],
-      ["contribute.html","Contribute"],
-      ["http://www.snik.eu/","Project Homepage"],
-      ["https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys","Download Cytoscape Graph"],
-      [about,"About SNIK Graph"],
-      ["https://github.com/IMISE/snik-ontology/issues","Submit Feedback about the Ontology"],
-      ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"]
+        ["manual.html","Manual"],
+        ["troubleshooting.html","Troubleshooting"],
+        ["contribute.html","Contribute"],
+        ["http://www.snik.eu/","Project Homepage"],
+        ["https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys","Download Cytoscape Graph"],
+        [about,"About SNIK Graph"],
+        ["https://github.com/IMISE/snik-ontology/issues","Submit Feedback about the Ontology"],
+        ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"]
       ]
     },
   ];
@@ -99,16 +99,16 @@ function addMenu()
       switch(typeof entry[0])
       {
       case 'string':
-        {
-          a.href=entry[0];
-          a.target="_blank";
-          break;
-        }
+      {
+        a.href=entry[0];
+        a.target="_blank";
+        break;
+      }
       case 'function':
-        {
-          a.addEventListener("click",entry[0]);
-          break;
-        }
+      {
+        a.addEventListener("click",entry[0]);
+        break;
+      }
       default: console.error("unknown menu entry action type: "+typeof entry[0]);
       }
       //
