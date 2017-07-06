@@ -211,9 +211,17 @@ function showStarPath(from, to)
   return true;
 }
 
+/** Get the starting node for a path operation. If there is no starting node defined, use the selected node. If that is not defined as well, return null. */
+function getSource(node)
+{
+  if(pathSource) {return pathSource;}
+  if(selectedNode) {return selectedNode;}
+  return null;
+}
+
 function setSource(node)
 {
-  if(node === undefined)
+  if(!node)
   {
     return false;
   }
@@ -238,6 +246,7 @@ function setSource(node)
   document.getElementById('sourcelabel').innerHTML=
    pathSource.data('name').replace(sparql.SPARQL_PREFIX,'');
     */
+  return true;
 }
 
 function setTarget(node)
@@ -427,4 +436,4 @@ function initGraph()
 function setSelectedNode(node) {selectedNode=node;}
 
 export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,remove,restore,layout,filter,
-  pathSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar,setStarMode,hideNodes,showNodes};
+  getSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar,setStarMode,hideNodes,showNodes};

@@ -8,15 +8,15 @@ const defaultsNodes = {
   commands: [
     {
       content: 'description',
-      //select: function(node) {window.open(node._private.data.name);}
-      select: function(node)
+      //select: node=> {window.open(node._private.data.name);}
+      select: node=>
       {
         window.open(node._private.data.name);
       }
     },
     {
       content: 'submit ticket',
-      select: function(node)
+      select: node=>
       {
         //var b = confirm("Please only use this ticket tracker for problems with the ontology data, not the javascript visualization web application. Continue?");
         //window.open("https://github.com/IMISE/snik-ontology/issues/new");
@@ -36,69 +36,69 @@ const defaultsNodes = {
     },
     /*    {
     content: 'set as path target',
-    select: function(node)
+    select: node=>
     {
     graph.setTarget(node);
   }
 },*/
     {
       content: 'set as path source',
-      select: function(node)
+      select: node=>
   {
         graph.setSource(node);
       }
     },
     {
       content: 'LodLive',
-      select: function(node)
+      select: node=>
   {
         window.open('http://en.lodlive.it/?'+node._private.data.name);
       }
     },
     {
       content: 'star',
-      select: function(node)
+      select: node=>
   {
         graph.showStar(node);
       }
     },
     {
       content: 'shortest path to here',
-      select: function(node)
+      select: node=>
   {
-        if (graph.pathSource)
+        if(graph.getSource()&&graph.getSource()!==node)
     {
-          graph.showPath(graph.pathSource, node);
+          graph.showPath(graph.getSource(), node);
         }
       }
     },
     {
       content: 'spiderworm to here',
-      select: function(node)
+      select: node=>
   {
-        if (graph.selectedNode)
+        if(graph.getSource()&&graph.getSource()!==node)
     {
-          graph.showWorm(graph.pathSource, node);
+          graph.showWorm(graph.getSource(), node);
         }
       }
     },
     {
       content: 'doublestar to here',
-      select: function(node)
+      select: node=>
+  {
+        if(graph.getSource()&&graph.getSource()!==node)
     {
-        if (graph.selectedNode)
-    {
-          graph.showDoubleStar(graph.pathSource, node);
+          graph.showDoubleStar(graph.getSource(), node);
         }
       }
     },
     {
       content: 'starpath to here',
-      select: function(node)
+      select: node=>
+  {
+        if(graph.getSource()&&graph.getSource()!==node)
     {
-        if (graph.selectedNode)
-    {
-          graph.showStarPath(graph.pathSource, node);
+          graph.showStarPath(graph.getSource(), node);
         }
       }
     },
@@ -171,7 +171,7 @@ function registerMenu()
   defaultsNodes.commands.push(
     {
       content: 'roleUse',
-      select: function(node)
+      select: node=>
       {
         roleUse(node.data().name);
       }
