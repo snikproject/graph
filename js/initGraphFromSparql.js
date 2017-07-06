@@ -15,7 +15,7 @@ function initGraphFromSparql()
   `select ?c str(sample(?l)) as ?l replace(str(sample(?subTop)),".*[#/]","") as ?subTop replace(str(?source),".*[#/]","") as ?source
   #count(?o) as ?degree
   #from <http://www.snik.eu/ontology/it>
-  from <http://www.snik.eu/ontology/ob>
+  from <http://www.snik.eu/ontology/test>
   from <http://www.snik.eu/ontology/virtual>
   from <http://www.snik.eu/ontology/meta>
   {
@@ -62,7 +62,7 @@ function initGraphFromSparql()
       // only show classes with labels, use any one if more than one
       `select ?c replace(str(?p),".*[#/]","") as ?p ?d
         #from <http://www.snik.eu/ontology/it>
-        from <http://www.snik.eu/ontology/ob>
+        from <http://www.snik.eu/ontology/test>
         from <http://www.snik.eu/ontology/virtual>
         from <http://www.snik.eu/ontology/meta>
         {
@@ -83,7 +83,8 @@ function initGraphFromSparql()
             source: json[i].c.value,
             target: json[i].d.value,
             id: i,
-            interactionLabel: json[i].p.value,//Labels_DE: [json[i].l.value]
+            p: json[i].p.value,//Labels_DE: [json[i].l.value]
+            pl: json[i].p.value.replace(".*/",""),
           },
           //position: { x: 200, y: 200 }
         });

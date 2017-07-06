@@ -332,7 +332,13 @@ function remove(nodes)
   $('body').addClass('waiting');
   cy.startBatch();
   removedNodes.add(nodes);
-  removedEdges.add(nodes.connectedEdges());
+  for(let i=0;i<nodes.length;i++)
+  {
+    const node = nodes[i];
+    //console.log(node.data().name);
+    sparql.deleteResource(node.data().name,"http://www.snik.eu/ontology/test");
+  }
+  {removedEdges.add(nodes.connectedEdges());}
   nodes.remove();
   cy.endBatch();
   $('body').removeClass('waiting');

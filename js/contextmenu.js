@@ -1,6 +1,7 @@
 import {ONTOLOGY_MODIFIED,ONTOLOGY_ISSUE_WARNING} from "./about.js";
 import {roleUse} from "./classuse.js";
 import * as graph from "./graph.js";
+import * as sparql from "./sparql.js";
 
 const defaultsNodes = {
   menuRadius: 150, // the radius of the circular menu in pixels
@@ -99,6 +100,25 @@ const defaultsNodes = {
         if(graph.getSource()&&graph.getSource()!==node)
         {
           graph.showStarPath(graph.getSource(), node);
+        }
+      },
+    },
+    {
+      content: 'add connection',
+      select: node=>
+      {
+        if(graph.getSource()&&graph.getSource()!==node)
+        {
+          sparql.addTriple(graph.getSource().data().name,"http://www.snik.eu/ontology/meta/isAssociatedWith",node.data().name,"http://www.snik.eu/ontology/test");
+          graph.cy.add(
+            {
+              group: "edges",
+              data: {
+                source: graph.getSource().data().name,
+                target: node.data().name,
+                pl: "isAssociatedWith",
+              },
+            });
         }
       },
     },

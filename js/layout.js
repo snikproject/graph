@@ -17,7 +17,7 @@ export var cose =
     name:"cose",
     animate: true,
     animationThreshold: 250,
-    numIter: 100,
+    numIter: 30,
     nodeDimensionsIncludeLabels: true,
     nodeRepulsion: function(node){ return 400000; },
     idealEdgeLength: function(edge){ return 200; },
