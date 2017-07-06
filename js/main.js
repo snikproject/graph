@@ -5,7 +5,7 @@ import addMenu from "./menu.js";
 import addSearch from "./search.js";
 import addButtons from "./button.js";
 
-const INIT_GRAPH_FROM_SPARQL = false;
+const INIT_GRAPH_FROM_SPARQL = true;
 (INIT_GRAPH_FROM_SPARQL?initGraphFromSparql():initGraphFromFile())
   .then((cy)=>
   {

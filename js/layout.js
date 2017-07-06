@@ -17,10 +17,16 @@ export var cose =
     name:"cose",
     animate: true,
     animationThreshold: 250,
-    numIter: 5000,
-    nodeDimensionsIncludeLabels: false,
-    //nodeRepulsion: function(node){ return 400; },
-    //initialTemp: 2000,
+    numIter: 100,
+    nodeDimensionsIncludeLabels: true,
+    nodeRepulsion: function(node){ return 400000; },
+    idealEdgeLength: function(edge){ return 200; },
+    nodeOverlap: 100,
+    gravity: 80,
+    fit: false,
+    randomize: true,
+    initialTemp: 200,
+    weaver: true,
   };
 
 export var coseBilkent =

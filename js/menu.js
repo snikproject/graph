@@ -122,7 +122,7 @@ function addMenu()
 window.onclick = function(e)
 {//console.log(e);
   // don't close while user edits the text field of the custom filter
-  if (!e.target.matches('.dropbtn')&&!e.target.matches('input#customfilter'))
+  if (e&&e.target&&e.target.matches&&!e.target.matches('.dropbtn')&&!e.target.matches('input#customfilter'))
   {
     var dropdowns = document.getElementsByClassName("dropdown-content");
     for (var d = 0; d < dropdowns.length; d++)

@@ -15,7 +15,7 @@ function initGraphFromSparql()
   `select ?c str(sample(?l)) as ?l replace(str(sample(?subTop)),".*[#/]","") as ?subTop replace(str(?source),".*[#/]","") as ?source
   #count(?o) as ?degree
   #from <http://www.snik.eu/ontology/it>
-  from <http://www.snik.eu/ontology/it4it>
+  from <http://www.snik.eu/ontology/ob>
   from <http://www.snik.eu/ontology/virtual>
   from <http://www.snik.eu/ontology/meta>
   {
@@ -35,7 +35,7 @@ function initGraphFromSparql()
   //const classesAddedPromise =
   return classesPromise.then((json)=>
   {
-    sparqlClassesTimer.stop();
+    sparqlClassesTimer.stop(json.length+" classes");
     for(let i=0;i<json.length;i++)
     {
       graph.cy.add(
@@ -62,7 +62,7 @@ function initGraphFromSparql()
       // only show classes with labels, use any one if more than one
       `select ?c replace(str(?p),".*[#/]","") as ?p ?d
         #from <http://www.snik.eu/ontology/it>
-        from <http://www.snik.eu/ontology/it4it>
+        from <http://www.snik.eu/ontology/ob>
         from <http://www.snik.eu/ontology/virtual>
         from <http://www.snik.eu/ontology/meta>
         {
@@ -72,7 +72,7 @@ function initGraphFromSparql()
   }).then(json=>
     //return Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
   {
-    sparqlPropertiesTimer.stop();
+    sparqlPropertiesTimer.stop(json.length+" properties");
     //const json = values[1];
     for(let i=0;i<json.length;i++)
     {
