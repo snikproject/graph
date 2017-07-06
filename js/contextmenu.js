@@ -3,7 +3,7 @@ import {roleUse} from "./classuse.js";
 import * as graph from "./graph.js";
 
 const defaultsNodes = {
-  menuRadius: 100, // the radius of the circular menu in pixels
+  menuRadius: 150, // the radius of the circular menu in pixels
   selector: 'node[st!="Role"]', // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: [
     {
