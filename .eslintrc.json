@@ -16,7 +16,8 @@
 	},
 	"globals":
 	{
-"cytoscape": false
+		"cytoscape": false,
+		"dhtmlx": true
 	},
 	"extends": "eslint:recommended",
 	"rules":
