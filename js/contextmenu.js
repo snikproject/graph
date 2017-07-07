@@ -2,6 +2,7 @@ import {ONTOLOGY_MODIFIED,ONTOLOGY_ISSUE_WARNING} from "./about.js";
 import {roleUse} from "./classuse.js";
 import * as graph from "./graph.js";
 import * as sparql from "./sparql.js";
+import * as log from "./log.js";
 
 const defaultsNodes = {
   menuRadius: 150, // the radius of the circular menu in pixels
@@ -128,10 +129,27 @@ const defaultsNodes = {
       content: 'add instance',
       select: node=>
       {
-        let uri;
-        let labelEn;
-        let labelDe;
-        sparql.addTriple(uri,"http://www.w3.org/1999/02/22-rdf-syntax-ns#type",node.data().name);
+        var box = dhtmlx.modalbox({
+          title:"Create Instance of Class "+sparql.short(node.data().name),//+sparql.short(node.data().name)
+          text:`<form type="messageform" id='instanceform'>
+          <div><label>URI Suffix in CamelCase   <input class='inform' id="suffix" type='text' minlength="3" pattern="([A-Z][a-z0-9]+)+"></label></div>
+          <div><label>English Label             <input class='inform' id="le" type='text' minlength="3" pattern="[A-Z]a-z0-9.,]+"></label></div>
+          <div><label>German Label              <input class='inform' id="ld" type='text' minlength="3" pattern="[A-Z]a-zöäüÖÄÜß0-9.,]+"></label></div>
+          <input type='submit' value='Create' style='width:250px;'>
+          </form>`,
+          width:"250px",
+        });
+        const form = document.getElementById("instanceform");
+        form.addEventListener("submit",event=>
+        {
+          event.preventDefault();
+          const suffix=form.querySelector("#suffix").value;
+          const le=form.querySelector("#le").value;
+          const ld=form.querySelector("#ld").value;
+
+          dhtmlx.modalbox.hide(box);
+        }
+        );
       },
     },
     /* commented out until denethor pdf links in browser work

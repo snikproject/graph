@@ -54,4 +54,4 @@ function addTriple(s,p,o,graph)
     .catch(err =>{log.error(`Error inserting triple ${s} ${p} ${o} to graph ${graph}: ${err}`);return false;});
 }
 
-export {SPARQL_ENDPOINT,SPARQL_GRAPH,SPARQL_PREFIX,SPARQL_LIMIT,sparql,deleteResource,addTriple};
+export {SPARQL_ENDPOINT,SPARQL_GRAPH,SPARQL_PREFIX,SPARQL_LIMIT,sparql,deleteResource,addTriple,short};

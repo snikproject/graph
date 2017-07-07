@@ -13,5 +13,6 @@ export function debug(s)
 
 export function error(s)
 {
-  console.log(s);
+  dhtmlx.
+    console.log(s);
 }
