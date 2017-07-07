@@ -1,3 +1,5 @@
+import * as log from "./log.js";
+
 export default function timer(name)
 {
   var start = new Date();
@@ -6,7 +8,7 @@ export default function timer(name)
     {
       var end  = new Date();
       var time = end.getTime() - start.getTime();
-      console.log(name, 'finished in', time, 'ms'+(message?` (${message})`:""));
+      log.debug(name, 'finished in', time, 'ms'+(message?` (${message})`:""));
     },
   };
 }

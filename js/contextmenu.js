@@ -109,7 +109,9 @@ const defaultsNodes = {
       {
         if(graph.getSource()&&graph.getSource()!==node)
         {
-          sparql.addTriple(graph.getSource().data().name,"http://www.snik.eu/ontology/meta/isAssociatedWith",node.data().name,"http://www.snik.eu/ontology/test");
+          var p = "http://www.snik.eu/ontology/meta/isAssociatedWith";
+
+          sparql.addTriple(graph.getSource().data().name,p,node.data().name,"http://www.snik.eu/ontology/test");
           graph.cy.add(
             {
               group: "edges",
@@ -122,7 +124,16 @@ const defaultsNodes = {
         }
       },
     },
-
+    {
+      content: 'add instance',
+      select: node=>
+      {
+        let uri;
+        let labelEn;
+        let labelDe;
+        sparql.addTriple(uri,"http://www.w3.org/1999/02/22-rdf-syntax-ns#type",node.data().name);
+      },
+    },
     /* commented out until denethor pdf links in browser work
 {
 content: 'book page (in development)',
