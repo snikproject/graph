@@ -2,14 +2,14 @@ function progress(p)
 {
   if(p<100)
   {
-    $('body').addClass('waiting');
-    $("#progressbar").show();
+    document.body.classList.add('waiting');
+    //document.getElementById("progressbar").show();
   }
-  $("#progressbar").progressbar({value: false});
+  //document.getElementById("progressbar").progressbar({value: false});
   if(p>=100)
   {
-    $('body').removeClass('waiting');
-    $("#progressbar").fadeOut("slow");
+    document.body.classList.remove('waiting');
+    //document.getElementById("progressbar").fadeOut("slow");
   }
 }
 

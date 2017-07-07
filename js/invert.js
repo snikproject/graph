@@ -3,14 +3,12 @@ const CSS = '#cy {-webkit-filter: invert(100%);' +
 '-o-filter: invert(100%);' +
 '-ms-filter: invert(100%); }';
 
-const head = $('head')[0];
-
 function invert(enabled)
 {
-  const invertStyle = $('#invert')[0];
+  const invertStyle = document.getElementById('invert');
   if (invertStyle)
   {
-    head.removeChild(invertStyle);
+    document.head.removeChild(invertStyle);
   }
   if (enabled)
   {
@@ -19,7 +17,7 @@ function invert(enabled)
     style.id = 'invert';
     style.appendChild(document.createTextNode(CSS));
     //injecting the css to the head
-    head.appendChild(style);
+    document.head.appendChild(style);
   }
 }
 

@@ -11,7 +11,9 @@ function hideSearchResults()
 
 function createFailDialog(title, text,uri)
 {
-  return $("<div class='dialog' title='" + title + "'><p>" + text + "</p></div>")
+  alert(`${title}: ${text}`);
+  /*
+  return document.createDocumentFragment("<div class='dialog' title='" + title + "'><p>" + text + "</p></div>")
     .dialog({
       resizable: false,
       height:240,
@@ -34,6 +36,7 @@ function createFailDialog(title, text,uri)
         },
       },
     });
+    */
 }
 
 // When user selects a URI from the search candidates, this URI gets centered and highlighted.

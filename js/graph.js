@@ -22,46 +22,6 @@ var starMode = false;
 
 function setStarMode(mode) {starMode=mode;}
 
-function mergeJsonArraysByKey(a1,a2)
-{
-  const map1 = new Map();
-  const map2 = new Map();
-  for(let i=0;i<a1.length;i++)
-  {
-    if(a1[i].selector)
-    {
-      map1.set(a1[i].selector,a1[i]);
-    }
-  }
-  for(let i=0;i<a2.length;i++)
-  {
-    if(a2[i].selector)
-    {
-      map2.set(a2[i].selector,a2[i]);
-    }
-  }
-  const merged = [];
-  map1.forEach((value,key,_) =>
-  {
-    if(map2.has(key))
-    {
-      merged.push($.extend(true,{},value,map2.get(key)));
-    }
-    else
-    {
-      merged.push(value);
-    }
-  });
-  map2.forEach((value,key,_) =>
-  {
-    if(!map1.has(key))
-    {
-      merged.push(value);
-    }
-  });
-  return merged;
-}
-
 function hideNodes(nodes)
 {
   nodes.hide();
@@ -300,12 +260,11 @@ function invert(enabled)
         -o-filter: invert(100%);
         -ms-filter: invert(100%);
       }`;
-  const head = $('head')[0];
 
-  const invertStyle = $('#invert')[0];
+  const invertStyle = document.getElementById('invert');
   if (invertStyle)
   {
-    head.removeChild(invertStyle);
+    document.head.removeChild(invertStyle);
   }
   if (enabled)
   {
@@ -315,21 +274,19 @@ function invert(enabled)
       styleElement.id = 'invert';
       styleElement.appendChild(document.createTextNode(CSS));
       //injecting the css to the head
-      head.appendChild(styleElement);
+      document.head.appendChild(styleElement);
     }
-    const merged = mergeJsonArraysByKey(style.style,colorschemeday);
-    cy.style().fromJson(merged).update();
+    cy.style().fromJson(style.style.concat(colorschemeday)).update();
   }
   else
   {
-    const merged = mergeJsonArraysByKey(style.style,colorschemenight);
-    cy.style().fromJson(merged).update();
+    cy.style().fromJson(style.style.concat(colorschemenight)).update();
   }
 }
 
 function remove(nodes)
 {
-  $('body').addClass('waiting');
+  progress(0);
   cy.startBatch();
   removedNodes.add(nodes);
   for(let i=0;i<nodes.length;i++)
@@ -341,12 +298,12 @@ function remove(nodes)
   {removedEdges.add(nodes.connectedEdges());}
   nodes.remove();
   cy.endBatch();
-  $('body').removeClass('waiting');
+  progress(100);
 }
 
 function restore()
 {
-  $('body').addClass('waiting');
+  progress(0);
   cy.startBatch();
   // all nodes first so that edges have their sources and targets
   for (let i = 0; i < removedNodes.length; i++)
@@ -355,7 +312,7 @@ function restore()
   removedNodes = cy.collection();
   removedEdges = cy.collection();
   cy.endBatch();
-  $('body').removeClass('waiting');
+  progress(100);
 }
 
 function layout(name)
@@ -377,7 +334,7 @@ function filter(checkbox)
     if(elements)
     {
       filtered[selector] = undefined;
-      elements.restore();
+      elements.show();
     }
   }
   else // unselected checkbox, hide elements by applying filter
@@ -387,28 +344,21 @@ function filter(checkbox)
     {
       // if just saving nodes, the edges would get lost
       filtered[selector]=elements.union(elements.connectedEdges());
-      elements.remove();
+      elements.hide();
     }
   }
 }
 
 function initGraph()
 {
-  $(document).bind('keydown',function(e)
+  document.addEventListener('keydown',function(e)
   {
     if(e.keyCode === 46) {remove(cy.$('node:selected'));}
   });
-  $.ajaxSetup({beforeSend:function(xhr)
-  {
-    if (xhr.overrideMimeType)
-    {xhr.overrideMimeType("application/json");}
-  }});
-
-  const merged = mergeJsonArraysByKey(style.style,colorschemenight);
   cy = cytoscape(
     {
       container: document.getElementById('cy'),
-      style: merged,
+      style: style.style.concat(colorschemenight),
       wheelSensitivity: 0.3,
       minZoom: 0.02,
       maxZoom: 7,
