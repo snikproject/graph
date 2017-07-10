@@ -41,13 +41,26 @@ function deleteResource(resource,graph)
 function addTriple(s,p,o,graph)
 {
   log.info(`Adding triple (${rdf.short(s)}, ${rdf.short(p)}, ${rdf.short(o)}) to graph ${graph}...`);
-  const query =  `INSERT DATA INTO <${graph}> {<${s}> <${p}> <${o}>.}`;
+  const query = `INSERT DATA INTO <${graph}> {<${s}> <${p}> <${o}>.}`;
   const url = SPARQL_ENDPOINT + '?query=' +escape(query) + '&format=json';
   return fetch(url)
     .then(response => {return response.json();})
     .then(json => {return json.results.bindings;})
     .then(bindings=> {log.debug(bindings[0]["callret-0"].value);return true;})
-    .catch(err =>{log.error(`Error inserting triple ${s} ${p} ${o} to graph ${graph}: ${err}`);return false;});
+    .catch(err =>{log.error(`Error inserting triple (${s}, ${p}, ${o}) to graph ${graph}: ${err}`);return false;});
 }
 
-export {SPARQL_ENDPOINT,SPARQL_GRAPH,SPARQL_PREFIX,SPARQL_LIMIT,sparql,deleteResource,addTriple};
+/** s,p and o all need to be uris (not literal or blank node).*/
+function addLabel(s,l,tag,graph)
+{
+  log.info(`Adding triple (${rdf.short(s)}, rdfs:label, ${l}) to graph ${graph}...`);
+  const query = `INSERT DATA INTO <${graph}> {<${s}> rdfs:label "${l}"@${tag}.}`;
+  const url = SPARQL_ENDPOINT + '?query=' +escape(query) + '&format=json';
+  return fetch(url)
+    .then(response => {return response.json();})
+    .then(json => {return json.results.bindings;})
+    .then(bindings=> {log.debug(bindings[0]["callret-0"].value);return true;})
+    .catch(err =>{log.error(`Error inserting triple (${s}, rdfs:label, ${l}@${tag}) to graph ${graph}: ${err}`);return false;});
+}
+
+export {SPARQL_ENDPOINT,SPARQL_GRAPH,SPARQL_PREFIX,SPARQL_LIMIT,sparql,deleteResource,addTriple,addLabel};
