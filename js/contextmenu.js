@@ -113,10 +113,19 @@ const defaultsNodes = {
         const source = graph.getSource();
         if(source&&(source!==target))
         {
+          /*
           const properties = property.possible(source,target);
-
-          //sparql.addTriple(graph.getSource().data().name,p,target.data().name,"http://www.snik.eu/ontology/test");
-          /*          graph.cy.add(
+          var box = dhtmlx.modalbox({
+            title:`Create Connection between the classes ${rdf.short(source.data().name)} and ${rdf.short(target.data().name)}`,
+            text:`<select>
+            ${properties.map()}
+          </select>`,
+            width:"250px",
+          });
+*/
+          const p = "http://www.snik.eu/ontology/meta/associatedWith";
+          sparql.addTriple(graph.getSource().data().name,p,target.data().name,"http://www.snik.eu/ontology/test");
+          graph.cy.add(
             {
               group: "edges",
               data: {
@@ -124,7 +133,7 @@ const defaultsNodes = {
                 target: target.data().name,
                 pl: "isAssociatedWith",
               },
-            });*/
+            });
         }
       },
     },
@@ -136,12 +145,14 @@ const defaultsNodes = {
           title:"Create Instance of Class "+rdf.short(node.data().name),//+rdf.short(node.data().name)
           text:`<form type="messageform" id='instanceform'>
           <div><label>URI Suffix in CamelCase   <input class='inform' id="suffix" type='text' minlength="3" pattern="([A-Z][a-z0-9]+)+"></label></div>
-          <div><label>English Label             <input class='inform' id="le" type='text' minlength="3" pattern="[A-Za-z0-9.,]+"></label></div>
-          <div><label>German Label              <input class='inform' id="ld" type='text' minlength="3" pattern="[A-Za-zöäüÖÄÜß0-9.,]+"></label></div>
+          <div><label>English Label             <input class='inform' id="le" type='text' minlength="3" pattern="[A-Za-z0-9., ]+"></label></div>
+          <div><label>German Label              <input class='inform' id="ld" type='text' minlength="3" pattern="[A-Za-zöäüÖÄÜß0-9., ]+"></label></div>
           <input type='submit' value='Create' style='width:250px;'>
+          <input type='button' id="hidebox" value='Cancel' style='width:250px;'>
           </form>`,
           width:"250px",
         });
+        document.getElementById("hidebox").addEventListener("click",()=>{dhtmlx.modalbox.hide(box);});
         const form = document.getElementById("instanceform");
         form.addEventListener("submit",event=>
         {
@@ -149,6 +160,12 @@ const defaultsNodes = {
           const suffix=form.querySelector("#suffix").value;
           const le=form.querySelector("#le").value;
           const ld=form.querySelector("#ld").value;
+          const uri= rdf.long(node.data().prefix+":"+suffix);
+          if(!uri.startsWith("http://www.snik.eu/ontology/")) {throw "Invalid URI: "+uri;}
+
+          sparql.addTriple(uri,rdf.long("rdf:type"),node.data().name,"http://www.snik.eu/ontology/test");
+          sparql.addLabel(uri,ld,"de","http://www.snik.eu/ontology/test");
+          sparql.addLabel(uri,le,"en","http://www.snik.eu/ontology/test");
 
           dhtmlx.modalbox.hide(box);
         }
