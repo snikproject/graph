@@ -26,7 +26,8 @@ export var cose =
     fit: false,
     randomize: true,
     initialTemp: 200,
-    weaver: true,
+    //weaver: Weaver,
+    weaver: false,
   };
 
 export var coseBilkent =

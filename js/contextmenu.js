@@ -2,7 +2,9 @@ import {ONTOLOGY_MODIFIED,ONTOLOGY_ISSUE_WARNING} from "./about.js";
 import {roleUse} from "./classuse.js";
 import * as graph from "./graph.js";
 import * as sparql from "./sparql.js";
+import * as rdf from "./rdf.js";
 import * as log from "./log.js";
+import * as property from "./property.js";
 
 const defaultsNodes = {
   menuRadius: 150, // the radius of the circular menu in pixels
@@ -106,22 +108,23 @@ const defaultsNodes = {
     },
     {
       content: 'add connection',
-      select: node=>
+      select: target=>
       {
-        if(graph.getSource()&&graph.getSource()!==node)
+        const source = graph.getSource();
+        if(source&&(source!==target))
         {
-          var p = "http://www.snik.eu/ontology/meta/isAssociatedWith";
+          const properties = property.possible(source,target);
 
-          sparql.addTriple(graph.getSource().data().name,p,node.data().name,"http://www.snik.eu/ontology/test");
-          graph.cy.add(
+          //sparql.addTriple(graph.getSource().data().name,p,target.data().name,"http://www.snik.eu/ontology/test");
+          /*          graph.cy.add(
             {
               group: "edges",
               data: {
                 source: graph.getSource().data().name,
-                target: node.data().name,
+                target: target.data().name,
                 pl: "isAssociatedWith",
               },
-            });
+            });*/
         }
       },
     },
@@ -130,11 +133,11 @@ const defaultsNodes = {
       select: node=>
       {
         var box = dhtmlx.modalbox({
-          title:"Create Instance of Class "+sparql.short(node.data().name),//+sparql.short(node.data().name)
+          title:"Create Instance of Class "+rdf.short(node.data().name),//+rdf.short(node.data().name)
           text:`<form type="messageform" id='instanceform'>
           <div><label>URI Suffix in CamelCase   <input class='inform' id="suffix" type='text' minlength="3" pattern="([A-Z][a-z0-9]+)+"></label></div>
-          <div><label>English Label             <input class='inform' id="le" type='text' minlength="3" pattern="[A-Z]a-z0-9.,]+"></label></div>
-          <div><label>German Label              <input class='inform' id="ld" type='text' minlength="3" pattern="[A-Z]a-zöäüÖÄÜß0-9.,]+"></label></div>
+          <div><label>English Label             <input class='inform' id="le" type='text' minlength="3" pattern="[A-Za-z0-9.,]+"></label></div>
+          <div><label>German Label              <input class='inform' id="ld" type='text' minlength="3" pattern="[A-Za-zöäüÖÄÜß0-9.,]+"></label></div>
           <input type='submit' value='Create' style='width:250px;'>
           </form>`,
           width:"250px",

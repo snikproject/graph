@@ -1,14 +1,10 @@
 import * as log from "./log.js";
+import * as rdf from "./rdf.js";
 
 const SPARQL_ENDPOINT = "http://www.snik.eu/sparql";
 const SPARQL_GRAPH = "http://www.snik.eu/ontology";
 const SPARQL_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies
 const SPARQL_LIMIT = 100;
-
-function short(uri)
-{
-  return uri.replace("http://www.snik.eu/ontology/","").replace("/",":");
-}
 
 function sparql(query,graphOpt)
 {
@@ -23,7 +19,7 @@ function sparql(query,graphOpt)
 
 function deleteResource(resource,graph)
 {
-  log.info(`deleting ${short(resource)} from graph ${graph}...`);
+  log.info(`deleting ${rdf.short(resource)} from graph ${graph}...`);
   const url = SPARQL_ENDPOINT +
   '?query=' + escape(`DELETE {?s ?p ?o} FROM <${graph}>
     {
@@ -44,7 +40,7 @@ function deleteResource(resource,graph)
 /** s,p and o all need to be uris (not literal or blank node).*/
 function addTriple(s,p,o,graph)
 {
-  log.info(`Adding triple (${short(s)}, ${short(p)}, ${short(o)}) to graph ${graph}...`);
+  log.info(`Adding triple (${rdf.short(s)}, ${rdf.short(p)}, ${rdf.short(o)}) to graph ${graph}...`);
   const query =  `INSERT DATA INTO <${graph}> {<${s}> <${p}> <${o}>.}`;
   const url = SPARQL_ENDPOINT + '?query=' +escape(query) + '&format=json';
   return fetch(url)
@@ -54,4 +50,4 @@ function addTriple(s,p,o,graph)
     .catch(err =>{log.error(`Error inserting triple ${s} ${p} ${o} to graph ${graph}: ${err}`);return false;});
 }
 
-export {SPARQL_ENDPOINT,SPARQL_GRAPH,SPARQL_PREFIX,SPARQL_LIMIT,sparql,deleteResource,addTriple,short};
+export {SPARQL_ENDPOINT,SPARQL_GRAPH,SPARQL_PREFIX,SPARQL_LIMIT,sparql,deleteResource,addTriple};
