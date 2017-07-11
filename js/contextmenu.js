@@ -144,12 +144,12 @@ const defaultsNodes = {
         var box = dhtmlx.modalbox({
           title:"Create Instance of Class "+rdf.short(node.data().name),//+rdf.short(node.data().name)
           text:`<form type="messageform" id='instanceform'>
-          <div><label>URI Suffix in CamelCase   <input class='inform' id="suffix" type='text' minlength="3" pattern="([A-Z][a-z0-9]+)+"></label></div>
-          <div><label>English Label             <input class='inform' id="le" type='text' minlength="3" pattern="[A-Za-z0-9., ]+"></label></div>
-          <div><label>German Label              <input class='inform' id="ld" type='text' minlength="3" pattern="[A-Za-zöäüÖÄÜß0-9., ]+"></label></div>
-          <input type='submit' value='Create' style='width:250px;'>
-          <input type='button' id="hidebox" value='Cancel' style='width:250px;'>
-          </form>`,
+        <div><label>URI Suffix in CamelCase   <input class='inform' id="suffix" type='text' minlength="3" pattern="([A-Z][a-z0-9]+)+"></label></div>
+        <div><label>English Label             <input class='inform' id="le" type='text' minlength="3" pattern="[A-Za-z0-9., ]+"></label></div>
+        <div><label>German Label              <input class='inform' id="ld" type='text' minlength="3" pattern="[A-Za-zöäüÖÄÜß0-9., ]+"></label></div>
+        <input type='submit' value='Create' style='width:250px;'>
+        <input type='button' id="hidebox" value='Cancel' style='width:250px;'>
+        </form>`,
           width:"250px",
         });
         document.getElementById("hidebox").addEventListener("click",()=>{dhtmlx.modalbox.hide(box);});
