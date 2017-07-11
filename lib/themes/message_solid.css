@@ -34,8 +34,8 @@
 .dhtmlx_modal_box{
 	overflow:hidden;
 	display: inline-block;
-	min-width: 800px;
-	width: 800px;
+	min-width: 1000px;
+	width: 1000px;
 	text-align: center;
 	position:fixed;
 
