@@ -65,6 +65,7 @@ function initGraphFromSparql()
         from <http://www.snik.eu/ontology/test>
         from <http://www.snik.eu/ontology/virtual>
         from <http://www.snik.eu/ontology/meta>
+        from <http://www.snik.eu/ontology/limes-exact>
         {
           owl:Class ^a ?c,?d.
           ?c ?p ?d.
