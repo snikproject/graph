@@ -52,7 +52,7 @@ for(const a of propertyData)
 /** Possible properties between two nodes in the graph.*/
 export function possible(subjectNode,objectNode)
 {
-  const possible = properties.filter((element,index,array)=>
+  const possibleProperties = properties.filter((element)=>
   {
     return ((!element.domain)||element.domain===subjectNode.data().st) // domain
   &&((!element.range)||element.range===objectNode.data().st) // range
@@ -61,6 +61,6 @@ export function possible(subjectNode,objectNode)
     ;
   }
   );
-  log.trace(`possible properties between ${subjectNode.data().name} and ${objectNode.data().name}:`, possible);
-  return possible;
+  log.trace(`possible properties between ${subjectNode.data().name} and ${objectNode.data().name}:`, possibleProperties);
+  return possibleProperties;
 }

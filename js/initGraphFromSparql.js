@@ -1,6 +1,7 @@
 import * as sparql from "./sparql.js";
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
+import * as log from "./log.js";
 import timer from "./timer.js";
 
 function initGraphFromSparql()
@@ -96,7 +97,7 @@ function initGraphFromSparql()
     return graph.cy;
   }).catch(e=>
   {
-    console.error(e,query);
+    log.error(query,e);
   });
 }
 

@@ -172,7 +172,7 @@ function showStarPath(from, to)
 }
 
 /** Get the starting node for a path operation. If there is no starting node defined, use the selected node. If that is not defined as well, return null. */
-function getSource(node)
+function getSource()
 {
   if(pathSource) {return pathSource;}
   if(selectedNode) {return selectedNode;}

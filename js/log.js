@@ -6,7 +6,7 @@ export function info(s)
   console.log.apply(console,arguments);
 }
 
-export function debug(s)
+export function debug()
 {
   console.log.apply(console,arguments);
 }

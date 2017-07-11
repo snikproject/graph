@@ -19,8 +19,8 @@ export var cose =
     animationThreshold: 250,
     numIter: 30,
     nodeDimensionsIncludeLabels: true,
-    nodeRepulsion: function(node){ return 400000; },
-    idealEdgeLength: function(edge){ return 200; },
+    nodeRepulsion: function(){ return 400000; },
+    idealEdgeLength: function(){ return 200; },
     nodeOverlap: 100,
     gravity: 80,
     fit: false,
@@ -46,13 +46,13 @@ export var colaInf =
     name:"cola",
     infinite: true,
     fit: false,
-    nodeSpacing: function(node) {return 40;},
+    nodeSpacing: function() {return 40;},
   };
 
 export var cola =
   {
     name:"cola",
     maxSimulationTime: 4000,
-    nodeSpacing: function(node) {return 40;},
+    nodeSpacing: function() {return 40;},
     fit:false,
   };

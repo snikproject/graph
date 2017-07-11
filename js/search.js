@@ -9,7 +9,7 @@ function hideSearchResults()
   document.getElementById("overlay").style.width = "0%";
 }
 
-function createFailDialog(title, text,uri)
+function createFailDialog(title, text,/*uri*/)
 {
   alert(`${title}: ${text}`);
   /*
@@ -182,11 +182,6 @@ function search(userQuery)
     showSearchResults(searchQuery, bindings);
   });
   return false; // prevent page reload triggered by submit
-}
-
-function setFirstCumulativeSearch(value)
-{
-  firstCumulativeSearch=value;
 }
 
 function addSearch()

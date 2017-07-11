@@ -1,5 +1,6 @@
 import {MODIFIED,ONTOLOGY_MODIFIED} from "./about.js";
 import * as layout from "./layout.js";
+import * as log from "./log.js";
 import {invert} from "./graph.js";
 
 function about() {window.alert("SNIK Graph version "+MODIFIED+"\nOntology version "+ONTOLOGY_MODIFIED);}
@@ -109,7 +110,7 @@ function addMenu()
         a.addEventListener("click",entry[0]);
         break;
       }
-      default: console.error("unknown menu entry action type: "+typeof entry[0]);
+      default: log.error("unknown menu entry action type: "+typeof entry[0]);
       }
       //
     }
