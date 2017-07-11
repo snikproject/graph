@@ -3,16 +3,16 @@
 export function info(s)
 {
   dhtmlx.message(s);
-  console.log(s);
+  console.log.apply(console,arguments);
 }
 
 export function debug(s)
 {
-  console.log(s);
+  console.log.apply(console,arguments);
 }
 
 export function error(s)
 {
-  dhtmlx.
-    console.log(s);
+  dhtmlx.message(s);
+  console.log.apply(console,arguments);
 }
