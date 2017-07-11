@@ -16,3 +16,8 @@ export function error(s)
   dhtmlx.message(s);
   console.log.apply(console,arguments);
 }
+
+export function trace()
+{
+  // do nothing for now
+}

@@ -61,6 +61,6 @@ export function possible(subjectNode,objectNode)
     ;
   }
   );
-  log.debug(possible);
+  log.trace(`possible properties between ${subjectNode.data().name} and ${objectNode.data().name}:`, possible);
   return possible;
 }
