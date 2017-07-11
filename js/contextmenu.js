@@ -4,6 +4,7 @@ import * as graph from "./graph.js";
 import * as sparql from "./sparql.js";
 import * as rdf from "./rdf.js";
 import * as log from "./log.js";
+import * as string from "./string.js";
 import * as property from "./property.js";
 
 const defaultsNodes = {
@@ -113,27 +114,40 @@ const defaultsNodes = {
         const source = graph.getSource();
         if(source&&(source!==target))
         {
-          /*
           const properties = property.possible(source,target);
+          if(properties.length===0)
+          {
+            log.error(`no possible properties between ${rdf.short(source.data().name)} and ${rdf.short(target.data().name)}`);
+            return false;
+          }
           var box = dhtmlx.modalbox({
-            title:`Create Connection between the classes ${rdf.short(source.data().name)} and ${rdf.short(target.data().name)}`,
-            text:`<select>
-            ${properties.map()}
-          </select>`,
+            title:`Create Connection between ${string.abbrv(rdf.short(source.data().name))} and ${string.abbrv(rdf.short(target.data().name))}`,
+            text:`<form id="connectionform"><select id="connectionselect">
+        ${properties.map((p)=>`<option value="${p.uri}">${p.label}</option>`)}
+        </select>
+        <input type='submit' value='Create' style='width:250px;'>
+        <input type='button' id="hidebox" value='Cancel' style='width:250px;'>
+        `,
             width:"250px",
           });
-*/
-          const p = "http://www.snik.eu/ontology/meta/associatedWith";
-          sparql.addTriple(graph.getSource().data().name,p,target.data().name,"http://www.snik.eu/ontology/test");
-          graph.cy.add(
-            {
-              group: "edges",
-              data: {
-                source: graph.getSource().data().name,
-                target: target.data().name,
-                pl: "isAssociatedWith",
-              },
-            });
+          document.getElementById("hidebox").addEventListener("click",()=>{dhtmlx.modalbox.hide(box);});
+          const form = document.getElementById("connectionform");
+          form.addEventListener("submit",event=>
+          {
+            event.preventDefault();
+            dhtmlx.modalbox.hide(box);
+            const select=form.querySelector("#connectionselect");
+            sparql.addTriple(graph.getSource().data().name,select.options[select.selectedIndex].value,target.data().name,"http://www.snik.eu/ontology/test");
+            graph.cy.add(
+              {
+                group: "edges",
+                data: {
+                  source: graph.getSource().data().name,
+                  target: target.data().name,
+                  pl: "isAssociatedWith",
+                },
+              });
+          });
         }
       },
     },
@@ -142,7 +156,7 @@ const defaultsNodes = {
       select: node=>
       {
         var box = dhtmlx.modalbox({
-          title:"Create Instance of Class "+rdf.short(node.data().name),//+rdf.short(node.data().name)
+          title:"Create Instance of Class "+string.abbrv(rdf.short(node.data().name),25),//+rdf.short(node.data().name)
           text:`<form type="messageform" id='instanceform'>
         <div><label>URI Suffix in CamelCase   <input class='inform' id="suffix" type='text' minlength="3" pattern="([A-Z][a-z0-9]+)+"></label></div>
         <div><label>English Label             <input class='inform' id="le" type='text' minlength="3" pattern="[A-Za-z0-9., ]+"></label></div>
