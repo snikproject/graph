@@ -48,6 +48,7 @@ var style =
             else if(ele.data('name')) {label = ele.data('name');}
             else {label = 'UNKNOWN URI, ID'+ele.data('id');}
             if(SHOW_QUALITY) {label=+"\n\u25CB\u25CF\u25CB\u25CB\u25CF";}
+            if(ele.data('inst')) {label+="*";}
             return label;
           },
         },
