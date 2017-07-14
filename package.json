@@ -11,6 +11,9 @@
     "babel-cli": "^6.24.1",
     "babel-preset-env": "^1.6.0",
     "babel-register": "^6.24.1",
+    "chai": "^4.1.0",
+    "es6-promise": "^4.1.1",
+    "isomorphic-fetch": "^2.2.1",
     "mocha": "^3.4.2"
   },
   "keywords": [
@@ -26,7 +29,7 @@
     "url": "https://github.com/IMISE/snik-cytoscape.js/issues"
   },
   "scripts": {
-    "test": "mocha --compilers js:babel-register",
+    "test": "mocha --compilers js:babel-register --require isomorphic-fetch",
     "build": "babel js -d target"
   },
   "repository": {
