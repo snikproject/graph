@@ -1,5 +1,5 @@
-var assert = require('assert');
-var rdf = require('../js/rdf.js');
+import * as rdf from '../js/rdf.js';
+import assert from 'assert'; // 'assert.js' does not work for some reason, probably only works because of the transpilation to require
 
 const shortlongs =
 [
@@ -27,17 +27,14 @@ describe('rdf', function()
       }
     });
   });
-});
 
-describe('rdf', function()
-{
   describe('#long()', function()
   {
     it('should replace prefixed uris with their long form', function()
     {
       for(const sl of shortlongs)
       {
-        assert.equal(rdf.long(sl[0]), sl[1]);
+        assert.equal(sl[1],rdf.long(sl[0]));
       }
     });
   });

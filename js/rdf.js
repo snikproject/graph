@@ -14,7 +14,8 @@ const prefixes = // order important! substrings of other prefixes must come late
 
 export function short(uri)
 {
-  return uri.replace("http://www.snik.eu/ontology/","").replace("/",":");
+  for(const prefix of prefixes) {uri=uri.replace(prefix[1],prefix[0]+":");}
+  return uri;
 }
 
 export function long(uri)

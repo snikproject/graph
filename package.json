@@ -9,8 +9,8 @@
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-systemjs": "^6.24.1",
     "babel-preset-env": "^1.6.0",
+    "babel-register": "^6.24.1",
     "mocha": "^3.4.2"
   },
   "keywords": [
@@ -26,7 +26,7 @@
     "url": "https://github.com/IMISE/snik-cytoscape.js/issues"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --compilers js:babel-register",
     "build": "babel js -d target"
   },
   "repository": {

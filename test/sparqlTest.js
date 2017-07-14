@@ -1,4 +1,4 @@
-import * as sparql from "./sparql.js";
+import * as sparql from "../js/sparql.js";
 
 function sparqlTest()
 {
