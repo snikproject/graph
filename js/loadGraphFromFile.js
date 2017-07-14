@@ -1,7 +1,7 @@
 import {progress} from "./progress.js";
 import * as graph from "./graph.js";
 
-function initGraphFromFile()
+export default function loadGraphFromFile()
 {
   progress(0);
 
@@ -16,7 +16,6 @@ function initGraphFromFile()
     .then(response=>response.json())
     .then(json=>
     {
-      graph.initGraph();
       graph.cy.add(json.elements);
     })
     .catch(e=>
@@ -29,5 +28,3 @@ function initGraphFromFile()
       return graph.cy;
     });
 }
-
-export {initGraphFromFile};

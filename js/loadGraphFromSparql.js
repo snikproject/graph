@@ -4,11 +4,8 @@ import * as layout from "./layout.js";
 import * as log from "./log.js";
 import timer from "./timer.js";
 
-function initGraphFromSparql()
+export default function loadGraphFromSparql()
 {
-  const initTimer = timer("graph-init");
-  graph.initGraph(document.getElementById('cy'));
-  initTimer.stop();
   // load graph from SPARQL endpoint instead of from the .cyjs file
   // only show classes with labels, use any one if more than one
   // degree too time consuming, remove for development
@@ -49,7 +46,7 @@ function initGraphFromSparql()
             ld: [(json[i].l===undefined)?json[i].c.value:json[i].l.value],
             st: (json[i].subTop===undefined)?null:json[i].subTop.value,
             prefix: (json[i].source===undefined)?null:json[i].source.value,
-            inst: (json[i].instance===undefined)?false:true,
+            inst: json[i].instance!==undefined,
             //degree: parseInt(json[i].degree.value),
           },
           //position: { x: 200, y: 200 }
@@ -102,5 +99,3 @@ function initGraphFromSparql()
     log.error(query,e);
   });
 }
-
-export {initGraphFromSparql};

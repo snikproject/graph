@@ -5,6 +5,7 @@ import {colorschemenight} from "./colorschemenight.js";
 import {colorschemeday} from "./colorschemeday.js";
 import * as sparql from "./sparql.js";
 import {registerMenu} from "./contextmenu.js";
+import timer from "./timer.js";
 //import {setFirstCumulativeSearch} from "./search.js";
 
 
@@ -351,6 +352,7 @@ function filter(checkbox)
 
 function initGraph()
 {
+  const initTimer = timer("graph-init");
   document.addEventListener('keydown',function(e)
   {
     if(e.keyCode === 46) {remove(cy.$('node:selected'));}
@@ -387,6 +389,7 @@ function initGraph()
   removedEdges = cy.collection() ;
   styledEdges = cy.collection();
   styledNodes = cy.collection();
+  initTimer.stop();
 }
 
 function setSelectedNode(node) {selectedNode=node;}
