@@ -13,7 +13,7 @@ export function debug()
 
 export function error(s)
 {
-  dhtmlx.message(s);
+  dhtmlx.message({type: "error", text: s});
   console.log.apply(console,arguments);
 }
 
