@@ -16,7 +16,10 @@ var style =
           'text-valign': 'center',
           'text-halign': 'center',
           'border-opacity': 1.0,
-          'border-width': 0.0,
+          'border-width': function(ele)
+          {
+            return ele.data('inst')?1.0:0.0;
+          },
           'font-family': 'sans-serif',
           'font-weight': 'normal',
           'background-opacity': 0.5882352941176471,
