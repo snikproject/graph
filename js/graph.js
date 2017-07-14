@@ -4,6 +4,7 @@ import {style} from "./style.js";
 import {colorschemenight} from "./colorschemenight.js";
 import {colorschemeday} from "./colorschemeday.js";
 import * as sparql from "./sparql.js";
+import * as log from "./log.js";
 import {registerMenu} from "./contextmenu.js";
 import timer from "./timer.js";
 //import {setFirstCumulativeSearch} from "./search.js";
@@ -20,6 +21,8 @@ var path = null;
 var pathSource = null;
 var pathTarget = null;
 var starMode = false;
+
+const REMOVE_SINGLE_ELEMENTS_ONLY = true;
 
 function setStarMode(mode) {starMode=mode;}
 
@@ -285,22 +288,47 @@ function invert(enabled)
   }
 }
 
-function remove(nodes)
+function removeNodes(nodes)
 {
+  if(REMOVE_SINGLE_ELEMENTS_ONLY&&nodes.length>1)
+  {
+    log.error("Multiple element removal is deactivated. Please remove single elements only.");
+    return;
+  }
   progress(0);
   cy.startBatch();
-  removedNodes.add(nodes);
+  //removedNodes.add(nodes);
   for(let i=0;i<nodes.length;i++)
   {
     const node = nodes[i];
     //console.log(node.data().name);
     sparql.deleteResource(node.data().name,"http://www.snik.eu/ontology/test");
   }
-  {removedEdges.add(nodes.connectedEdges());}
+  //removedEdges.add(nodes.connectedEdges());
   nodes.remove();
   cy.endBatch();
   progress(100);
 }
+
+function removeEdges(edges)
+{
+  if(REMOVE_SINGLE_ELEMENTS_ONLY&&edges.length>1)
+  {
+    log.error("Multiple element removal is deactivated. Please remove single elements only.");
+    return;
+  }
+  progress(0);
+  cy.startBatch();
+  for(let i=0;i<edges.length;i++)
+  {
+    // todo: determine source and target uri
+    //sparql.deleteTriple(edges[i].data()....,"http://www.snik.eu/ontology/test");
+  }
+  edges.remove();
+  cy.endBatch();
+  progress(100);
+}
+
 
 function restore()
 {
@@ -355,7 +383,11 @@ function initGraph()
   const initTimer = timer("graph-init");
   document.addEventListener('keydown',function(e)
   {
-    if(e.keyCode === 46) {remove(cy.$('node:selected'));}
+    if(e.keyCode === 46)
+    {
+      removeNodes(cy.$('node:selected'));
+      removeEdges(cy.$('edge:selected'));
+    }
   });
   cy = cytoscape(
     {
@@ -394,5 +426,5 @@ function initGraph()
 
 function setSelectedNode(node) {selectedNode=node;}
 
-export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,remove,restore,layout,filter,
+export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,restore,layout,filter,
   getSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar,setStarMode,hideNodes,showNodes};

@@ -37,6 +37,18 @@ function deleteResource(resource,graph)
     .catch(err =>{log.error(`Error deleting uri ${resource} from SPARQL endpoint: ${err}`);return false;});
 }
 
+function deleteTriple(s,p,o,graph)
+{
+  log.info(`Deleting triple (${rdf.short(s)}, ${rdf.short(p)}, ${rdf.short(o)}) from graph ${graph}...`);
+  const query = `DELETE DATA FROM <${graph}> {<${s}> <${p}> <${o}>.}`;
+  const url = SPARQL_ENDPOINT + '?query=' +escape(query) + '&format=json';
+  return fetch(url)
+    .then(response => {return response.json();})
+    .then(json => {return json.results.bindings;})
+    .then(bindings=> {log.debug(bindings[0]["callret-0"].value);return true;})
+    .catch(err =>{log.error(`Error deleting triple (${s}, ${p}, ${o}) from graph ${graph}: ${err}`);return false;});
+}
+
 /** s,p and o all need to be uris (not literal or blank node).*/
 function addTriple(s,p,o,graph)
 {
@@ -63,4 +75,4 @@ function addLabel(s,l,tag,graph)
     .catch(err =>{log.error(`Error inserting triple (${s}, rdfs:label, ${l}@${tag}) to graph ${graph}: ${err}`);return false;});
 }
 
-export {SPARQL_ENDPOINT,SPARQL_GRAPH,SPARQL_PREFIX,SPARQL_LIMIT,sparql,deleteResource,addTriple,addLabel};
+export {SPARQL_ENDPOINT,SPARQL_GRAPH,SPARQL_PREFIX,SPARQL_LIMIT,sparql,deleteResource,addTriple,addLabel,deleteTriple};
