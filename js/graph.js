@@ -321,8 +321,8 @@ function removeEdges(edges)
   cy.startBatch();
   for(let i=0;i<edges.length;i++)
   {
-    // todo: determine source and target uri
-    //sparql.deleteTriple(edges[i].data()....,"http://www.snik.eu/ontology/test");
+    const data = edges[i].data();
+    sparql.deleteTriple(data.source,data.p,data.target,"http://www.snik.eu/ontology/test");
   }
   edges.remove();
   cy.endBatch();

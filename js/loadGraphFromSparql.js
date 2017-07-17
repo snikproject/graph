@@ -60,7 +60,8 @@ export default function loadGraphFromSparql()
     //const triplesPromise =
     return sparql.sparql(
       // only show classes with labels, use any one if more than one
-      `select ?c replace(str(?p),".*[#/]","") as ?p ?d
+      //`select ?c replace(str(?p),".*[#/]","") as ?p ?d
+      `select ?c ?p ?d
         #from <http://www.snik.eu/ontology/it>
         from <http://www.snik.eu/ontology/test>
         from <http://www.snik.eu/ontology/virtual>
