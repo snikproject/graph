@@ -8,6 +8,7 @@ var firstCumulativeSearch = true;
 function hideSearchResults()
 {
   document.getElementById("overlay").style.width = "0%";
+  document.getElementById("overlay").display = "none";
 }
 
 function createFailDialog(title, text,/*uri*/)
@@ -110,7 +111,7 @@ function showSearchResults(query, bindings)
   {
     table.deleteRow(i);
   }
-
+  document.getElementById("overlay").display = "block";
   document.getElementById("overlay").style.width = "100%";
 
   if(bindings.length===0)
@@ -158,6 +159,7 @@ function showSearchResults(query, bindings)
 
 function search(userQuery)
 {
+  document.getElementById("overlay").style.display= "block";
   // prevent invalid SPARQL query and injection by just keeping basic characters
   var searchQuery = userQuery.replace('/[^A-Z a-z0-9]/g', ''); //.split(' ')[0];
   // use this when labels are available

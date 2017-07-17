@@ -1,4 +1,5 @@
 .overlay {
+    display:none;
     height: 100%;
     width: 0;
     position: fixed;
