@@ -3,7 +3,7 @@ import * as graph from "./graph.js";
 export default function addButtons()
 {
   const resetView = document.createElement("button");
-  document.getElementById("buttons").append(resetView);
+  document.getElementById("buttons").appendChild(resetView);
   resetView.innerText = "Reset View";
   resetView.addEventListener("click",graph.resetStyle);
 }

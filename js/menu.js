@@ -82,11 +82,11 @@ function addMenu()
   for(const menu of menuData())
   {
     const li = document.createElement("li");
-    ul.append(li);
+    ul.appendChild(li);
     li.classList.add("dropdown");
 
     const div = document.createElement("div");
-    li.append(div);
+    li.appendChild(div);
     div.classList.add("dropdown-content");
     div.setAttribute("id",menu.id);
     {
@@ -100,7 +100,7 @@ function addMenu()
     for(const entry of menu.entries)
     {
       const a = document.createElement("a");
-      div.append(a);
+      div.appendChild(a);
       a.innerText=entry[1];
       switch(typeof entry[0])
       {
