@@ -8,7 +8,7 @@ import addButtons from "./button.js";
 import * as graph from "./graph.js";
 
 graph.initGraph();
-const LOAD_GRAPH_FROM_SPARQL = true;
+const LOAD_GRAPH_FROM_SPARQL = false;
 (LOAD_GRAPH_FROM_SPARQL?loadGraphFromSparql():loadGraphFromFile())
   .then((cy)=>
   {
