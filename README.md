@@ -13,3 +13,22 @@ Use babel to transpile to ES5 if you want to support older browsers.
 #### Folder structure
 `lib` contains external libraries that are not available on a cdn. `js` contains self created javascript files. `data` contains the graph with layout information,
 The root folder contains all the HTML files.
+
+## Development
+
+### Code Style
+Specified in the ESlint config file `.eslintrc.json`.
+
+### Requirements
+
+* Source: Browser with ES6 and ES6 module support
+* Transpiled: IE 11, Firefox 37+,
+
+### Pure JavaScript Development
+If you don't like to use npm and babel you can use a pure JavaScript workflow for development but then your browser needs to support the source requirements.
+
+### Development with Tooling
+
+* At first checkout, run `npm install` to download the necessary NPM modules.
+* To execute the Mocha unit tests, run `npm run test`.
+* For production or if you develop on an older browser run `npm run build` and then open `index-babel.html`.
