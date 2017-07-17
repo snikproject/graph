@@ -4,15 +4,15 @@ import * as graph from "./graph.js";
 export default function loadGraphFromFile()
 {
   progress(0);
-
+  /*
   const headers = new Headers();
   const init = { method: 'GET',
     headers: headers,
     mode: 'cors',
     cache: 'default',
     credentials: 'include'};
-
-  return fetch("data/snik.cyjs",init)
+*/
+  return fetch("data/snik.cyjs")
     .then(response=>response.json())
     .then(json=>
     {
