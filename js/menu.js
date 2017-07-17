@@ -10,14 +10,9 @@ function menuData()
 {
   return [
     {
-      "label": "Services",
-      "id":"services",
-      "entries":
-      [
-        ["http://www.snik.eu/sparql","SPARQL Endpoint"],
-        ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser"],
-        ["http://snik.eu/evaluation","Data Quality Evaluation"],
-      ],
+      "label": "Load",
+      "id": "load",
+      "entries": [], // filled by addLoadEntries()
     },
     {
       "label": "Filter",
@@ -55,6 +50,16 @@ function menuData()
         [about,"About SNIK Graph"],
         ["https://github.com/IMISE/snik-ontology/issues","Submit Feedback about the Ontology"],
         ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"],
+      ],
+    },
+    {
+      "label": "Services",
+      "id":"services",
+      "entries":
+      [
+        ["http://www.snik.eu/sparql","SPARQL Endpoint"],
+        ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser"],
+        ["http://snik.eu/evaluation","Data Quality Evaluation"],
       ],
     },
   ];
@@ -117,6 +122,7 @@ function addMenu()
   }
   document.getElementById("top").prepend(ul);
   addOptions();
+  addLoadEntries();
 }
 
 // Close the dropdown if the user clicks outside of it
@@ -136,5 +142,10 @@ window.onclick = function(e)
     }
   }
 };
+
+function addLoadEntries()
+{
+  // TODO: implement
+}
 
 export default addMenu;
