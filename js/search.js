@@ -1,5 +1,6 @@
 import * as graph from "./graph.js";
 import * as sparql from "./sparql.js";
+import * as log from "./log.js";
 
 const USE_BIF_CONTAINS = false; // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 var firstCumulativeSearch = true;
@@ -11,7 +12,8 @@ function hideSearchResults()
 
 function createFailDialog(title, text,/*uri*/)
 {
-  alert(`${title}: ${text}`);
+  log.error(`${title}: ${text}`);
+  //alert(`${title}: ${text}`);
   /*
   return document.createDocumentFragment("<div class='dialog' title='" + title + "'><p>" + text + "</p></div>")
     .dialog({
