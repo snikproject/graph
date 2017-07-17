@@ -3,7 +3,6 @@
   [[
     "env", {
       "targets": {
-        "chrome": 52,
         "browsers": ["Firefox 37", "Explorer 11","Chrome 39"]
       },
       "useBuiltIns": true
