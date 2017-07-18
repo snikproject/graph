@@ -8,19 +8,11 @@ import * as string from "./string.js";
 import * as property from "./property.js";
 
 const defaultsNodes = {
-  menuRadius: 150, // the radius of the circular menu in pixels
+  menuRadius: 220, // the radius of the circular menu in pixels
   selector: 'node[st!="Role"]', // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: [
     {
-      content: 'description',
-      //select: node=> {window.open(node._private.data.name);}
-      select: node=>
-      {
-        window.open(node._private.data.name);
-      },
-    },
-    {
-      content: 'submit ticket',
+      content: 'ticket',
       select: node=>
       {
         //var b = confirm("Please only use this ticket tracker for problems with the ontology data, not the javascript visualization web application. Continue?");
@@ -61,6 +53,14 @@ const defaultsNodes = {
       },
     },
     {
+      content: 'description',
+      //select: node=> {window.open(node._private.data.name);}
+      select: node=>
+      {
+        window.open(node._private.data.name);
+      },
+    },
+    {
       content: 'star',
       select: node=>
       {
@@ -68,7 +68,7 @@ const defaultsNodes = {
       },
     },
     {
-      content: 'shortest path to here',
+      content: 'path',
       select: node=>
       {
         if(graph.getSource()&&graph.getSource()!==node)
@@ -78,7 +78,7 @@ const defaultsNodes = {
       },
     },
     {
-      content: 'spiderworm to here',
+      content: 'spiderworm',
       select: node=>
       {
         if(graph.getSource()&&graph.getSource()!==node)
@@ -88,7 +88,7 @@ const defaultsNodes = {
       },
     },
     {
-      content: 'doublestar to here',
+      content: 'doublestar',
       select: node=>
       {
         if(graph.getSource()&&graph.getSource()!==node)
@@ -98,7 +98,7 @@ const defaultsNodes = {
       },
     },
     {
-      content: 'starpath to here',
+      content: 'starpath',
       select: node=>
       {
         if(graph.getSource()&&graph.getSource()!==node)
@@ -213,10 +213,10 @@ break;
 }
 */
   ],
-  fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
-  activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
+  fillColor: 'rgba(200, 200, 200, 0.95)', // the background colour of the menu
+  activeFillColor: 'rgba(150, 0, 0, 1)', // the colour used to indicate the selected command
   openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
-  itemColor: 'white', // the colour of text in the command's content
+  itemColor: 'rgba(80,0,0)', // the colour of text in the command's content
   itemTextShadowColor: 'gray', // the text shadow colour of the command's content
   zIndex: 9999, // the z-index of the ui div
 };
@@ -226,7 +226,7 @@ const defaultsRelations = {
   selector: 'edge', // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: [
     {
-      content: 'submit ticket',
+      content: 'ticket',
       select: function(edge)
       {
         //window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
@@ -253,7 +253,7 @@ function registerMenu()
   defaultsNodes.selector="node[st='Role']";
   defaultsNodes.commands.push(
     {
-      content: 'roleUse',
+      content: 'role use',
       select: node=>
       {
         roleUse(node.data().name);
