@@ -13,6 +13,7 @@
     "babel-register": "^6.24.1",
     "chai": "^4.1.0",
     "es6-promise": "^4.1.1",
+    "eslint": "^4.2.0",
     "isomorphic-fetch": "^2.2.1",
     "mocha": "^3.4.2"
   },
