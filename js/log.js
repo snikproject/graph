@@ -2,7 +2,7 @@
 
 export function info(s)
 {
-  dhtmlx.message(s);
+  if((typeof dhtmlx) !== "undefined") {dhtmlx.message(s);}
   console.log.apply(console,arguments);
 }
 
@@ -13,8 +13,8 @@ export function debug()
 
 export function error(s)
 {
-  dhtmlx.message({type: "error", text: s});
-  console.log.apply(console,arguments);
+  if((typeof dhtmlx) !== "undefined") {dhtmlx.message({type: "error", text: s});}
+  console.error.apply(console,arguments);
 }
 
 export function trace()

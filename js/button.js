@@ -6,6 +6,10 @@ export default function addButtons()
   document.getElementById("buttons").appendChild(resetView);
   resetView.innerText = "Reset View";
   resetView.addEventListener("click",graph.resetStyle);
+  const history = document.createElement("button");
+  document.getElementById("buttons").appendChild(history);
+  resetView.innerText = "Reset View";
+  resetView.addEventListener("click",graph.resetStyle);
 }
 
 /*
