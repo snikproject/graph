@@ -3,18 +3,32 @@ import loadGraphFromSparql from "./loadGraphFromSparql.js";
 import * as log from "./log.js";
 import addFilterEntries from "./filter.js";
 import addMenu from "./menu.js";
-import addSearch from "./search.js";
+import * as search from "./search.js";
 import addButtons from "./button.js";
 import * as graph from "./graph.js";
+import * as history from "./history.js";
 
 graph.initGraph();
-const LOAD_GRAPH_FROM_SPARQL = false;
+history.initHistory();
+
+window.addEventListener('keydown', e=>
+{
+  if((e.key==='Escape'||e.key==='Esc'||e.keyCode===27))// && (e.target.nodeName==='BODY'))
+  {
+    e.preventDefault();
+    history.hideHistory();
+    search.hideSearchResults();
+    return false;
+  }
+}, true);
+
+const LOAD_GRAPH_FROM_SPARQL = true;
 (LOAD_GRAPH_FROM_SPARQL?loadGraphFromSparql():loadGraphFromFile())
   .then((cy)=>
   {
     addMenu();
     addFilterEntries(cy,document.getElementById("filter"));
-    addSearch();
+    search.addSearch();
     addButtons();
   })
   .catch(e=>

@@ -5,7 +5,7 @@ import * as log from "./log.js";
 const USE_BIF_CONTAINS = false; // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 var firstCumulativeSearch = true;
 
-function hideSearchResults()
+export function hideSearchResults()
 {
   document.getElementById("overlay").style.width = "0%";
   document.getElementById("overlay").display = "none";
@@ -188,7 +188,7 @@ function search(userQuery)
   return false; // prevent page reload triggered by submit
 }
 
-function addSearch()
+export function addSearch()
 {
   document.getElementById('closelink').addEventListener("click", hideSearchResults);
   document.getElementById("search").addEventListener("submit",(event)=>
@@ -198,5 +198,3 @@ function addSearch()
     search(event.target.children.query.value);
   });
 }
-
-export default addSearch;

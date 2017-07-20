@@ -1,11 +1,20 @@
 import * as graph from "./graph.js";
+import * as history from "./history.js";
 
 export default function addButtons()
 {
-  const resetView = document.createElement("button");
-  document.getElementById("buttons").appendChild(resetView);
-  resetView.innerText = "Reset View";
-  resetView.addEventListener("click",graph.resetStyle);
+  {
+    const resetView = document.createElement("button");
+    document.getElementById("buttons").appendChild(resetView);
+    resetView.innerText = "Reset View";
+    resetView.addEventListener("click",graph.resetStyle);
+  }
+  {
+    const historyButton = document.createElement("button");
+    document.getElementById("buttons").appendChild(historyButton);
+    historyButton.innerText = "History";
+    historyButton.addEventListener("click",history.showHistory);
+  }
 }
 
 /*

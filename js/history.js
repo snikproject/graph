@@ -3,22 +3,34 @@ import * as sparql from "./sparql.js";
 
 const GRAPH = "http://www.snik.eu/ontology/history";
 
+export function hideHistory()
+{
+  const overlay = document.getElementById("history-overlay");
+  overlay.style.width = "0%";
+  overlay.style.display= "none";
+}
+
+export function initHistory()
+{
+  document.getElementById('history-closelink').addEventListener("click", hideHistory);
+}
+
 export function showHistory()
 {
   const overlay = document.getElementById("history-overlay");
   overlay.style.width = "100%";
   overlay.style.display= "block";
-  const query = `PREFIX h: <http://www.snik.eu/ontology/history/>
-  select ?user ?date ?s ?p ?o from <http://www.snik.eu/ontology/history>
+  const query = `PREFIX cs: <http://purl.org/vocab/changeset/schema#>
+  SELECT ?cs ?creator ?reason
+  replace(replace(str(?subject),"^([^/]*/){4}",""),"/",":") as ?subject
+  substr(str(?date),1,19) as ?date FROM <http://www.snik.eu/ontology/history>
   {
-    ?op a h:operation;
-        h:user ?user;
-        h:date ?date;
-        h:subject ?s;
-        h:predicate ?p;
-        h:object ?o;
-        h:type ?t.
-  }`;
+    ?cs a cs:ChangeSet;
+    cs:creatorName ?creator;
+    cs:changeReason ?reason;
+    cs:subjectOfChange ?subject;
+    cs:createdDate ?date.
+  } ORDER BY DESC(?date) LIMIT 20`;
   sparql.sparql(query,GRAPH).then(bindings=>
   {
     const table = document.getElementById("history-table");
@@ -35,7 +47,16 @@ export function showHistory()
           td.innerText=binding[id].value;
         }
       };
-      addTd(["user","date","subject","predicate","object","type"]);
+      addTd(["creator","reason","date","subject"]);
+      const td = document.createElement("td");
+      tr.appendChild(td);
+      const a = document.createElement("a");
+      td.appendChild(a);
+      a.innerText="Undo";
+      a.addEventListener("click",e=>
+      {
+        sparql.undo(binding.cs.value);
+      });
     }
   });
 }
