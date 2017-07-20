@@ -322,7 +322,7 @@ function removeEdges(edges)
   for(let i=0;i<edges.length;i++)
   {
     const data = edges[i].data();
-    sparql.deleteTriple(data.source,data.p,data.target,"http://www.snik.eu/ontology/test");
+    sparql.deleteTripleAndRecordHistory(data.source,data.p,data.target,"http://www.snik.eu/ontology/test");
   }
   edges.remove();
   cy.endBatch();
