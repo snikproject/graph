@@ -6,6 +6,11 @@ import {invert} from "./graph.js";
 function about() {window.alert("SNIK Graph version "+MODIFIED+"\nOntology version "+ONTOLOGY_MODIFIED);}
 /**entries is an array of arrays of size two, entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed. entries[i][1] is a label as a string.  */
 
+function addLoadEntries()
+{
+  // TODO: implement
+}
+
 function menuData()
 {
   return [
@@ -142,10 +147,5 @@ window.onclick = function(e)
     }
   }
 };
-
-function addLoadEntries()
-{
-  // TODO: implement
-}
 
 export default addMenu;
