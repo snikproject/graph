@@ -14,8 +14,8 @@ export default function loadGraphFromSparql()
   #count(?o) as ?degree
   #from <http://www.snik.eu/ontology/it>
   from <http://www.snik.eu/ontology/test>
-  from <http://www.snik.eu/ontology/virtual>
-  from <http://www.snik.eu/ontology/meta>
+  #from <http://www.snik.eu/ontology/virtual>
+  #from <http://www.snik.eu/ontology/meta>
   {
     ?c a owl:Class.
     #{?c ?p ?o.} UNION {?o ?p ?c}.
@@ -64,9 +64,9 @@ export default function loadGraphFromSparql()
       `select ?c ?p ?d
         #from <http://www.snik.eu/ontology/it>
         from <http://www.snik.eu/ontology/test>
-        from <http://www.snik.eu/ontology/virtual>
-        from <http://www.snik.eu/ontology/meta>
-        from <http://www.snik.eu/ontology/limes-exact>
+        #from <http://www.snik.eu/ontology/virtual>
+        #from <http://www.snik.eu/ontology/meta>
+        #from <http://www.snik.eu/ontology/limes-exact>
         {
           owl:Class ^a ?c,?d.
           ?c ?p ?d.
