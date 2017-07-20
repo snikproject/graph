@@ -8,17 +8,9 @@ import * as string from "./string.js";
 import * as property from "./property.js";
 
 const defaultsNodes = {
-  menuRadius: 150, // the radius of the circular menu in pixels
+  menuRadius: 180, // the radius of the circular menu in pixels
   selector: 'node[st!="Role"]', // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: [
-    {
-      content: 'description',
-      //select: node=> {window.open(node._private.data.name);}
-      select: node=>
-      {
-        window.open(node._private.data.name);
-      },
-    },
     {
       content: 'submit ticket',
       select: node=>
@@ -61,6 +53,14 @@ const defaultsNodes = {
       },
     },
     {
+      content: 'description',
+      //select: node=> {window.open(node._private.data.name);}
+      select: node=>
+      {
+        window.open(node._private.data.name);
+      },
+    },
+    {
       content: 'star',
       select: node=>
       {
@@ -68,7 +68,7 @@ const defaultsNodes = {
       },
     },
     {
-      content: 'shortest path to here',
+      content: 'shortest path here',
       select: node=>
       {
         if(graph.getSource()&&graph.getSource()!==node)
@@ -78,7 +78,7 @@ const defaultsNodes = {
       },
     },
     {
-      content: 'spiderworm to here',
+      content: 'spiderworm here',
       select: node=>
       {
         if(graph.getSource()&&graph.getSource()!==node)
@@ -88,7 +88,7 @@ const defaultsNodes = {
       },
     },
     {
-      content: 'doublestar to here',
+      content: 'doublestar here',
       select: node=>
       {
         if(graph.getSource()&&graph.getSource()!==node)
@@ -98,7 +98,7 @@ const defaultsNodes = {
       },
     },
     {
-      content: 'starpath to here',
+      content: 'starpath here',
       select: node=>
       {
         if(graph.getSource()&&graph.getSource()!==node)
@@ -213,8 +213,8 @@ break;
 }
 */
   ],
-  fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
-  activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
+  fillColor: 'rgba(60, 60, 60, 0.9)', // the background colour of the menu
+  activeFillColor: 'rgba(90, 90, 90, 0.9)', // the colour used to indicate the selected command
   openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
   itemColor: 'white', // the colour of text in the command's content
   itemTextShadowColor: 'gray', // the text shadow colour of the command's content
@@ -253,7 +253,7 @@ function registerMenu()
   defaultsNodes.selector="node[st='Role']";
   defaultsNodes.commands.push(
     {
-      content: 'roleUse',
+      content: 'role use',
       select: node=>
       {
         roleUse(node.data().name);
