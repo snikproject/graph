@@ -38,11 +38,26 @@ describe('sparql', function()
         }
         );
     });
+    /*
+      it('should not contain the test triple now', function()
+      {
+      return sparql.ask("ask from <http://www.snik.eu/ontology/test> {<this> <isa> <test>.}")
+      .then(b=>{assert(!b,"already contains the test triple");});
+    });*/
+    it('should add and delete the test triple', function()
+    {
+      return sparql.deleteTriple("this","isa","test","http://www.snik.eu/ontology/test")
+        .then(()=>{return sparql.ask("ask from <http://www.snik.eu/ontology/test> {<this> <isa> <test>.}");})
+        .then(b=>{assert(!b,"still contains the test triple even after deletion");})
+        .then(()=>{return sparql.addTriple("this","isa","test","http://www.snik.eu/ontology/test");})
+        .then(()=>{return sparql.ask("ask from <http://www.snik.eu/ontology/test> {<this> <isa> <test>.}");})
+        .then(b=>{assert(b,"does not contain the test triple after addition");})
+        .then(()=>{sparql.deleteTriple("this","isa","test","http://www.snik.eu/ontology/test");}); // cleanup
+    });
   });
 });
 
 /* to test:
 function deleteResource(resource,graph)
-function addTriple(s,p,o,graph)
 function addLabel(s,l,tag,graph)
 */
