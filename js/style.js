@@ -50,7 +50,7 @@ var style =
             else if(ele.data('la')&&ele.data('la')[0]) {label = ele.data('la')[0];}
             else if(ele.data('name')) {label = ele.data('name');}
             else {label = 'UNKNOWN URI, ID'+ele.data('id');}
-            if(SHOW_QUALITY) {label=+"\n\u25CB\u25CF\u25CB\u25CB\u25CF";}
+            if(SHOW_QUALITY) {label+="\n\u25CB\u25CF\u25CB\u25CB\u25CF";}
             if(ele.data('inst')) {label+="*";}
             return label;
           },
@@ -111,6 +111,14 @@ var style =
         "selector" : "edge",
         "css" : {
           'min-zoomed-font-size': 9,
+          'label': function(edge)
+          {
+            let label = edge.data('pl');
+            const SHOW_QUALITY=true;
+            if(SHOW_QUALITY&&edge.data('g')==="http://www.snik.eu/ontology/limes-exact")
+            {label+=" \u26A0";}
+            return label;
+          },
         },
       },
       {
@@ -119,7 +127,6 @@ var style =
         {
           'opacity': 0.5,
           'width': 2.0,
-          'label': 'data(pl)',
           'edge-text-rotation': 'autorotate',
           'text-margin-y': '-1em',
           'text-opacity': 0,
@@ -132,7 +139,6 @@ var style =
           'text-opacity': 1,
           'opacity': 1.0,
           'width': 4.0,
-          'label': 'data(pl)',
           'edge-text-rotation': 'autorotate',
           'text-margin-y': '-1em',
         },
@@ -146,7 +152,6 @@ var style =
           'mid-target-arrow-color': 'rgb(128,255,128)',
           'mid-target-arrow-shape': 'triangle',
           'width': 4.0,
-          'label': 'data(pl)',
           'edge-text-rotation': 'autorotate',
           'text-margin-y': '-1em',
         },

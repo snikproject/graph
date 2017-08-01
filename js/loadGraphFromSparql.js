@@ -61,15 +61,15 @@ export default function loadGraphFromSparql()
     return sparql.sparql(
       // only show classes with labels, use any one if more than one
       //`select ?c replace(str(?p),".*[#/]","") as ?p ?d
-      `select ?c ?p ?d
+      `select ?c ?p ?d ?g
         #from <http://www.snik.eu/ontology/it>
         from <http://www.snik.eu/ontology/test>
         #from <http://www.snik.eu/ontology/virtual>
         #from <http://www.snik.eu/ontology/meta>
-        #from <http://www.snik.eu/ontology/limes-exact>
+        from <http://www.snik.eu/ontology/limes-exact>
         {
           owl:Class ^a ?c,?d.
-          ?c ?p ?d.
+          graph ?g {?c ?p ?d.}
         }`);
   }).then(json=>
     //return Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
@@ -87,6 +87,7 @@ export default function loadGraphFromSparql()
             id: i,
             p: json[i].p.value,//Labels_DE: [json[i].l.value]
             pl: json[i].p.value.replace(".*/",""),
+            g:json[i].g.value,
           },
           //position: { x: 200, y: 200 }
         });
