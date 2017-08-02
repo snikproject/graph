@@ -12,10 +12,13 @@ export default function loadGraphFromSparql()
   const query =
   `select ?c str(sample(?l)) as ?l replace(str(sample(?subTop)),".*[#/]","") as ?subTop replace(str(?source),".*[#/]","") as ?source sample(?instance) as ?instance
   #count(?o) as ?degree
+  from <http://www.snik.eu/ontology>
   #from <http://www.snik.eu/ontology/it>
-  from <http://www.snik.eu/ontology/test>
+  #from <http://www.snik.eu/ontology/test>
+  #from <http://www.snik.eu/ontology/bb>
+  #from <http://www.snik.eu/ontology/ob>
   #from <http://www.snik.eu/ontology/virtual>
-  #from <http://www.snik.eu/ontology/meta>
+  from <http://www.snik.eu/ontology/meta>
   {
     ?c a owl:Class.
     #{?c ?p ?o.} UNION {?o ?p ?c}.
@@ -62,11 +65,14 @@ export default function loadGraphFromSparql()
       // only show classes with labels, use any one if more than one
       //`select ?c replace(str(?p),".*[#/]","") as ?p ?d
       `select ?c ?p ?d ?g
+        from <http://www.snik.eu/ontology>
         #from <http://www.snik.eu/ontology/it>
-        from <http://www.snik.eu/ontology/test>
+        #from <http://www.snik.eu/ontology/test>
+        #from <http://www.snik.eu/ontology/bb>
+        #from <http://www.snik.eu/ontology/ob>
         #from <http://www.snik.eu/ontology/virtual>
         #from <http://www.snik.eu/ontology/meta>
-        from <http://www.snik.eu/ontology/limes-exact>
+        #from <http://www.snik.eu/ontology/limes-exact>
         {
           owl:Class ^a ?c,?d.
           graph ?g {?c ?p ?d.}
@@ -94,6 +100,23 @@ export default function loadGraphFromSparql()
         });
     }
     const layoutTimer = timer("layout");
+    const config = layout.euler;
+    let cachedLayout = null;
+    if(typeof(Storage)=== "undefined") {log.error("web storage not available, could not access cache.");}
+    else
+    {
+      cachedLayout=localStorage.getItem("layout-"+config.name);
+    }
+    if(cachedLayout)
+    {
+
+    }
+    else
+    {
+      layout.run(config);
+    }
+    layout.run(config);
+
     layout.run(layout.euler);
     layoutTimer.stop();
     return graph.cy;
