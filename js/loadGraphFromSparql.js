@@ -93,7 +93,7 @@ export default function loadGraphFromSparql()
         });
     }
     const layoutTimer = timer("layout");
-    layout.run(layout.cose);
+    layout.run(layout.euler);
     layoutTimer.stop();
     return graph.cy;
   }).catch(e=>

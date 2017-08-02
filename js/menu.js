@@ -34,6 +34,7 @@ function menuData()
       "id": "layouts",
       "entries":
       [
+        [()=>layout.run(layout.euler),"Euler (Experimental)"],
         [()=>layout.run(layout.colaInf),"Cola-Infinite (Experimental)"],
         [()=>layout.run(layout.cola),"Cola (Experimental)"],
         [()=>layout.run(layout.cose),"Cose (Experimental)"],

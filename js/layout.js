@@ -1,6 +1,8 @@
 import {cy} from "./graph.js";
+import * as log from "./log.js";
 
 var activeLayout = undefined;
+
 
 export function run(config)
 {
@@ -12,11 +14,25 @@ export function run(config)
 export var breadthfirst = {name: "breadthfirst"};
 export var grid = {name: "grid"};
 
+// tested but not viable:
+// spread: too slow
+
+export var euler =
+{
+  name: "euler",
+  springLength: edge => 200,
+  maxSimulationTime: 10000,
+  randomize: true,
+  fit:false,
+  mass: node => 40,
+};
+
 export var cose =
   {
-    name:"cose",
+    name: "cose",
     animate: true,
     animationThreshold: 250,
+    refresh: 5,
     numIter: 30,
     nodeDimensionsIncludeLabels: true,
     nodeRepulsion: function(){ return 400000; },
@@ -32,7 +48,7 @@ export var cose =
 
 export var coseBilkent =
   {
-    name:"cose",
+    name:"cose-bilkent",
     animate: true,
     animationThreshold: 250,
     numIter: 5000,
