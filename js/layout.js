@@ -21,7 +21,7 @@ export var euler =
 {
   name: "euler",
   springLength: edge => 200,
-  maxSimulationTime: 10000,
+  maxSimulationTime: 2000,
   randomize: true,
   fit:false,
   mass: node => 40,
