@@ -71,7 +71,7 @@ function roleUse(role)
         name: 'concentric',
         fit: true,
         levelWidth: function() {return 1;},
-        minNodeSpacing: 2,
+        minNodeSpacing: 20,
         concentric: function(node)
         {
           const uri = node.data().name;
