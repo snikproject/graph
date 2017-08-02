@@ -70,6 +70,7 @@ export default function loadGraphFromSparql()
         {
           owl:Class ^a ?c,?d.
           graph ?g {?c ?p ?d.}
+          filter(?p!=meta:subTopClass)
         }`);
   }).then(json=>
     //return Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
