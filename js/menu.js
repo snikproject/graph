@@ -14,11 +14,11 @@ function addLoadEntries()
 function menuData()
 {
   return [
-    {
+    /*{
       "label": "Load",
       "id": "load",
       "entries": [], // filled by addLoadEntries()
-    },
+    },*/
     {
       "label": "Filter",
       "id": "filter",

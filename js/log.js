@@ -17,6 +17,11 @@ export function error(s)
   console.error.apply(console,arguments);
 }
 
+export function warn()
+{
+  error.apply(this,arguments);
+}
+
 export function trace()
 {
   // do nothing for now
