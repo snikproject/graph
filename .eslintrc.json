@@ -16,7 +16,8 @@
 	"globals":
 	{
 		"cytoscape": false,
-		"dhtmlx": true
+		"dhtmlx": true,
+		"Spinner": true
 	},
 	"extends": "eslint:recommended",
 	"rules":

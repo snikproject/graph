@@ -7,7 +7,9 @@ import * as search from "./search.js";
 import addButtons from "./button.js";
 import * as graph from "./graph.js";
 import * as history from "./history.js";
+import {progress} from "./progress.js";
 
+progress(0);
 graph.initGraph();
 history.initHistory();
 
@@ -34,4 +36,5 @@ const LOAD_GRAPH_FROM_SPARQL = true;
   .catch(e=>
   {
     log.error("menu load error",e);
-  });
+  })
+  .then(()=>progress(100));
