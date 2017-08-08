@@ -3,8 +3,9 @@
   [[
     "env", {
       "targets": {
-        "browsers": ["Firefox 30", "Explorer 11","Chrome 20", "Opera 20", "Safari 4"]
+        "chrome": 52,
+        "browsers": ["Firefox 49", "Edge 12","Chrome 53", "Opera 41", "Safari 10"]
       },
-      "useBuiltIns": true,
+      "useBuiltIns": true
       }]]
 }
