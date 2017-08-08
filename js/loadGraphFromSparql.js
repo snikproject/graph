@@ -16,6 +16,7 @@ String.prototype.hashCode = function()
 
 export default function loadGraphFromSparql()
 {
+  graph.cy.elements().remove();
   // load graph from SPARQL endpoint instead of from the .cyjs file
   // only show classes with labels, use any one if more than one
   // degree too time consuming, remove for development
