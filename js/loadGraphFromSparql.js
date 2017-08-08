@@ -121,7 +121,7 @@ export default function loadGraphFromSparql()
           });
       }
       const layoutTimer = timer("layout");
-      let config = layout.euler;
+      const config = layout.euler;
       if(typeof(Storage)=== "undefined")
       {
         log.error("web storage not available, could not access cache.");
@@ -134,14 +134,7 @@ export default function loadGraphFromSparql()
         if(positions) // cache hit
         {
           log.info("loading layout from cache");
-          const map = new Map(positions);
-          config =
-        {
-          name: 'preset',
-          fit:false,
-          positions: node=>{return map.get(node._private.data.id); },
-        };
-          layout.run(config);
+          file.loadLayout(positions);
         }
         else // cache miss
         {

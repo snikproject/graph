@@ -1,6 +1,7 @@
 import {MODIFIED,ONTOLOGY_MODIFIED} from "./about.js";
 import * as layout from "./layout.js";
 import * as log from "./log.js";
+import * as file from "./file.js";
 import {invert} from "./graph.js";
 
 function about() {window.alert("SNIK Graph version "+MODIFIED+"\nOntology version "+ONTOLOGY_MODIFIED);}
@@ -14,11 +15,17 @@ function addLoadEntries()
 function menuData()
 {
   return [
-    /*{
-      "label": "Load",
-      "id": "load",
-      "entries": [], // filled by addLoadEntries()
-    },*/
+    {
+      "label": "File",
+      "id": "file",
+      "entries":
+      [
+        [file.loadGraphDialog,"Load Graph"],
+        [file.loadLayoutDialog,"Load Layout"],
+        [file.saveGraph,"Save Graph"],
+        [file.saveLayout,"Save Layout"],
+      ],
+    },
     {
       "label": "Filter",
       "id": "filter",
