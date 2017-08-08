@@ -2,6 +2,7 @@ import * as sparql from "./sparql.js";
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 import * as log from "./log.js";
+import * as file from "./file.js";
 import timer from "./timer.js";
 
 String.prototype.hashCode = function()
@@ -17,6 +18,7 @@ String.prototype.hashCode = function()
 export default function loadGraphFromSparql()
 {
   graph.cy.elements().remove();
+  //file.load();
   // load graph from SPARQL endpoint instead of from the .cyjs file
   // only show classes with labels, use any one if more than one
   // degree too time consuming, remove for development

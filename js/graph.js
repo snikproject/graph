@@ -309,7 +309,7 @@ function removeNodes(nodes)
   cy.endBatch();
   progress(100);
 }
-
+/*
 function removeEdges(edges)
 {
   if(REMOVE_SINGLE_ELEMENTS_ONLY&&edges.length>1)
@@ -343,7 +343,7 @@ function restore()
   cy.endBatch();
   progress(100);
 }
-
+*/
 function layout(name)
 {
   cy
@@ -385,8 +385,8 @@ function initGraph()
   {
     if(e.keyCode === 46)
     {
-      removeNodes(cy.$('node:selected'));
-      removeEdges(cy.$('edge:selected'));
+      //removeNodes(cy.$('node:selected'));
+      //removeEdges(cy.$('edge:selected'));
     }
   });
   cy = cytoscape(
@@ -426,5 +426,5 @@ function initGraph()
 
 function setSelectedNode(node) {selectedNode=node;}
 
-export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,restore,layout,filter,
+export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,layout,filter,
   getSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar,setStarMode,hideNodes,showNodes};

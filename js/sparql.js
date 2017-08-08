@@ -5,8 +5,8 @@ export const SPARQL_ENDPOINT = "http://www.snik.eu/sparql";
 export const SPARQL_GRAPH = "http://www.snik.eu/ontology";
 export const SPARQL_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies
 export const SPARQL_LIMIT = 100;
-const HISTORY_GRAPH = "http://www.snik.eu/ontology/history";
-const TEST_GRAPH = "http://www.snik.eu/ontology/history";
+//const HISTORY_GRAPH = "http://www.snik.eu/ontology/history";
+//const TEST_GRAPH = "http://www.snik.eu/ontology/history";
 
 export function sparql(query,graphOpt)
 {
@@ -28,7 +28,7 @@ export function ask(query,graphOpt)
   return fetch(url).then(response => {return response.json();})
     .then(json=>{return json.boolean;});
 }
-
+/*
 export function deleteResource(resource,graph)
 {
   log.info(`deleting ${rdf.short(resource)} from graph ${graph}...`);
@@ -49,7 +49,7 @@ export function deleteResource(resource,graph)
     .catch(err =>{log.error(`Error deleting uri ${resource} from SPARQL endpoint: ${err}`);return false;});
 }
 
-//* Records a deletion in the history.*/
+// Records a deletion in the history.
 function recordDeleteTripleHistory(s,p,o,graph)
 {
   const date = new Date();
@@ -80,7 +80,7 @@ function recordDeleteTripleHistory(s,p,o,graph)
     .catch(err =>{log.error(`Error creating history for deletion of triple (${s}, ${p}, ${o}): ${err}`);return false;});
 }
 
-//* Deletes the given triple from the SPARQL endpoint.*/
+// Deletes the given triple from the SPARQL endpoint.
 export function deleteTriple(s,p,o,graph)
 {
   log.info(`Deleting triple (${rdf.short(s)}, ${rdf.short(p)}, ${rdf.short(o)}) from graph ${graph}...`);
@@ -93,14 +93,14 @@ export function deleteTriple(s,p,o,graph)
     .catch(err =>{log.error(`Error deleting triple (${s}, ${p}, ${o}) from graph ${graph}: ${err}`);return false;});
 }
 
-//* Deletes the given triple from the SPARQL endpoint and records the deletion in the history.*/
+/// Deletes the given triple from the SPARQL endpoint and records the deletion in the history./
 export function deleteTripleAndRecordHistory(s,p,o,graph)
 {
   recordDeleteTripleHistory(s,p,o,graph);
   return deleteTriple(s,p,o,graph);
 }
 
-/** s,p and o all need to be uris (not literal or blank node).*/
+/// s,p and o all need to be uris (not literal or blank node)./
 export function addTriple(s,p,o,graph)
 {
   log.info(`Adding triple (${rdf.short(s)}, ${rdf.short(p)}, ${rdf.short(o)}) to graph ${graph}...`);
@@ -145,7 +145,7 @@ export function undo(cs)
   );
 }
 
-/** s,p and o all need to be uris (not literal or blank node).*/
+/// s,p and o all need to be uris (not literal or blank node)./
 export function addLabel(s,l,tag,graph)
 {
   log.info(`Adding triple (${rdf.short(s)}, rdfs:label, ${l}) to graph ${graph}...`);
@@ -157,3 +157,4 @@ export function addLabel(s,l,tag,graph)
     .then(bindings=> {log.debug(bindings[0]["callret-0"].value);return true;})
     .catch(err =>{log.error(`Error inserting triple (${s}, rdfs:label, ${l}@${tag}) to graph ${graph}: ${err}`);return false;});
 }
+*/

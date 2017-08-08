@@ -107,6 +107,7 @@ const defaultsNodes = {
         }
       },
     },
+    /*
     {
       content: 'add connection',
       select: target=>
@@ -185,7 +186,7 @@ const defaultsNodes = {
         }
         );
       },
-    },
+    },*/
     /* commented out until denethor pdf links in browser work
 {
 content: 'book page (in development)',
