@@ -10,7 +10,7 @@ var saveData = (function ()
   return function (data, fileName)
   {
     var json = JSON.stringify(data),
-      blob = new Blob([json], {type: "octet/stream"}),
+      blob = new Blob([json], {type: "application/json"}),
       url = window.URL.createObjectURL(blob);
     a.href = url;
     a.download = fileName;
