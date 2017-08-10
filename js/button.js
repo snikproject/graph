@@ -7,7 +7,7 @@ import * as layout from "./layout.js";
 
 const buttonConfigs =
 [
-  ["Layout", ()=>layout.run(layout.euler)],
+  ["Recalculate Layout", ()=>layout.run(layout.euler)],
   ["Reset View", graph.resetStyle],
   //  ["History",   history.showHistory],
 //  ["Reload", loadGraphFromSparql],
