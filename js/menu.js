@@ -3,6 +3,7 @@ import * as layout from "./layout.js";
 import * as log from "./log.js";
 import * as file from "./file.js";
 import {invert} from "./graph.js";
+import loadGraphFromSparql from "./loadGraphFromSparql.js";
 
 function about() {window.alert("SNIK Graph version "+MODIFIED+"\nOntology version "+ONTOLOGY_MODIFIED);}
 /**entries is an array of arrays of size two, entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed. entries[i][1] is a label as a string.  */
@@ -20,8 +21,9 @@ function menuData()
       "id": "file",
       "entries":
       [
-        [file.saveGraph,"Save Graph"],
-        [file.saveLayout,"Save Layout"],
+        [loadGraphFromSparql,"Load from SPARQL Endpoint"],
+        [file.saveGraph,"Save Graph with Layout"],
+        [file.saveLayout,"Save Layout only"],
       ],
     },
     {
@@ -34,19 +36,29 @@ function menuData()
       "id": "options",
       "entries": [], // filled by addOptions()
     },
-    {
+    /*{
       "label": "Layouts",
       "id": "layouts",
       "entries":
       [
-        [()=>layout.run(layout.euler),"Euler (Experimental)"],
-        [()=>layout.run(layout.colaInf),"Cola-Infinite (Experimental)"],
-        [()=>layout.run(layout.cola),"Cola (Experimental)"],
-        [()=>layout.run(layout.cose),"Cose (Experimental)"],
-        [()=>layout.run(layout.coseBilkent),"Cose-Bilkent (Experimental)"],
-        [()=>layout.run(layout.breadthfirst),"Breadthfirst (Experimental)"],
+        [()=>layout.run(layout.euler),"Euler"],
+        [()=>layout.run(layout.colaInf),"Cola-Infinite (Slow)"],
+        [()=>layout.run(layout.cola),"Cola (Slow)"],
+        [()=>layout.run(layout.cose),"Cose (Slow)"],
+        [()=>layout.run(layout.coseBilkent),"Cose-Bilkent (Slow)"],
+        [()=>layout.run(layout.breadthfirst),"Breadthfirst"],
         [()=>layout.run(layout.grid),"Grid"],
       ],
+    },*/
+    {
+      "label": "Services",
+      "id":"services",
+      "entries":
+          [
+            ["http://www.snik.eu/sparql","SPARQL Endpoint"],
+            ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser"],
+            ["http://snik.eu/evaluation","Data Quality Evaluation"],
+          ],
     },
     {
       "label": "Help",
@@ -61,16 +73,6 @@ function menuData()
         [about,"About SNIK Graph"],
         ["https://github.com/IMISE/snik-ontology/issues","Submit Feedback about the Ontology"],
         ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"],
-      ],
-    },
-    {
-      "label": "Services",
-      "id":"services",
-      "entries":
-      [
-        ["http://www.snik.eu/sparql","SPARQL Endpoint"],
-        ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser"],
-        ["http://snik.eu/evaluation","Data Quality Evaluation"],
       ],
     },
   ];

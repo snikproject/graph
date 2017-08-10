@@ -1,14 +1,17 @@
 import {cy} from "./graph.js";
 import * as log from "./log.js";
+import timer from "./timer.js";
 
 var activeLayout = undefined;
 
 
 export function run(config)
 {
+  const layoutTimer = timer("layout");
   if(activeLayout) {activeLayout.stop();}
   activeLayout = cy.elements(":visible").layout(config);
   activeLayout.run();
+  layoutTimer.stop();
 }
 
 export var breadthfirst = {name: "breadthfirst"};

@@ -15,6 +15,8 @@ String.prototype.hashCode = function()
   return hash;
 };
 
+
+
 export default function loadGraphFromSparql()
 {
   graph.cy.elements().remove();
@@ -120,7 +122,7 @@ export default function loadGraphFromSparql()
           //position: { x: 200, y: 200 }
           });
       }
-      const layoutTimer = timer("layout");
+      //const layoutTimer = timer("layout");
       const config = layout.euler;
       if(typeof(Storage)=== "undefined")
       {
@@ -151,7 +153,7 @@ export default function loadGraphFromSparql()
           localStorage.setItem(storageName,JSON.stringify(positions));
         }
       }
-      layoutTimer.stop();
+      //layoutTimer.stop();
       return graph.cy;
     }).catch(e=>
     {
