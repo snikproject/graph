@@ -84,3 +84,38 @@ export function saveLayout()
 {
 
 }
+
+export function upload(event)
+{
+  const file = event.target.files[0];
+  // Ein Objekt um Dateien einzulesen
+  var reader = new FileReader();
+  var senddata = new Object();
+  // Wenn der Dateiinhalt ausgelesen wurde...
+  reader.onload = function(data)
+  {
+    senddata.fileData = data.target.result;
+  };
+  // Die Datei einlesen und in eine Data-URL konvertieren
+  reader.readAsDataURL(file);
+  return false;
+}
+
+// Cannot use the simpler default menu creation method because file upload only works with an input.
+export function addFileLoadEntries(parent)
+{
+  const label = document.createElement("label");
+  label.classList.add("dropdown-entry");
+  label.for="loadgraphbutton";
+  label.innerText="Load Graph File with Layout";
+
+  parent.prepend(label);
+
+  const input = document.createElement("input");
+  input.type="file";
+  input.id="loadgraphbutton";
+  input.style.display="none";
+  label.appendChild(input);
+
+  input.addEventListener("change",upload);
+}

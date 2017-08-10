@@ -25,9 +25,9 @@ export default function loadGraphFromSparql()
   const classQuery =
   `select ?c str(sample(?l)) as ?l replace(str(sample(?subTop)),".*[#/]","") as ?subTop replace(str(?source),".*[#/]","") as ?source sample(?instance) as ?instance
   #count(?o) as ?degree
-  from <http://www.snik.eu/ontology>
+  #from <http://www.snik.eu/ontology>
   #from <http://www.snik.eu/ontology/it>
-  #from <http://www.snik.eu/ontology/test>
+  from <http://www.snik.eu/ontology/test>
   #from <http://www.snik.eu/ontology/bb>
   #from <http://www.snik.eu/ontology/ob>
   #from <http://www.snik.eu/ontology/virtual>
@@ -42,9 +42,9 @@ export default function loadGraphFromSparql()
   }`;
   const propertyQuery =
   `select ?c ?p ?d ?g
-  from <http://www.snik.eu/ontology>
+  #from <http://www.snik.eu/ontology>
   #from <http://www.snik.eu/ontology/it>
-  #from <http://www.snik.eu/ontology/test>
+  from <http://www.snik.eu/ontology/test>
   #from <http://www.snik.eu/ontology/bb>
   #from <http://www.snik.eu/ontology/ob>
   #from <http://www.snik.eu/ontology/virtual>
@@ -147,7 +147,7 @@ export default function loadGraphFromSparql()
             const node = nodes[i];
             positions.push([node.data().id,node.position()]);
           }
-          console.log(positions);
+
           localStorage.setItem(storageName,JSON.stringify(positions));
         }
       }

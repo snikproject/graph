@@ -20,8 +20,6 @@ function menuData()
       "id": "file",
       "entries":
       [
-        [file.loadGraphDialog,"Load Graph"],
-        [file.loadLayoutDialog,"Load Layout"],
         [file.saveGraph,"Save Graph"],
         [file.saveLayout,"Save Layout"],
       ],
@@ -81,8 +79,8 @@ function menuData()
 function addOptions()
 {
   document.getElementById("options").innerHTML =
-  `<span><input type="checkbox" autocomplete="off" id="cumulativesearch"/>cumulative search</span>
-  <span><input type="checkbox"  autocomplete="off" id="daymode"/>day mode</span> `;
+  `<span class="dropdown-entry"><input type="checkbox" autocomplete="off" id="cumulativesearch"/>cumulative search</span>
+  <span  class="dropdown-entry"><input type="checkbox"  autocomplete="off" id="daymode"/>day mode</span> `;
   const daymode = document.getElementById("daymode");
   daymode.addEventListener("change",()=>invert(daymode.checked));
 }
@@ -91,30 +89,36 @@ function addMenu()
 {
   //const frag = new DocumentFragment();
   const ul = document.createElement("ul");
-  ul.classList.add("dropdown");
+  ul.classList.add("dropdown-bar");
   for(const menu of menuData())
   {
     const li = document.createElement("li");
     ul.appendChild(li);
-    li.classList.add("dropdown");
+    li.classList.add("dropdown-menu");
+    li.innerText=menu.label;
 
     const div = document.createElement("div");
     li.appendChild(div);
     div.classList.add("dropdown-content");
-    div.setAttribute("id",menu.id);
+    div.id=menu.id;
+
+    li.addEventListener("click",()=>
     {
-      const a = document.createElement("a");
-      li.prepend(a);
-      a.setAttribute("href","javascript:void(0)");
-      a.innerText=menu.label;
-      a.classList.add("dropbtn");
-      a.addEventListener("click",()=>div.classList.toggle("show"));
-    }
+      for(const otherDiv of document.getElementsByClassName("dropdown-content"))
+      {
+        if(div!==otherDiv) {otherDiv.classList.remove("show");}
+      }
+      div.classList.toggle("show");
+    });
+
+    //li.addEventListener("click",()=>div.style.display=(div.style.display==="block"?"none":"block"));
+
     for(const entry of menu.entries)
     {
       const a = document.createElement("a");
+      a.classList.add("dropdown-entry");
       div.appendChild(a);
-      a.innerText=entry[1];
+      a.innerHTML=entry[1];
       switch(typeof entry[0])
       {
       case 'string':
@@ -138,11 +142,11 @@ function addMenu()
   addLoadEntries();
 }
 
-// Close the dropdown if the user clicks outside of it
+// Close the dropdown if the user clicks outside of the menu
 window.onclick = function(e)
-{//console.log(e);
-  // don't close while user edits the text field of the custom filter
-  if (e&&e.target&&e.target.matches&&!e.target.matches('.dropbtn')&&!e.target.matches('input#customfilter'))
+{
+  if (e&&e.target&&e.target.matches&&!e.target.matches('.dropdown-entry')&&!e.target.matches('.dropdown-menu')
+  &&!e.target.matches('input#customfilter')) // don't close while user edits the text field of the custom filter
   {
     var dropdowns = document.getElementsByClassName("dropdown-content");
     for (var d = 0; d < dropdowns.length; d++)

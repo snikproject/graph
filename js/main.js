@@ -5,6 +5,7 @@ import addMenu from "./menu.js";
 import * as search from "./search.js";
 import addButtons from "./button.js";
 import * as graph from "./graph.js";
+import * as file from "./file.js";
 //import * as history from "./history.js";
 import {progress} from "./progress.js";
 
@@ -28,6 +29,7 @@ loadGraphFromSparql()
   {
     addMenu();
     addFilterEntries(cy,document.getElementById("filter"));
+    file.addFileLoadEntries(document.getElementById("file"));
     search.addSearch();
     addButtons();
   })

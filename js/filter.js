@@ -27,13 +27,14 @@ class Filter
     this.selector=selector;
     //let input = document.createRange().createContextualFragment('<input type="checkbox" class="filterbox" autocomplete="off" checked="true">'); // can't attach events to fragments
     const input = document.createElement("input");
-    input.setAttribute("type","checkbox");
-    input.setAttribute("class","filterbox");
-    input.setAttribute("autocomplete","off");
-    input.setAttribute("checked","true");
-    this.span = document.createElement("span");
-    this.span.appendChild(input);
-    this.span.appendChild(document.createTextNode(label));
+    input.type="checkbox";
+    input.class="filterbox";
+    input.autocomplete="off";
+    input.checked="true";
+    this.a = document.createElement("a");
+    this.a.classList.add("dropdown-entry");
+    this.a.appendChild(input);
+    this.a.appendChild(document.createTextNode(label));
     input.addEventListener("input",()=>this.setVisible(input.checked));
   }
 
@@ -56,7 +57,7 @@ function addFilterEntries(cy, parent)
 {
   for(const filter of filters)
   {
-    parent.appendChild(new Filter(cy,filter[0],filter[1]).span);
+    parent.appendChild(new Filter(cy,filter[0],filter[1]).a);
   }
   // TODO: add custom filter
   //'http://www.snik.eu/ontology/meta/Top']" id="customfilter"
