@@ -2,7 +2,6 @@ import * as sparql from "./sparql.js";
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 import * as log from "./log.js";
-import * as file from "./file.js";
 import timer from "./timer.js";
 
 String.prototype.hashCode = function()
@@ -14,7 +13,6 @@ String.prototype.hashCode = function()
   }
   return hash;
 };
-
 
 
 export default function loadGraphFromSparql()
@@ -57,7 +55,6 @@ export default function loadGraphFromSparql()
     graph ?g {?c ?p ?d.}
     filter(?p!=meta:subTopClass)
   }`;
-  const storageName = "positions-"+(classQuery+propertyQuery).hashCode();
 
   const sparqlClassesTimer = timer("sparql-classes");
   let sparqlPropertiesTimer;
@@ -122,38 +119,8 @@ export default function loadGraphFromSparql()
           //position: { x: 200, y: 200 }
           });
       }
-      //const layoutTimer = timer("layout");
-      const config = layout.euler;
-      if(typeof(Storage)=== "undefined")
-      {
-        log.error("web storage not available, could not access cache.");
-        layout.run(config);
-      }
-      else
-      {
-        localStorage.removeItem('positions');
-        let positions=JSON.parse(localStorage.getItem(storageName));
-        if(positions) // cache hit
-        {
-          log.info("loading layout from cache");
-          file.loadLayout(positions);
-        }
-        else // cache miss
-        {
-          log.warn("layout not in cache, please wait");
-          layout.run(config);
-          positions=[];
-          const nodes = graph.cy.nodes();
-          for(let i=0;i<nodes.size();i++)
-          {
-            const node = nodes[i];
-            positions.push([node.data().id,node.position()]);
-          }
+      layout.runCached(layout.euler);
 
-          localStorage.setItem(storageName,JSON.stringify(positions));
-        }
-      }
-      //layoutTimer.stop();
       return graph.cy;
     }).catch(e=>
     {

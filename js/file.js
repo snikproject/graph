@@ -1,7 +1,6 @@
 import {progress} from "./progress.js";
 import * as graph from "./graph.js";
 import timer from "./timer.js";
-import * as layout from "./layout.js";
 
 export function loadGraph()
 {
@@ -37,18 +36,6 @@ export function loadGraph()
 export function loadGraphDialog()
 {
 
-}
-
-export function loadLayout(positions)
-{
-  const map = new Map(positions);
-  const config =
-  {
-    name: 'preset',
-    fit:false,
-    positions: node=>{return map.get(node._private.data.id); },
-  };
-  layout.run(config);
 }
 
 export function loadLayoutDialog()
