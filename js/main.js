@@ -24,7 +24,7 @@ window.addEventListener('keydown', e=>
   }
 }, true);
 
-loadGraphFromSparql()
+loadGraphFromSparql(graph.cy)
   .then((cy)=>
   {
     addMenu();

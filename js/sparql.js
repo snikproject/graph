@@ -1,5 +1,5 @@
 import * as log from "./log.js";
-import * as rdf from "./rdf.js";
+//import * as rdf from "./rdf.js";
 
 export const SPARQL_ENDPOINT = "http://www.snik.eu/sparql";
 export const SPARQL_GRAPH = "http://www.snik.eu/ontology";

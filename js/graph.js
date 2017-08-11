@@ -381,14 +381,16 @@ function filter(checkbox)
 function initGraph()
 {
   const initTimer = timer("graph-init");
+  /*
   document.addEventListener('keydown',function(e)
   {
     if(e.keyCode === 46)
     {
-      //removeNodes(cy.$('node:selected'));
-      //removeEdges(cy.$('edge:selected'));
+      removeNodes(cy.$('node:selected'));
+      removeEdges(cy.$('edge:selected'));
     }
   });
+  */
   cy = cytoscape(
     {
       container: document.getElementById('cy'),
@@ -416,12 +418,12 @@ function initGraph()
     //cy.endBatch();
   });
 
-  // workaround to create empty collections until better known
-  removedNodes = cy.collection() ;
-  removedEdges = cy.collection() ;
+  removedNodes = cy.collection();
+  removedEdges = cy.collection();
   styledEdges = cy.collection();
   styledNodes = cy.collection();
   initTimer.stop();
+  return cy;
 }
 
 function setSelectedNode(node) {selectedNode=node;}

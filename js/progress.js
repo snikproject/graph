@@ -20,15 +20,16 @@ const opts = {
   hwaccel: false, // Whether to use hardware acceleration
   position: 'absolute', // Element positioning
 };
-const target = document.body;
-const spinner = new Spinner(opts);
+let spinner = null;
 
 function progress(p)
 {
+  if(!window) {return;} // ignore when running in nodejs
+  if(!spinner) {spinner = new Spinner(opts);}
   if(p<100)
   {
     document.body.classList.add('waiting');
-    spinner.spin(target);
+    spinner.spin(document.body);
   }
   if(p>=100)
   {

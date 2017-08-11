@@ -1,5 +1,4 @@
 import * as sparql from "./sparql.js";
-import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 import * as log from "./log.js";
 import timer from "./timer.js";
@@ -15,9 +14,9 @@ String.prototype.hashCode = function()
 };
 
 
-export default function loadGraphFromSparql()
+export default function loadGraphFromSparql(cy)
 {
-  graph.cy.elements().remove();
+  cy.elements().remove();
   //file.load();
   // load graph from SPARQL endpoint instead of from the .cyjs file
   // only show classes with labels, use any one if more than one
@@ -69,7 +68,7 @@ export default function loadGraphFromSparql()
     sparqlClassesTimer.stop(json.length+" classes");
     for(let i=0;i<json.length;i++)
     {
-      graph.cy.add(
+      cy.add(
         {
           group: "nodes",
           data: {
@@ -105,7 +104,7 @@ export default function loadGraphFromSparql()
       //const json = values[1];
       for(let i=0;i<json.length;i++)
       {
-        graph.cy.add(
+        cy.add(
           {
             group: "edges",
             data: {
@@ -121,7 +120,7 @@ export default function loadGraphFromSparql()
       }
       layout.runCached(layout.euler);
 
-      return graph.cy;
+      return cy;
     }).catch(e=>
     {
       log.error(e);

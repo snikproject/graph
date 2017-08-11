@@ -2,7 +2,6 @@ import * as graph from "./graph.js";
 import * as log from "./log.js";
 import timer from "./timer.js";
 import * as rdfGraph from "./rdfGraph.js";
-import * as file from "./files.js";
 
 var activeLayout = undefined;
 
@@ -63,7 +62,7 @@ export function runCached(config)
   if(positions) // cache hit
   {
     log.info("loading layout from cache");
-    file.loadLayout(positions);
+    //file.loadLayout(positions); // does not exist
   }
   else // cache miss
   {
