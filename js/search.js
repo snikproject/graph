@@ -103,7 +103,7 @@ function presentAll()
   graph.cy.fit(resultNodes);
 }
 
-function showSearchResults(query, bindings)
+function showSearchResults(query, uris)
 {
   resultNodes = [];
   var table = document.getElementById("tab:searchresults");
@@ -113,36 +113,32 @@ function showSearchResults(query, bindings)
   }
   document.getElementById("overlay").display = "block";
   document.getElementById("overlay").style.width = "100%";
-
-  if(bindings.length===0)
+  console.log(uris);
+  if(uris.size===0)
   {
     document.getElementById("h2:searchresults").innerHTML=`No Search Results for "${query}"`;
     return false;
   }
-  if(bindings.length===1)
+  if(uris.size===1)
   {
-    presentUri(bindings[0].s.value);
+    presentUri(uris[0]);
     return true;
   }
-  if(bindings.length===sparql.SPARQL_LIMIT)
+  if(uris.size===sparql.SPARQL_LIMIT)
   {
     document.getElementById("h2:searchresults").innerHTML=`First ${sparql.SPARQL_LIMIT} Search Results for "${query}"`;
   }
   else
   {
-    document.getElementById("h2:searchresults").innerHTML=`${bindings.length} Search Results for "${query}"`;
+    document.getElementById("h2:searchresults").innerHTML=`${uris.size} Search Results for "${query}"`;
   }
-
-  var uris = [];
-
-  bindings.forEach(b=>
+  uris.forEach(uri=>
   {
     var row = table.insertRow();
     var cell = row.insertCell(0);
     window.presentUri=presentUri;
-    cell.innerHTML = `<a href="javascript:window.presentUri('${b.s.value}');void(0)">
-			${b.s.value.replace(sparql.SPARQL_PREFIX,"")}</a>`;
-    uris.push(b.s.value);
+    cell.innerHTML = `<a href="javascript:window.presentUri('${uri}');void(0)">
+		${uri.replace(sparql.SPARQL_PREFIX,"")}</a>`;
   });
 
   var row = table.insertRow(0);
@@ -153,13 +149,14 @@ function showSearchResults(query, bindings)
 
   resultNodes = graph.cy.elements().nodes().filter((node)=>
   {
-    return uris.indexOf(node.data("name")) >= 0;
+    return uris.has(node.data("name"));
   });
 }
 
-function search(userQuery)
+/** Searches the SPARQL endpoint for classes with the given label.
+Case insensitive. Can be used by node.js. */
+export function search(userQuery)
 {
-  document.getElementById("overlay").style.display= "block";
   // prevent invalid SPARQL query and injection by just keeping basic characters
   var searchQuery = userQuery.replace('/[^A-Z a-z0-9]/g', ''); //.split(' ')[0];
   // use this when labels are available
@@ -175,15 +172,17 @@ function search(userQuery)
 			{?s rdfs:label ?l.		?l <bif:contains> "${searchQuery}".} UNION
 			{?s skos:altLabel ?l.	?l <bif:contains> "${searchQuery}".}} limit ${sparql.SPARQL_LIMIT}`;
   }
-  // labels are not yet on SPARQL endpoint, so use URI in the meantime
-  //	var sparql =
+  return sparql.sparql(sparqlQuery).then(bindings=>new Set(bindings.map(b=>b.s.value)));
   //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
   //filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
-  //limit ${SPARQL_LIMIT}`;
-  //console.log(sparql);
-  sparql.sparql(sparqlQuery).then(bindings =>
+}
+/**Search the class labels and display the result to the user. */
+function showSearch(userQuery)
+{
+  document.getElementById("overlay").style.display= "block";
+  search(userQuery).then(uris =>
   {
-    showSearchResults(searchQuery, bindings);
+    showSearchResults(userQuery,uris);
   });
   return false; // prevent page reload triggered by submit
 }
@@ -195,6 +194,6 @@ export function addSearch()
   {
     event.preventDefault();
     hideSearchResults();
-    search(event.target.children.query.value);
+    showSearch(event.target.children.query.value);
   });
 }
