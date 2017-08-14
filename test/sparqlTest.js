@@ -2,6 +2,9 @@ import * as sparql from "../js/sparql.js";
 import chai from 'chai';
 chai.should();
 const assert = chai.assert;
+const EXPECTED_CLASSES_MIN = 4000;
+const EXPECTED_CLASSES_MAX = 20000;
+
 
 describe('sparql', function()
 {
@@ -13,7 +16,7 @@ describe('sparql', function()
         .then(bindings=>
         {
           bindings[0].should.have.property("count");
-          parseInt(bindings[0].count.value).should.be.within(4000,10000);
+          parseInt(bindings[0].count.value).should.be.within(EXPECTED_CLASSES_MIN,EXPECTED_CLASSES_MAX);
         }
         );
     });
