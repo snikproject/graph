@@ -5,13 +5,18 @@ import cytoscape from 'cytoscape';
 
 describe('cytoscape', function()
 {
-  describe('initialization', function()
+  var cy;
+  it('create empty graph', function()
   {
-    it('initializes', function()
-    {
-      var cy = cytoscape({});
-      loadGraphFromSparql(cy).then(()=>
-        assert(cy.nodes().size()>3000));
-    });
+    cy = cytoscape({});
+  });
+  it('loadGraphFromSparql', function()
+  {
+    loadGraphFromSparql(cy, new Set(["meta","it"])).then(()=>
+      console.log(cy.nodes().size()));
+  });
+  it('preset layout from cache', function()
+  {
+
   });
 });
