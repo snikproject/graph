@@ -2,6 +2,7 @@ import * as rdf from '../js/rdf.js';
 import assert from 'assert';
 import cytoscape from 'cytoscape';
 
+/*
 describe('layout', function()
 {
   describe('#presetLayout()', function()
@@ -20,3 +21,4 @@ describe('layout', function()
     });
   });
 });
+*/
