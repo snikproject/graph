@@ -1,6 +1,6 @@
 import * as sparql from "./sparql.js";
-import * as layout from "./layout.js";
 import * as log from "./log.js";
+import * as rdfGraph from "./rdfGraph.js";
 import timer from "./timer.js";
 
 String.prototype.hashCode = function()
@@ -14,8 +14,10 @@ String.prototype.hashCode = function()
 };
 
 
-export default function loadGraphFromSparql(cy)
+export default function loadGraphFromSparql(cy,subontologies)
 {
+  const rdfGraphs = [...(new Set([...rdfGraph.helper(),...subontologies]))];
+  const froms = rdfGraphs.map(sub=>`from <http://www.snik.eu/ontology/${sub}>`).reduce((a,b)=>a+"\n"+b);
   cy.elements().remove();
   //file.load();
   // load graph from SPARQL endpoint instead of from the .cyjs file
@@ -24,13 +26,7 @@ export default function loadGraphFromSparql(cy)
   const classQuery =
   `select ?c str(sample(?l)) as ?l replace(str(sample(?subTop)),".*[#/]","") as ?subTop replace(str(?source),".*[#/]","") as ?source sample(?instance) as ?instance
   #count(?o) as ?degree
-  #from <http://www.snik.eu/ontology>
-  #from <http://www.snik.eu/ontology/it>
-  from <http://www.snik.eu/ontology/test>
-  #from <http://www.snik.eu/ontology/bb>
-  #from <http://www.snik.eu/ontology/ob>
-  #from <http://www.snik.eu/ontology/virtual>
-  #from <http://www.snik.eu/ontology/meta>
+  ${froms}
   {
     ?c a owl:Class.
     #{?c ?p ?o.} UNION {?o ?p ?c}.
@@ -41,20 +37,12 @@ export default function loadGraphFromSparql(cy)
   }`;
   const propertyQuery =
   `select ?c ?p ?d ?g
-  #from <http://www.snik.eu/ontology>
-  #from <http://www.snik.eu/ontology/it>
-  from <http://www.snik.eu/ontology/test>
-  #from <http://www.snik.eu/ontology/bb>
-  #from <http://www.snik.eu/ontology/ob>
-  #from <http://www.snik.eu/ontology/virtual>
-  #from <http://www.snik.eu/ontology/meta>
-  #from <http://www.snik.eu/ontology/limes-exact>
+  ${froms}
   {
     owl:Class ^a ?c,?d.
     graph ?g {?c ?p ?d.}
     filter(?p!=meta:subTopClass)
   }`;
-
   const sparqlClassesTimer = timer("sparql-classes");
   let sparqlPropertiesTimer;
   const classes = undefined;//localStorage.getItem('classes');
@@ -118,8 +106,6 @@ export default function loadGraphFromSparql(cy)
           //position: { x: 200, y: 200 }
           });
       }
-      layout.runCached(layout.euler);
-
       return cy;
     }).catch(e=>
     {

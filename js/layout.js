@@ -5,9 +5,10 @@ import * as rdfGraph from "./rdfGraph.js";
 
 var activeLayout = undefined;
 
-function activeGraphsStorageName(layoutName) {"layout-"+layoutName+[...rdfGraph.active].sort();}
+function storageName(layoutName,subs) {"layout-"+layoutName+[...subs].sort();}
 
-export function run(config)
+/** subs are optional and are used to cache the layout. */
+export function run(config,subs)
 {
   const layoutTimer = timer("layout");
   if(activeLayout) {activeLayout.stop();}
@@ -26,8 +27,11 @@ export function run(config)
     const node = nodes[i];
     positions.push([node.data().id,node.position()]);
   }
-  const storageName = activeGraphsStorageName(config.name);
-  localStorage.setItem(storageName,JSON.stringify(positions));
+  if(subs)
+  {
+    const name = storageName(config.name,subs);
+    localStorage.setItem(name,JSON.stringify(positions));
+  }
 }
 
 export function presetLayout(positions)
@@ -44,11 +48,11 @@ export function presetLayout(positions)
       return {x:0,y:0};
     },
   };
-  run(config);
+  return run(config);
 }
 
 
-export function runCached(config)
+export function runCached(config,subs)
 {
   if(typeof(Storage)=== "undefined")
   {
@@ -56,18 +60,18 @@ export function runCached(config)
     run(config);
     return;
   }
-  const storageName = activeGraphsStorageName(config.name);
+  const name = storageName(config.name,subs);
   // localStorage.removeItem(storageName); // clear cache for testing
-  const positions=JSON.parse(localStorage.getItem(storageName));
+  const positions=JSON.parse(localStorage.getItem(name));
   if(positions) // cache hit
   {
     log.info("loading layout from cache");
-    //file.loadLayout(positions); // does not exist
+    return presetLayout(positions);
   }
   else // cache miss
   {
     log.warn("layout not in cache, please wait");
-    run(config);
+    return run(config,subs);
   }
 }
 

@@ -6,6 +6,8 @@ import * as search from "./search.js";
 import addButtons from "./button.js";
 import * as graph from "./graph.js";
 import * as file from "./file.js";
+import * as rdfGraph from "./rdfGraph.js";
+import * as layout from "./layout.js";
 //import * as history from "./history.js";
 import {progress} from "./progress.js";
 
@@ -24,11 +26,19 @@ window.addEventListener('keydown', e=>
   }
 }, true);
 
-loadGraphFromSparql(graph.cy)
-  .then((cy)=>
+loadGraphFromSparql(graph.cy,rdfGraph.subs())
+  .then(()=>
+  {
+    layout.runCached(layout.euler,rdfGraph.subs());
+  })
+  .catch((e)=>
+  {
+    log.error("Error layouting",e.stack);
+  })
+  .then(()=>
   {
     addMenu();
-    addFilterEntries(cy,document.getElementById("filter"));
+    addFilterEntries(graph.cy,document.getElementById("filter"));
     file.addFileLoadEntries(document.getElementById("file"));
     search.addSearch();
     addButtons();
