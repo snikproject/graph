@@ -113,7 +113,6 @@ function showSearchResults(query, uris)
   }
   document.getElementById("overlay").display = "block";
   document.getElementById("overlay").style.width = "100%";
-  console.log(uris);
   if(uris.size===0)
   {
     document.getElementById("h2:searchresults").innerHTML=`No Search Results for "${query}"`;
@@ -154,17 +153,17 @@ function showSearchResults(query, uris)
 }
 
 /** Searches the SPARQL endpoint for classes with the given label.
-Case insensitive. Can be used by node.js. */
+Case and space insensitive when not using bif:contains. Can be used by node.js. */
 export function search(userQuery)
 {
-  // prevent invalid SPARQL query and injection by just keeping basic characters
-  var searchQuery = userQuery.replace('/[^A-Z a-z0-9]/g', ''); //.split(' ')[0];
+  // prevent invalid SPARQL query and injection by just alphanumeric characters
+  var searchQuery = userQuery.replace(/[^A-Za-z0-9]/g, ''); //.split(' ')[0];
   // use this when labels are available
   let sparqlQuery;
   if(!USE_BIF_CONTAINS||searchQuery.includes(' ')) // regex is slower but we have no choice with a space
   {
     sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
-			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(str(?l),"${searchQuery}","i")) } limit ${sparql.SPARQL_LIMIT}`;
+			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(replace(str(?l)," ",""),"${searchQuery}","i")) } limit ${sparql.SPARQL_LIMIT}`;
   }
   else // no space so we can use the faster bif:contains
   {
