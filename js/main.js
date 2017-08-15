@@ -29,7 +29,7 @@ window.addEventListener('keydown', e=>
 loadGraphFromSparql(graph.cy,rdfGraph.subs())
   .then(()=>
   {
-    layout.runCached(layout.euler,rdfGraph.subs());
+    layout.runCached(graph.cy,layout.euler,rdfGraph.subs());
   })
   .catch((e)=>
   {

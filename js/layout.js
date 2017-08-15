@@ -1,4 +1,3 @@
-import * as graph from "./graph.js";
 import * as log from "./log.js";
 import timer from "./timer.js";
 import * as rdfGraph from "./rdfGraph.js";
@@ -8,33 +7,33 @@ var activeLayout = undefined;
 function storageName(layoutName,subs) {"layout-"+layoutName+[...subs].sort();}
 
 /** subs are optional and are used to cache the layout. */
-export function run(config,subs)
+export function run(cy,config,subs)
 {
   const layoutTimer = timer("layout");
   if(activeLayout) {activeLayout.stop();}
-  activeLayout = graph.cy.elements(":visible").layout(config);
+  activeLayout = cy.elements(":visible").layout(config);
   activeLayout.run();
   layoutTimer.stop();
-  if(typeof(Storage)=== "undefined")
-  {
-    log.error("web storage not available, could not write to cache.");
-    return;
-  }
-  const positions=[];
-  const nodes = graph.cy.nodes();
-  for(let i=0;i<nodes.size();i++)
-  {
-    const node = nodes[i];
-    positions.push([node.data().id,node.position()]);
-  }
   if(subs)
   {
+    if(typeof(Storage)=== "undefined")
+    {
+      log.error("web storage not available, could not write to cache.");
+      return;
+    }
+    const positions=[];
+    const nodes = cy.nodes();
+    for(let i=0;i<nodes.size();i++)
+    {
+      const node = nodes[i];
+      positions.push([node.data().id,node.position()]);
+    }
     const name = storageName(config.name,subs);
     localStorage.setItem(name,JSON.stringify(positions));
   }
 }
 
-export function presetLayout(positions)
+export function presetLayout(cy,positions)
 {
   const map = new Map(positions);
   const config =
@@ -48,11 +47,11 @@ export function presetLayout(positions)
       return {x:0,y:0};
     },
   };
-  return run(config);
+  return run(cy,config);
 }
 
 
-export function runCached(config,subs)
+export function runCached(cy,config,subs)
 {
   if(typeof(Storage)=== "undefined")
   {
@@ -66,12 +65,12 @@ export function runCached(config,subs)
   if(positions) // cache hit
   {
     log.info("loading layout from cache");
-    return presetLayout(positions);
+    return presetLayout(cy,positions);
   }
   else // cache miss
   {
     log.warn("layout not in cache, please wait");
-    return run(config,subs);
+    return run(cy,config,subs);
   }
 }
 

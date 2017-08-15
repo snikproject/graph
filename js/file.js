@@ -1,36 +1,45 @@
 import {progress} from "./progress.js";
 import * as graph from "./graph.js";
+import * as layout from "./layout.js";
 import timer from "./timer.js";
 
-export function loadGraph()
+/** Loads a local JSON file.
+When developing on Google Chrome, you may need to start the browser with "--allow-file-access-from-files".
+See also https://bugs.chromium.org/p/chromium/issues/detail?id=47416.*/
+function loadJson(fileName)
 {
-  progress(0);
-  graph.cy.elements().remove();
   const headers = new Headers();
   const init = { method: 'GET',
     headers: headers,
     mode: 'cors',
     cache: 'default',
-    credentials: 'include'};
-  const loadTimer = timer("file-load");
-  return fetch("data/snik.json",init)
-    .then(response=>response.json())
-    .then(json=>
+    credentials: 'include'}; // credentials in case of htaccess
+  const loadTimer = timer("load file "+fileName);
+  return fetch(fileName,init)
+    .then(response=>
     {
-      loadTimer.stop();
-      const addTimer = timer("file-add");
-      graph.cy.add(json.elements);
-      addTimer.stop();
-    })
-    .catch(e=>
-    {
-      alert('Error loading snik.cyjs: '+e);
-    })
-    .then(()=>
-    {
-      progress(100);
-      return graph.cy;
+      loadTimer.stop;
+      return response.json();
     });
+}
+
+export function loadGraph(fileName)
+{
+  progress(0);
+  graph.cy.elements().remove();
+  loadJson(fileName).then(json=>
+  {
+    const addTimer = timer("graph-file-add");
+    graph.cy.add(json.elements);
+    addTimer.stop();
+  }).catch(e=>
+  {
+    alert('Error loading snik.cyjs: '+e);
+  }).then(()=>
+  {
+    progress(100);
+    return graph.cy;
+  });
 }
 
 export function loadGraphDialog()
@@ -43,8 +52,19 @@ export function loadLayoutDialog()
 
 }
 
+export function loadLayout(fileName)
+{
+  progress(0);
+  loadJson(fileName)
+    .then(json=>{layout.presetLayout(json);})
+    .catch(e=>
+    {
+      alert("Error loading layout from file "+fileName,e);
+    })
+    .then(()=>{progress(100);});
+}
 
-// https://stackoverflow.com/questions/19327749/javascript-blob-filename-without-link
+// https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
 export var saveJson = (function ()
 {
   var a = document.createElement("a");
