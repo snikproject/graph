@@ -22,7 +22,7 @@ describe('cytoscape', function()
   it('loadGraphFromSparql', function()
   {
     return loadGraphFromSparql(cy, subs).then(()=>
-      assert.closeTo(cy.nodes().size(),600,200)
+      assert.closeTo(cy.nodes().size(),1600,200)
     );
   });
   it('apply euler layout', function()

@@ -4,7 +4,7 @@ import * as rdfGraph from "./rdfGraph.js";
 
 var activeLayout = undefined;
 
-function storageName(layoutName,subs) {"layout-"+layoutName+[...subs].sort();}
+function storageName(layoutName,subs) {return "layout-"+layoutName+[...subs].sort();}
 
 /** subs are optional and are used to cache the layout. */
 export function run(cy,config,subs)
