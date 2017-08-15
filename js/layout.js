@@ -36,6 +36,7 @@ export function run(cy,config,subs)
     const name = storageName(config.name,subs);
     localStorage.setItem(name,JSON.stringify(positions));
   }
+  return true;
 }
 
 export function presetLayout(cy,positions)
