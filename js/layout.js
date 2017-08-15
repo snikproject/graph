@@ -9,6 +9,11 @@ function storageName(layoutName,subs) {return "layout-"+layoutName+[...subs].sor
 /** subs are optional and are used to cache the layout. */
 export function run(cy,config,subs)
 {
+  if(cy.nodes().size()===0)
+  {
+    log.warn("layout.js#run: Graph empty. Nothing to layout.");
+    return false;
+  }
   const layoutTimer = timer("layout");
   if(activeLayout) {activeLayout.stop();}
   activeLayout = cy.elements(":visible").layout(config);
