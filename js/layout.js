@@ -84,8 +84,6 @@ export function runCached(cy,config,subs)
 export var breadthfirst = {name: "breadthfirst"};
 export var grid = {name: "grid"};
 
-// tested but not viable:
-// spread: too slow
 export var euler =
 {
   /*eslint no-unused-vars: "off"*/
