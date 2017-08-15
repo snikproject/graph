@@ -8,7 +8,7 @@ export default function timer(name)
     {
       var end  = new Date();
       var time = end.getTime() - start.getTime();
-      log.debug(name, 'finished in', time, 'ms'+(message?` (${message})`:""));
+      if(time>100) {log.debug(name, 'finished in', time, 'ms'+(message?` (${message})`:""));}
     },
   };
 }
