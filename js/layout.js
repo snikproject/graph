@@ -21,7 +21,7 @@ export function run(cy,config,subs)
   layoutTimer.stop();
   if(subs)
   {
-    if(typeof(Storage)=== "undefined")
+    if(typeof(localStorage)=== "undefined")
     {
       log.error("web storage not available, could not write to cache.");
       return;
@@ -58,7 +58,7 @@ export function presetLayout(cy,positions)
 
 export function runCached(cy,config,subs)
 {
-  if(typeof(Storage)=== "undefined")
+  if(typeof(localStorage)=== "undefined")
   {
     log.error("web storage not available, could not access cache.");
     run(config);
