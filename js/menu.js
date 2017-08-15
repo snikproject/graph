@@ -22,7 +22,8 @@ function menuData()
       "entries":
       [
         [loadGraphFromSparql,"Load from SPARQL Endpoint"],
-        [file.saveGraph,"Save Graph with Layout"],
+        [file.saveGraph,"Save Full Graph with Layout"],
+        [file.saveVisibleGraph,"Save Visible Graph with Layout"],
         [file.saveLayout,"Save Layout only"],
       ],
     },

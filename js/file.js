@@ -34,7 +34,7 @@ export function loadGraph(fileName)
     addTimer.stop();
   }).catch(e=>
   {
-    alert('Error loading snik.cyjs: '+e);
+    alert('Error loading '+fileName+': '+e);
   }).then(()=>
   {
     progress(100);
@@ -64,7 +64,7 @@ export function loadLayout(fileName)
     .then(()=>{progress(100);});
 }
 
-// https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
+// based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
 export var saveJson = (function ()
 {
   var a = document.createElement("a");
@@ -87,25 +87,29 @@ export function saveGraph()
   return saveJson(graph.cy.json(),"snik.json");
 }
 
+export function saveVisibleGraph()
+{
+  return saveJson(graph.cy.elements("*:visible").jsons(),"snikpart.json");
+}
+
 export function saveLayout()
 {
 
 }
 
+// TODO: better naming
 export function upload(event)
 {
   const file = event.target.files[0];
-  // Ein Objekt um Dateien einzulesen
   var reader = new FileReader();
-  var senddata = new Object();
-  // Wenn der Dateiinhalt ausgelesen wurde...
-  reader.onload = function(data)
+
+  reader.onload = function()
   {
-    senddata.fileData = data.target.result;
+    console.log(reader.result);
+    loadJson(reader.result);
   };
-  // Die Datei einlesen und in eine Data-URL konvertieren
-  reader.readAsDataURL(file);
-  return false;
+  reader.readAsText(file);
+  //return false;
 }
 
 // Cannot use the simpler default menu creation method because file upload only works with an input.
