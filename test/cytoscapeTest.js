@@ -11,7 +11,7 @@ var assert = require('chai').assert;
 describe('cytoscape', function()
 {
   var cy;
-  const subs = new Set(["meta","it"]);
+  const subs = new Set(["meta","it4it"]);
 
   it('create empty graph', function()
   {
@@ -22,7 +22,7 @@ describe('cytoscape', function()
   it('loadGraphFromSparql', function()
   {
     return loadGraphFromSparql(cy, subs).then(()=>
-      assert.closeTo(cy.nodes().size(),600,200)
+      assert.closeTo(cy.nodes().size(),100,50)
     );
   });
   it('apply euler layout', function()
