@@ -33,7 +33,8 @@
   },
   "scripts": {
     "test": "mocha --compilers js:babel-register --require isomorphic-fetch",
-    "build": "babel js -d target"
+    "build": "babel js -d target",
+    "test-debug": "mocha --compilers js:babel-register --require isomorphic-fetch --inspect test/cytoscapeTest.js --debug-brk"
   },
   "repository": {
     "type": "git",
