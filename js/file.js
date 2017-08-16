@@ -6,6 +6,7 @@ import timer from "./timer.js";
 /** Loads a local JSON file.
 When developing on Google Chrome, you may need to start the browser with "--allow-file-access-from-files".
 See also https://bugs.chromium.org/p/chromium/issues/detail?id=47416.*/
+/*
 function readJsonFile(fileName)
 {
   const headers = new Headers();
@@ -22,6 +23,7 @@ function readJsonFile(fileName)
       return response.json();
     });
 }
+*/
 
 // based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
 export var saveJson = (function ()
@@ -53,7 +55,7 @@ export function saveVisibleGraph()
 
 export function saveLayout()
 {
-
+  return saveJson(layout.positions(graph.cy.nodes()),"layout.json");
 }
 
 function uploadJson(event,callback)

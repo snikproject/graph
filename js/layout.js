@@ -6,6 +6,17 @@ var activeLayout = undefined;
 
 function storageName(layoutName,subs) {return "layout-"+layoutName+[...subs].sort();}
 
+export function positions(nodes)
+{
+  const pos=[];
+  for(let i=0;i<nodes.size();i++)
+  {
+    const node = nodes[i];
+    pos.push([node.data().id,node.position()]);
+  }
+  return pos;
+}
+
 /** subs are optional and are used to cache the layout. */
 export function run(cy,config,subs)
 {
@@ -26,13 +37,8 @@ export function run(cy,config,subs)
       log.error("web storage not available, could not write to cache.");
       return;
     }
-    const positions=[];
-    const nodes = cy.nodes();
-    for(let i=0;i<nodes.size();i++)
-    {
-      const node = nodes[i];
-      positions.push([node.data().id,node.position()]);
-    }
+
+    const pos=positions(cy.nodes());
     const name = storageName(config.name,subs);
     localStorage.setItem(name,JSON.stringify(positions));
   }
@@ -67,11 +73,11 @@ export function runCached(cy,config,subs)
   }
   const name = storageName(config.name,subs);
   // localStorage.removeItem(storageName); // clear cache for testing
-  const positions=JSON.parse(localStorage.getItem(name));
+  const pos=JSON.parse(localStorage.getItem(name));
   if(positions) // cache hit
   {
     log.info("loading layout from cache");
-    return presetLayout(cy,positions);
+    return presetLayout(cy,pos);
   }
   else // cache miss
   {
