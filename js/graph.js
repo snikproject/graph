@@ -12,8 +12,6 @@ import timer from "./timer.js";
 
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
 var cy = null;
-var removedNodes = null;
-var removedEdges = null;
 var styledEdges = null;
 var styledNodes = null;
 var selectedNode = null;
@@ -288,62 +286,6 @@ function invert(enabled)
   }
 }
 
-function removeNodes(nodes)
-{
-  if(REMOVE_SINGLE_ELEMENTS_ONLY&&nodes.length>1)
-  {
-    log.error("Multiple element removal is deactivated. Please remove single elements only.");
-    return;
-  }
-  progress(0);
-  cy.startBatch();
-  //removedNodes.add(nodes);
-  for(let i=0;i<nodes.length;i++)
-  {
-    const node = nodes[i];
-    //console.log(node.data().name);
-    sparql.deleteResource(node.data().name,"http://www.snik.eu/ontology/test");
-  }
-  //removedEdges.add(nodes.connectedEdges());
-  nodes.remove();
-  cy.endBatch();
-  progress(100);
-}
-/*
-function removeEdges(edges)
-{
-  if(REMOVE_SINGLE_ELEMENTS_ONLY&&edges.length>1)
-  {
-    log.error("Multiple element removal is deactivated. Please remove single elements only.");
-    return;
-  }
-  progress(0);
-  cy.startBatch();
-  for(let i=0;i<edges.length;i++)
-  {
-    const data = edges[i].data();
-    sparql.deleteTripleAndRecordHistory(data.source,data.p,data.target,"http://www.snik.eu/ontology/test");
-  }
-  edges.remove();
-  cy.endBatch();
-  progress(100);
-}
-
-
-function restore()
-{
-  progress(0);
-  cy.startBatch();
-  // all nodes first so that edges have their sources and targets
-  for (let i = 0; i < removedNodes.length; i++)
-  {removedNodes[i].restore();}
-  for (let i = 0; i < removedEdges.length; i++)	{removedEdges[i].restore();}
-  removedNodes = cy.collection();
-  removedEdges = cy.collection();
-  cy.endBatch();
-  progress(100);
-}
-*/
 function layout(name)
 {
   cy
@@ -418,8 +360,6 @@ function initGraph()
     //cy.endBatch();
   });
 
-  removedNodes = cy.collection();
-  removedEdges = cy.collection();
   styledEdges = cy.collection();
   styledNodes = cy.collection();
   initTimer.stop();

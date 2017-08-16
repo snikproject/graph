@@ -14,54 +14,13 @@ function readJsonFile(fileName)
     mode: 'cors',
     cache: 'default',
     credentials: 'include'}; // credentials in case of htaccess
-  const loadTimer = timer("load file "+fileName);
+  const loadTimer = timer("read json file "+fileName);
   return fetch(fileName,init)
     .then(response=>
     {
       loadTimer.stop;
       return response.json();
     });
-}
-
-export function loadGraph(fileName)
-{
-  progress(0);
-  graph.cy.elements().remove();
-  readJsonFile(fileName).then(json=>
-  {
-    const addTimer = timer("graph-file-add");
-    graph.cy.add(json.elements);
-    addTimer.stop();
-  }).catch(e=>
-  {
-    alert('Error loading '+fileName+': '+e);
-  }).then(()=>
-  {
-    progress(100);
-    return graph.cy;
-  });
-}
-
-export function loadGraphDialog()
-{
-
-}
-
-export function loadLayoutDialog()
-{
-
-}
-
-export function loadLayout(fileName)
-{
-  progress(0);
-  readJsonFile(fileName)
-    .then(json=>{layout.presetLayout(json);})
-    .catch(e=>
-    {
-      alert("Error loading layout from file "+fileName,e);
-    })
-    .then(()=>{progress(100);});
 }
 
 // based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
@@ -84,7 +43,7 @@ export var saveJson = (function ()
 
 export function saveGraph()
 {
-  return saveJson(graph.cy.json(),"snik.json");
+  return saveJson(graph.cy.elements().jsons(),"snik.json");
 }
 
 export function saveVisibleGraph()
@@ -97,35 +56,46 @@ export function saveLayout()
 
 }
 
-// TODO: better naming of this and also the other functions
-export function upload(event)
+function uploadJson(event,callback)
 {
   const file = event.target.files[0];
   var reader = new FileReader();
-
-  reader.onload = function()
-  {
-    console.log(reader.result);
-  };
+  reader.onload = ()=>callback(JSON.parse(reader.result));
   reader.readAsText(file);
-  //return false;
+}
+
+export function loadGraph(event)
+{
+  uploadJson(event,json=>
+  {
+    graph.cy.elements().remove();
+    graph.cy.add(json);
+  });
+}
+
+export function loadLayout(event)
+{
+  uploadJson(event,json=>{layout.presetLayout(graph.cy,json);});
+}
+
+function addLoadEntry(parent,id,description,func)
+{
+  const label = document.createElement("label");
+  label.classList.add("dropdown-entry");
+  label.for=id+"button";
+  label.innerText=description;
+  parent.prepend(label);
+  const input = document.createElement("input");
+  input.type="file";
+  input.id=id+"button";
+  input.style.display="none";
+  label.appendChild(input);
+  input.addEventListener("change",func);
 }
 
 // Cannot use the simpler default menu creation method because file upload only works with an input.
 export function addFileLoadEntries(parent)
 {
-  const label = document.createElement("label");
-  label.classList.add("dropdown-entry");
-  label.for="loadgraphbutton";
-  label.innerText="Load Graph File with Layout";
-
-  parent.prepend(label);
-
-  const input = document.createElement("input");
-  input.type="file";
-  input.id="loadgraphbutton";
-  input.style.display="none";
-  label.appendChild(input);
-
-  input.addEventListener("change",upload);
+  addLoadEntry(parent,"loadlayout","Load Layout",loadLayout);
+  addLoadEntry(parent,"loadgraph","Load Graph File with Layout",loadGraph);
 }

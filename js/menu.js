@@ -1,5 +1,4 @@
 import {MODIFIED,ONTOLOGY_MODIFIED} from "./about.js";
-import * as layout from "./layout.js";
 import * as log from "./log.js";
 import * as file from "./file.js";
 import {invert} from "./graph.js";
