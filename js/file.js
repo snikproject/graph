@@ -6,7 +6,7 @@ import timer from "./timer.js";
 /** Loads a local JSON file.
 When developing on Google Chrome, you may need to start the browser with "--allow-file-access-from-files".
 See also https://bugs.chromium.org/p/chromium/issues/detail?id=47416.*/
-function loadJson(fileName)
+function readJsonFile(fileName)
 {
   const headers = new Headers();
   const init = { method: 'GET',
@@ -27,7 +27,7 @@ export function loadGraph(fileName)
 {
   progress(0);
   graph.cy.elements().remove();
-  loadJson(fileName).then(json=>
+  readJsonFile(fileName).then(json=>
   {
     const addTimer = timer("graph-file-add");
     graph.cy.add(json.elements);
@@ -55,7 +55,7 @@ export function loadLayoutDialog()
 export function loadLayout(fileName)
 {
   progress(0);
-  loadJson(fileName)
+  readJsonFile(fileName)
     .then(json=>{layout.presetLayout(json);})
     .catch(e=>
     {
@@ -97,7 +97,7 @@ export function saveLayout()
 
 }
 
-// TODO: better naming
+// TODO: better naming of this and also the other functions
 export function upload(event)
 {
   const file = event.target.files[0];
@@ -106,7 +106,6 @@ export function upload(event)
   reader.onload = function()
   {
     console.log(reader.result);
-    loadJson(reader.result);
   };
   reader.readAsText(file);
   //return false;
