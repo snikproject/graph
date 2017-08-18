@@ -8,19 +8,16 @@ import * as graph from "./graph.js";
 import * as file from "./file.js";
 import * as rdfGraph from "./rdfGraph.js";
 import * as layout from "./layout.js";
-//import * as history from "./history.js";
 import {progress} from "./progress.js";
 
 progress(0);
 graph.initGraph();
 
-//history.initHistory();
 window.addEventListener('keydown', e=>
 {
   if((e.key==='Escape'||e.key==='Esc'||e.keyCode===27))// && (e.target.nodeName==='BODY'))
   {
     e.preventDefault();
-    //history.hideHistory();
     search.hideSearchResults();
     return false;
   }

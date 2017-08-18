@@ -1,6 +1,5 @@
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
-//import * as history from "./history.js";
 //import loadGraphFromSparql from "./loadGraphFromSparql.js";
 //import * as file from "./file.js";
 
@@ -9,7 +8,6 @@ const buttonConfigs =
 [
   ["Recalculate Layout", ()=>layout.run(graph.cy,layout.euler)],
   ["Reset View", graph.resetStyle],
-  //  ["History",   history.showHistory],
 //  ["Reload", loadGraphFromSparql],
 //  ["Export", file.save],
 ];

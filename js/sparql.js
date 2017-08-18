@@ -5,8 +5,6 @@ export const SPARQL_ENDPOINT = "http://www.snik.eu/sparql";
 export const SPARQL_GRAPH = "http://www.snik.eu/ontology";
 export const SPARQL_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies
 export const SPARQL_LIMIT = 100;
-//const HISTORY_GRAPH = "http://www.snik.eu/ontology/history";
-//const TEST_GRAPH = "http://www.snik.eu/ontology/history";
 
 export function sparql(query,graphOpt)
 {
