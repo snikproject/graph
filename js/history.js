@@ -5,7 +5,7 @@ const GRAPH = "http://www.snik.eu/ontology/history";
 
 export function hideHistory()
 {
-  const overlay = document.getElementById("history-overlay");
+  const overlay = document.getElementById("overlay-history");
   overlay.style.width = "0%";
   overlay.style.display= "none";
 }
@@ -17,7 +17,7 @@ export function initHistory()
 
 export function showHistory()
 {
-  const overlay = document.getElementById("history-overlay");
+  const overlay = document.getElementById("overlay-history");
   overlay.style.width = "100%";
   overlay.style.display= "block";
   const query = `PREFIX cs: <http://purl.org/vocab/changeset/schema#>
