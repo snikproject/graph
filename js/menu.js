@@ -1,10 +1,10 @@
-import {MODIFIED,ONTOLOGY_MODIFIED} from "./about.js";
+import {MODIFIED} from "./about.js";
 import * as log from "./log.js";
 import * as file from "./file.js";
 import {invert} from "./graph.js";
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
 
-function about() {window.alert("SNIK Graph version "+MODIFIED+"\nOntology version "+ONTOLOGY_MODIFIED);}
+function about() {window.alert("SNIK Graph version "+MODIFIED);}
 /**entries is an array of arrays of size two, entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed. entries[i][1] is a label as a string.  */
 
 function addLoadEntries()

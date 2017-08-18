@@ -1,4 +1,4 @@
-import {ONTOLOGY_MODIFIED,ONTOLOGY_ISSUE_WARNING} from "./about.js";
+import {ONTOLOGY_ISSUE_WARNING} from "./about.js";
 import {roleUse} from "./classuse.js";
 import * as graph from "./graph.js";
 import * as sparql from "./sparql.js";
@@ -23,7 +23,7 @@ const defaultsNodes = {
           if(confirm(ONTOLOGY_ISSUE_WARNING))
           {
             var url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
-            encodeURIComponent(node._private.data.name)+' v'+ONTOLOGY_MODIFIED+
+            encodeURIComponent(node._private.data.name)+' v'+
             '&body='+encodeURIComponent('The class '+node._private.data.name+
             ' has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n');
             window.open(url);
@@ -234,7 +234,7 @@ const defaultsRelations = {
         window.open
         (
           'https://github.com/IMISE/snik-ontology/issues/new?title='+
-          encodeURIComponent(edge._private.data.name+' v'+ONTOLOGY_MODIFIED)+
+          encodeURIComponent(edge._private.data.name+' v')+
           '&body='+encodeURIComponent('The edge "'+edge._private.data.name+'" is incorrect.\n\n**Details**\n')
         );
       },
