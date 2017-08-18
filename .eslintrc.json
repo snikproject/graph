@@ -17,7 +17,8 @@
 	{
 		"cytoscape": false,
 		"dhtmlx": true,
-		"Spinner": true
+		"Spinner": true,
+		"config": true
 	},
 	"extends": "eslint:recommended",
 	"rules":

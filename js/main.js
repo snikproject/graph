@@ -23,8 +23,7 @@ window.addEventListener('keydown', e=>
   }
 }, true);
 
-//loadGraphFromSparql(graph.cy,new Set(["meta","it"]))
-loadGraphFromSparql(graph.cy,rdfGraph.subs())
+loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies))
   .then(()=>
   {
     layout.runCached(graph.cy,layout.euler,rdfGraph.subs());
