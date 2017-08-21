@@ -4,7 +4,7 @@ import * as rdfGraph from "./rdfGraph.js";
 
 var activeLayout = undefined;
 
-function storageName(layoutName,subs) {return "layout-"+layoutName+[...subs].sort();}
+function storageName(layoutName,subs) {return "layout"+layoutName+[...subs].sort().toString().replace(/[^a-z]/g,"");}
 
 export function positions(nodes)
 {
@@ -18,7 +18,7 @@ export function positions(nodes)
 }
 
 /** subs are optional and are used to cache the layout. */
-export function run(cy,config,subs)
+export function run(cy,layoutConfig,subs)
 {
   if(cy.nodes().size()===0)
   {
@@ -27,7 +27,7 @@ export function run(cy,config,subs)
   }
   const layoutTimer = timer("layout");
   if(activeLayout) {activeLayout.stop();}
-  activeLayout = cy.elements(":visible").layout(config);
+  activeLayout = cy.elements(":visible").layout(layoutConfig);
   activeLayout.run();
   layoutTimer.stop();
   if(subs)
@@ -37,53 +37,90 @@ export function run(cy,config,subs)
       log.error("web storage not available, could not write to cache.");
       return;
     }
-
     const pos=positions(cy.nodes());
-    const name = storageName(config.name,subs);
-    localStorage.setItem(name,JSON.stringify(positions));
+    const name = storageName(layoutConfig.name,subs);
+    localStorage.setItem(name,JSON.stringify(pos));
   }
   return true;
 }
 
-export function presetLayout(cy,positions)
+export function presetLayout(cy,pos)
 {
-  const map = new Map(positions);
-  const config =
+  const map = new Map(pos);
+  let hits = 0;
+  let misses = 0;
+  const layoutConfig =
   {
     name: 'preset',
     fit:false,
     positions: node=>
     {
       let position;
-      if((position= map.get(node._private.data.id))) {return position;}
+      if((position= map.get(node._private.data.id)))
+      {
+        hits++;
+        return position;
+      }
+      misses++;
       return {x:0,y:0};
     },
   };
-  return run(cy,config);
+  const status = run(cy,layoutConfig);
+  if(misses>0||hits<positions.length)
+  {
+    log.warn(`...${hits}/${cy.nodes().size()} node positions set. ${pos.length-hits} superfluous layout positions .`);
+    const precision = hits/pos.length;
+    const recall = hits/cy.nodes().size();
+    if(precision<config.layoutCacheMinPrecision)
+    {
+    log.warn(`Precision of ${precision} less than minimal required precision of ${config.layoutCacheMinPrecision}.`);
+    return false;
+    }
+    if(recall<config.layoutCacheMinRecall)
+    {
+    log.warn(`Recall of ${recall} less than minimal required of recall of ${config.layoutCacheMinRecall}.`);
+    return false;
+    }
+  }
+  else
+  {
+    log.debug("...layout applied with 100% overlap.");
+  }
+  if(hits===0) {return false;}
+  return status;
 }
 
 
-export function runCached(cy,config,subs)
+export function runCached(cy,layoutConfig,subs)
 {
   if(typeof(localStorage)=== "undefined")
   {
     log.error("web storage not available, could not access cache.");
-    run(config);
+    run(layoutConfig);
     return;
   }
-  const name = storageName(config.name,subs);
-  // localStorage.removeItem(storageName); // clear cache for testing
-  const pos=JSON.parse(localStorage.getItem(name));
-  if(positions) // cache hit
+  const name = storageName(layoutConfig.name,subs);
+  const cacheItem = localStorage.getItem(name);
+  if(cacheItem) // cache hit
   {
-    log.info("loading layout from cache");
-    return presetLayout(cy,pos);
+    try
+    {
+      const pos=JSON.parse(cacheItem);
+      log.info(`Loaded layout from cache, applying ${pos.length} positions...`);
+      const status = presetLayout(cy,pos);
+      if(status) {return true;}
+      log.warn("Could not apply layout to active graph, recalculating layout...");
+    }
+    catch(e)
+    {
+      log.error("Could not load cache item, recalculating layout...",e);
+    }
   }
   else // cache miss
   {
-    log.warn("layout not in cache, please wait");
-    return run(cy,config,subs);
+    log.warn("Layout not in cache, recalculating layout...");
   }
+  return run(cy,layoutConfig,subs);
 }
 
 

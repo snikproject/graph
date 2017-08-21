@@ -30,10 +30,6 @@ loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies))
     graph.cy.zoom(0.3);
     graph.cy.center(graph.cy.nodes("node[id='http://www.snik.eu/ontology/meta/Top']"));
   })
-  .catch((e)=>
-  {
-    log.error("Error layouting",e.stack);
-  })
   .then(()=>
   {
     addMenu();
@@ -41,9 +37,5 @@ loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies))
     file.addFileLoadEntries(document.getElementById("file"));
     search.addSearch();
     addButtons();
-  })
-  .catch(e=>
-  {
-    log.error("menu load error",e);
   })
   .then(()=>progress(100));
