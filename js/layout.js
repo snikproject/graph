@@ -1,6 +1,7 @@
 import * as log from "./log.js";
 import timer from "./timer.js";
 import * as rdfGraph from "./rdfGraph.js";
+import * as file from "./file.js";
 
 var activeLayout = undefined;
 
@@ -95,12 +96,26 @@ export function runCached(cy,layoutConfig,subs)
 {
   if(typeof(localStorage)=== "undefined")
   {
-    log.error("web storage not available, could not access cache.");
+    log.error("Web storage not available, could not access browser-based cache.");
     run(layoutConfig);
     return;
   }
   const name = storageName(layoutConfig.name,subs);
+  // web storage
   const cacheItem = localStorage.getItem(name);
+  // file
+  /*
+  if(!cacheItem)
+  {
+    log.warn("Web storage cache miss, trying to load from file...");
+    file.readTextFile("cache/"+storageName)
+      .then(text=>
+      {
+        cacheItem = text;
+      })
+      .catch(e=>{log.warn("File cache miss.");});
+  }
+*/
   if(cacheItem) // cache hit
   {
     try

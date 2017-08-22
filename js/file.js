@@ -3,11 +3,11 @@ import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 import timer from "./timer.js";
 
-/** Loads a local JSON file.
+/** Loads a local text file.
 When developing on Google Chrome, you may need to start the browser with "--allow-file-access-from-files".
 See also https://bugs.chromium.org/p/chromium/issues/detail?id=47416.*/
 /*
-function readJsonFile(fileName)
+export function readTextFile(fileName)
 {
   const headers = new Headers();
   const init = { method: 'GET',
@@ -15,12 +15,12 @@ function readJsonFile(fileName)
     mode: 'cors',
     cache: 'default',
     credentials: 'include'}; // credentials in case of htaccess
-  const loadTimer = timer("read json file "+fileName);
+  const loadTimer = timer("read text file "+fileName);
   return fetch(fileName,init)
     .then(response=>
     {
       loadTimer.stop;
-      return response.json();
+      return response.text();
     });
 }
 */
