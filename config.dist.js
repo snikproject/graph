@@ -11,5 +11,5 @@ var config =
   // proportion of cached nodes that are present in the active graph
   // a low precison means that the cached layout was calculated with
   // a very dissimilar graph
-  layoutCacheMinPrecision: 0.2,
+  layoutCacheMinPrecision: 0.5,
 };
