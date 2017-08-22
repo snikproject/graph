@@ -29,7 +29,7 @@ export default function loadGraphFromSparql(cy,subontologies)
   ${froms}
   {
     ?c a owl:Class.
-    #{?c ?p ?o.} UNION {?o ?p ?c}.
+    #{?c ?p ?o.} UNION {?o ?p ?c}.#too slow, remove isolated nodes in post processing
     OPTIONAL {?source ov:defines ?c.}
     OPTIONAL {?c meta:subTopClass ?subTop.}
     OPTIONAL {?c rdfs:label ?l.}
@@ -106,6 +106,9 @@ export default function loadGraphFromSparql(cy,subontologies)
           //position: { x: 200, y: 200 }
           });
       }
+      // remove isolated nodes (too costly in SPARQL query)
+      // deactivated for now, so that isolated nodes can be found and fixed
+      //cy.nodes("[[degree=0]]").remove();
       return cy;
     }).catch(e=>
     {
