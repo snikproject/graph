@@ -24,6 +24,8 @@ function menuData()
         [file.saveGraph,"Save Full Graph with Layout"],
         [file.saveVisibleGraph,"Save Visible Graph with Layout"],
         [file.saveLayout,"Save Layout only"],
+        [file.savePngView,"Save Image of Current View "],
+        [file.savePngFull,"Save Image of Whole Graph (high res)"],
       ],
     },
     {

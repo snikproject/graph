@@ -43,6 +43,20 @@ export var saveJson = (function ()
   };
 }());
 
+export var saveUrl = (function ()
+{
+  var a = document.createElement("a");
+  document.body.appendChild(a);
+  a.style = "display: none";
+  return function (url, fileName)
+  {
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+}());
+
 export function saveGraph()
 {
   return saveJson(graph.cy.elements().jsons(),"snik.json");
@@ -56,6 +70,32 @@ export function saveVisibleGraph()
 export function saveLayout()
 {
   return saveJson(layout.positions(graph.cy.nodes()),"layout.json");
+}
+
+export function savePngView()
+{
+  const options =
+  {
+    "bg": "black",
+    "full": false,
+    "maxWidth": 14000,
+    "maxHeight": 11250,
+  };
+  const image = graph.cy.png(options);
+  saveUrl(image,"snik.png");
+}
+
+export function savePngFull()
+{
+  const options =
+  {
+    "bg": "black",
+    "full": true,
+    "maxWidth": 11250,
+    "maxHeight": 11250,
+  };
+  const image = graph.cy.png(options);
+  saveUrl(image,"snik.png");
 }
 
 function uploadJson(event,callback)
