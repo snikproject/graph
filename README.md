@@ -2,7 +2,7 @@
 Visualization of the snik-ontology.
 
 ## Installation
-Git clone or download to a webserver or local directory of your choice and run index.html in a browser.
+Git clone or download to a webserver or local directory of your choice, run init and then open index.html in a browser.
 If the website and the SPARQL endpoint are on different domains, you may need to bypass CORS.
 
 ## Requirements
