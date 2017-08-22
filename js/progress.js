@@ -21,20 +21,30 @@ const opts = {
   position: 'absolute', // Element positioning
 };
 let spinner = null;
+let active = 0;
 
+// not thread safe but javascript is single threaded for now...
 function progress(p)
 {
   if(!window) {return;} // ignore when running in nodejs
   if(!spinner) {spinner = new Spinner(opts);}
   if(p<100)
   {
-    document.body.classList.add('waiting');
-    spinner.spin(document.body);
+    if(!active)
+    {
+      document.body.classList.add('waiting');
+      spinner.spin(document.body);
+    }
+    active++;
   }
   if(p>=100)
   {
-    document.body.classList.remove('waiting');
-    spinner.stop();
+    active--;
+    if(active===0)
+    {
+      document.body.classList.remove('waiting');
+      spinner.stop();
+    }
   }
 }
 
