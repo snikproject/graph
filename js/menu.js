@@ -36,20 +36,6 @@ function menuData()
       "id": "options",
       "entries": [], // filled by addOptions()
     },
-    /*{
-      "label": "Layouts",
-      "id": "layouts",
-      "entries":
-      [
-        [()=>layout.run(layout.euler),"Euler"],
-        [()=>layout.run(layout.colaInf),"Cola-Infinite (Slow)"],
-        [()=>layout.run(layout.cola),"Cola (Slow)"],
-        [()=>layout.run(layout.cose),"Cose (Slow)"],
-        [()=>layout.run(layout.coseBilkent),"Cose-Bilkent (Slow)"],
-        [()=>layout.run(layout.breadthfirst),"Breadthfirst"],
-        [()=>layout.run(layout.grid),"Grid"],
-      ],
-    },*/
     {
       "label": "Services",
       "id":"services",
