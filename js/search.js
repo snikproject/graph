@@ -120,7 +120,7 @@ function showSearchResults(query, uris)
   }
   if(uris.size===1)
   {
-    presentUri(uris[0]);
+    presentUri([...uris][0]);
     return true;
   }
   if(uris.size===sparql.SPARQL_LIMIT)
@@ -171,6 +171,7 @@ export function search(userQuery)
 			{?s rdfs:label ?l.		?l <bif:contains> "${searchQuery}".} UNION
 			{?s skos:altLabel ?l.	?l <bif:contains> "${searchQuery}".}} limit ${sparql.SPARQL_LIMIT}`;
   }
+  log.debug(sparqlQuery);
   return sparql.sparql(sparqlQuery).then(bindings=>new Set(bindings.map(b=>b.s.value)));
   //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
   //filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
