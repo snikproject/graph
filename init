@@ -1,4 +1,5 @@
 #!/bin/bash
+# bash script, if you want to use deploy it on Windows, convert to a batch file and please create a pull request
 wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.1.5/cytoscape.min.js
 wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.1.5/cytoscape.js
 wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js
@@ -8,3 +9,4 @@ wget -N -P lib http://spin.js.org/spin.min.js
 wget -N -P lib https://raw.githubusercontent.com/cytoscape/cytoscape.js-euler/v1.0.0/cytoscape-euler.js
 wget -N -P lib https://unpkg.com/lunr/lunr.js	
 cp config.dist.js config.js -n
+mkdir -p cache
