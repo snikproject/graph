@@ -30,7 +30,7 @@ describe('cytoscape', function()
     // Causes "TypeError: Cannot read property 'pos' of undefined"
     // see https://github.com/cytoscape/cytoscape.js-euler/issues/14
     //layout.run(cy,layout.euler,subs);
-    // use cose for now
-    assert(layout.run(cy,layout.cose,subs));
+    // use grid
+    assert(layout.run(cy,layout.grid,subs));
   });
 });
