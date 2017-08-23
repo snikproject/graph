@@ -3,17 +3,17 @@
 
 export function info(s)
 {
-  if(config.logLevelDisplay==="info"||config.logLevelDisplay==="debug"||config.logLevelDisplay==="trace")
+  if(typeof config === 'undefined'||config.logLevelDisplay==="info"||config.logLevelDisplay==="debug"||config.logLevelDisplay==="trace")
   {if((typeof dhtmlx) !== "undefined") {dhtmlx.message(s);}}
-  if(config.logLevelConsole==="info"||config.logLevelConsole==="debug"||config.logLevelConsole==="trace")
+  if(!config||config.logLevelConsole==="info"||config.logLevelConsole==="debug"||config.logLevelConsole==="trace")
   {console.log.apply(console,arguments);}
 }
 
 export function debug(s)
 {
-  if(config.logLevelDisplay==="debug"||config.logLevelDisplay==="trace")
+  if(typeof config === 'undefined'||config.logLevelDisplay==="debug"||config.logLevelDisplay==="trace")
   {if((typeof dhtmlx) !== "undefined") {dhtmlx.message(s);}}
-  if(config.logLevelConsole==="debug"||config.logLevelConsole==="trace")
+  if(typeof config === 'undefined'||config.logLevelConsole==="debug"||config.logLevelConsole==="trace")
   {console.log.apply(console,arguments);}
 }
 
@@ -26,14 +26,14 @@ export function error(s)
 
 export function warn(s)
 {
-  if(config.logLevelDisplay!=="error")
+  if(typeof config === 'undefined'||config.logLevelDisplay!=="error")
   {if((typeof dhtmlx) !== "undefined") {dhtmlx.message(s);}}
-  if(config.logLevelConsole!=="error")
+  if(typeof config === 'undefined'||config.logLevelConsole!=="error")
   {console.warn.apply(console,arguments);}
 }
 
 export function trace()
 {
-  if(config.logLevelConsole!=="trace") {return;}
+  if(typeof config === 'undefined'||config.logLevelConsole!=="trace") {return;}
   console.log.apply(console,arguments);
 }
