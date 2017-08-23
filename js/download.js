@@ -1,3 +1,6 @@
+import * as graph from "./graph.js";
+import * as layout from "./layout.js";
+
 // based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
 export var downloadJson = (function ()
 {
@@ -70,3 +73,4 @@ export function downloadPngFull()
   const image = graph.cy.png(options);
   downloadUrl(image,"snik.png");
 }
+
