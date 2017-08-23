@@ -21,11 +21,11 @@ function menuData()
       "entries":
       [
         [loadGraphFromSparql,"Load from SPARQL Endpoint"],
-        [file.saveGraph,"Save Full Graph with Layout"],
-        [file.saveVisibleGraph,"Save Visible Graph with Layout"],
-        [file.saveLayout,"Save Layout only"],
-        [file.savePngView,"Save Image of Current View "],
-        [file.savePngFull,"Save Image of Whole Graph (high res)"],
+        [file.downloadGraph,"Save Full Graph with Layout"],
+        [file.downloadVisibleGraph,"Save Visible Graph with Layout"],
+        [file.downloadLayout,"Save Layout only"],
+        [file.downloadPngView,"Save Image of Current View "],
+        [file.downloadPngFull,"Save Image of Whole Graph (high res)"],
       ],
     },
     {
