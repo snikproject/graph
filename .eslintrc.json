@@ -44,7 +44,7 @@
 		"curly": ["error"],
 		"camelcase": ["warn"],
 		"no-unused-vars": ["warn"],
-		"prefer-const": ["error"],
+		"prefer-const": ["warn"],
 		"eol-last": ["error"],
 		"padded-blocks": ["error","never"],
 		"comma-dangle": ["error","always-multiline"],
