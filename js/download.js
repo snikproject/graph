@@ -48,29 +48,25 @@ export function downloadLayout()
   return downloadJson(layout.positions(graph.cy.nodes()),"layout.json");
 }
 
-export function downloadPngView()
+/** full: true - whole graph, false - only what the user can see*/
+export function downloadPng(full,highRes)
 {
   const options =
   {
     "bg": "black",
-    "full": false,
-    "maxWidth": 14000,
-    "maxHeight": 11250,
+    "full": full,
   };
-  const image = graph.cy.png(options);
-  downloadUrl(image,"snik.png");
-}
-
-export function downloadPngFull()
-{
-  const options =
+  if(highRes)
   {
-    "bg": "black",
-    "full": true,
-    "maxWidth": 11250,
-    "maxHeight": 11250,
-  };
+    options.maxWidth=config.download.image.max.width;
+    options.maxHeight=config.download.image.max.height;
+  }
+  else if(full)
+  {
+    options.maxWidth=config.download.image.standard.width;
+    options.maxHeight=config.download.image.standard.height;
+  }
+
   const image = graph.cy.png(options);
   downloadUrl(image,"snik.png");
 }
-

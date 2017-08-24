@@ -12,4 +12,19 @@ var config =
   // a low precison means that the cached layout was calculated with
   // a very dissimilar graph
   layoutCacheMinPrecision: 0.5,
+  download:
+  {
+    image:
+    {
+      // browsers have different undocumented maximum file sizes
+      // see https://github.com/cytoscape/cytoscape.js/issues/1943#issuecomment-324104342
+      // the default values have been tested on SNIK graph on Firefox 55 but if
+      // they turn out to be too high for other browsers, the resolution can be adjusted here.
+      // high resolution
+      max: {width: 11250, height: 11250},
+      // standard resolution
+      // only used for full graph export, view uses native resolution
+      standard: {width: 1920, height: 1920},
+    },
+  },
 };

@@ -25,8 +25,10 @@ function menuData()
         [download.downloadGraph,"Save Full Graph with Layout"],
         [download.downloadVisibleGraph,"Save Visible Graph with Layout"],
         [download.downloadLayout,"Save Layout only"],
-        [download.downloadPngView,"Save Image of Current View "],
-        [download.downloadPngFull,"Save Image of Whole Graph (high res)"],
+        [()=>download.downloadPng(false,false),"Save Image of Current View "],
+        [()=>download.downloadPng(true,false),"Save Image of Whole Graph"],
+        [()=>download.downloadPng(false,true),"Save Image of Current View (high res)"],
+        [()=>download.downloadPng(true,true),"Save Image of Whole Graph (high res)"],
       ],
     },
     {
