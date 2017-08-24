@@ -49,7 +49,15 @@
 		"padded-blocks": ["error","never"],
 		"comma-dangle": ["error","always-multiline"],
 		"semi": ["error"],
-		"comma-style": ["error","last"]
+		"comma-style": ["error","last"],
+		"require-jsdoc": ["error", {
+			"require": {
+				"FunctionDeclaration": true,
+				"MethodDefinition": true,
+				"ClassDeclaration": true,
+				"ArrowFunctionExpression": false
+			}
+			}]
+		}
 	}
-}
 

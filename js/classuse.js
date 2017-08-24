@@ -1,6 +1,13 @@
+//** @module */
 import * as sparql from "./sparql.js";
 import * as graph from "./graph.js";
 
+/**
+Centers a role and shows directly and indirectly connected roles, functions and entity types in a concentric layout.
+Hides all other nodes. Resetting the view unhides the other nodes but keeps the layout of those shown before.
+Recalculate the layout to place those nodes in relation to the whole graph again.
+@param {string} The URI of the role.
+*/
 function roleUse(role)
 {
   graph.resetStyle();

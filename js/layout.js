@@ -1,3 +1,4 @@
+//** @module */
 import * as log from "./log.js";
 import timer from "./timer.js";
 import * as rdfGraph from "./rdfGraph.js";
@@ -5,8 +6,21 @@ import * as file from "./file.js";
 
 var activeLayout = undefined;
 
+/**
+@param {string} layoutName Cytoscape.js layout name
+@param {Set} subs the subontology identifiers included in the graph. Used to retrieve the correct layout later.
+@returns the storage name coded by the layout and the subontologies
+@example storageName("euler",new Set(["meta","ob","bb"]));
+*/
 function storageName(layoutName,subs) {return "layout"+layoutName+[...subs].sort().toString().replace(/[^a-z]/g,"");}
 
+/**
+@param {cy.collection} nodes the nodes whose positions are returned
+@returns an array containing the positions of all nodes.
+@example
+// returns [["http://www.snik.eu...",{"x":0,"y":0}],...]
+positions(cy.nodes());
+*/
 export function positions(nodes)
 {
   const pos=[];
@@ -18,7 +32,12 @@ export function positions(nodes)
   return pos;
 }
 
-/** subs are optional and are used to cache the layout. */
+/**
+@param {} cy
+@param {} layoutConfig
+@param {Set} subs
+subs are optional and are used to cache the layout.
+*/
 export function run(cy,layoutConfig,subs)
 {
   if(cy.nodes().size()===0)
@@ -45,6 +64,9 @@ export function run(cy,layoutConfig,subs)
   return true;
 }
 
+/**
+@param {}
+*/
 export function presetLayout(cy,pos)
 {
   const map = new Map(pos);
@@ -91,7 +113,9 @@ export function presetLayout(cy,pos)
   return status;
 }
 
-
+/**
+@param {}
+*/
 export function runCached(cy,layoutConfig,subs)
 {
   if(typeof(localStorage)=== "undefined")
@@ -107,14 +131,14 @@ export function runCached(cy,layoutConfig,subs)
   /*
   if(!cacheItem)
   {
-    log.warn("Web storage cache miss, trying to load from file...");
-    file.readTextFile("cache/"+storageName)
-      .then(text=>
-      {
-        cacheItem = text;
-      })
-      .catch(e=>{log.warn("File cache miss.");});
-  }
+  log.warn("Web storage cache miss, trying to load from file...");
+  file.readTextFile("cache/"+storageName)
+  .then(text=>
+  {
+  cacheItem = text;
+})
+.catch(e=>{log.warn("File cache miss.");});
+}
 */
   if(cacheItem) // cache hit
   {
@@ -138,10 +162,10 @@ export function runCached(cy,layoutConfig,subs)
   return run(cy,layoutConfig,subs);
 }
 
-
-export var breadthfirst = {name: "breadthfirst"};
+/** Very fast but useless for most purposes except for testing.*/
 export var grid = {name: "grid"};
 
+/**Fastest (but still slow) force directed Cytoscape.js layout found.*/
 export var euler =
 {
   /*eslint no-unused-vars: "off"*/

@@ -1,3 +1,4 @@
+//** @module @exports graph*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
 import {progress} from "./progress.js";
 import {style} from "./style.js";
@@ -7,8 +8,6 @@ import * as sparql from "./sparql.js";
 import * as log from "./log.js";
 import {registerMenu} from "./contextmenu.js";
 import timer from "./timer.js";
-//import {setFirstCumulativeSearch} from "./search.js";
-
 
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
 var cy = null;
@@ -22,20 +21,32 @@ var starMode = false;
 
 const REMOVE_SINGLE_ELEMENTS_ONLY = true;
 
+/** Set whether star mode is active, where further stars will not hide other nodes but unhide instead.
+@param {boolean} mode whether star mode is active
+*/
 function setStarMode(mode) {starMode=mode;}
 
+/** Hide the given nodes.
+@param {cy.collection} nodes the nodes to hide
+*/
 function hideNodes(nodes)
 {
   nodes.hide();
   styledNodes = styledNodes.union(nodes);
 }
 
+/** Show (unhide) the given nodes.
+@param {cy.collection} nodes the nodes to show
+*/
 function showNodes(nodes)
 {
   nodes.show();
   styledNodes = styledNodes.subtract(nodes);
 }
 
+/** Highlight the given edges using the 'highlighted' css class from the stylesheet.
+@param {cy.collection} the edges to highlight
+*/
 function highlightEdges(edges)
 {
   edges.show();
@@ -43,7 +54,10 @@ function highlightEdges(edges)
   edges.addClass('highlighted');
 }
 
-// should use the same color as "selector" : "node:selected" in style.js
+
+/**  Highlight the given nodes using the 'highlighted' css class from the stylesheet.
+@param {cy.collection} the nodes to highlight
+*/
 function highlightNodes(nodes)
 {
   nodes.show();
@@ -54,6 +68,12 @@ function highlightNodes(nodes)
   nodes.addClass('highlighted');
 }
 
+/** Highlight all nodes and edges on a shortest path between "from" and "to".
+Hide all other nodes except when in star mode.
+@param {node} from path start node
+@param {node} to path target node
+@returns whether a path could be found
+*/
 function showPath(from, to)
 {
   starMode=true;
@@ -83,6 +103,12 @@ function showPath(from, to)
   return true;
 }
 
+/** Show a "spider worm" between two nodes, which combines a star around "from" with a shortest path to "to".
+Hide all other nodes except when in star mode.
+@param {node} from path start node
+@param {node} to path target node, gets a "star" around it as well
+@returns whether a path could be found
+*/
 function showWorm(from, to)
 {
   if(showPath(from, to))
@@ -99,6 +125,10 @@ function showWorm(from, to)
   return false;
 }
 
+/** Highlight the give node and all its directly connected nodes (in both directions).
+Hide all other nodes except when in star mode.
+@param {node} node center of the star
+*/
 function showStar(node)
 {
   progress(0);
@@ -120,6 +150,12 @@ function showStar(node)
   progress(100);
 }
 
+/** Highlight the give nodes, all their directly connected nodes (in both directions) and a shortest path between the two.
+Hide all other nodes except when in star mode.
+@param {node} from path start node
+@param {node} to path target node
+@returns whether a path could be found
+*/
 function showDoubleStar(from, to)
 {
   if(showWorm(from, to))
@@ -136,7 +172,13 @@ function showDoubleStar(from, to)
   return false;
 }
 
-// Extended all along the path
+/**
+/** Highlight the shortest path between the two given nodes and nodes directly connected (in both directions) to a node on the path.
+Hide all other nodes except when in star mode.
+@param {node} from path start node
+@param {node} to path target node
+@returns whether a path could be found
+*/
 function showStarPath(from, to)
 {
   starMode=true;
@@ -173,7 +215,8 @@ function showStarPath(from, to)
   return true;
 }
 
-/** Get the starting node for a path operation. If there is no starting node defined, use the selected node. If that is not defined as well, return null. */
+/** Returns the start node for all path operations
+@returns the start node for all path operations, or null if none exists. */
 function getSource()
 {
   if(pathSource) {return pathSource;}
@@ -181,12 +224,13 @@ function getSource()
   return null;
 }
 
+/** Set the given node as source for all path operations.
+@param {node} node the new source
+@returns whether node is not null
+*/
 function setSource(node)
 {
-  if(!node)
-  {
-    return false;
-  }
+  if(!node) {return false;}
   //document.getElementById('centersource').hidden=false;
   if(pathTarget !== undefined)
   {
@@ -211,12 +255,13 @@ function setSource(node)
   return true;
 }
 
+/** Set the given node as target for all path operations.
+@param {node} node the new source
+@returns whether node is not null
+*/
 function setTarget(node)
 {
-  if(node === undefined)
-  {
-    return false;
-  }
+  if(!node) {return false;}
   document.getElementById('centertarget').hidden=false;
   if(pathSource !== undefined)
   {
@@ -236,6 +281,7 @@ function setTarget(node)
       pathTarget.data('name').replace(sparql.SPARQL_PREFIX,'');
 }
 
+/** Removes all highlighting and shows all hidden nodes. */
 function resetStyle()
 {
   starMode=false;
@@ -253,6 +299,9 @@ function resetStyle()
   progress(100);
 }
 
+/** Inverts the screen colors in the canvas for day mode. Uses an inverted node js style file to keep node colors.
+@param {boolean} enabled whether the canvas colors should be inverted
+*/
 function invert(enabled)
 {
   const CSS =
@@ -286,40 +335,9 @@ function invert(enabled)
   }
 }
 
-function layout(name)
-{
-  cy
-  //.nodes(":visible")
-    .layout({ name: name }).run();
-}
-
-var filtered = {};
-
-//** Hide or show certain nodes or edges.**/
-function filter(checkbox)
-{
-  var selector = checkbox.getAttribute("value");
-  if(checkbox.checked) // selected means the elements shall be shown, undo the filter
-  {
-    const elements = filtered[selector];
-    if(elements)
-    {
-      filtered[selector] = undefined;
-      elements.show();
-    }
-  }
-  else // unselected checkbox, hide elements by applying filter
-  {
-    const elements = cy.elements(selector);
-    if(elements)
-    {
-      // if just saving nodes, the edges would get lost
-      filtered[selector]=elements.union(elements.connectedEdges());
-      elements.hide();
-    }
-  }
-}
-
+/** Creates a new cytoscape graph, assigns it to the #cy container and sets up basic event listeners.
+@returns a cytoscape graph
+*/
 function initGraph()
 {
   const initTimer = timer("graph-init");
@@ -366,7 +384,10 @@ function initGraph()
   return cy;
 }
 
+/** Selects a node.
+@param {node} node the node to select
+*/
 function setSelectedNode(node) {selectedNode=node;}
 
-export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,layout,filter,
+export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,
   getSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar,setStarMode,hideNodes,showNodes};

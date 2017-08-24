@@ -1,3 +1,4 @@
+//** @module */
 import {ONTOLOGY_ISSUE_WARNING} from "./about.js";
 import {roleUse} from "./classuse.js";
 import * as graph from "./graph.js";
@@ -248,6 +249,9 @@ const defaultsRelations = {
   zIndex: 9999, // the z-index of the ui div
 };
 
+/** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
+The extension itself is already registered through the plain HTML/JS import in index.html,
+which makes available cy.cxtmenu().*/
 function registerMenu()
 {
   graph.cy.cxtmenu(defaultsNodes);

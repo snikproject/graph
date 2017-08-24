@@ -1,3 +1,4 @@
+//** @module */
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 //import loadGraphFromSparql from "./loadGraphFromSparql.js";
@@ -11,6 +12,8 @@ const buttonConfigs =
 //  ["Reload", loadGraphFromSparql],
 //  ["Export", file.save],
 ];
+
+/** Populate the buttons on the top bar using the JSON configuration. */
 export default function addButtons()
 {
   for(const buttonConfig of buttonConfigs)

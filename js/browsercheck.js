@@ -20,6 +20,7 @@ navigator.sayswho= (function()
   return {name:M[0],version:M[1]};
 })();
 
+/**Alerts the user if the browser cannot run ES6. Only an approximation using some browser name and versions, may fail to warn or warn incorrectly. */
 function browsercheck()
 {
   if (

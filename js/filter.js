@@ -1,7 +1,8 @@
+//** @module */
+
 /**
 Filters let the user toggle groups of graph elements, for example all nodes from the meta subontology.
 */
-
 const filters = [
   ["node[prefix='meta']","meta"],
   ["node[prefix='bb']","BB"],
@@ -19,8 +20,17 @@ const filters = [
   //["node[consolidated<=0]","unverified"]
 ];
 
+/**
+Toggles the visibility of a set of nodes defined by a selector.
+*/
 class Filter
 {
+  /**
+  Creates filter with HTML elements, filter functionality and listeners.
+  @param {cytoscape} cy the cytoscape graph
+  @param {string} selector a Cytoscape.js selector, see {@link http://js.cytoscape.org/#selectors}
+  @param {string} label the menu entry label
+  */
   constructor(cy,selector,label)
   {
     this.cy=cy;
@@ -35,17 +45,21 @@ class Filter
     this.a.classList.add("dropdown-entry");
     this.a.appendChild(input);
     this.a.appendChild(document.createTextNode(label));
-    input.addEventListener("input",()=>this.setVisible(input.checked));
+    input.addEventListener("input",()=>this.setVisibility(input.checked));
   }
 
-  setVisible(visible)
+  /**
+  Set the visibility of the nodes selected by the filter.
+  @param {boolean} visibility
+  */
+  setVisibility(visibility)
   {
     if(!this.filtered)
     {
       this.filtered = this.cy.elements(this.selector);
       this.filtered = this.filtered.union(this.filtered.connectedEdges());
     }
-    if(visible) {this.filtered.show();}
+    if(visibility) {this.filtered.show();}
     else
     {
       this.filtered.hide();
@@ -53,15 +67,17 @@ class Filter
   }
 }
 
+/**
+Add filter entries to the filter menu.
+@param {cytoscape} cy the cytoscape graph
+@param {Element} parent the parent element to attach the entries to
+*/
 function addFilterEntries(cy, parent)
 {
   for(const filter of filters)
   {
     parent.appendChild(new Filter(cy,filter[0],filter[1]).a);
   }
-  // TODO: add custom filter
-  //'http://www.snik.eu/ontology/meta/Top']" id="customfilter"
-  //<input type="checkbox" class="filterbox" onclick="this.value=document.getElementById('customfilter').value;graph.filter(this);"/>custom filter</span>
 }
 
 export default addFilterEntries;

@@ -1,3 +1,4 @@
+//** @module */
 import {progress} from "./progress.js";
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
@@ -23,6 +24,11 @@ export function readTextFile(fileName)
     });
 }
 
+/**
+Uploads a JSON file from the user.
+@param {Event} event a file input change event
+@param {function} callback the code to execute, receives a JSON object
+*/
 function uploadJson(event,callback)
 {
   const file = event.target.files[0];
@@ -31,6 +37,10 @@ function uploadJson(event,callback)
   reader.readAsText(file);
 }
 
+/**
+Load a layouted graph from the JSON file specified by the given file input change event.
+@param {Event} event a file input change event
+*/
 export function loadGraph(event)
 {
   uploadJson(event,json=>
@@ -40,11 +50,22 @@ export function loadGraph(event)
   });
 }
 
+/**
+Load a layout from the JSON file specified by the given file input change event.
+@param {Event} event a file input change event
+*/
 export function loadLayout(event)
 {
   uploadJson(event,json=>{layout.presetLayout(graph.cy,json);});
 }
 
+/**
+Add an upload entry to the file menu.
+@param {Element} parent the parent element of the menu
+@param {string} id id root for the generated elements, must be unique
+@param {string} description the text of the menu item
+@param {function} func the function to be executed when the user clicks on the menu entry
+*/
 function addLoadEntry(parent,id,description,func)
 {
   const label = document.createElement("label");
@@ -60,7 +81,12 @@ function addLoadEntry(parent,id,description,func)
   input.addEventListener("change",func);
 }
 
-// Cannot use the simpler default menu creation method because file upload only works with an input.
+
+/**
+Add upload entries to the file menu.
+Cannot use the simpler default menu creation method because file upload only works with an input.
+@param {Element} parent the parent element of the menu
+*/
 export function addFileLoadEntries(parent)
 {
   addLoadEntry(parent,"loadlayout","Load Layout",loadLayout);

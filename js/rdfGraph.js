@@ -1,3 +1,4 @@
+//** @module */
 // SPARQL graphs
 
 //** RDF helper graphs that don't contain subontologies but triples belonging to any of them. */
