@@ -6,7 +6,6 @@ import timer from "./timer.js";
 /** Loads a local text file.
 When developing on Google Chrome, you may need to start the browser with "--allow-file-access-from-files".
 See also https://bugs.chromium.org/p/chromium/issues/detail?id=47416.*/
-/*
 export function readTextFile(fileName)
 {
   const headers = new Headers();
@@ -22,80 +21,6 @@ export function readTextFile(fileName)
       loadTimer.stop;
       return response.text();
     });
-}
-*/
-
-// based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
-export var saveJson = (function ()
-{
-  var a = document.createElement("a");
-  document.body.appendChild(a);
-  a.style = "display: none";
-  return function (data, fileName)
-  {
-    const json = JSON.stringify(data),
-      blob = new Blob([json], {type: "application/json"}),
-      url = window.URL.createObjectURL(blob);
-    a.href = url;
-    a.download = fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
-}());
-
-export var saveUrl = (function ()
-{
-  var a = document.createElement("a");
-  document.body.appendChild(a);
-  a.style = "display: none";
-  return function (url, fileName)
-  {
-    a.href = url;
-    a.download = fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
-}());
-
-export function saveGraph()
-{
-  return saveJson(graph.cy.elements().jsons(),"snik.json");
-}
-
-export function saveVisibleGraph()
-{
-  return saveJson(graph.cy.elements("*:visible").jsons(),"snikpart.json");
-}
-
-export function saveLayout()
-{
-  return saveJson(layout.positions(graph.cy.nodes()),"layout.json");
-}
-
-export function savePngView()
-{
-  const options =
-  {
-    "bg": "black",
-    "full": false,
-    "maxWidth": 14000,
-    "maxHeight": 11250,
-  };
-  const image = graph.cy.png(options);
-  saveUrl(image,"snik.png");
-}
-
-export function savePngFull()
-{
-  const options =
-  {
-    "bg": "black",
-    "full": true,
-    "maxWidth": 11250,
-    "maxHeight": 11250,
-  };
-  const image = graph.cy.png(options);
-  saveUrl(image,"snik.png");
 }
 
 function uploadJson(event,callback)

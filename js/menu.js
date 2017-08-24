@@ -1,6 +1,7 @@
 import {MODIFIED} from "./about.js";
 import * as log from "./log.js";
 import * as file from "./file.js";
+import * as download from "./download.js";
 import {invert} from "./graph.js";
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
 
@@ -21,11 +22,11 @@ function menuData()
       "entries":
       [
         [loadGraphFromSparql,"Load from SPARQL Endpoint"],
-        [file.saveGraph,"Save Full Graph with Layout"],
-        [file.saveVisibleGraph,"Save Visible Graph with Layout"],
-        [file.saveLayout,"Save Layout only"],
-        [file.savePngView,"Save Image of Current View "],
-        [file.savePngFull,"Save Image of Whole Graph (high res)"],
+        [download.downloadGraph,"Save Full Graph with Layout"],
+        [download.downloadVisibleGraph,"Save Visible Graph with Layout"],
+        [download.downloadLayout,"Save Layout only"],
+        [download.downloadPngView,"Save Image of Current View "],
+        [download.downloadPngFull,"Save Image of Whole Graph (high res)"],
       ],
     },
     {
