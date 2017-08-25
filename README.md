@@ -31,7 +31,7 @@ Specified in the ESlint config file `.eslintrc.json`.
 * `npm run jsdoc` generates the API documentation
 
 ### Pure JavaScript Development
-If you don't like to use npm and babel you can use a pure JavaScript workflow for development but then your browser needs to support the source requirements.
+If you don't like to use npm and babel you can use a pure JavaScript workflow for development but then your browser needs to support the source requirements (some browsers need experimental flags activated).
 
 ### Development with Tooling
 
