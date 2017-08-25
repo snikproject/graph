@@ -4,7 +4,7 @@ Visualization of the snik-ontology.
 ## Installation
 Git clone or download to a webserver or local directory of your choice, run init and then open index.html in a browser.
 If the website and the SPARQL endpoint are on different domains, you may need to bypass CORS.
-
+On Windows, rewrite init to a batch script and please create a pull request for other Windows users.
 ## Requirements
 Optimized for PC with mouse, does not work well on mobile devices.
 
@@ -17,11 +17,21 @@ The root folder contains all the HTML files.
 
 ## Development
 
+### Setup
+1. clone this repository
+2. npm build
+3. ./init
+
 ### Code Style
 Specified in the ESlint config file `.eslintrc.json`.
 
+## Scripts
+* `npm run test` runs the mocha tests
+* `npm run build` transpiles the code for browsers without full ES6 support, used by index-babel.html
+* `npm run jsdoc` generates the API documentation
+
 ### Pure JavaScript Development
-If you don't like to use npm and babel you can use a pure JavaScriptript workflow for development but then your browser needs to support the source requirements.
+If you don't like to use npm and babel you can use a pure JavaScript workflow for development but then your browser needs to support the source requirements.
 
 ### Development with Tooling
 
