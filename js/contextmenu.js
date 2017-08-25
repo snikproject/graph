@@ -1,4 +1,4 @@
-//** @module */
+/** @module */
 import {ONTOLOGY_ISSUE_WARNING} from "./about.js";
 import {roleUse} from "./classuse.js";
 import * as graph from "./graph.js";

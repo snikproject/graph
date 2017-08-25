@@ -1,4 +1,4 @@
-//** @module */
+/** @module */
 import * as rdf from "./rdf.js";
 import * as log from "./log.js";
 

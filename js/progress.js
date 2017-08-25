@@ -1,4 +1,4 @@
-//** @module */
+/** @module */
 const opts = {
   lines: 13, // The number of lines to draw
   length: 28, // The length of each line

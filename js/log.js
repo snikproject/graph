@@ -1,4 +1,4 @@
-//** @module */
+/** @module */
 /* eslint no-console: 0 */
 // temporary solution. todo: use a logging library or write more elegantly using enums or integers
 

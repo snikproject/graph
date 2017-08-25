@@ -1,4 +1,4 @@
-//** @module */
+/** @module */
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 //import loadGraphFromSparql from "./loadGraphFromSparql.js";

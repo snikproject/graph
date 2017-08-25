@@ -1,4 +1,4 @@
-//** @module */
+/** @module */
 import {progress} from "./progress.js";
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";

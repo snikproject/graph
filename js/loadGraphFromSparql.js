@@ -1,4 +1,4 @@
-//** @module */
+/** @module */
 import * as sparql from "./sparql.js";
 import * as log from "./log.js";
 import * as rdfGraph from "./rdfGraph.js";

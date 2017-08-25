@@ -1,4 +1,4 @@
-//** @module */
+/** @module */
 import * as log from "./log.js";
 import timer from "./timer.js";
 import * as rdfGraph from "./rdfGraph.js";

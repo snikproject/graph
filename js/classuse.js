@@ -1,4 +1,4 @@
-//** @module */
+/** @module */
 import * as sparql from "./sparql.js";
 import * as graph from "./graph.js";
 

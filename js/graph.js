@@ -1,4 +1,4 @@
-//** @module @exports graph*/
+/** @module graph*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
 import {progress} from "./progress.js";
 import {style} from "./style.js";
