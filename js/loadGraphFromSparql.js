@@ -14,10 +14,15 @@ String.prototype.hashCode = function()
   return hash;
 };
 
-
-export default function loadGraphFromSparql(cy,subontologies)
+/** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
+@param{cytoscape} cy the cytoscape graph to load the data into
+@param{Set} subs Set of subontologies to load.
+@example
+loadGraphFromSparql(cy,new Set(["meta","bb"]))
+*/
+export default function loadGraphFromSparql(cy,subs)
 {
-  const rdfGraphs = [...(new Set([...rdfGraph.helper(),...subontologies]))];
+  const rdfGraphs = [...(new Set([...rdfGraph.helper(),...subs]))];
   const froms = rdfGraphs.map(sub=>`from <http://www.snik.eu/ontology/${sub}>`).reduce((a,b)=>a+"\n"+b);
   cy.elements().remove();
   //file.load();

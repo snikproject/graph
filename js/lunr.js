@@ -1,4 +1,5 @@
-/** @module */
+/**Fast and robust search using Lunr. Under construction
+ @module */
 import lunr from "lunr";
 import * as file from "./file.js";
 import * as sparql from "./sparql.js";

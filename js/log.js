@@ -2,6 +2,7 @@
 /* eslint no-console: 0 */
 // temporary solution. todo: use a logging library or write more elegantly using enums or integers
 
+/** Logs the given messages with log level info */
 export function info(s)
 {
   if(typeof config === 'undefined'||config.logLevelDisplay==="info"||config.logLevelDisplay==="debug"||config.logLevelDisplay==="trace")
@@ -10,6 +11,7 @@ export function info(s)
   {console.log.apply(console,arguments);}
 }
 
+/** Logs the given messages with log level info */
 export function debug(s)
 {
   if(typeof config === 'undefined'||config.logLevelDisplay==="debug"||config.logLevelDisplay==="trace")
@@ -18,13 +20,15 @@ export function debug(s)
   {console.log.apply(console,arguments);}
 }
 
-/** Errors are always shown both on console and display.*/
+/** Logs the given messages with log level error
+ Errors are always shown both on console and display.*/
 export function error(s)
 {
   if((typeof dhtmlx) !== "undefined") {dhtmlx.message({type: "error", text: s});}
   console.error.apply(console,arguments);
 }
 
+/** Logs the given messages with log level warn */
 export function warn(s)
 {
   if(typeof config === 'undefined'||config.logLevelDisplay!=="error")
@@ -33,6 +37,7 @@ export function warn(s)
   {console.warn.apply(console,arguments);}
 }
 
+/** Logs the given messages with log level trace. Never shown as an overlay. */
 export function trace()
 {
   if(typeof config === 'undefined'||config.logLevelConsole!=="trace") {return;}
