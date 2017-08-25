@@ -1,0 +1,10 @@
+{
+  "opts":
+  {
+    "template": "node_modules/docdash"
+  },
+  "templates":
+  {
+    "cleverLinks": true
+  }
+}
