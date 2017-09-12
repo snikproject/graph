@@ -24,3 +24,10 @@ export function long(uri)
   for(const prefix of prefixes) {uri=uri.replace(prefix[0]+":",prefix[1]);}
   return uri;
 }
+
+/**Returns the subontology a SNIK uri belongs to.*/
+export function sub(uri)
+{
+  if(uri.startsWith("http://www.snik.eu/ontology/")) {return uri.replace(/\/[^/]*$/,"");}
+  {return null;}
+}

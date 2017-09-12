@@ -47,6 +47,13 @@ const defaultsNodes = {
       },
     },
     {
+      content: 'edit',
+      select: node=>
+      {
+        window.open('https://www.snik.eu/ontowiki/view/?r='+node._private.data.name+"&m="+rdf.sub(node._private.data.name));
+      },
+    },
+    {
       content: 'LodLive',
       select: node=>
       {
@@ -109,85 +116,85 @@ const defaultsNodes = {
       },
     },
     /*
-    {
-      content: 'add connection',
-      select: target=>
-      {
-        const source = graph.getSource();
-        if(source&&(source!==target))
-        {
-          const properties = property.possible(source,target);
-          if(properties.length===0)
-          {
-            log.error(`no possible properties between ${rdf.short(source.data().name)} and ${rdf.short(target.data().name)}`);
-            return false;
-          }
-          var box = dhtmlx.modalbox({
-            title:`Create Connection between ${string.abbrv(rdf.short(source.data().name))} and ${string.abbrv(rdf.short(target.data().name))}`,
-            text:`<form id="connectionform"><select id="connectionselect">
-        ${properties.map((p)=>`<option value="${p.uri}">${p.label}</option>`)}
-        </select>
-        <input type='submit' value='Create' style='width:250px;'>
-        <input type='button' id="hidebox" value='Cancel' style='width:250px;'>
-        `,
-            width:"250px",
-          });
-          document.getElementById("hidebox").addEventListener("click",()=>{dhtmlx.modalbox.hide(box);});
-          const form = document.getElementById("connectionform");
-          form.addEventListener("submit",event=>
-          {
-            event.preventDefault();
-            dhtmlx.modalbox.hide(box);
-            const select=form.querySelector("#connectionselect");
-            sparql.addTriple(graph.getSource().data().name,select.options[select.selectedIndex].value,target.data().name,"http://www.snik.eu/ontology/test");
-            graph.cy.add(
-              {
-                group: "edges",
-                data: {
-                  source: graph.getSource().data().name,
-                  target: target.data().name,
-                  pl: "isAssociatedWith",
-                },
-              });
-          });
-        }
-      },
-    },
-    {
-      content: 'add instance',
-      select: node=>
-      {
-        var box = dhtmlx.modalbox({
-          title:"Create Instance of Class "+string.abbrv(rdf.short(node.data().name),25),//+rdf.short(node.data().name)
-          text:`<form type="messageform" id='instanceform'>
-        <div><label>URI Suffix in CamelCase   <input class='inform' id="suffix" type='text' minlength="3" pattern="([A-Z][a-z0-9]+)+"></label></div>
-        <div><label>English Label             <input class='inform' id="le" type='text' minlength="3" pattern="[A-Za-z0-9., ]+"></label></div>
-        <div><label>German Label              <input class='inform' id="ld" type='text' minlength="3" pattern="[A-Za-zöäüÖÄÜß0-9., ]+"></label></div>
-        <input type='submit' value='Create' style='width:250px;'>
-        <input type='button' id="hidebox" value='Cancel' style='width:250px;'>
-        </form>`,
-          width:"250px",
-        });
-        document.getElementById("hidebox").addEventListener("click",()=>{dhtmlx.modalbox.hide(box);});
-        const form = document.getElementById("instanceform");
-        form.addEventListener("submit",event=>
-        {
-          event.preventDefault();
-          const suffix=form.querySelector("#suffix").value;
-          const le=form.querySelector("#le").value;
-          const ld=form.querySelector("#ld").value;
-          const uri= rdf.long(node.data().prefix+":"+suffix);
-          if(!uri.startsWith("http://www.snik.eu/ontology/")) {throw "Invalid URI: "+uri;}
+{
+content: 'add connection',
+select: target=>
+{
+const source = graph.getSource();
+if(source&&(source!==target))
+{
+const properties = property.possible(source,target);
+if(properties.length===0)
+{
+log.error(`no possible properties between ${rdf.short(source.data().name)} and ${rdf.short(target.data().name)}`);
+return false;
+}
+var box = dhtmlx.modalbox({
+title:`Create Connection between ${string.abbrv(rdf.short(source.data().name))} and ${string.abbrv(rdf.short(target.data().name))}`,
+text:`<form id="connectionform"><select id="connectionselect">
+${properties.map((p)=>`<option value="${p.uri}">${p.label}</option>`)}
+</select>
+<input type='submit' value='Create' style='width:250px;'>
+<input type='button' id="hidebox" value='Cancel' style='width:250px;'>
+`,
+width:"250px",
+});
+document.getElementById("hidebox").addEventListener("click",()=>{dhtmlx.modalbox.hide(box);});
+const form = document.getElementById("connectionform");
+form.addEventListener("submit",event=>
+{
+event.preventDefault();
+dhtmlx.modalbox.hide(box);
+const select=form.querySelector("#connectionselect");
+sparql.addTriple(graph.getSource().data().name,select.options[select.selectedIndex].value,target.data().name,"http://www.snik.eu/ontology/test");
+graph.cy.add(
+{
+group: "edges",
+data: {
+source: graph.getSource().data().name,
+target: target.data().name,
+pl: "isAssociatedWith",
+},
+});
+});
+}
+},
+},
+{
+content: 'add instance',
+select: node=>
+{
+var box = dhtmlx.modalbox({
+title:"Create Instance of Class "+string.abbrv(rdf.short(node.data().name),25),//+rdf.short(node.data().name)
+text:`<form type="messageform" id='instanceform'>
+<div><label>URI Suffix in CamelCase   <input class='inform' id="suffix" type='text' minlength="3" pattern="([A-Z][a-z0-9]+)+"></label></div>
+<div><label>English Label             <input class='inform' id="le" type='text' minlength="3" pattern="[A-Za-z0-9., ]+"></label></div>
+<div><label>German Label              <input class='inform' id="ld" type='text' minlength="3" pattern="[A-Za-zöäüÖÄÜß0-9., ]+"></label></div>
+<input type='submit' value='Create' style='width:250px;'>
+<input type='button' id="hidebox" value='Cancel' style='width:250px;'>
+</form>`,
+width:"250px",
+});
+document.getElementById("hidebox").addEventListener("click",()=>{dhtmlx.modalbox.hide(box);});
+const form = document.getElementById("instanceform");
+form.addEventListener("submit",event=>
+{
+event.preventDefault();
+const suffix=form.querySelector("#suffix").value;
+const le=form.querySelector("#le").value;
+const ld=form.querySelector("#ld").value;
+const uri= rdf.long(node.data().prefix+":"+suffix);
+if(!uri.startsWith("http://www.snik.eu/ontology/")) {throw "Invalid URI: "+uri;}
 
-          sparql.addTriple(uri,rdf.long("rdf:type"),node.data().name,"http://www.snik.eu/ontology/test");
-          sparql.addLabel(uri,ld,"de","http://www.snik.eu/ontology/test");
-          sparql.addLabel(uri,le,"en","http://www.snik.eu/ontology/test");
+sparql.addTriple(uri,rdf.long("rdf:type"),node.data().name,"http://www.snik.eu/ontology/test");
+sparql.addLabel(uri,ld,"de","http://www.snik.eu/ontology/test");
+sparql.addLabel(uri,le,"en","http://www.snik.eu/ontology/test");
 
-          dhtmlx.modalbox.hide(box);
-        }
-        );
-      },
-    },*/
+dhtmlx.modalbox.hide(box);
+}
+);
+},
+},*/
     /* commented out until denethor pdf links in browser work
 {
 content: 'book page (in development)',
@@ -238,6 +245,13 @@ const defaultsRelations = {
           encodeURIComponent(edge._private.data.name+' v')+
           '&body='+encodeURIComponent('The edge "'+edge._private.data.name+'" is incorrect.\n\n**Details**\n')
         );
+      },
+    },
+    {
+      content: 'edit',
+      select: function(edge)
+      {
+        window.open('https://www.snik.eu/ontowiki/view/?r='+edge._private.data.source+"&m="+rdf.sub(edge._private.data.source));
       },
     },
   ],
