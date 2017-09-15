@@ -281,13 +281,13 @@ function setTarget(node)
       pathTarget.data('name').replace(sparql.SPARQL_PREFIX,'');
 }
 
-/** Removes all highlighting and shows all hidden nodes. */
+/** Removes all highlighting (except selection) and shows all hidden nodes. */
 function resetStyle()
 {
   starMode=false;
   progress(0);
   //setFirstCumulativeSearch(true);
-  selectedNode = undefined;
+  //selectedNode = undefined;
   cy.startBatch();
   styledNodes.show();
   styledNodes.removeClass('highlighted');
@@ -374,7 +374,7 @@ function initGraph()
     //cy.startBatch();
     //resetStyle();
     selectedNode = event.target;
-    highlightNodes(selectedNode);
+    //highlightNodes(selectedNode);
     //cy.endBatch();
   });
 

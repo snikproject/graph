@@ -109,6 +109,13 @@ var style =
         },
       },
       {
+        'selector': 'node:selected',
+        'css':
+              {
+                'border-width': 8.0,
+              },
+      },
+      {
         "selector" : "edge",
         "css" : {
           'min-zoomed-font-size': 9,

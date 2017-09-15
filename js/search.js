@@ -70,7 +70,7 @@ function presentUri(uri)
       graph.resetStyle();
     }
   }
-  graph.setSelectedNode(node);
+  //graph.setSelectedNode(node);
   graph.highlightNodes(nodes);
   hideSearchResults();
   graph.cy.center(node);
