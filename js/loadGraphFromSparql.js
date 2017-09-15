@@ -106,7 +106,7 @@ export default function loadGraphFromSparql(cy,subs)
               target: json[i].d.value,
               id: i,
               p: json[i].p.value,//Labels_DE: [json[i].l.value]
-              pl: json[i].p.value.replace(".*/",""),
+              pl: json[i].p.value.replace(/.*[#/]/,""),
               g:json[i].g.value,
             },
           //position: { x: 200, y: 200 }
