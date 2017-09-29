@@ -9,6 +9,7 @@ const filters = [
   ["node[prefix='ob']","OB"],
   ["node[prefix='ciox']","CioX"],
   ["node[prefix='he']","HE"],
+  ["node[prefix='it']","IT"],
   ["node[prefix='it4it']","IT4IT"],
   ["node[st='EntityType']","EntityType"],
   ["node[st='Role']","Role"],
