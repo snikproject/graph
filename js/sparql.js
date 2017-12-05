@@ -1,6 +1,5 @@
 /** @module */
 import * as log from "./log.js";
-//import * as rdf from "./rdf.js";
 
 export const SPARQL_ENDPOINT = "http://www.snik.eu/sparql";
 export const SPARQL_GRAPH = "http://www.snik.eu/ontology";
@@ -13,7 +12,8 @@ export function sparql(query,graphOpt)
   '?query=' + escape(query) +
   '&format=json'+
   (graphOpt?('&default-graph-uri=' + encodeURIComponent(graphOpt)):"");
-  return fetch(url).then(response => {return response.json();})
+  return fetch(url)
+    .then(response => {return response.json();})
     .then(json => {return json.results.bindings;})
     .catch(err =>log.error(`Error executing SPARQL query ${query}: ${err}`));
 }
@@ -24,6 +24,7 @@ export function ask(query,graphOpt)
   '?query=' + escape(query) +
   '&format=json'+
   (graphOpt?('&default-graph-uri=' + encodeURIComponent(graphOpt)):"");
-  return fetch(url).then(response => {return response.json();})
+  return fetch(url)
+    .then(response => {return response.json();})
     .then(json=>{return json.boolean;});
 }
