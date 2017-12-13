@@ -17,7 +17,7 @@ const filters = [
   ["edge[p='http://www.w3.org/2000/01/rdf-schema#subClassOf']","subClassOf"],
   ["edge[p^='http://www.w3.org/2004/02/skos/core#']","inter-ontology-relations"],
   ["edge[p!^='http://www.w3.org/2004/02/skos/core#']","non-inter-ontology-relations"],
-  ["edge[p='http://www.snik.eu/ontology/meta/subTopClass']","subTopClass"],
+  //["edge[p='http://www.snik.eu/ontology/meta/subTopClass']","subTopClass"],
   //["node[consolidated<=0]","unverified"]
 ];
 

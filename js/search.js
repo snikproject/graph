@@ -158,7 +158,7 @@ Case and space insensitive when not using bif:contains. Can be used by node.js. 
 export function search(userQuery)
 {
   // prevent invalid SPARQL query and injection by just alphanumeric characters
-  var searchQuery = userQuery.replace(/[^A-Za-z0-9]/g, ''); //.split(' ')[0];
+  var searchQuery = userQuery.replace(/[^A-Za-zäöüÄÖÜßéèôáà0-9]/g, ''); //.split(' ')[0];
   // use this when labels are available
   let sparqlQuery;
   if(!USE_BIF_CONTAINS||searchQuery.includes(' ')) // regex is slower but we have no choice with a space
