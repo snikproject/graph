@@ -1,11 +1,11 @@
 # snik-cytoscape.js
-Visualization of the snik-ontology.
+Visualization of the snik-ontology. Can also be used to generate Cytoscape Desktop graph files.
 
 ## Installation
 Git clone or download to a webserver or local directory of your choice, run init and then open index.html in a browser.
 If the website and the SPARQL endpoint are on different domains, you may need to bypass CORS.
 On Windows, rewrite init to a batch script and please create a pull request for other Windows users.
-## Requirements
+## Usage Requirements
 Optimized for PC with mouse, does not work well on mobile devices.
 
 * Source: Browser with ES6 and ES6 module support
@@ -16,6 +16,11 @@ Optimized for PC with mouse, does not work well on mobile devices.
 The root folder contains all the HTML files.
 
 ## Development
+
+### Development Requirements
+
+* a command line interface, e.g. a Linux shell
+* npm installed and the paths configured so that it can be executed via `npm`
 
 ### Setup
 1. clone this repository
