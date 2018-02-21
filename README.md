@@ -27,6 +27,14 @@ The root folder contains all the HTML files.
 2. npm build
 3. ./init
 
+### Publish
+
+Execute the setup step once.
+Each time there are changes you want to publish, go on the server and do:
+
+1. `git pull`
+2. `npm run build`
+
 ### Code Style
 Specified in the ESlint config file `.eslintrc.json`.
 
