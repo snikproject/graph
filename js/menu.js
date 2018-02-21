@@ -23,8 +23,8 @@ function menuData()
       "entries":
       [
         [loadGraphFromSparql,"Load from SPARQL Endpoint"],
-        [download.downloadGraph,"Save Full Graph with Layout"],
-        [download.downloadVisibleGraph,"Save Visible Graph with Layout"],
+        [download.downloadGraph,"Save Full Graph with Layout as Cytoscape File"],
+        [download.downloadVisibleGraph,"Save Visible Graph with Layout as Cytoscape File"],
         [download.downloadLayout,"Save Layout only"],
         [()=>download.downloadPng(false,false),"Save Image of Current View "],
         [()=>download.downloadPng(true,false),"Save Image of Whole Graph"],
