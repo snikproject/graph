@@ -38,6 +38,8 @@ Specified in the ESlint config file `.eslintrc.json`.
 ### Pure JavaScript Development
 If you don't like to use npm and babel you can use a pure JavaScript workflow for development but then your browser needs to support the source requirements (some browsers need experimental flags activated).
 
+For example, in Firefox 57, go to `about:config` and set `dom.moduleScripts.enabled=true`.
+
 ### Development with Tooling
 
 * At first checkout, run `npm install` to download the necessary NPM modules.
