@@ -1,4 +1,6 @@
-/** @module */
+/**
+Logging to console or overlay or both, depending on availability (server call using node or client) and log level.
+@module */
 /* eslint no-console: 0 */
 // temporary solution. todo: use a logging library or write more elegantly using enums or integers
 

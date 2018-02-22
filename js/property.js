@@ -1,4 +1,6 @@
-/** @module */
+/**
+Helper functions for RDF properties.
+@module */
 import * as rdf from "./rdf.js";
 import * as log from "./log.js";
 

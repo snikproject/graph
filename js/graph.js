@@ -1,4 +1,6 @@
-/** @module graph*/
+/**
+Provides graph operations such as initialization, wayfinding, highlighting, showing and hiding. 
+@module graph*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
 import {progress} from "./progress.js";
 import {style} from "./style.js";

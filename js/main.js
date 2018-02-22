@@ -1,4 +1,6 @@
-/** @module */
+/**
+Entry point.
+@module */
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
 import * as log from "./log.js";
 import addFilterEntries from "./filter.js";

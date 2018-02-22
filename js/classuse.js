@@ -1,4 +1,6 @@
-/** @module */
+/**
+Show the environment of a single node using a special layout.
+@module */
 import * as sparql from "./sparql.js";
 import * as graph from "./graph.js";
 

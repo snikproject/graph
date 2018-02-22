@@ -1,4 +1,5 @@
-/** @module */
+/** Populates the buttons on the top bar
+@module */
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 //import loadGraphFromSparql from "./loadGraphFromSparql.js";

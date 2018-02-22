@@ -24,13 +24,12 @@ The root folder contains all the HTML files.
 
 ### Setup
 1. clone this repository
-2. npm build
-3. ./init
+2. ./init
 
 ### Publish
 
 Execute the setup step once.
-Each time there are changes you want to publish, go on the server and do:
+Each time there are changes you want to publish and the tests are successfull, go on the server and do:
 
 1. `git pull`
 2. `npm run build`
@@ -52,4 +51,4 @@ For example, in Firefox 57, go to `about:config` and set `dom.moduleScripts.enab
 
 * At first checkout, run `npm install` to download the necessary NPM modules.
 * To execute the Mocha unit tests, run `npm run test`.
-* For production or if you develop on an older browser run `npm run build` and then open `index-babel.html`.
+* For production or if you develop on an browser without ES 6 module support, run `npm run build` and then open `index-babel.html`.

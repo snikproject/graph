@@ -1,4 +1,6 @@
-/** @module */
+/**
+Populates the menu bar on the top.
+@module */
 import {MODIFIED} from "./about.js";
 import * as log from "./log.js";
 import * as file from "./file.js";

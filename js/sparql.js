@@ -1,4 +1,6 @@
-/** @module */
+/**
+Functions for querying the SNIK SPARQL endpoint.
+@module */
 import * as log from "./log.js";
 
 export const SPARQL_ENDPOINT = "http://www.snik.eu/sparql";

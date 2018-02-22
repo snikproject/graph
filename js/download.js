@@ -1,4 +1,6 @@
-/** @module */
+/**
+Lets the user download files generated from the loaded graph. 
+@module */
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 

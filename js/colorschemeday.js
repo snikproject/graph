@@ -1,5 +1,8 @@
-// Cytoscape CSS style file
-// intended for inverted view
+/** Daytime color scheme (dark on white).
+All colors are inverted because an inversion filter will be applied to the canvas when this scheme is active so that elements are effected that cannot be changed via a Cytoscape color scheme.
+@module
+*/
+
 var colorschemeday =
   [
     {

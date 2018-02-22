@@ -1,7 +1,6 @@
-/** @module */
-
 /**
 Filters let the user toggle groups of graph elements, for example all nodes from the meta subontology.
+@module 
 */
 const filters = [
   ["node[prefix='meta']","meta"],

@@ -1,4 +1,6 @@
-/** @module */
+/**
+Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.
+@module */
 import * as sparql from "./sparql.js";
 import * as log from "./log.js";
 import * as rdfGraph from "./rdfGraph.js";
@@ -56,7 +58,6 @@ export default function loadGraphFromSparql(cy,subs)
   const classesPromise = (classes===undefined)?
     sparql.sparql(classQuery):Promise.resolve(classes);
 
-  //const classesAddedPromise =
   return classesPromise.then((json)=>
   {
     sparqlClassesTimer.stop(json.length+" classes");
@@ -95,7 +96,6 @@ export default function loadGraphFromSparql(cy,subs)
     //return Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
     {
       sparqlPropertiesTimer.stop(json.length+" properties");
-      //const json = values[1];
       for(let i=0;i<json.length;i++)
       {
         cy.add(

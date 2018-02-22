@@ -1,4 +1,6 @@
-/** @module */
+/**
+Creates the circular context menu that can be opened on top of a node.
+@module */
 import {ONTOLOGY_ISSUE_WARNING} from "./about.js";
 import {roleUse} from "./classuse.js";
 import * as graph from "./graph.js";

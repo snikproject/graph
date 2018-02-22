@@ -1,5 +1,6 @@
-/** @module */
-// SPARQL graphs
+/**
+Sets of SNIK RDF graphs.
+@module */
 
 /** RDF helper graphs that don't contain subontologies but triples belonging to any of them. */
 export const helper = () => new Set(["virtual","limes-exact"]);

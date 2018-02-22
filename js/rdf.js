@@ -1,4 +1,6 @@
-/** @module */
+/**
+RDF helper functions.
+@module */
 const prefixes = // order important! substrings of other prefixes must come later
 [
   ["meta","http://www.snik.eu/ontology/meta/"],

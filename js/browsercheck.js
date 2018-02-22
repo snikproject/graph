@@ -1,6 +1,7 @@
-// browser version checking
-// very imprecise, just to cover the majority of cases
-// gotten from somewhere (Stack Overflow?)
+/** Browser version checking to warn the user if the browser may not be able to display SNIK graph properly.
+Imprecise, just to cover the majority of cases.
+*/
+
 navigator.sayswho= (function()
 {
   var ua= navigator.userAgent, tem,

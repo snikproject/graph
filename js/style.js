@@ -1,4 +1,8 @@
-/** @module */
+/**
+Cytoscape style file, excluding color information, which is contained in the color schemes.
+@see colorSchemeDay
+@see colorSchemeNight
+@module */
 var style =
   {
     'format_version': '1.0',

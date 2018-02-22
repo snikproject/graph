@@ -1,4 +1,4 @@
-// Cytoscape CSS style file
+/** Standard dark mode Cytoscape color scheme.*/
 var colorschemenight =
   [
     {

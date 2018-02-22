@@ -1,4 +1,6 @@
-/** @module */
+/**
+Loading animation for long processes, such as layouting.
+@module */
 import {Spinner} from '../lib/spin.js';
 
 const opts = {
@@ -26,7 +28,7 @@ const opts = {
 let spinner = null;
 let active = 0;
 
-// not thread safe but javascript is single threaded for now...
+/** Not thread safe but javascript is single threaded for now.*/
 function progress(p)
 {
   if(!window) {return;} // ignore when running in nodejs

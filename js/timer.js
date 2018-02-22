@@ -1,4 +1,7 @@
-/** @module */
+/**
+Measures elapsed duration.
+@module */
+
 import * as log from "./log.js";
 
 export default function timer(name)
