@@ -1,5 +1,5 @@
 # snik-cytoscape.js
-Visualization of the snik-ontology. Can also be used to generate Cytoscape Desktop graph files.
+Visualization of the snik-ontology. Can also be used to generate Cytoscape Desktop graph files. Browse the code documentation [here](https://imise.github.io/snik-cytoscape.js/index.html)!
 
 ## Installation
 Git clone or download to a webserver or local directory of your choice, run init and then open index.html in a browser.
