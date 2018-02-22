@@ -1,7 +1,8 @@
 {
   "opts":
   {
-    "template": "node_modules/docdash"
+    "template": "node_modules/docdash",
+    "destination": "./docs/"
   },
   "templates":
   {
