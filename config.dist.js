@@ -12,7 +12,7 @@ var config =
   // a low precison means that the cached layout was calculated with
   // a very dissimilar graph
   layoutCacheMinPrecision: 0.5,
-  language = "en",
+  language: "en",
   download:
   {
     image:
