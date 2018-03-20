@@ -63,7 +63,7 @@ function menuData()
         ["troubleshooting.html","Troubleshooting"],
         ["contribute.html","Contribute"],
         ["http://www.snik.eu/","Project Homepage"],
-        ["https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys","Download Cytoscape Graph"],
+//        ["https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys","Download Cytoscape Graph"],
         [about,"About SNIK Graph"],
         ["https://github.com/IMISE/snik-ontology/issues","Submit Feedback about the Ontology"],
         ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"],
