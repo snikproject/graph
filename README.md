@@ -19,9 +19,11 @@ The root folder contains all the HTML files.
 
 ### Development Requirements
 
-* a command line interface, e.g. a Linux shell
+* development on Linux or Mac OS is preferred. If you use Windows you need to make sure all the tools (git, wget, npm, a text editor that handles different line endings and UTF8 encoding) are installed and the paths are properly configured
+* a Linux compatible command line interface, e.g. a Linux shell or Git Bash on Windows
 * npm installed and the paths configured so that it can be executed via `npm`
 * wget installed
+* a browser that supports JavaScript ES6 is recommended, so you don't have to transpile for every change
 
 ### Setup
 1. clone this repository
