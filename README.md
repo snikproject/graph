@@ -21,6 +21,7 @@ The root folder contains all the HTML files.
 
 * a command line interface, e.g. a Linux shell
 * npm installed and the paths configured so that it can be executed via `npm`
+* wget installed
 
 ### Setup
 1. clone this repository
@@ -28,11 +29,13 @@ The root folder contains all the HTML files.
 
 ### Publish
 
-Execute the setup step once.
+Execute the setup step once and use development with tooling (see below) because some users use old browsers.
 Each time there are changes you want to publish and the tests are successfull, go on the server and do:
 
 1. `git pull`
 2. `npm run build`
+
+On the server, the index-babel.html is already renamed to index.html. If you setup a new server, delete index.html, rename index-babel.html to index.html and **don't** push this change from the server.
 
 ### Code Style
 Specified in the ESlint config file `.eslintrc.json`.
