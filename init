@@ -1,7 +1,7 @@
 #!/bin/bash
 # bash script, if you want to use deploy it on Windows, convert to a batch file and please create a pull request
-wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.1.5/cytoscape.min.js
-wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.1.5/cytoscape.js
+wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.2.6/cytoscape.min.js
+wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.2.6/cytoscape.js
 wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js
 wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js
 wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.20.17/system.js
