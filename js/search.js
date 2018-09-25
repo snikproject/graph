@@ -8,12 +8,21 @@ import * as log from "./log.js";
 const USE_BIF_CONTAINS = false; // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 var firstCumulativeSearch = true;
 
+
+/** Hides the overlay that shows the class search results. */
 export function hideSearchResults()
 {
   document.getElementById("overlay").style.width = "0%";
   document.getElementById("overlay").display = "none";
 }
 
+/**
+ * createFailDialog - description
+ *
+ * @param  {type} title   description
+ * @param  {type} text    description
+ * @return {type}         description
+ */
 function createFailDialog(title, text,/*uri*/)
 {
   log.error(`${title}: ${text}`);
@@ -45,7 +54,9 @@ function createFailDialog(title, text,/*uri*/)
     */
 }
 
-// When user selects a URI from the search candidates, this URI gets centered and highlighted.
+
+/** When user selects a URI from the search candidates, this URI gets centered and highlighted.
+* @param  {type} uri The URI of a class in the graph. */
 function presentUri(uri)
 {
   graph.cy.zoom(0.6);
@@ -80,6 +91,9 @@ function presentUri(uri)
 
 var resultNodes = [];
 
+/** Presents all search results.
+* @return {Boolean} Whether the search results are nonempty.
+*/
 function presentAll()
 {
   if(resultNodes.length<1)
@@ -104,6 +118,7 @@ function presentAll()
   }
   graph.highlightNodes(resultNodes,30);
   graph.cy.fit(resultNodes);
+  return true;
 }
 
 function showSearchResults(query, uris)
