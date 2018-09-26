@@ -1,7 +1,7 @@
 /**
 Creates the circular context menu that can be opened on top of a node.
 @module */
-import {ONTOLOGY_ISSUE_WARNING} from "./about.js";
+import {ONTOLOGY_ISSUE_WARNING,MODIFIED} from "./about.js";
 import {roleUse} from "./classuse.js";
 import * as graph from "./graph.js";
 import * as sparql from "./sparql.js";
@@ -241,11 +241,13 @@ const defaultsRelations = {
       select: function(edge)
       {
         //window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
+        const edgeLabel = rdf.short(edge.data("source")) +" "+ rdf.short(edge.data("p")) +" "+ rdf.short(edge.data("target"));
+
         window.open
         (
           'https://github.com/IMISE/snik-ontology/issues/new?title='+
-          encodeURIComponent(edge._private.data.name+' v')+
-          '&body='+encodeURIComponent('The edge "'+edge._private.data.name+'" is incorrect.\n\n**Details**\n')
+          encodeURIComponent(edgeLabel+' v'+MODIFIED)+
+          '&body='+encodeURIComponent('The edge "'+edgeLabel+'" is incorrect.\n\n**Details**\n')
         );
       },
     },
@@ -253,7 +255,7 @@ const defaultsRelations = {
       content: 'edit',
       select: function(edge)
       {
-        window.open('https://www.snik.eu/ontowiki/view/?r='+edge._private.data.source+"&m="+rdf.sub(edge._private.data.source));
+        window.open('https://www.snik.eu/ontowiki/view/?r='+edge.data("source")+"&m="+rdf.sub(edge.data("source")));
       },
     },
   ],
