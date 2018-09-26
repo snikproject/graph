@@ -3,10 +3,14 @@
 import lunr from "lunr";
 import * as file from "./file.js";
 import * as sparql from "./sparql.js";
+import * as log from "./log.js";
 import timer from "./timer.js";
 
 let idx = null;
 
+/** Creates a new Lunr index over the SNIK classes using a SPARQL query on the SNIK endpoint.
+ * @return {Object} the Lunr index
+ */
 export function create()
 {
   const sparqlTimer = timer("sparql");
@@ -28,7 +32,7 @@ export function create()
     {
       sparqlTimer.stop();
       if(bindings.length===0) {throw "No results for SPARQL Query";}
-      console.log("Processing "+bindings.length+" bindings.");
+      log.debug("Processing "+bindings.length+" bindings.");
       const documents = [];
       for(const b of bindings)
       {
@@ -52,6 +56,9 @@ export function create()
     });
 }
 
+/** Returns the Lunr index or creates a new one if it doesn't exist yet.
+ * @return {Object} the cached Lunr index if it exists, a new one otherwise
+ */
 export function index()
 {
   if(idx===null)

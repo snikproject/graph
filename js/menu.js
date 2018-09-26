@@ -7,10 +7,18 @@ import * as download from "./download.js";
 import {invert} from "./graph.js";
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
 
+/** Notifies the user of the program version so that errors can be properly reported. */
 function about() {window.alert("SNIK Graph version "+MODIFIED);}
-/**entries is an array of arrays of size two, entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed. entries[i][1] is a label as a string.  */
 
-
+/**
+Creates and returns the menus for the top menu bar.
+The format is an array of menu elements.
+Each menu element is an object with a "label", unique "id" and an "entries" array.
+entries is an array of arrays of size two.
+entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed.
+entries[i][1] is a label as a string.
+ * @return {Object} the array of menu elements.
+ */
 function menuData()
 {
   return [
@@ -58,7 +66,7 @@ function menuData()
         ["troubleshooting.html","Troubleshooting"],
         ["contribute.html","Contribute"],
         ["http://www.snik.eu/","Project Homepage"],
-//        ["https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys","Download Cytoscape Graph"],
+        //        ["https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys","Download Cytoscape Graph"],
         [about,"About SNIK Graph"],
         ["https://github.com/IMISE/snik-ontology/issues","Submit Feedback about the Ontology"],
         ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"],
@@ -67,6 +75,7 @@ function menuData()
   ];
 }
 
+/** Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.*/
 function addOptions()
 {
   document.getElementById("options").innerHTML =
@@ -76,6 +85,8 @@ function addOptions()
   daymode.addEventListener("change",()=>invert(daymode.checked));
 }
 
+
+/** Adds the menu to the DOM element with the "top" id and sets up the event listeners. */
 function addMenu()
 {
   //const frag = new DocumentFragment();

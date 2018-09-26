@@ -16,12 +16,9 @@ export function hideSearchResults()
   document.getElementById("overlay").display = "none";
 }
 
-/**
- * createFailDialog - description
- *
- * @param  {type} title   description
- * @param  {type} text    description
- * @return {type}         description
+/** Notifies the user of an error.
+ * @param  {String} title   title of the error message
+ * @param  {String} text    text of the error message
  */
 function createFailDialog(title, text,/*uri*/)
 {
@@ -56,7 +53,7 @@ function createFailDialog(title, text,/*uri*/)
 
 
 /** When user selects a URI from the search candidates, this URI gets centered and highlighted.
-* @param  {type} uri The URI of a class in the graph. */
+* @param  {String} uri The URI of a class in the graph. */
 function presentUri(uri)
 {
   graph.cy.zoom(0.6);
@@ -91,7 +88,7 @@ function presentUri(uri)
 
 var resultNodes = [];
 
-/** Presents all search results.
+/** Presents all search results from the previous search.
 * @return {Boolean} Whether the search results are nonempty.
 */
 function presentAll()
@@ -121,6 +118,11 @@ function presentAll()
   return true;
 }
 
+/**
+ * @param  {String} query description
+ * @param  {Array} uris  description
+ * @return {Boolean} Whether the search results are nonempty.
+ */
 function showSearchResults(query, uris)
 {
   resultNodes = [];
@@ -168,6 +170,7 @@ function showSearchResults(query, uris)
   {
     return uris.has(node.data("name"));
   });
+  return true;
 }
 
 /** Searches the SPARQL endpoint for classes with the given label.
@@ -194,7 +197,8 @@ export function search(userQuery)
   //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
   //filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
 }
-/**Search the class labels and display the result to the user. */
+/**Search the class labels and display the result to the user.
+* @return {false} false to prevent page reload triggered by submit.*/
 function showSearch(userQuery)
 {
   document.getElementById("overlay").style.display= "block";
@@ -205,6 +209,8 @@ function showSearch(userQuery)
   return false; // prevent page reload triggered by submit
 }
 
+/** Add search functionality to the text field with the "search" id.
+ *  Add a click listener to hide the search results to the element with the "closelink" id.*/
 export function addSearch()
 {
   document.getElementById('closelink').addEventListener("click", hideSearchResults);

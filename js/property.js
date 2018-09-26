@@ -36,6 +36,7 @@ const properties = [];
 /** RDF Property class for use in SNIK. */
 export class Property
 {
+  /** *Sets up the property from an array with 6 elements: [uri,label,domain,range,interontology,restriction].*/
   constructor(array)
   {
     this.uri=rdf.long(array[0]);

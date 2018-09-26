@@ -1,7 +1,8 @@
 /**
 RDF helper functions.
 @module */
-const prefixes = // order important! substrings of other prefixes must come later
+/** Order important! substrings of other prefixes must come later. */
+const prefixes =
 [
   ["meta","http://www.snik.eu/ontology/meta/"],
   ["bb","http://www.snik.eu/ontology/bb/"],
@@ -15,12 +16,20 @@ const prefixes = // order important! substrings of other prefixes must come late
   ["rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#"],
 ];
 
+/** Shortens a URI if possible using SNIK prefixes defined in this file.
+ * @param  {String} uri a URI, for example "http://www.snik.eu/ontology/meta/Function".
+ * @return {String} the shortened URI, for example "meta:Function". If no prefix applies, return the input as is.
+ */
 export function short(uri)
 {
   for(const prefix of prefixes) {uri=uri.replace(prefix[1],prefix[0]+":");}
   return uri;
 }
 
+/** Restores a URI if possible that is shortened using a SNIK prefix to its usual form using prefixes defined in this file.
+ * @param  {String} uri a prefixed URI, for example "meta:Function".
+ * @return {String} the restored URI, for example "http://www.snik.eu/ontology/meta/Function".  If no prefix applies, return the input as is.
+ */
 export function long(uri)
 {
   for(const prefix of prefixes) {uri=uri.replace(prefix[0]+":",prefix[1]);}
