@@ -3,7 +3,6 @@ Populates the menu bar on the top.
 @module */
 import {MODIFIED} from "./about.js";
 import * as log from "./log.js";
-import * as file from "./file.js";
 import * as download from "./download.js";
 import {invert} from "./graph.js";
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
@@ -11,10 +10,6 @@ import loadGraphFromSparql from "./loadGraphFromSparql.js";
 function about() {window.alert("SNIK Graph version "+MODIFIED);}
 /**entries is an array of arrays of size two, entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed. entries[i][1] is a label as a string.  */
 
-function addLoadEntries()
-{
-  // TODO: implement
-}
 
 function menuData()
 {
@@ -135,7 +130,6 @@ function addMenu()
   }
   document.getElementById("top").prepend(ul);
   addOptions();
-  addLoadEntries();
 }
 
 // Close the dropdown if the user clicks outside of the menu
