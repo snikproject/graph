@@ -1,6 +1,6 @@
 /**
 Filters let the user toggle groups of graph elements, for example all nodes from the meta subontology.
-@module 
+@module
 */
 const filters = [
   ["node[prefix='meta']","meta"],
@@ -45,7 +45,7 @@ class Filter
     this.a.classList.add("dropdown-entry");
     this.a.appendChild(input);
     this.a.appendChild(document.createTextNode(label));
-    input.addEventListener("input",()=>this.setVisibility(input.checked));
+    //input.addEventListener("input",()=>this.setVisibility(input.checked));
   }
 
   /**

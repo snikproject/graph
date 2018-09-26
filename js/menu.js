@@ -92,19 +92,22 @@ function addMenu()
   //const frag = new DocumentFragment();
   const ul = document.createElement("ul");
   ul.classList.add("dropdown-bar");
-  for(const menu of menuData())
+  for(const menuDatum of menuData())
   {
     const li = document.createElement("li");
     ul.appendChild(li);
-    li.classList.add("dropdown-menu");
-    li.innerText=menu.label;
+
+    const span = document.createElement("span");
+    li.appendChild(span);
+    span.classList.add("dropdown-menu");
+    span.innerText=menuDatum.label;
 
     const div = document.createElement("div");
     li.appendChild(div);
     div.classList.add("dropdown-content");
-    div.id=menu.id;
+    div.id=menuDatum.id;
 
-    li.addEventListener("click",()=>
+    span.addEventListener("click",()=>
     {
       for(const otherDiv of document.getElementsByClassName("dropdown-content"))
       {
@@ -115,7 +118,7 @@ function addMenu()
 
     //li.addEventListener("click",()=>div.style.display=(div.style.display==="block"?"none":"block"));
 
-    for(const entry of menu.entries)
+    for(const entry of menuDatum.entries)
     {
       const a = document.createElement("a");
       a.classList.add("dropdown-entry");
@@ -155,7 +158,7 @@ window.onclick = function(e)
       var openDropdown = dropdowns[d];
       if (openDropdown.classList.contains('show'))
       {
-        openDropdown.classList.remove('show');
+        //openDropdown.classList.remove('show');
       }
     }
   }
