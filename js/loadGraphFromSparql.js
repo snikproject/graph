@@ -29,10 +29,12 @@ export default function loadGraphFromSparql(cy,subs)
   cy.elements().remove();
   //file.load();
   // load graph from SPARQL endpoint instead of from the .cyjs file
-  // only show classes with labels, use any one if more than one
+  // only show classes with labels
   // degree too time consuming, remove for development
   const classQuery =
-  `select ?c str(sample(?l)) as ?l replace(str(sample(?subTop)),".*[#/]","") as ?subTop replace(str(?source),".*[#/]","") as ?source sample(?instance) as ?instance
+  `select ?c
+  group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
+  replace(str(sample(?subTop)),".*[#/]","") as ?subTop replace(str(?source),".*[#/]","") as ?source sample(?instance) as ?instance
   #count(?o) as ?degree
   ${froms}
   {
@@ -63,13 +65,30 @@ export default function loadGraphFromSparql(cy,subs)
     sparqlClassesTimer.stop(json.length+" classes");
     for(let i=0;i<json.length;i++)
     {
+      const labels = json[i].l.value.split("|");
+      const ld = [];
+      const le = [];
+      const la = [];
+      for(const label of labels)
+      {
+        const stringAndTag = label.split("@");
+        switch(stringAndTag[1])
+        {
+        case "de": ld.push(stringAndTag[0]);break;
+        case "en": le.push(stringAndTag[0]);break;
+        default: la.push(stringAndTag[0]);
+        }
+      }
+
       cy.add(
         {
           group: "nodes",
           data: {
             id: json[i].c.value,
             name: json[i].c.value,
-            ld: [(json[i].l===undefined)?json[i].c.value:json[i].l.value],
+            ld: ld,
+            le: le,
+            la: la,
             st: (json[i].subTop===undefined)?null:json[i].subTop.value,
             prefix: (json[i].source===undefined)?null:json[i].source.value,
             inst: json[i].instance!==undefined,
