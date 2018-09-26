@@ -195,17 +195,17 @@ function showStarPath(from, to)
   {
     cy.startBatch();
     hideNodes(cy.elements().nodes());
-    progress(10);
+    //progress(10);
     cy.add(path);
     highlightEdges(path.edges());
-    progress(20);
+    //progress(20);
     highlightNodes(path.nodes());
-    progress(30);
+    //progress(30);
     var edges = path.nodes().connectedEdges();
     highlightEdges(edges);
     highlightNodes(edges.connectedNodes());
     cy.endBatch();
-    progress(50);
+    //progress(50);
   }
   else
   {
@@ -213,6 +213,7 @@ function showStarPath(from, to)
     progress(100);
     return false;
   }
+  console.log(100);
   progress(100);
   return true;
 }
