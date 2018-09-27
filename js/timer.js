@@ -4,6 +4,9 @@ Measures elapsed duration.
 
 import * as log from "./log.js";
 
+const MIN_INFO_TIME = 500;
+const MIN_DEBUG_TIME = 50;
+
 /** Generates a timer object that logs the elapsed time after its stop function is called.
 Call example: myTimer = timer("egg cooking"); cookEgg(); timer.stop("successfull");
  * @param  {String} name identifies the timer
@@ -17,7 +20,8 @@ export default function timer(name)
     {
       var end  = new Date();
       var time = end.getTime() - start.getTime();
-      if(time>100) {log.debug(name, 'finished in', time, 'ms'+(message?` (${message})`:""));}
+      const f = (time>MIN_INFO_TIME)?log.info:((time>MIN_DEBUG_TIME)?log.debug:log.trace);
+      f(name, 'finished in', time, 'ms'+(message?` (${message})`:""));
     },
   };
 }
