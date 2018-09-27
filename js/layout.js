@@ -1,12 +1,10 @@
 /**
 Due to JavaScript being a slow mostly single-threaded language with no really fast layouting library available, layouting the full 4000+ node graph can take a minute or more depending on the client PC.
 After the first time, the layout is cached and reused, until major changes occur in the graph.
-If a breakthrough occurs in JavaScript graph layouting, update here and possibly remove cache. 
+If a breakthrough occurs in JavaScript graph layouting, update here and possibly remove cache.
 @module */
 import * as log from "./log.js";
 import timer from "./timer.js";
-import * as rdfGraph from "./rdfGraph.js";
-import * as file from "./file.js";
 
 var activeLayout = undefined;
 

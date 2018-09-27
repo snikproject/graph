@@ -4,11 +4,8 @@ Creates the circular context menu that can be opened on top of a node.
 import {ONTOLOGY_ISSUE_WARNING,MODIFIED} from "./about.js";
 import {roleUse} from "./classuse.js";
 import * as graph from "./graph.js";
-import * as sparql from "./sparql.js";
 import * as rdf from "./rdf.js";
 import * as log from "./log.js";
-import * as string from "./string.js";
-import * as property from "./property.js";
 
 const defaultsNodes = {
   menuRadius: 220, // the radius of the circular menu in pixels

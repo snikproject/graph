@@ -1,6 +1,5 @@
 /** Module for loading files both locally from the server and via upload from the client.
 @module */
-import {progress} from "./progress.js";
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 import timer from "./timer.js";
