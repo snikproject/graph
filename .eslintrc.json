@@ -37,7 +37,6 @@
 		"space-in-parens": ["error"],
 		"brace-style": ["error","allman",{"allowSingleLine":true}],
 		"array-bracket-spacing": ["error"],
-		"no-nested-ternary": ["error"],
 		"no-unneeded-ternary": ["error"],
 		"no-unexpected-multiline": ["off"],
 		"no-undef": ["error"],
