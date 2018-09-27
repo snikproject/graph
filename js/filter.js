@@ -45,7 +45,7 @@ class Filter
     this.a.classList.add("dropdown-entry");
     this.a.appendChild(input);
     this.a.appendChild(document.createTextNode(label));
-    //input.addEventListener("input",()=>this.setVisibility(input.checked));
+    input.addEventListener("input",()=>this.setVisibility(input.checked));
   }
 
   /**
