@@ -2,7 +2,10 @@
 Filters let the user toggle groups of graph elements, for example all nodes from the meta subontology.
 @module
 */
-const filters = [
+import timer from "./timer.js";
+import * as log from "./log.js";
+
+const filterData = [
   ["node[prefix='meta']","meta"],
   ["node[prefix='bb']","BB"],
   ["node[prefix='ob']","OB"],
@@ -19,6 +22,8 @@ const filters = [
   //["edge[p='http://www.snik.eu/ontology/meta/subTopClass']","subTopClass"],
   //["node[consolidated<=0]","unverified"]
 ];
+
+const filters = [];
 
 /**
 Toggles the visibility of a set of nodes defined by a selector.
@@ -41,28 +46,64 @@ class Filter
     input.class="filterbox";
     input.autocomplete="off";
     input.checked="true";
+    this.visible=true;
+    this.elements=null;
+    this.label=label;
     this.a = document.createElement("a");
     this.a.classList.add("dropdown-entry");
     this.a.appendChild(input);
     this.a.appendChild(document.createTextNode(label));
-    input.addEventListener("input",()=>this.setVisibility(input.checked));
+    input.addEventListener("input",()=>this.setVisible(input.checked));
+    // don't add this filter to filters yet because it is not active anyways
   }
+
+  /** label */
+  toString() {return this.label;}
 
   /**
   Set the visibility of the nodes selected by the filter.
-  @param {boolean} visibility
+  @param {boolean} visible
   */
-  setVisibility(visibility)
+  setVisible(visible)
   {
-    if(!this.filtered)
+    if(this.visible===visible) {return;} // no change
+    this.visible=visible;
+
+    if(this.elements===null) // first time, lazy init
     {
-      this.filtered = this.cy.elements(this.selector);
-      this.filtered = this.filtered.union(this.filtered.connectedEdges());
+      filters.push(this); // the others need to know about this one now
+      const initTimer = timer("Initializing filter "+this.label);
+      this.elements = this.cy.elements(this.selector);
+      this.elements = this.elements.union(this.elements.connectedEdges());
+      initTimer.stop();
     }
-    if(visibility) {this.filtered.show();}
+    if(visible)
+    {
+      // this.elements.show(); alone could break other filters
+      // only show elements that aren't hidden by another filter
+      const visibleTimer = timer("Set visible filter "+this.label);
+      let visibleElements = this.cy.collection(this.elements);
+      for(const filter of filters)
+      {
+        if(filter.visible) {continue;}
+        if(!filter.elements) {throw new Error("filter does not have elements "+filter);}
+        // we don't have to check if it's different from this filter because this one is active and those aren't
+        visibleElements=visibleElements.difference(filter.elements);
+      }
+      visibleElements.show();
+      visibleTimer.stop();
+      log.trace(`filter ${this.label} ${visibleElements.size()} shown, (${visibleElements.nodes().size()} nodes) `+
+                  `of ${this.elements.size()} filter elements, `+
+                   `${this.elements.size()-visibleElements.size()} prevented by other filters.`);
+    }
     else
     {
-      this.filtered.hide();
+      const hiddenTimer = timer("Set hidden filter "+this.label);
+      // not analogously to the other case, one filter is enough to hide
+      // would be nice to know however, how many of them were already hidden for debug
+      this.elements.hide();
+      hiddenTimer.stop();
+      log.trace("filter "+this.label+" "+this.elements.size()+" hidden");
     }
   }
 }
@@ -74,7 +115,7 @@ Add filter entries to the filter menu.
 */
 function addFilterEntries(cy, parent)
 {
-  for(const filter of filters)
+  for(const filter of filterData)
   {
     parent.appendChild(new Filter(cy,filter[0],filter[1]).a);
   }
