@@ -16,12 +16,8 @@ String.prototype.hashCode = function()
   return hash;
 };
 
-
-/**expands the snik pseudo prefix*/
-function expand(short)
-{
-  return short.replace("s:","http://www.snik.eu/ontology/");
-}
+// /**expands the snik pseudo prefix*/ optimization removed due to it being slower
+// function expand(short) {return short.replace("s:","http://www.snik.eu/ontology/");}
 
 /** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
 @param{cytoscape} cy the cytoscape graph to load the data into
@@ -34,31 +30,38 @@ export default function loadGraphFromSparql(cy,subs)
   const rdfGraphs = [...(new Set([...rdfGraph.helper(),...subs]))];
   const froms = rdfGraphs.map(sub=>`from <http://www.snik.eu/ontology/${sub}>`).reduce((a,b)=>a+"\n"+b);
   cy.elements().remove();
-  //file.load();
-  // load graph from SPARQL endpoint instead of from the .cyjs file
+  // Optimization failed, was actually slower. Great example of premature optimization.
+  // Idea was to keep bindings short to minimize data sent over network but failed probably due to caching, compression and function overhead.
+  //replace(str(?c),"http://www.snik.eu/ontology/","s:") as ?c
+  //group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
+  //substr(replace(str(sample(?st)),".*[#/]",""),1,1) as ?st replace(str(?src),".*[#/]","") as ?src sample(?inst) as ?inst
   // only show classes with labels
   // degree too time consuming, remove for development
-  // keep bindings short to minimize data sent over network
+  // #count(?o) as ?degree
+  // too slow, remove isolated nodes in post processing
+  // #{?c ?p ?o.} UNION {?o ?p ?c}.
   const classQuery =
-  `select replace(str(?c),"http://www.snik.eu/ontology/","s:") as ?c
+  `select ?c
   group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
-  substr(replace(str(sample(?st)),".*[#/]",""),1,1) as ?st replace(str(?src),".*[#/]","") as ?src sample(?inst) as ?inst
-  #count(?o) as ?degree
+  sample(?st) as ?st
+  ?src
+  sample(?inst) as ?inst
   ${froms}
   {
     ?c a owl:Class.
-    #{?c ?p ?o.} UNION {?o ?p ?c}.#too slow, remove isolated nodes in post processing
+
     OPTIONAL {?src ov:defines ?c.}
     OPTIONAL {?c meta:subTopClass ?st.}
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?inst a ?c.}
   }`;
+  //  this was actually slower, often by a whole second, probably due to compression and better caching or replace overhead
+  //  replace(str(?c),"http://www.snik.eu/ontology/","s:") as ?c
+  //  replace(str(?p),"http://www.snik.eu/ontology/","s:") as ?p
+  //  replace(str(?d),"http://www.snik.eu/ontology/","s:") as ?d
+  //  replace(str(?g),"http://www.snik.eu/ontology/","s:") as ?g
   const propertyQuery =
-  `select
-  replace(str(?c),"http://www.snik.eu/ontology/","s:") as ?c
-  replace(str(?p),"http://www.snik.eu/ontology/","s:") as ?p
-  replace(str(?d),"http://www.snik.eu/ontology/","s:") as ?d
-  replace(str(?g),"http://www.snik.eu/ontology/","s:") as ?g
+  `select  ?c ?p ?d ?g
   ${froms}
   {
     owl:Class ^a ?c,?d.
@@ -96,12 +99,13 @@ export default function loadGraphFromSparql(cy,subs)
         {
           group: "nodes",
           data: {
-            id: expand(json[i].c.value),
+            id: json[i].c.value,
+            name: json[i].c.value,
             ld: ld,
             le: le,
             la: la,
-            st: (json[i].st===undefined)?null:json[i].st.value,
-            prefix: (json[i].src===undefined)?null:json[i].src.value,
+            st: (json[i].st===undefined)?null:json[i].st.value.replace("http://www.snik.eu/ontology/meta/","").substring(0,1),
+            prefix: (json[i].src===undefined)?null:json[i].src.value.replace("http://www.snik.eu/ontology/",""),
             inst: json[i].inst!==undefined,
             //degree: parseInt(json[i].degree.value),
           },
@@ -132,12 +136,12 @@ export default function loadGraphFromSparql(cy,subs)
           {
             group: "edges",
             data: {
-              source: expand(json[i].c.value),
-              target: expand(json[i].d.value),
+              source: json[i].c.value,
+              target: json[i].d.value,
               id: i,
-              p: expand(json[i].p.value),//Labels_DE: [json[i].l.value]
-              pl: expand(json[i].p.value).replace(/.*[#/]/,""),
-              g: expand(json[i].g.value),
+              p: json[i].p.value,//Labels_DE: [json[i].l.value]
+              pl: json[i].p.value.replace(/.*[#/]/,""),
+              g: json[i].g.value,
             },
           //position: { x: 200, y: 200 }
           });
