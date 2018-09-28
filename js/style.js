@@ -33,12 +33,12 @@ var style =
           {
             switch(ele.data('st'))
             {
-            case 'EntityType': {return 'rectangle';}
-            case 'Role': {return 'ellipse';}
-            case 'Function': {return 'triangle';}
+            case 'E': {return 'rectangle';}//EntityType
+            case 'R': {return 'ellipse';}//Role
+            case 'F': {return 'triangle';}//Function
             }
             // the subtops don't have themselves as a subtop but should be shaped as such
-            switch(ele.data('name'))
+            switch(ele.data('id'))
             {
             case 'http://www.snik.eu/ontology/meta/EntityType': {return 'rectangle';}
             case 'http://www.snik.eu/ontology/meta/Role': {return 'ellipse';}
@@ -53,7 +53,7 @@ var style =
             if(ele.data('le')&&ele.data('le')[0]) {label = ele.data('le')[0];}
             else if(ele.data('ld')&&ele.data('ld')[0]) {label = ele.data('ld')[0];}
             else if(ele.data('la')&&ele.data('la')[0]) {label = ele.data('la')[0];}
-            else if(ele.data('name')) {label = ele.data('name');}
+            //else if(ele.data('name')) {label = ele.data('name');}
             else {label = 'UNKNOWN URI, ID'+ele.data('id');}
             if(SHOW_QUALITY) {label+="\n\u25CB\u25CF\u25CB\u25CB\u25CF";}
             if(ele.data('inst')) {label+="*";}
