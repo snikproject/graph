@@ -2,65 +2,99 @@
 Show the environment of a single node using a special layout.
 @module */
 import * as sparql from "./sparql.js";
+import * as log from "./log.js";
 import * as graph from "./graph.js";
 
-/**
-Centers a role and shows directly and indirectly connected roles, functions and entity types in a concentric layout.
+/** Centers a class and shows directly and indirectly connected roles, functions and entity types in a concentric layout.
 Hides all other nodes. Resetting the view unhides the other nodes but keeps the layout of those shown before.
 Recalculate the layout to place those nodes in relation to the whole graph again.
-@param {string} The URI of the role.
-*/
-function roleUse(role)
+@param {string} The URI of the class.
+ */
+function classUse(clazz,subTop)
 {
   graph.resetStyle();
   graph.setStarMode(true);
-  // TODO direkt von
-  const query =
-  `select distinct ?role ?function ?et ?etx
-  {
-    <${role}> (rdfs:subClassOf|skos:closeMatch|^skos:closeMatch)* ?role.
-    ?role meta:subTopClass meta:Role.
-    #bind (<${role}> as ?role)
+  let innerType = "meta:Role";
+  let middleType = "meta:Function";
+  let outerType = "meta:EntityType";
 
+  switch(subTop)
+  {
+  case "R":
+  {
+    innerType = "meta:Role";
+    middleType = "meta:Function";
+    outerType = "meta:EntityType";
+    break;
+  }
+  case "F":
+  {
+    // choose arbitrarily between the two possibilities and ask what the SNIK team thinks
+    innerType = "meta:Function";
+    middleType = "meta:Role";
+    outerType = "meta:EntityType";
+    break;
+  }
+  case "E":
+  {
+    // reverse of role
+    innerType = "meta:EntityType";
+    middleType = "meta:Function";
+    outerType = "meta:Role";
+    break;
+  }
+  default: {log.error("Unknown subtop. Cannot display class use.");}
+  }
+
+
+  const query =
+  `select distinct ?inner ?middle ?outer ?outerx
+  {
+    <${clazz}> (rdfs:subClassOf|skos:closeMatch|^skos:closeMatch)* ?inner.
+    ?inner meta:subTopClass ${innerType}.
     OPTIONAL
     {
-      ?role ?p ?function.
-      ?function meta:subTopClass meta:Function.
-      #?role ?p ?f.
-      #?f meta:subTopClass meta:Function.
-      #?f (skos:closeMatch|^skos:closeMatch|^rdfs:subClassOf)* ?function.
-
+      ?inner ?p ?middle.
+      ?middle meta:subTopClass ${middleType}.`+
+//    ?role ?p ?f.
+//    ?f meta:subTopClass meta:Function.
+//    ?f (skos:closeMatch|^skos:closeMatch|^rdfs:subClassOf)* ?function.
+`
       OPTIONAL
-      {
-        #?function ?q ?et
-        #?et meta:subTopClass meta:EntityType.
-        ?function ?q ?et.
-        ?et meta:subTopClass meta:EntityType.
-        OPTIONAL {?et (skos:closeMatch|^skos:closeMatch|^rdfs:subClassOf)+ ?etx.}
+      {`+
+//        #?function ?q ?et
+//        #?et meta:subTopClass meta:EntityType.
+`
+        ?middle ?q ?outer.
+        ?outer meta:subTopClass ${outerType}.
+        OPTIONAL {?outer (skos:closeMatch|^skos:closeMatch|^rdfs:subClassOf)+ ?outerx.}
       }
     }
   }`;
   sparql.sparql(query,"http://www.snik.eu/ontology").then((json)=>
   {
-    const roles = new Set();
-    const functions = new Set();
-    const ets = new Set();
-    const etxs = new Set();
-
+    const inner = new Set();
+    const middle = new Set();
+    const outer = new Set();
+    const outerx = new Set();
     for(let i=0;i<json.length;i++)
     {
-      roles.add(json[i].role.value);
-      if(json[i].function) {functions.add(json[i].function.value);}
-      if(json[i].et) {ets.add(json[i].et.value);}
-      if(json[i].etx) {etxs.add(json[i].etx.value);}
+      inner.add(json[i].inner.value);
+      if(json[i].middle) {middle.add(json[i].middle.value);}
+      if(json[i].outer) {outer.add(json[i].outer.value);}
+      if(json[i].outerx) {outerx.add(json[i].outerx.value);}
     }
-    //console.log(roles);
-    const classes = new Set([...roles, ...functions,...ets,...etxs]);
-    let selectedNodes = graph.cy.nodes("node[noth='ing']");
+    if(middle.size===0)
+    {
+      log.warn("Class "+clazz+" is not used.");
+      return;
+    }
+    const classes = new Set([...inner, ...middle,...outer,...outerx]);
+    let selectedNodes = graph.cy.collection();
     //let selectedEdges = graph.cy.nodes("node[noth='ing']");
     for(const c of classes)
     {
-      const cNodes = graph.cy.nodes(`node[name='${c}']`);
+      const cNodes = graph.cy.nodes(`node[id='${c}']`);
       selectedNodes = selectedNodes.union(cNodes);
       //selectedEdges = selectedEdges.union(cNodes.connectedEdges());
     }
@@ -84,12 +118,12 @@ function roleUse(role)
         concentric: function(node)
         {
           const uri = node.data().name;
-          if(uri===role) {return 10;}
-          if(roles.has(uri)) {return 9;}
-          if(functions.has(uri)) {return 8;}
-          if(ets.has(uri)) {return 7;}
-          if(etxs.has(uri)) {return 6;}
-          return 10; // temporary workaround for roles without subtop
+          if(uri===clazz) {return 10;}
+          if(inner.has(uri)) {return 9;}
+          if(middle.has(uri)) {return 8;}
+          if(outer.has(uri)) {return 7;}
+          if(outerx.has(uri)) {return 6;}
+          return 10; // temporary workaround for inner without subtop
           /*
           // faster but can't discern expanded entity types from directly connected ones
           switch(node.data().st)
@@ -97,18 +131,18 @@ function roleUse(role)
           case "EntityType": return 1;
           case "Function": return 2;
           case "Role": return 3;
-          default: return 3; // temporary workaround for roles without subtop
+          default: return 3; // temporary workaround for inner without subtop
           }
           */
         },
       }
     ).run();
 
-    const roleNode = graph.cy.nodes(`node[name='${role}']`);
-    graph.cy.center(roleNode);
+    const centerNode = graph.cy.nodes(`node[id='${clazz}']`);
+    graph.cy.center(centerNode);
     graph.cy.fit(selectedNodes);
   }
   );
 }
 
-export {roleUse};
+export {classUse};

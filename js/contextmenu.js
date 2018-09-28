@@ -2,14 +2,14 @@
 Creates the circular context menu that can be opened on top of a node.
 @module */
 import {ONTOLOGY_ISSUE_WARNING,MODIFIED} from "./about.js";
-import {roleUse} from "./classuse.js";
+import {classUse} from "./classuse.js";
 import * as graph from "./graph.js";
 import * as rdf from "./rdf.js";
 import * as log from "./log.js";
 
 const defaultsNodes = {
   menuRadius: 220, // the radius of the circular menu in pixels
-  selector: 'node[st!="Role"]', // elements matching this Cytoscape.js selector will trigger cxtmenus
+  selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: [
     {
       content: 'ticket',
@@ -23,13 +23,17 @@ const defaultsNodes = {
           if(confirm(ONTOLOGY_ISSUE_WARNING))
           {
             var url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
-            encodeURIComponent(node._private.data.name)+' v'+
-            '&body='+encodeURIComponent('The class '+node._private.data.name+
-            ' has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n');
+            encodeURIComponent(node.data('name')+' v'+
+            '&body='+encodeURIComponent('The class '+node.data('id')+
+            ' has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n'));
             window.open(url);
           }
         }
       },
+    },
+    {
+      content: 'class use',
+      select: node=> {classUse(node.data('id'),node.data('st'));},
     },
     /*    {
     content: 'set as path target',
@@ -269,17 +273,6 @@ The extension itself is already registered through the plain HTML/JS import in i
 which makes available cy.cxtmenu().*/
 function registerMenu()
 {
-  graph.cy.cxtmenu(defaultsNodes);
-  defaultsNodes.selector="node[st='Role']";
-  defaultsNodes.commands.push(
-    {
-      content: 'role use',
-      select: node=>
-      {
-        roleUse(node.data().name);
-      },
-    }
-  );
   graph.cy.cxtmenu(defaultsNodes);
   graph.cy.cxtmenu(defaultsRelations);
 }
