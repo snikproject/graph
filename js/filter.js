@@ -90,7 +90,8 @@ class Filter
         // we don't have to check if it's different from this filter because this one is active and those aren't
         visibleElements=visibleElements.difference(filter.elements);
       }
-      visibleElements.show();
+      //visibleElements.show();
+      visibleElements.style("display","element");
       visibleTimer.stop();
       log.trace(`filter ${this.label} ${visibleElements.size()} shown, (${visibleElements.nodes().size()} nodes) `+
                   `of ${this.elements.size()} filter elements, `+
@@ -101,7 +102,8 @@ class Filter
       const hiddenTimer = timer("Set hidden filter "+this.label);
       // not analogously to the other case, one filter is enough to hide
       // would be nice to know however, how many of them were already hidden for debug
-      this.elements.hide();
+      //this.elements.hide();
+      this.elements.style("display","none"); // hides its connecting edges, see https://github.com/cytoscape/cytoscape.js/issues/1544.
       hiddenTimer.stop();
       log.trace("filter "+this.label+" "+this.elements.size()+" hidden");
     }

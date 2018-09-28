@@ -28,12 +28,21 @@ const REMOVE_SINGLE_ELEMENTS_ONLY = true;
 */
 function setStarMode(mode) {starMode=mode;}
 
+/** hides elements (visibility hidden)*/
+function hide(eles)
+{
+  eles.style("visibility","hidden");
+  styledNodes = styledNodes.union(eles.nodes());
+  styledEdges = styledEdges.union(eles.edges());
+}
+
+
 /** Hide the given nodes.
 @param {cy.collection} nodes the nodes to hide
 */
 function hideNodes(nodes)
 {
-  nodes.hide();
+  nodes.style("visibility","hidden");
   styledNodes = styledNodes.union(nodes);
 }
 
@@ -42,7 +51,7 @@ function hideNodes(nodes)
 */
 function showNodes(nodes)
 {
-  nodes.show();
+  nodes.style("visibility","visible");
   styledNodes = styledNodes.subtract(nodes);
 }
 
@@ -51,7 +60,7 @@ function showNodes(nodes)
 */
 function highlightEdges(edges)
 {
-  edges.show();
+  edges.style("visibility","visible");
   styledEdges = styledEdges.union(edges);
   edges.addClass('highlighted');
 }
@@ -62,7 +71,7 @@ function highlightEdges(edges)
 */
 function highlightNodes(nodes)
 {
-  nodes.show();
+  nodes.style("visibility","visible");
   styledNodes = styledNodes.union(nodes);
   // styled nodes is an array of arraylike objects
   // show edges between new nodes and all other highlighted ones
@@ -136,18 +145,21 @@ function showStar(node)
   progress(0);
   if(!starMode)
   {
-    hideNodes(cy.elements().nodes());
+    hide(cy.elements());
   }
   starMode=true;
+
   cy.startBatch();
   highlightNodes(node);
   var edges = node.connectedEdges();
   highlightEdges(edges);
   highlightNodes(edges.connectedNodes());
+  /*
   // open 2 levels deep on closeMatch
   var closeMatch = edges.filter('edge[interactionLabel="closeMatch"]').connectedNodes().connectedEdges();
   highlightEdges(closeMatch);
   highlightNodes(closeMatch.connectedNodes());
+  */
   cy.endBatch();
   progress(100);
 }
@@ -292,10 +304,10 @@ function resetStyle()
   //setFirstCumulativeSearch(true);
   //selectedNode = undefined;
   cy.startBatch();
-  styledNodes.show();
+  styledNodes.style("visibility","visible");
   styledNodes.removeClass('highlighted');
   styledNodes = cy.collection();
-  styledEdges.show();
+  styledEdges.style("visibility","visible");
   styledEdges.removeClass('highlighted');
   styledEdges = cy.collection();
   cy.endBatch();
@@ -362,6 +374,9 @@ function initGraph()
       minZoom: 0.02,
       maxZoom: 7,
     });
+  styledEdges = cy.collection();
+  styledNodes = cy.collection();
+  selectedNode = cy.collection();
   registerMenu();
 
   cy.on('select', 'edge', function(event)
