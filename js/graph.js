@@ -1,5 +1,9 @@
 /**
 Provides graph operations such as initialization, wayfinding, highlighting, showing and hiding.
+While star operations and reset style use the Cytoscape.js visibility attribute while filters use the "display" attribute
+This ensures that filters and star operations interact properly, for example that resetting the style does not show filtered nodes.
+See http://js.cytoscape.org/#style/visibility.
+
 @module graph*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
 import {progress} from "./progress.js";
@@ -13,8 +17,7 @@ import timer from "./timer.js";
 
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
 var cy = null;
-var styledEdges = null;
-var styledNodes = null;
+var styled = null;
 var selectedNode = null;
 var path = null;
 var pathSource = null;
@@ -28,55 +31,37 @@ const REMOVE_SINGLE_ELEMENTS_ONLY = true;
 */
 function setStarMode(mode) {starMode=mode;}
 
-/** hides elements (visibility hidden)*/
+/** Hides elements using visibility: hidden.
+Do not use this for filters as they use the "display" attribute to properly interact with the other operations.
+@param {eles} eles the nodes to hide
+*/
 function hide(eles)
 {
   eles.style("visibility","hidden");
-  styledNodes = styledNodes.union(eles.nodes());
-  styledEdges = styledEdges.union(eles.edges());
+  // Merge is in place. See http://js.cytoscape.org/#eles.merge
+  styled.merge(eles);
 }
 
-
-/** Hide the given nodes.
-@param {cy.collection} nodes the nodes to hide
+/** Show (unhide) the given elements using visibility: visible.
+Do not use this for filters as they use the "display" attribute to properly interact with the other operations.
+@param {cy.collection} eles the elements to show
 */
-function hideNodes(nodes)
+function show(eles)
 {
-  nodes.style("visibility","hidden");
-  styledNodes = styledNodes.union(nodes);
+  eles.style("visibility","visible");
+  // Unmerge is in place. See http://js.cytoscape.org/#eles.unmerge
+  styled.unmerge(eles);
 }
 
-/** Show (unhide) the given nodes.
-@param {cy.collection} nodes the nodes to show
+/** Highlight the given elements using the 'highlighted' css class from the color scheme stylesheet and show them.
+@param {cy.collection} eles the elements to highlight
 */
-function showNodes(nodes)
+function highlight(eles)
 {
-  nodes.style("visibility","visible");
-  styledNodes = styledNodes.subtract(nodes);
-}
-
-/** Highlight the given edges using the 'highlighted' css class from the stylesheet.
-@param {cy.collection} the edges to highlight
-*/
-function highlightEdges(edges)
-{
-  edges.style("visibility","visible");
-  styledEdges = styledEdges.union(edges);
-  edges.addClass('highlighted');
-}
-
-
-/**  Highlight the given nodes using the 'highlighted' css class from the stylesheet.
-@param {cy.collection} the nodes to highlight
-*/
-function highlightNodes(nodes)
-{
-  nodes.style("visibility","visible");
-  styledNodes = styledNodes.union(nodes);
-  // styled nodes is an array of arraylike objects
-  // show edges between new nodes and all other highlighted ones
-  highlightEdges(nodes.edgesWith(styledNodes));
-  nodes.addClass('highlighted');
+  eles.style("visibility","visible");
+  //highlight(eles.edgesWith(styled)); // is this needed? if yes, prevent endless loop
+  styled.merge(eles);
+  eles.addClass('highlighted');
 }
 
 /** Highlight all nodes and edges on a shortest path between "from" and "to".
@@ -87,7 +72,6 @@ Hide all other nodes except when in star mode.
 */
 function showPath(from, to)
 {
-  starMode=true;
   progress(0);
   var aStar = cy.elements().aStar(
     {
@@ -98,10 +82,13 @@ function showPath(from, to)
   if (path)
   {
     cy.startBatch();
-    hideNodes(cy.elements().nodes());
+    if(!starMode)
+    {
+      starMode=true;
+      hide(cy.elements());
+    }
     cy.add(path);
-    highlightEdges(path.edges());
-    highlightNodes(path.nodes());
+    highlight(path);
     cy.endBatch();
   }
   else
@@ -127,8 +114,9 @@ function showWorm(from, to)
     progress(0);
     cy.startBatch();
     var edges = to.connectedEdges();
-    highlightEdges(edges);
-    highlightNodes(edges.connectedNodes());
+
+    highlight(edges);
+    highlight(edges.connectedNodes());
     cy.endBatch();
     progress(100);
     return true;
@@ -150,21 +138,21 @@ function showStar(node)
   starMode=true;
 
   cy.startBatch();
-  highlightNodes(node);
+  highlight(node);
   var edges = node.connectedEdges();
-  highlightEdges(edges);
-  highlightNodes(edges.connectedNodes());
+  highlight(edges);
+  highlight(edges.connectedNodes());
   /*
   // open 2 levels deep on closeMatch
   var closeMatch = edges.filter('edge[interactionLabel="closeMatch"]').connectedNodes().connectedEdges();
-  highlightEdges(closeMatch);
+  highlight(closeMatch);
   highlightNodes(closeMatch.connectedNodes());
   */
   cy.endBatch();
   progress(100);
 }
 
-/** Highlight the give nodes, all their directly connected nodes (in both directions) and a shortest path between the two.
+/** Highlight the given two nodes, directly connected nodes (in both directions) of both of them and a shortest path between the two.
 Hide all other nodes except when in star mode.
 @param {node} from path start node
 @param {node} to path target node
@@ -176,9 +164,10 @@ function showDoubleStar(from, to)
   {
     progress(0);
     cy.startBatch();
+    // "A visibility: hidden node does not hide its connected edges." http://js.cytoscape.org/#style/visibility
     var edges = from.connectedEdges();
-    highlightEdges(edges);
-    highlightNodes(edges.connectedNodes());
+    highlight(edges);
+    highlight(edges.connectedNodes());
     cy.endBatch();
     progress(100);
     return true;
@@ -187,7 +176,7 @@ function showDoubleStar(from, to)
 }
 
 /**
-/** Highlight the shortest path between the two given nodes and nodes directly connected (in both directions) to a node on the path.
+/** Highlight the shortest path between the two given nodes and nodes directly connected (in both directions) to all nodes on the path.
 Hide all other nodes except when in star mode.
 @param {node} from path start node
 @param {node} to path target node
@@ -195,7 +184,6 @@ Hide all other nodes except when in star mode.
 */
 function showStarPath(from, to)
 {
-  starMode=true;
   progress(0);
   var aStar = cy.elements().aStar(
     {
@@ -206,18 +194,18 @@ function showStarPath(from, to)
   if (path)
   {
     cy.startBatch();
-    hideNodes(cy.elements().nodes());
-    //progress(10);
+    if(!starMode)
+    {
+      hide(cy.elements());
+      starMode=true;
+    }
     cy.add(path);
-    highlightEdges(path.edges());
-    //progress(20);
-    highlightNodes(path.nodes());
-    //progress(30);
+    highlight(path.edges());
+    highlight(path.nodes());
     var edges = path.nodes().connectedEdges();
-    highlightEdges(edges);
-    highlightNodes(edges.connectedNodes());
+    highlight(edges);
+    highlight(edges.connectedNodes());
     cy.endBatch();
-    //progress(50);
   }
   else
   {
@@ -225,7 +213,6 @@ function showStarPath(from, to)
     progress(100);
     return false;
   }
-  console.log(100);
   progress(100);
   return true;
 }
@@ -304,12 +291,12 @@ function resetStyle()
   //setFirstCumulativeSearch(true);
   //selectedNode = undefined;
   cy.startBatch();
-  styledNodes.style("visibility","visible");
-  styledNodes.removeClass('highlighted');
-  styledNodes = cy.collection();
-  styledEdges.style("visibility","visible");
-  styledEdges.removeClass('highlighted');
-  styledEdges = cy.collection();
+  styled.style("visibility","visible");
+  styled.removeClass('highlighted');
+  styled = cy.collection();
+  styled.style("visibility","visible");
+  styled.removeClass('highlighted');
+  styled = cy.collection();
   cy.endBatch();
   progress(100);
 }
@@ -374,8 +361,8 @@ function initGraph()
       minZoom: 0.02,
       maxZoom: 7,
     });
-  styledEdges = cy.collection();
-  styledNodes = cy.collection();
+  styled = cy.collection();
+  styled = cy.collection();
   selectedNode = cy.collection();
   registerMenu();
 
@@ -383,7 +370,7 @@ function initGraph()
   {
     //cy.startBatch();
     //resetStyle();
-    highlightEdges(event.target);
+    highlight(event.target);
     //cy.endBatch();
   });
 
@@ -396,8 +383,7 @@ function initGraph()
     //cy.endBatch();
   });
 
-  styledEdges = cy.collection();
-  styledNodes = cy.collection();
+  styled = cy.collection();
   initTimer.stop();
   return cy;
 }
@@ -408,4 +394,4 @@ function initGraph()
 function setSelectedNode(node) {selectedNode=node;}
 
 export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,
-  getSource,pathTarget,highlightNodes,setSelectedNode,setSource,setTarget,showStar,setStarMode,hideNodes,showNodes};
+  getSource,pathTarget,highlight,setSelectedNode,setSource,setTarget,showStar,setStarMode};
