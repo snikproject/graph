@@ -35,13 +35,13 @@ const defaultsNodes = {
       content: 'class use',
       select: node=> {classUse(node.data('id'),node.data('st'));},
     },
-    /*    {
-    content: 'set as path target',
-    select: node=>
     {
-    graph.setTarget(node);
-  }
-},*/
+      content: 'hide',
+      select: node=>
+      {
+        graph.cy.remove(node);
+      },
+    },
     {
       content: 'set as path source',
       select: node=>

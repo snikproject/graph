@@ -365,16 +365,16 @@ function invert(enabled)
 function initGraph()
 {
   const initTimer = timer("graph-init");
-  /*
+
+  // remove nodes or edges from the graph (not the SPARQL endpoint) with the delete key
   document.addEventListener('keydown',function(e)
   {
-    if(e.keyCode === 46)
+    if(e.keyCode === 46) // delete key
     {
-      removeNodes(cy.$('node:selected'));
-      removeEdges(cy.$('edge:selected'));
+      cy.remove(':selected');
     }
   });
-  */
+
   cy = cytoscape(
     {
       container: document.getElementById('cy'),
