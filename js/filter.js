@@ -1,5 +1,9 @@
 /**
 Filters let the user toggle groups of graph elements, for example all nodes from the meta subontology.
+Filters use the Cytoscape.js "display" attribute, while star operations (see graph.js) and reset style use the visibility attribute.
+This ensures that filters and star operations interact properly, for example that resetting the style does not show filtered nodes.
+See http://js.cytoscape.org/#style/visibility.
+
 @module
 */
 import timer from "./timer.js";
