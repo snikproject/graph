@@ -1,10 +1,11 @@
 # snik-cytoscape.js
-Visualization of the snik-ontology. Can also be used to generate Cytoscape Desktop graph files. Browse the code documentation [here](https://imise.github.io/snik-cytoscape.js/index.html)!
+Visualization of the snik-ontology using the Cytoscape.js graph library. Can also be used to generate Cytoscape Desktop graph files. Browse the code documentation [here](https://imise.github.io/snik-cytoscape.js/index.html)!
 
 ## Installation
 Git clone or download to a webserver or local directory of your choice, run init and then open index.html in a browser.
 If the website and the SPARQL endpoint are on different domains, you may need to bypass CORS.
 On Windows, rewrite init to a batch script and please create a pull request for other Windows users.
+
 ## Usage Requirements
 Optimized for PC with mouse, does not work well on mobile devices.
 
@@ -41,6 +42,8 @@ On the server, the index-babel.html is already renamed to index.html. If you set
 
 ### Code Style
 Specified in the ESlint config file `.eslintrc.json`.
+Use the [Cytoscape.js notation](http://js.cytoscape.org/#notation/functions) for JSDoc types and generic parameters, such as "ele" for "a collection of a single element (node or edge)".
+Instead of "eles", "cy.collection" may be used as JSDOC type.
 
 ## Scripts
 * `npm run test` runs the mocha tests
