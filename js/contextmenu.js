@@ -75,9 +75,17 @@ const defaultsNodes = {
       content: 'star',
       select: node=>
       {
-        graph.showStar(node);
+        graph.showStar(node,false);
       },
     },
+    {
+      content: 'circle star',
+      select: node=>
+      {
+        graph.showStar(node,true);
+      },
+    },
+
     {
       content: 'path',
       select: node=>
@@ -259,6 +267,14 @@ const defaultsRelations = {
         window.open('https://www.snik.eu/ontowiki/view/?r='+edge.data("source")+"&m="+rdf.sub(edge.data("source")));
       },
     },
+    {
+      content: 'debug',
+      select: function(edge)
+      {
+        alert(JSON.stringify(edge.data(),null,2));
+      },
+    },
+
   ],
   fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
   activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command

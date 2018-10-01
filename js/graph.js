@@ -127,8 +127,9 @@ function showWorm(from, to)
 /** Highlight the give node and all its directly connected nodes (in both directions).
 Hide all other nodes except when in star mode.
 @param {node} node center of the star
+@param {Boolean} changeLayout arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
 */
-function showStar(node)
+function showStar(node, changeLayout)
 {
   progress(0);
   if(!starMode)
@@ -138,15 +139,36 @@ function showStar(node)
   starMode=true;
 
   cy.startBatch();
-  highlight(node);
-  var edges = node.connectedEdges();
-  highlight(edges);
-  highlight(edges.connectedNodes());
 
   // open 2 levels deep on closeMatch
-  var closeMatch = edges.filter('edge[interactionLabel="closeMatch"]').connectedNodes().connectedEdges();
-  highlight(closeMatch);
-  highlight(closeMatch.connectedNodes());
+  //const inner = node; // if you don't want to include close match, define inner like this
+  const closeMatchEdges = node.connectedEdges().filter('[pl="closeMatch"]');
+  const innerNodes = closeMatchEdges.connectedNodes();
+  innerNodes.merge(node); // in case there is no close match edge
+  const edges = innerNodes.connectedEdges();
+  const nodes  = edges.connectedNodes();
+  const outerNodes = nodes.difference(innerNodes);
+
+  highlight(nodes);
+  highlight(edges);
+
+  if(changeLayout)
+  {
+    nodes.layout(
+      {
+        name: 'concentric',
+        fit: true,
+        levelWidth: function() {return 1;},
+        minNodeSpacing: 35,
+        concentric: function(node)
+        {
+          if(innerNodes.contains(node)) {return 2;}
+          if(outerNodes.contains(node)) {return 1;}
+          throw new Error("unexpected node in star");
+        },
+      }
+    ).run();
+  }
 
   cy.endBatch();
   progress(100);
