@@ -98,8 +98,8 @@ function classUse(clazz,subTop)
       selectedNodes = selectedNodes.union(cNodes);
       //selectedEdges = selectedEdges.union(cNodes.connectedEdges());
     }
-    graph.hideNodes(graph.cy.nodes());
-    for (let i = 0; i < selectedNodes.length; i++)	{graph.showNodes(selectedNodes[i]);/*selectedNodes[i].restore();*/}
+    graph.hide(graph.cy.nodes());
+    for (let i = 0; i < selectedNodes.length; i++)	{graph.show(selectedNodes[i]);/*selectedNodes[i].restore();*/}
     /*
     for (let i = 0; i < selectedEdges.length; i++)
     {

@@ -72,7 +72,7 @@ function presentUri(uri)
       if(firstCumulativeSearch)
       {
         firstCumulativeSearch=false;
-        graph.hideNodes(graph.cy.elements().nodes());
+        graph.hide(graph.cy.elements().nodes());
       }
     }
     else
@@ -81,7 +81,7 @@ function presentUri(uri)
     }
   }
   //graph.setSelectedNode(node);
-  graph.highlightNodes(nodes);
+  graph.highlight(nodes);
   hideSearchResults();
   graph.cy.center(node);
 }
@@ -105,7 +105,7 @@ function presentAll()
     if(firstCumulativeSearch)
     {
       firstCumulativeSearch=false;
-      graph.hideNodes(graph.cy.elements().nodes());
+      graph.hide(graph.cy.elements());
     }
   }
   else
@@ -113,7 +113,7 @@ function presentAll()
     graph.resetStyle();
     firstCumulativeSearch=true;
   }
-  graph.highlightNodes(resultNodes,30);
+  graph.highlight(resultNodes);
   graph.cy.fit(resultNodes);
   return true;
 }

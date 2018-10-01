@@ -142,12 +142,12 @@ function showStar(node)
   var edges = node.connectedEdges();
   highlight(edges);
   highlight(edges.connectedNodes());
-  /*
+
   // open 2 levels deep on closeMatch
   var closeMatch = edges.filter('edge[interactionLabel="closeMatch"]').connectedNodes().connectedEdges();
   highlight(closeMatch);
-  highlightNodes(closeMatch.connectedNodes());
-  */
+  highlight(closeMatch.connectedNodes());
+
   cy.endBatch();
   progress(100);
 }
@@ -368,19 +368,12 @@ function initGraph()
 
   cy.on('select', 'edge', function(event)
   {
-    //cy.startBatch();
-    //resetStyle();
     highlight(event.target);
-    //cy.endBatch();
   });
 
   cy.on('select', 'node', function(event)
   {
-    //cy.startBatch();
-    //resetStyle();
     selectedNode = event.target;
-    //highlightNodes(selectedNode);
-    //cy.endBatch();
   });
 
   styled = cy.collection();
