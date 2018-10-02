@@ -177,26 +177,28 @@ function showSearchResults(query, uris)
 Case and space insensitive when not using bif:contains. Can be used by node.js. */
 export function search(userQuery)
 {
-  // prevent invalid SPARQL query and injection by just alphanumeric characters
+  // prevent invalid SPARQL query and injection by keeping only alphanumeric English and German characters
+  // if other languages with other characters are to be supported, extend the regular expression
   var searchQuery = userQuery.replace(/[^A-Za-zäöüÄÖÜßéèôáà0-9]/g, ''); //.split(' ')[0];
-  // use this when labels are available
+  // use this when labels are available, URIs are not searched
   let sparqlQuery;
-  if(!USE_BIF_CONTAINS||searchQuery.includes(' ')) // regex is slower but we have no choice with a space
+  if(!USE_BIF_CONTAINS||searchQuery.includes(' ')) // regex is slower than bif:contains but we have no choice with a space character
   {
     sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
-			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(replace(str(?l)," ",""),"${searchQuery}","i")) } limit ${sparql.SPARQL_LIMIT}`;
+			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(replace(str(?l)," ",""),"${searchQuery}","i")) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
   }
-  else // no space so we can use the faster bif:contains
+  else // no space character and bif:contains is allowed, so use it
   {
     sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
 			{?s rdfs:label ?l.		?l <bif:contains> "${searchQuery}".} UNION
-			{?s skos:altLabel ?l.	?l <bif:contains> "${searchQuery}".}} limit ${sparql.SPARQL_LIMIT}`;
+			{?s skos:altLabel ?l.	?l <bif:contains> "${searchQuery}".}} order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
   }
   log.debug(sparqlQuery);
   return sparql.sparql(sparqlQuery).then(bindings=>new Set(bindings.map(b=>b.s.value)));
   //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
   //filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
 }
+
 /**Search the class labels and display the result to the user.
 * @return {false} false to prevent page reload triggered by submit.*/
 function showSearch(userQuery)
