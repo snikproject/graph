@@ -409,4 +409,4 @@ function initGraph()
 function setSelectedNode(node) {selectedNode=node;}
 
 export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,
-  getSource,pathTarget,highlight,setSelectedNode,setSource,setTarget,showStar,setStarMode};
+  getSource,pathTarget,highlight,setSelectedNode,setSource,setTarget,showStar,setStarMode,hide,show};

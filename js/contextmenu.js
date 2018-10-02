@@ -15,11 +15,7 @@ const defaultsNodes = {
       content: 'ticket',
       select: node=>
       {
-        //var b = confirm("Please only use this ticket tracker for problems with the ontology data, not the javascript visualization web application. Continue?");
-        //window.open("https://github.com/IMISE/snik-ontology/issues/new");
-        //if(b)
         {
-          //window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
           if(confirm(ONTOLOGY_ISSUE_WARNING))
           {
             var url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+

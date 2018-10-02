@@ -57,7 +57,7 @@ function createFailDialog(title, text,/*uri*/)
 function presentUri(uri)
 {
   graph.cy.zoom(0.6);
-  var nodes = graph.cy.elements().nodes().filter(`node[name= "${uri}"]`);
+  var nodes = graph.cy.elements().nodes().filter(`node[id= "${uri}"]`);
   if(nodes.length<1)
   {
     //alert(uri+' is only available on the SPARQL endpoint but not in the graph.');

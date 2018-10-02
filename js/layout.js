@@ -29,7 +29,7 @@ export function positions(nodes)
   for(let i=0;i<nodes.size();i++)
   {
     const node = nodes[i];
-    pos.push([node.data().id,node.position()]);
+    pos.push([node.data('id'),node.position()]);
   }
   return pos;
 }

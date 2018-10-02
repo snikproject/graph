@@ -12,8 +12,6 @@ Recalculate the layout to place those nodes in relation to the whole graph again
  */
 function classUse(clazz,subTop)
 {
-  graph.resetStyle();
-  graph.setStarMode(true);
   let innerType = "meta:Role";
   let middleType = "meta:Function";
   let outerType = "meta:EntityType";
@@ -43,9 +41,12 @@ function classUse(clazz,subTop)
     outerType = "meta:Role";
     break;
   }
-  default: {log.error("Unknown subtop. Cannot display class use.");}
+  default:
+  {
+    log.error("Unknown subtop. Cannot display class use.");
+    return;
   }
-
+  }
 
   const query =
   `select distinct ?inner ?middle ?outer ?outerx
@@ -89,16 +90,23 @@ function classUse(clazz,subTop)
       log.warn("Class "+clazz+" is not used.");
       return;
     }
+    // now we know we can display something
+    graph.resetStyle();
+    graph.hide(graph.cy.elements());
+    graph.setStarMode(true);
+
     const classes = new Set([...inner, ...middle,...outer,...outerx]);
-    let selectedNodes = graph.cy.collection();
+    const selectedNodes = graph.cy.collection(`node[id='${clazz}']`);
     //let selectedEdges = graph.cy.nodes("node[noth='ing']");
     for(const c of classes)
     {
       const cNodes = graph.cy.nodes(`node[id='${c}']`);
-      selectedNodes = selectedNodes.union(cNodes);
+      selectedNodes.merge(cNodes);
       //selectedEdges = selectedEdges.union(cNodes.connectedEdges());
     }
-    graph.hide(graph.cy.nodes());
+    graph.show(selectedNodes);
+    graph.show(selectedNodes.edgesWith(selectedNodes));
+
     for (let i = 0; i < selectedNodes.length; i++)	{graph.show(selectedNodes[i]);/*selectedNodes[i].restore();*/}
     /*
     for (let i = 0; i < selectedEdges.length; i++)
@@ -117,7 +125,7 @@ function classUse(clazz,subTop)
         minNodeSpacing: 20,
         concentric: function(node)
         {
-          const uri = node.data().name;
+          const uri = node.data("id");
           if(uri===clazz) {return 10;}
           if(inner.has(uri)) {return 9;}
           if(middle.has(uri)) {return 8;}
@@ -126,7 +134,7 @@ function classUse(clazz,subTop)
           return 10; // temporary workaround for inner without subtop
           /*
           // faster but can't discern expanded entity types from directly connected ones
-          switch(node.data().st)
+          switch(node.data('st'))
           {
           case "EntityType": return 1;
           case "Function": return 2;
