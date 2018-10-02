@@ -88,7 +88,7 @@ export function presetLayout(cy,pos)
     positions: node=>
     {
       let position;
-      if((position= map.get(node._private.data.id)))
+      if((position= map.get(node.data('id'))))
       {
         hits++;
         return position;

@@ -274,7 +274,7 @@ function setSource(node)
   pathSource.addClass('source');
   /*
       document.getElementById('sourcelabel').innerHTML=
-      pathSource.data('name').replace(sparql.SPARQL_PREFIX,'');
+      pathSource.data('id').replace(sparql.SPARQL_PREFIX,'');
       */
   return true;
 }
@@ -302,7 +302,7 @@ function setTarget(node)
   pathTarget = node;
   pathTarget.addClass('target');
   document.getElementById('targetlabel').innerHTML=
-      pathTarget.data('name').replace(sparql.SPARQL_PREFIX,'');
+      pathTarget.data('id').replace(sparql.SPARQL_PREFIX,'');
 }
 
 /** Removes all highlighting (except selection) and shows all hidden nodes. */

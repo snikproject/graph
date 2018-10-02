@@ -23,7 +23,7 @@ const defaultsNodes = {
           if(confirm(ONTOLOGY_ISSUE_WARNING))
           {
             var url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
-            encodeURIComponent(node.data('name')+' v'+
+            encodeURIComponent(node.data('id')+' v'+
             '&body='+encodeURIComponent('The class '+node.data('id')+
             ' has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n'));
             window.open(url);
@@ -53,22 +53,21 @@ const defaultsNodes = {
       content: 'edit',
       select: node=>
       {
-        window.open('https://www.snik.eu/ontowiki/view/?r='+node._private.data.name+"&m="+rdf.sub(node._private.data.name));
+        window.open('https://www.snik.eu/ontowiki/view/?r='+node.data('id')+"&m="+rdf.sub(node.data('id')));
       },
     },
     {
       content: 'LodLive',
       select: node=>
       {
-        window.open('http://en.lodlive.it/?'+node._private.data.name);
+        window.open('http://en.lodlive.it/?'+node.data('id'));
       },
     },
     {
       content: 'description',
-      //select: node=> {window.open(node._private.data.name);}
       select: node=>
       {
-        window.open(node._private.data.name);
+        window.open(node.data('id'));
       },
     },
     {

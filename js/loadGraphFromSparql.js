@@ -100,7 +100,6 @@ export default function loadGraphFromSparql(cy,subs)
           group: "nodes",
           data: {
             id: json[i].c.value,
-            name: json[i].c.value,
             ld: ld,
             le: le,
             la: la,
