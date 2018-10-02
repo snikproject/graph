@@ -63,6 +63,7 @@ function menuData()
       "entries":
       [
         ["manual.html","Manual"],
+        ["http://www.snik.eu/de/Praesentationen/snik-tutorial.pdf","Tutorial"],
         ["troubleshooting.html","Troubleshooting"],
         ["contribute.html","Contribute"],
         ["http://www.snik.eu/","Project Homepage"],
