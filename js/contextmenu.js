@@ -125,6 +125,14 @@ const defaultsNodes = {
         }
       },
     },
+    {
+      content: 'debug',
+      select: function(node)
+      {
+        alert(JSON.stringify(node.data(),null,2));
+      },
+    },
+
     /*
 {
 content: 'add connection',
@@ -273,7 +281,6 @@ const defaultsRelations = {
         alert(JSON.stringify(edge.data(),null,2));
       },
     },
-
   ],
   fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
   activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
