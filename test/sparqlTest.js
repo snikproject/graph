@@ -30,7 +30,7 @@ describe('sparql', function()
           const expectedGraphs = [
             'http://www.snik.eu/ontology/meta',
             'http://www.snik.eu/ontology/ob',
-            'http://www.snik.eu/ontology/it',
+            //'http://www.snik.eu/ontology/it',
             'http://www.snik.eu/ontology/ciox',
             'http://www.snik.eu/ontology/bb',
             'http://www.snik.eu/ontology/he',
