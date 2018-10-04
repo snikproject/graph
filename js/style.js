@@ -3,6 +3,10 @@ Cytoscape style file, excluding color information, which is contained in the col
 @see colorSchemeDay
 @see colorSchemeNight
 @module */
+
+import * as NODE from "./node.js";
+import * as EDGE from "./edge.js";
+
 var style =
   {
     'format_version': '1.0',
@@ -21,24 +25,24 @@ var style =
           'text-valign': 'center',
           'text-halign': 'center',
           'border-opacity': 1.0,
-          'border-width': function(ele)
+          'border-width': function(node)
           {
-            return ele.data('inst')?1.0:0.0;
+            return node.data(NODE.INSTANCE)?1.0:0.0;
           },
           'font-family': 'sans-serif',
           'font-weight': 'normal',
           'background-opacity': 0.5882352941176471,
           'text-opacity': 1.0,
-          'shape': function(ele)
+          'shape': function(node)
           {
-            switch(ele.data('st'))
+            switch(node.data(NODE.SUBTOP))
             {
             case 'E': {return 'rectangle';}//EntityType
             case 'R': {return 'ellipse';}//Role
             case 'F': {return 'triangle';}//Function
             }
             // the subtops don't have themselves as a subtop but should be shaped as such
-            switch(ele.data('id'))
+            switch(node.data(NODE.ID))
             {
             case 'http://www.snik.eu/ontology/meta/EntityType': {return 'rectangle';}
             case 'http://www.snik.eu/ontology/meta/Role': {return 'ellipse';}
@@ -46,16 +50,17 @@ var style =
             default: {return 'hexagon';}
             }
           },
-          'label': function(ele)
+          'label': function(node)
           {
             const SHOW_QUALITY=false;
             let label;
-            if(ele.data('le')&&ele.data('le')[0]) {label = ele.data('le')[0];}
-            else if(ele.data('ld')&&ele.data('ld')[0]) {label = ele.data('ld')[0];}
-            else if(ele.data('la')&&ele.data('la')[0]) {label = ele.data('la')[0];}
-            else {label = ele.data('id');}
+            let it;
+            if((it=node.data(NODE.LABEL_ENGLISH))&&it[0])     {label = it[0];}
+            else if((it=node.data(NODE.LABEL_GERMAN))&&it[0]) {label = it[0];}
+            else if((it=node.data(NODE.LABEL_OTHER))&&it[0])  {label = it[0];}
+            else {label = node.data(NODE.ID);}
             if(SHOW_QUALITY) {label+="\n\u25CB\u25CF\u25CB\u25CB\u25CF";}
-            if(ele.data('inst')) {label+="*";}
+            if(node.data(NODE.INSTANCE)) {label+="*";}
             return label;
           },
         },
@@ -124,9 +129,9 @@ var style =
           'min-zoomed-font-size': 9,
           'label': function(edge)
           {
-            let label = edge.data('pl');
+            let label = edge.data(EDGE.PROPERTY_LABEL);
             const SHOW_QUALITY=true;
-            if(SHOW_QUALITY&&edge.data('g')==="http://www.snik.eu/ontology/limes-exact")
+            if(SHOW_QUALITY&&edge.data(EDGE.GRAPH)==="http://www.snik.eu/ontology/limes-exact")
             {label+=" \u26A0";}
             return label;
           },

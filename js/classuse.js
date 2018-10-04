@@ -4,6 +4,7 @@ Show the environment of a single node using a special layout.
 import * as sparql from "./sparql.js";
 import * as log from "./log.js";
 import * as graph from "./graph.js";
+import * as NODE from "./node.js";
 
 /** Centers a class and shows directly and indirectly connected roles, functions and entity types in a concentric layout.
 Hides all other nodes. Resetting the view unhides the other nodes but keeps the layout of those shown before.
@@ -125,7 +126,7 @@ function classUse(clazz,subTop)
         minNodeSpacing: 20,
         concentric: function(node)
         {
-          const uri = node.data("id");
+          const uri = node.data(NODE.ID);
           if(uri===clazz) {return 10;}
           if(inner.has(uri)) {return 9;}
           if(middle.has(uri)) {return 8;}
@@ -134,7 +135,7 @@ function classUse(clazz,subTop)
           return 10; // temporary workaround for inner without subtop
           /*
           // faster but can't discern expanded entity types from directly connected ones
-          switch(node.data('st'))
+          switch(node.data(NODE.SUBTOP))
           {
           case "EntityType": return 1;
           case "Function": return 2;

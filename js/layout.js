@@ -5,6 +5,7 @@ If a breakthrough occurs in JavaScript graph layouting, update here and possibly
 @module */
 import * as log from "./log.js";
 import timer from "./timer.js";
+import * as NODE from "./node.js";
 
 var activeLayout = undefined;
 
@@ -29,7 +30,7 @@ export function positions(nodes)
   for(let i=0;i<nodes.size();i++)
   {
     const node = nodes[i];
-    pos.push([node.data('id'),node.position()]);
+    pos.push([node.data(NODE.ID),node.position()]);
   }
   return pos;
 }
@@ -88,7 +89,7 @@ export function presetLayout(cy,pos)
     positions: node=>
     {
       let position;
-      if((position= map.get(node.data('id'))))
+      if((position= map.get(node.data(NODE.ID))))
       {
         hits++;
         return position;

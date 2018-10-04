@@ -1,4 +1,8 @@
-/** Standard dark mode Cytoscape color scheme.*/
+/** Standard dark mode Cytoscape color scheme.
+@module
+*/
+import * as EDGE from "./edge.js";
+
 var colorschemenight =
   [
     {
@@ -57,7 +61,7 @@ var colorschemenight =
         'line-color': function(edge)
         {
           // highlight skos interlinks
-          if((String(edge.data('interaction')).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
+          if((String(edge.data(EDGE.PROPERTY)).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
           {
             return "rgb(255,128,128)";
           }

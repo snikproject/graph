@@ -2,6 +2,7 @@
 All colors are inverted because an inversion filter will be applied to the canvas when this scheme is active so that elements are effected that cannot be changed via a Cytoscape color scheme.
 @module
 */
+import * as EDGE from "./edge.js";
 
 var colorschemeday =
   [
@@ -86,7 +87,7 @@ var colorschemeday =
         'line-color': function(edge)
         {
         // highlight skos interlinks
-          if((String(edge.data('interaction')).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
+          if((String(edge.data(EDGE.PROPERTY)).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
           {
             return "rgb(255,128,128)";
           }

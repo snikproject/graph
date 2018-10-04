@@ -3,6 +3,7 @@ Helper functions for RDF properties.
 @module */
 import * as rdf from "./rdf.js";
 import * as log from "./log.js";
+import * as NODE from "./node.js";
 
 const propertyData = [
   ["meta:isAssociatedWith","is associated with",null,null,false,true],
@@ -58,13 +59,12 @@ export function possible(subjectNode,objectNode)
 {
   const possibleProperties = properties.filter((element)=>
   {
-    return ((!element.domain)||element.domain===subjectNode.data('st')) // domain
-  &&((!element.range)||element.range===objectNode.data('st')) // range
-  &&((subjectNode.data('prefix')===objectNode.data('prefix'))!==(element.interontology)) // interontology
-    &&((element.uri!=="http://www.w3.org/2000/01/rdf-schema#subClassOf")||(subjectNode.data('st')===objectNode.data('st'))) // rdfs:subClassOf only with the same subtop
-    ;
+    return ((!element.domain)||element.domain===subjectNode.data(NODE.SUBTOP)) // domain
+  &&((!element.range)||element.range===objectNode.data(NODE.SUBTOP)) // range
+  &&((subjectNode.data(NODE.PREFIX)===objectNode.data(NODE.PREFIX))!==(element.interontology)) // interontology
+    &&((element.uri!=="http://www.w3.org/2000/01/rdf-schema#subClassOf")||(subjectNode.data(NODE.SUBTOP)===objectNode.data(NODE.SUBTOP))); // rdfs:subClassOf only with the same subtop
   }
   );
-  log.trace(`possible properties between ${subjectNode.data('id')} and ${objectNode.data('id')}:`, possibleProperties);
+  log.trace(`possible properties between ${subjectNode.data(NODE.ID)} and ${objectNode.data(NODE.ID)}:`, possibleProperties);
   return possibleProperties;
 }

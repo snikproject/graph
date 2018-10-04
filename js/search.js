@@ -4,6 +4,7 @@ Textual node search.
 import * as graph from "./graph.js";
 import * as sparql from "./sparql.js";
 import * as log from "./log.js";
+import * as NODE from "./node.js";
 
 const USE_BIF_CONTAINS = false; // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 var firstCumulativeSearch = true;
@@ -168,7 +169,7 @@ function showSearchResults(query, uris)
 
   resultNodes = graph.cy.elements().nodes().filter((node)=>
   {
-    return uris.has(node.data("name"));
+    return uris.has(node.data(NODE.ID));
   });
   return true;
 }

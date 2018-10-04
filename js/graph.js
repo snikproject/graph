@@ -14,6 +14,7 @@ import * as sparql from "./sparql.js";
 import * as log from "./log.js";
 import {registerMenu} from "./contextmenu.js";
 import timer from "./timer.js";
+import * as NODE from "./node.js";
 
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
 var cy = null;
@@ -160,10 +161,10 @@ function showStar(node, changeLayout)
         fit: true,
         levelWidth: function() {return 1;},
         minNodeSpacing: 35,
-        concentric: function(node)
+        concentric: function(layoutNode)
         {
-          if(innerNodes.contains(node)) {return 2;}
-          if(outerNodes.contains(node)) {return 1;}
+          if(innerNodes.contains(layoutNode)) {return 2;}
+          if(outerNodes.contains(layoutNode)) {return 1;}
           throw new Error("unexpected node in star");
         },
       }
@@ -274,7 +275,7 @@ function setSource(node)
   pathSource.addClass('source');
   /*
       document.getElementById('sourcelabel').innerHTML=
-      pathSource.data('id').replace(sparql.SPARQL_PREFIX,'');
+      pathSource.data(NODE.ID).replace(sparql.SPARQL_PREFIX,'');
       */
   return true;
 }
@@ -302,7 +303,7 @@ function setTarget(node)
   pathTarget = node;
   pathTarget.addClass('target');
   document.getElementById('targetlabel').innerHTML=
-      pathTarget.data('id').replace(sparql.SPARQL_PREFIX,'');
+      pathTarget.data(NODE.ID).replace(sparql.SPARQL_PREFIX,'');
 }
 
 /** Removes all highlighting (except selection) and shows all hidden nodes. */
