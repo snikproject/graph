@@ -24,21 +24,21 @@ The root folder contains all the HTML files.
 * a Linux compatible command line interface, e.g. a Linux shell or Git Bash on Windows
 * npm installed and the paths configured so that it can be executed via `npm`
 * wget installed
-* a browser that supports JavaScript ES6 is recommended, so you don't have to transpile for every change
+* a browser that supports JavaScript ES6, modules included, is recommended, so you don't have to transpile for every change
 
 ### Setup
 1. clone this repository
-2. ./init
+2. npm install
+3. copy config.dist.js to config.js
+4. link or copy index-prod.html or index-dev.html to index.html
 
 ### Publish
 
-Execute the setup step once and use development with tooling (see below) because some users use old browsers.
-Each time there are changes you want to publish and the tests are successfull, go on the server and do:
+Execute the setup step one and then run `npm run build`.
+If you want the newest changes from the GitHub repository, execute:
 
 1. `git pull`
 2. `npm run build`
-
-On the server, the index-babel.html is already renamed to index.html. If you setup a new server, delete index.html, rename index-babel.html to index.html and **don't** push this change from the server.
 
 ### Code Style
 Specified in the ESlint config file `.eslintrc.json`.
@@ -50,13 +50,14 @@ Instead of "eles", "cy.collection" may be used as JSDOC type.
 * `npm run build` transpiles the code for browsers without full ES6 support, used by index-babel.html
 * `npm run jsdoc` generates the API documentation
 
-### Pure JavaScript Development
-If you don't like to use npm and babel you can use a pure JavaScript workflow for development but then your browser needs to support the source requirements (some browsers need experimental flags activated).
+### Pure vs transpiled development
+I recommend the pure JavaScript workflow for development by opening index-dev.html but then your browser needs to support the source requirements.
+Fortunately, the require ES2015 features are implemented by all major browsers for a while except the Internet Explorer but that one doesn't work anyways even with transpilation.
+Modules can be used in the browser versions of at least Safari 10.1, Chrome 61, Firefox 60 and Edge 16.
+In Firefox versions [54-59], go to `about:config` and set `dom.moduleScripts.enabled=true`.
 
-For example, in Firefox 57, go to `about:config` and set `dom.moduleScripts.enabled=true`.
+If your users have those browsers, you can stay with pure JavaScript and don't need the `npm run build`.
 
-### Development with Tooling
+### Unit Tests
 
-* At first checkout, run `npm install` to download the necessary NPM modules.
 * To execute the Mocha unit tests, run `npm run test`.
-* For production or if you develop on an browser without ES 6 module support, run `npm run build` and then open `index-babel.html`.
