@@ -7,3 +7,10 @@ target
 node_modules
 config.js
 lib
+dist
+scratch
+saves
+test.js
+index.html
+data/snik.json
+package-lock.json
