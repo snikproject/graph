@@ -1,7 +1,7 @@
 /**
 Loading animation for long processes, such as layouting.
 @module */
-import {Spinner} from '../lib/spin.js';
+import {Spinner} from '../node_modules/spin.js/spin.js';
 
 const opts = {
   lines: 13, // The number of lines to draw
@@ -22,8 +22,8 @@ const opts = {
   top: '50%', // Top position relative to parent
   left: '50%', // Left position relative to parent
   shadow: false, // Whether to render a shadow
-  hwaccel: false, // Whether to use hardware acceleration
-  position: 'absolute', // Element positioning
+  hwaccel: true, // Whether to use hardware acceleration
+  position: 'absolute', // Element positioning*/
 };
 let spinner = null;
 let active = 0;
