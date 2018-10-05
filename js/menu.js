@@ -4,7 +4,9 @@ Populates the menu bar on the top.
 import {MODIFIED} from "./about.js";
 import * as log from "./log.js";
 import * as download from "./download.js";
-import {invert} from "./graph.js";
+import * as graph from "./graph.js";
+import * as layout from "./layout.js";
+import * as rdfGraph from "./rdfGraph.js";
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
 
 /** Notifies the user of the program version so that errors can be properly reported. */
@@ -31,6 +33,7 @@ function menuData()
         [download.downloadGraph,"Save Full Graph with Layout as Cytoscape File"],
         [download.downloadVisibleGraph,"Save Visible Graph with Layout as Cytoscape File"],
         [download.downloadLayout,"Save Layout only"],
+        [()=>{layout.run(graph.cy,layout.euler,rdfGraph.subs());},"Recalculate Layout and Replace in Browser Cache"],
         [()=>download.downloadPng(false,false),"Save Image of Current View "],
         [()=>download.downloadPng(true,false),"Save Image of Whole Graph"],
         [()=>download.downloadPng(false,true),"Save Image of Current View (high res)"],
@@ -83,7 +86,7 @@ function addOptions()
   `<span class="dropdown-entry"><input type="checkbox" autocomplete="off" id="cumulativesearch"/>cumulative search</span>
   <span  class="dropdown-entry"><input type="checkbox"  autocomplete="off" id="daymode"/>day mode</span> `;
   const daymode = document.getElementById("daymode");
-  daymode.addEventListener("change",()=>invert(daymode.checked));
+  daymode.addEventListener("change",()=>graph.invert(daymode.checked));
 }
 
 

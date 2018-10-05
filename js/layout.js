@@ -6,6 +6,7 @@ If a breakthrough occurs in JavaScript graph layouting, update here and possibly
 import * as log from "./log.js";
 import timer from "./timer.js";
 import * as NODE from "./node.js";
+import {progress} from "./progress.js";
 
 var activeLayout = undefined;
 
@@ -45,9 +46,11 @@ run(cy,{"name":"grid"},new Set(["meta","ciox"]))
 */
 export function run(cy,layoutConfig,subs)
 {
+  progress(0);
   if(cy.nodes().size()===0)
   {
     log.warn("layout.js#run: Graph empty. Nothing to layout.");
+    progress(100);
     return false;
   }
   const layoutTimer = timer("layout");
@@ -60,12 +63,14 @@ export function run(cy,layoutConfig,subs)
     if(typeof(localStorage)=== "undefined")
     {
       log.error("web storage not available, could not write to cache.");
+      progress(100);
       return true;
     }
     const pos=positions(cy.nodes());
     const name = storageName(layoutConfig.name,subs);
     localStorage.setItem(name,JSON.stringify(pos));
   }
+  progress(100);
   return true;
 }
 
@@ -184,9 +189,12 @@ export var euler =
 {
   /*eslint no-unused-vars: "off"*/
   name: "euler",
-  springLength: edge => 200,
-  maxSimulationTime: 2000,
+  springLength: edge => 800,
+  animate: false,
+  refresh: 50,
+  maxSimulationTime: 20000,
   randomize: true,
+  movementThreshold: 1,
   fit:false,
   mass: node => 40,
 };
