@@ -1,6 +1,6 @@
 var config =
 {
-  defaultSubOntologies: ["meta","bb","ob","ciox","he","it4it","it"],
+  defaultSubOntologies: ["meta","bb","ob","ciox","he","it4it"],
   // levels: error, warn, info, debug, trace
   logLevelConsole: "debug",
   logLevelDisplay: "info",
