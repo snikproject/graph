@@ -3,7 +3,7 @@ var config =
   defaultSubOntologies: ["meta","bb","ob","ciox","he","it4it"],
   // levels: error, warn, info, debug, trace
   logLevelConsole: "debug",
-  logLevelDisplay: "info",
+  logLevelDisplay: "error",
   // recalculate layout at the start when those conditions aren't met
   // proportion of nodes that can be assigned a position
   // e.g. a recall of 0.9 means that 10% of the nodes are not layouted

@@ -23,8 +23,7 @@ function callSource()
 /** Logs the given messages with log level info */
 export function info(s)
 {
-  if(typeof config === 'undefined'||config.logLevelDisplay==="info"||config.logLevelDisplay==="debug"||config.logLevelDisplay==="trace")
-  {if((typeof dhtmlx) !== "undefined") {dhtmlx.message(s);}}
+  if(typeof config !== 'undefined'&&config.logLevelDisplay==="info"||config.logLevelDisplay==="debug"||config.logLevelDisplay==="trace") {alert(s);}
   if(!config||config.logLevelConsole==="info"||config.logLevelConsole==="debug"||config.logLevelConsole==="trace")
   {
     const argumentsArray = Array.prototype.slice.call(arguments);
@@ -36,8 +35,7 @@ export function info(s)
 /** Logs the given messages with log level info */
 export function debug(s)
 {
-  if(typeof config === 'undefined'||config.logLevelDisplay==="debug"||config.logLevelDisplay==="trace")
-  {if((typeof dhtmlx) !== "undefined") {dhtmlx.message(s);}}
+  if(typeof config !== 'undefined'&&config.logLevelDisplay==="debug"||config.logLevelDisplay==="trace")  {alert(s);}
   if(typeof config === 'undefined'||config.logLevelConsole==="debug"||config.logLevelConsole==="trace")
   {
     const argumentsArray = Array.prototype.slice.call(arguments);
@@ -50,7 +48,7 @@ export function debug(s)
  Errors are always shown both on console and display.*/
 export function error(s)
 {
-  if((typeof dhtmlx) !== "undefined") {dhtmlx.message({type: "error", text: s});}
+  alert(s);
   {
     const argumentsArray = Array.prototype.slice.call(arguments);
     argumentsArray.push(callSource());
@@ -61,8 +59,7 @@ export function error(s)
 /** Logs the given messages with log level warn */
 export function warn(s)
 {
-  if(typeof config === 'undefined'||config.logLevelDisplay!=="error")
-  {if((typeof dhtmlx) !== "undefined") {dhtmlx.message(s);}}
+  if(typeof config !== 'undefined'&&config.logLevelDisplay!=="error")  {alert(s);}
   if(typeof config === 'undefined'||config.logLevelConsole!=="error")
   {
     const argumentsArray = Array.prototype.slice.call(arguments);
@@ -71,7 +68,7 @@ export function warn(s)
   }
 }
 
-/** Logs the given messages with log level trace. Never shown as an overlay. */
+/** Logs the given messages with log level trace. Never displayed to the user. */
 export function trace()
 {
   if(typeof config === 'undefined'||config.logLevelConsole!=="trace") {return;}
