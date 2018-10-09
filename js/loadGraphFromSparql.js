@@ -46,11 +46,15 @@ export default function loadGraphFromSparql(cy,subs)
   sample(?st) as ?st
   ?src
   sample(?inst) as ?inst
+  sample(?bp) as ?bp
+  sample(?op) as ?op
   ${froms}
   {
     ?c a owl:Class.
-
     OPTIONAL {?src ov:defines ?c.}
+    OPTIONAL {?c meta:subTopClass ?st.}
+    OPTIONAL {?c ob:page ?op.}
+    OPTIONAL {?c bb:page ?bp.}
     OPTIONAL {?c meta:subTopClass ?st.}
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?inst a ?c.}
@@ -103,6 +107,8 @@ export default function loadGraphFromSparql(cy,subs)
             ld: ld,
             le: le,
             la: la,
+            bp: json[i].bp?json[i].bp.value.split(",")[0].trim():null,
+            op: json[i].op?json[i].op.value.split(",")[0].trim():null,
             st: (json[i].st===undefined)?null:json[i].st.value.replace("http://www.snik.eu/ontology/meta/","").substring(0,1),
             prefix: (json[i].src===undefined)?null:json[i].src.value.replace("http://www.snik.eu/ontology/",""),
             inst: json[i].inst!==undefined,

@@ -41,6 +41,33 @@ const defaultsNodes = {
       },
     },
     {
+      content: 'book page (private)',
+      select: function(node)
+      {
+        let source = "bb";
+        let page = node.data("bp");
+        if(!page)
+        {
+          source="ob";
+          page = node.data("op");
+        }
+        if(!page)
+        {
+          alert("no book page defined");
+          return;
+        }
+        switch(source)
+        {
+        case 'bb':
+          window.open("https://denethor.imise.uni-leipzig.de/remote.php/webdav/Shared/SNIK/bb.pdf#page="+page,);
+          break;
+
+        case 'ob':
+          window.open("https://denethor.imise.uni-leipzig.de/remote.php/webdav/Shared/SNIK/ob.pdf#page="+page,"_blank");
+          break;
+        }
+      }},
+    {
       content: 'set as path source',
       select: node=>
       {
