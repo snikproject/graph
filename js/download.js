@@ -1,8 +1,10 @@
 /**
-Lets the user download files generated from the loaded graph. 
+Lets the user download files generated from the loaded graph.
 @module */
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
+
+let a = null; // reused for all downloading, not visible to the user
 
 /**
 Create a JSON file out of a JSON data string and lets the user download it.
@@ -10,22 +12,22 @@ Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-w
 @param {string} data a JSON string
 @param {string} filename the name of the downloaded file
 */
-export var downloadJson = (function ()
+export function downloadJson(data,fileName)
 {
-  var a = document.createElement("a");
-  document.body.appendChild(a);
-  a.style = "display: none";
-  return function (data, fileName)
+  if(a===null)
   {
-    const json = JSON.stringify(data),
-      blob = new Blob([json], {type: "application/json"}),
-      url = window.URL.createObjectURL(blob);
-    a.href = url;
-    a.download = fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
-}());
+    a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+  }
+  const json = JSON.stringify(data);
+  const blob = new Blob([json], {type: "application/json"});
+  const url = window.URL.createObjectURL(blob);
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  window.URL.revokeObjectURL(url);
+}
 
 /**
 Lets the user download a file.
@@ -33,19 +35,19 @@ Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-w
 @param {string} url a URL that resolves to a file
 @param {string} filename the name of the downloaded file
 */
-export var downloadUrl = (function ()
+export function downloadUrl(url, fileName)
 {
-  var a = document.createElement("a");
-  document.body.appendChild(a);
-  a.style = "display: none";
-  return function (url, fileName)
+  if(a===null)
   {
-    a.href = url;
-    a.download = fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
-}());
+    a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+  }
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  window.URL.revokeObjectURL(url);
+}
 
 /** Downloads the whole layouted graph as a Cytoscape JSON file. */
 export function downloadGraph()
