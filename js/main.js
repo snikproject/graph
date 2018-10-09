@@ -13,32 +13,38 @@ import * as rdfGraph from "./rdfGraph.js";
 import * as layout from "./layout.js";
 import {progress} from "./progress.js";
 
-progress(0);
-graph.initGraph();
-
-window.addEventListener('keydown', e=>
+/** Entry point. Is run when DOM is loaded. **/
+function main()
 {
-  if((e.key==='Escape'||e.key==='Esc'||e.keyCode===27))// && (e.target.nodeName==='BODY'))
-  {
-    e.preventDefault();
-    search.hideSearchResults();
-    return false;
-  }
-}, true);
+  progress(0);
+  graph.initGraph();
 
-loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies))
-  .then(()=>
+  window.addEventListener('keydown', e=>
   {
-    layout.runCached(graph.cy,layout.euler,rdfGraph.subs());
-    graph.cy.zoom(0.3);
-    graph.cy.center(graph.cy.nodes("node[id='http://www.snik.eu/ontology/meta/Top']"));
-  })
-  .then(()=>
-  {
-    addMenu();
-    addFilterEntries(graph.cy,document.getElementById("filter"));
-    file.addFileLoadEntries(document.getElementById("file"));
-    search.addSearch();
-    addButtons();
-  })
-  .then(()=>progress(100));
+    if((e.key==='Escape'||e.key==='Esc'||e.keyCode===27))// && (e.target.nodeName==='BODY'))
+    {
+      e.preventDefault();
+      search.hideSearchResults();
+      return false;
+    }
+  }, true);
+
+  loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies))
+    .then(()=>
+    {
+      layout.runCached(graph.cy,layout.euler,rdfGraph.subs());
+      graph.cy.zoom(0.3);
+      graph.cy.center(graph.cy.nodes("node[id='http://www.snik.eu/ontology/meta/Top']"));
+    })
+    .then(()=>
+    {
+      addMenu();
+      addFilterEntries(graph.cy,document.getElementById("filter"));
+      file.addFileLoadEntries(document.getElementById("file"));
+      search.addSearch();
+      addButtons();
+    })
+    .then(()=>progress(100));
+}
+
+document.addEventListener("DOMContentLoaded",main);
