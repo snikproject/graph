@@ -21,15 +21,27 @@ navigator.sayswho= (function()
   return {name:M[0],version:M[1]};
 })();
 
-/**Alerts the user if the browser cannot run ES6. Only an approximation using some browser name and versions, may fail to warn or warn incorrectly. */
-function browsercheck()
+/** Alerts the user if the browser version is so old, that even the transpiled and polyfilled version is not guaranteed to work.
+Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly. */
+function browserCheckTranspiled()
 {
   if (
-    (navigator.sayswho.name === 'Firefox' && navigator.sayswho.version < 54) ||
+    (navigator.sayswho.name === 'Firefox' && navigator.sayswho.version < 50) ||
   (navigator.sayswho.name === 'Internet Explorer') ||
-  (navigator.sayswho.name === 'Chrome' && navigator.sayswho.version < 60)
+  (navigator.sayswho.name === 'Chrome' && navigator.sayswho.version < 54)
   )
   {alert(`Your browser ${navigator.sayswho.name} version ${navigator.sayswho.version} may be outdated. Graph may not work properly.`);}
 }
 
-browsercheck();
+/**Alerts the user if the browser cannot run the nontranspiled code, which uses ES6 modules.
+Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly. */
+function browserCheckNonTranspiled()
+{
+  if (
+    (navigator.sayswho.name === 'Firefox' && navigator.sayswho.version < 60) ||
+  (navigator.sayswho.name === 'Internet Explorer') ||
+  (navigator.sayswho.name === 'Chrome' && navigator.sayswho.version < 61)
+  )
+  {alert(`Your browser ${navigator.sayswho.name} version ${navigator.sayswho.version} may be outdated for the development build. Graph may not work properly. Try using the transpiled production build.`);}
+}
+

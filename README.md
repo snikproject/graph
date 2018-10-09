@@ -54,7 +54,9 @@ Instead of "eles", "cy.collection" may be used as JSDOC type.
 I recommend the pure JavaScript workflow for development by opening index-dev.html but then your browser needs to support the source requirements.
 Fortunately, the require ES2015 features are implemented by all major browsers for a while except the Internet Explorer but that one doesn't work anyways even with transpilation.
 Modules can be used in the browser versions of at least Safari 10.1, Chrome 61, Firefox 60 and Edge 16.
+
 In Firefox versions [54-59], go to `about:config` and set `dom.moduleScripts.enabled=true`.
+Chrome needs the "--allow-file-access-from-files" parameter to load modules locally.
 
 If your users have those browsers, you can stay with pure JavaScript and don't need the `npm run build`.
 
