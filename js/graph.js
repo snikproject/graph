@@ -1,4 +1,4 @@
-/**
+null;/**
 Provides graph operations such as initialization, wayfinding, highlighting, showing and hiding.
 While star operations and reset style use the Cytoscape.js visibility attribute while filters use the "display" attribute
 This ensures that filters and star operations interact properly, for example that resetting the style does not show filtered nodes.
@@ -257,7 +257,7 @@ function setSource(node)
 {
   if(!node) {return false;}
   //document.getElementById('centersource').hidden=false;
-  if(pathTarget !== undefined)
+  if(pathTarget !== null)
   {
     /*
         document.getElementById('shortestpath').hidden=false;
@@ -267,7 +267,7 @@ function setSource(node)
         */
     cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
   }
-  if(pathSource!==undefined)
+  if(pathSource!==null)
   {
     pathSource.removeClass('source');
   }
@@ -288,7 +288,7 @@ function setTarget(node)
 {
   if(!node) {return false;}
   document.getElementById('centertarget').hidden=false;
-  if(pathSource !== undefined)
+  if(pathSource !== null)
   {
     document.getElementById('shortestpath').hidden=false;
     document.getElementById('spiderworm').hidden=false;
@@ -296,7 +296,7 @@ function setTarget(node)
     document.getElementById('starpath').hidden=false;
     cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
   }
-  if(pathTarget!==undefined)
+  if(pathTarget!==null)
   {
     pathTarget.removeClass('target');
   }
