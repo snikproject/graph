@@ -17,7 +17,7 @@ Requires a browser with ES6 module support:
 Chrome needs the "--allow-file-access-from-files" parameter to load modules locally but still fails to load them from files in version 69.0.3497.100, so for developing with Chrome you need a local web server.
 
 ### index-prod.html 
-This is the transpiled version that deployed at http://www.snik.eu/graph. Seeing the changes requires a `npm run build`, so it is not recommended for development.
+This is the transpiled version that is deployed at http://www.snik.eu/graph. Seeing the changes requires a `npm run build`, so it is not recommended for development.
 
 * Firefox 50+
 * Chrome 54+
@@ -28,13 +28,6 @@ This is the transpiled version that deployed at http://www.snik.eu/graph. Seeing
 If you notice different behaviour on your browser, i.e. your browser is newer and doesn't work or older and does work, please create an issue.
 
 ## Development
-
-### Development Requirements
-
-* development on Linux or Mac OS is preferred. If you use Windows, you need to make sure all the tools (git, wget, npm, a text editor that handles different line endings and UTF8 encoding) are installed and the paths are properly configured
-* a Linux compatible command line interface, e.g. a Linux shell or Git Bash on Windows
-* npm installed and the paths configured so that it can be executed via `npm`
-* wget installed
 
 ### Setup
 1. `git clone` this repository
@@ -52,9 +45,14 @@ If you want the newest changes from the GitHub repository, execute `git pull` fi
 ### Code Style
 Specified in the ESlint config file `.eslintrc.json`.
 Use the [Cytoscape.js notation](http://js.cytoscape.org/#notation/functions) for JSDoc types and generic parameters, such as "ele" for "a collection of a single element (node or edge)".
-Instead of "eles", "cy.collection" may be used as JSDOC type.
+Instead of "eles", "cy.collection" may be used as JSDoc type.
 
-## Scripts
+### Scripts
 * `npm run test` runs the mocha tests
 * `npm run build` transpiles the code for browsers without full ES6 support, used by index-babel.html
 * `npm run jsdoc` generates the API documentation
+
+## Adaptation
+
+If you like SNIK Graph and want to use it with different data, please open an issue.
+While the main part is written generally, there .
