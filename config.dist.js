@@ -2,6 +2,8 @@ var config =
 {
   defaultSubOntologies: ["meta","bb","ob","ciox","he","it4it"],
   // levels: error, warn, info, debug, trace
+  minInfoTime : 500,
+  minDebugTime : 50,
   logLevelConsole: "debug",
   logLevelDisplay: "error",
   // recalculate layout at the start when those conditions aren't met
