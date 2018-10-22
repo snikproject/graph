@@ -56,21 +56,24 @@ export function run(cy,layoutConfig,subs)
   const layoutTimer = timer("layout");
   if(activeLayout) {activeLayout.stop();}
   activeLayout = cy.elements(":visible").layout(layoutConfig);
-  activeLayout.run();
-  layoutTimer.stop();
-  if(subs)
+  activeLayout.on("layoutstop",()=>
   {
-    if(typeof(localStorage)=== "undefined")
+    layoutTimer.stop();
+    if(subs)
     {
-      log.error("web storage not available, could not write to cache.");
-      progress(100);
-      return true;
+      if(typeof(localStorage)=== "undefined")
+      {
+        log.error("web storage not available, could not write to cache.");
+        progress(100);
+        return true;
+      }
+      const pos = positions(cy.nodes());
+      const name = storageName(layoutConfig.name,subs);
+      localStorage.setItem(name,JSON.stringify(pos));
     }
-    const pos=positions(cy.nodes());
-    const name = storageName(layoutConfig.name,subs);
-    localStorage.setItem(name,JSON.stringify(pos));
-  }
-  progress(100);
+    progress(100);
+  });
+  activeLayout.run();
   return true;
 }
 
@@ -90,7 +93,7 @@ export function presetLayout(cy,pos)
   const layoutConfig =
   {
     name: 'preset',
-    fit:false,
+    fit:true,
     positions: node=>
     {
       let position;
@@ -190,11 +193,11 @@ export var euler =
   /*eslint no-unused-vars: "off"*/
   name: "euler",
   springLength: edge => 800,
-  animate: false,
+  animate: true,
   refresh: 50,
   maxSimulationTime: 20000,
   randomize: true,
   movementThreshold: 1,
-  fit:false,
+  fit:true,
   mass: node => 40,
 };
