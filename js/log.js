@@ -5,22 +5,9 @@ Logging to console or overlay or both, depending on availability (server call us
 // temporary solution. todo: use a logging library or write more elegantly using enums or integers
 
 /**
- * callSource - description
- *
- * @return {type}  description
-
+ * Logs the given messages with log level info
+ * @param {string} s
  */
-function callSource() {
-  // https://stackoverflow.com/questions/1340872/how-to-get-javascript-caller-function-line-number-how-to-get-javascript-caller
-  var e = new Error();
-  if (!e.stack) {
-    return '';
-  } // old browser
-  var stack = e.stack.toString().split(/\r\n|\n/);
-  return '            [' + stack[2].replace(/.*\//, '') + ']';
-}
-
-/** Logs the given messages with log level info */
 export function info(s) {
   if (
     (typeof config !== 'undefined' && config.logLevelDisplay === 'info') ||
@@ -35,13 +22,13 @@ export function info(s) {
     config.logLevelConsole === 'debug' ||
     config.logLevelConsole === 'trace'
   ) {
-    const argumentsArray = Array.prototype.slice.call(arguments);
-    argumentsArray.push(callSource());
-    console.log.apply(console, argumentsArray);
+    log(arguments);
   }
 }
 
-/** Logs the given messages with log level info */
+/**
+ * Logs the given messages with log level info
+ */
 export function debug(s) {
   if (
     (typeof config !== 'undefined' && config.logLevelDisplay === 'debug') ||
@@ -54,41 +41,60 @@ export function debug(s) {
     config.logLevelConsole === 'debug' ||
     config.logLevelConsole === 'trace'
   ) {
-    const argumentsArray = Array.prototype.slice.call(arguments);
-    argumentsArray.push(callSource());
-    console.log.apply(console, argumentsArray);
+    log(arguments);
   }
 }
 
-/** Logs the given messages with log level error
- Errors are always shown both on console and display.*/
+/**
+ * Logs the given messages with log level error
+ * Errors are always shown both on console and display.
+ */
 export function error(s) {
   alert(s);
-  {
-    const argumentsArray = Array.prototype.slice.call(arguments);
-    argumentsArray.push(callSource());
-    console.log.apply(console, argumentsArray);
-  }
+  log(arguments);
 }
 
-/** Logs the given messages with log level warn */
+/**
+ * Logs the given messages with log level warn
+ */
 export function warn(s) {
   if (typeof config !== 'undefined' && config.logLevelDisplay !== 'error') {
     alert(s);
   }
   if (typeof config === 'undefined' || config.logLevelConsole !== 'error') {
-    const argumentsArray = Array.prototype.slice.call(arguments);
-    argumentsArray.push(callSource());
-    console.log.apply(console, argumentsArray);
+    log(arguments);
   }
 }
 
-/** Logs the given messages with log level trace. Never displayed to the user. */
+/**
+ * Logs the given messages with log level trace. Never displayed to the user.
+ */
 export function trace() {
   if (typeof config === 'undefined' || config.logLevelConsole !== 'trace') {
     return;
   }
-  const argumentsArray = Array.prototype.slice.call(arguments);
+  log(arguments);
+}
+
+/**
+ * @param {Arguments<any>}
+ */
+function log(params) {
+  const argumentsArray = [...params];
   argumentsArray.push(callSource());
-  console.log.apply(console, argumentsArray);
+  console.log(...argumentsArray);
+}
+
+/**
+ * @return {string} string with caller function
+ */
+function callSource() {
+  // https://stackoverflow.com/questions/1340872/how-to-get-javascript-caller-function-line-number-how-to-get-javascript-caller
+  const e = new Error();
+  // old browser
+  if (!e.stack) {
+    return '';
+  }
+  const stack = e.stack.toString().split(/\r\n|\n/);
+  return `            [${stack[2].replace(/.*\//, '')}]`;
 }
