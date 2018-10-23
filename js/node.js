@@ -9,3 +9,6 @@ export const LABEL_OTHER = "la";
 export const SUBTOP = "st";
 export const PREFIX = "prefix";
 export const INSTANCE = "inst"; // whether this is an instance of some class
+export const SUBTOP_ENTITY_TYPE = "E";
+export const SUBTOP_ROLE = "R"; 
+export const SUBTOP_FUNCTION = "F";

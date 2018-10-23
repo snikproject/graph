@@ -37,9 +37,9 @@ var style =
           {
             switch(node.data(NODE.SUBTOP))
             {
-            case 'E': {return 'rectangle';}//EntityType
-            case 'R': {return 'ellipse';}//Role
-            case 'F': {return 'triangle';}//Function
+            case NODE.SUBTOP_ENTITY_TYPE: {return 'rectangle';}//EntityType
+            case NODE.SUBTOP_ROLE: {return 'ellipse';}//Role
+            case NODE.SUBTOP_FUNCTION: {return 'triangle';}//Function
             }
             // the subtops don't have themselves as a subtop but should be shaped as such
             switch(node.data(NODE.ID))

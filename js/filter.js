@@ -8,21 +8,22 @@ See http://js.cytoscape.org/#style/visibility.
 */
 import timer from "./timer.js";
 import * as log from "./log.js";
+import * as NODE from "./node.js";
 
 const filterData = [
-  ["node[prefix='meta']","meta"],
-  ["node[prefix='bb']","BB"],
-  ["node[prefix='ob']","OB"],
-  ["node[prefix='ciox']","CioX"],
-  ["node[prefix='he']","HE"],
-  ["node[prefix='it']","IT"],
-  ["node[prefix='it4it']","IT4IT"],
-  ["node[st='EntityType']","EntityType"],
-  ["node[st='Role']","Role"],
-  ["node[st='Function']","Function"],
-  ["edge[p='http://www.w3.org/2000/01/rdf-schema#subClassOf']","subClassOf"],
-  ["edge[p^='http://www.w3.org/2004/02/skos/core#']","inter-ontology-relations"],
-  ["edge[p!^='http://www.w3.org/2004/02/skos/core#']","non-inter-ontology-relations"],
+  [`node[${NODE.PREFIX}='meta']`,`meta`],
+  [`node[${NODE.PREFIX}='bb']`,`BB`],
+  [`node[${NODE.PREFIX}='ob']`,`OB`],
+  [`node[${NODE.PREFIX}='ciox']`,`CioX`],
+  [`node[${NODE.PREFIX}='he']`,`HE`],
+  [`node[${NODE.PREFIX}='it']`,`IT`],
+  [`node[${NODE.PREFIX}='it4it']`,`IT4IT`],
+  [`node[${NODE.SUBTOP}='${NODE.SUBTOP_ENTITY_TYPE}']`,`EntityType`],
+  [`node[${NODE.SUBTOP}='${NODE.SUBTOP_ROLE}']`,`Role`],
+  [`node[${NODE.SUBTOP}='${NODE.SUBTOP_FUNCTION}']`,`Function`],
+  [`edge[p='http://www.w3.org/2000/01/rdf-schema#subClassOf']`,`subClassOf`],
+  [`edge[p^='http://www.w3.org/2004/02/skos/core#']`,`inter-ontology-relations`],
+  [`edge[p!^='http://www.w3.org/2004/02/skos/core#']`,`non-inter-ontology-relations`],
   //["edge[p='http://www.snik.eu/ontology/meta/subTopClass']","subTopClass"],
   //["node[consolidated<=0]","unverified"]
 ];
