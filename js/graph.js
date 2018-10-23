@@ -1,4 +1,4 @@
-null;/**
+/**
 Provides graph operations such as initialization, wayfinding, highlighting, showing and hiding.
 While star operations and reset style use the Cytoscape.js visibility attribute while filters use the "display" attribute
 This ensures that filters and star operations interact properly, for example that resetting the style does not show filtered nodes.
