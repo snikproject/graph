@@ -16,6 +16,34 @@ String.prototype.hashCode = function()
   return hash;
 };
 
+/** https://github.com/binded/empty-promise/blob/master/src/index.js, is there a shorter or build in option?*/
+function emptyPromise()
+{
+  let callbacks;
+  let done = false;
+
+  const p = new Promise((resolve, reject) =>
+  {
+    callbacks = { resolve, reject };
+  });
+
+  p.done = () => done;
+  p.resolve = (val) =>
+  {
+    callbacks.resolve(val);
+    done = true;
+    return p;
+  };
+  p.reject = (val) =>
+  {
+    callbacks.reject(val);
+    done = true;
+    return p;
+  };
+
+  return p;
+}
+
 // /**expands the snik pseudo prefix*/ optimization removed due to it being slower
 // function expand(short) {return short.replace("s:","http://www.snik.eu/ontology/");}
 
@@ -69,15 +97,18 @@ export default function loadGraphFromSparql(cy,subs)
     filter(?p!=meta:subTopClass)
   }`;
   const sparqlClassesTimer = timer("sparql-classes");
-  let sparqlPropertiesTimer;
   const classes = undefined;//localStorage.getItem('classes');
   // if not in cache, load
-  const classesPromise = (classes===undefined)?
+  const classPromise = (classes===undefined)?
     sparql.sparql(classQuery):Promise.resolve(classes);
+  const propertyPromise = sparql.sparql(propertyQuery);
+  const nodePromise = emptyPromise();
+  const edgePromise = emptyPromise();
 
-  return classesPromise.then((json)=>
+  classPromise.then((json)=>
   {
     sparqlClassesTimer.stop(json.length+" classes");
+    const nodes = [];
     for(let i=0;i<json.length;i++)
     {
       const labels = json[i].l.value.split("|");
@@ -95,7 +126,7 @@ export default function loadGraphFromSparql(cy,subs)
         }
       }
 
-      cy.add(
+      nodes.push(
         {
           group: "nodes",
           data: {
@@ -113,44 +144,53 @@ export default function loadGraphFromSparql(cy,subs)
       /*console.log(json[i].l);
         console.log(json[i].l.value);*/
     }
-  }).then(()=>
-  {
-    sparqlPropertiesTimer = timer("sparql-properties");
-    //const triplesPromise =
-    // only show classes with labels, use any one if more than one
-    //`select ?c replace(str(?p),".*[#/]","") as ?p ?d
-    return sparql.sparql(propertyQuery);
+    cy.add(nodes);
+    nodePromise.resolve();
   }).catch(e=>
   {
     log.error(classQuery,e);
+    nodePromise.reject();
     return;
-  })
-    .then(json=>
-    //return Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
+  });
+
+  const sparqlPropertiesTimer = timer("sparql-properties");
+  const edges = [];
+  propertyPromise.then(json=>
+  //return Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
+  {
+    sparqlPropertiesTimer.stop(json.length+" properties");
+
+    for(let i=0;i<json.length;i++)
     {
-      sparqlPropertiesTimer.stop(json.length+" properties");
-      for(let i=0;i<json.length;i++)
-      {
-        cy.add(
-          {
-            group: "edges",
-            data: {
-              source: json[i].c.value,
-              target: json[i].d.value,
-              id: i,
-              p: json[i].p.value,//Labels_DE: [json[i].l.value]
-              pl: json[i].p.value.replace(/.*[#/]/,""),
-              g: json[i].g.value,
-            },
+      edges.push(
+        {
+          group: "edges",
+          data: {
+            source: json[i].c.value,
+            target: json[i].d.value,
+            id: i,
+            p: json[i].p.value,//Labels_DE: [json[i].l.value]
+            pl: json[i].p.value.replace(/.*[#/]/,""),
+            g: json[i].g.value,
+          },
           //position: { x: 200, y: 200 }
-          });
-      }
-      // remove isolated nodes (too costly in SPARQL query)
-      // deactivated for now, so that isolated nodes can be found and fixed
-      //cy.nodes("[[degree=0]]").remove();
-      return cy;
-    }).catch(e=>
-    {
-      log.error(e);
-    });
+        });
+    }
+    // remove isolated nodes (too costly in SPARQL query)
+    // deactivated for now, so that isolated nodes can be found and fixed
+    //cy.nodes("[[degree=0]]").remove();
+    edgePromise.resolve();
+    return;
+  }).catch(e=>
+  {
+    edgePromise.reject();
+    log.error(e);
+    return;
+  });
+
+  return Promise.all([nodePromise,edgePromise]).then(()=>
+  {
+    cy.add(edges);
+  }
+  );
 }
