@@ -33,8 +33,6 @@ function main()
     .then(()=>
     {
       layout.runCached(graph.cy,layout.euler,rdfGraph.subs());
-      graph.cy.zoom(0.3);
-      graph.cy.center(graph.cy.nodes("node[id='http://www.snik.eu/ontology/meta/Top']"));
     })
     .then(()=>
     {
