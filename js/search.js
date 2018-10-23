@@ -7,7 +7,7 @@ import * as log from "./log.js";
 import * as NODE from "./node.js";
 
 const USE_BIF_CONTAINS = false; // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
-var firstCumulativeSearch = true;
+let firstCumulativeSearch = true;
 
 
 /** Hides the overlay that shows the class search results. */
@@ -58,16 +58,16 @@ function createFailDialog(title, text,/*uri*/)
 function presentUri(uri)
 {
   graph.cy.zoom(0.6);
-  var nodes = graph.cy.elements().nodes().filter(`node[id= "${uri}"]`);
+  const nodes = graph.cy.elements().nodes().filter(`node[id= "${uri}"]`);
+  const node = nodes[0];
   if(nodes.length<1)
   {
     //alert(uri+' is only available on the SPARQL endpoint but not in the graph.');
     createFailDialog("Class not in graph",uri+' is only available on the SPARQL endpoint but not in the graph.',uri);
-    //return false;
+    return false;
   }
   else
   {
-    var node = nodes[0];
     if(document.getElementById('cumulativesearch').checked)
     {
       if(firstCumulativeSearch)
@@ -87,7 +87,7 @@ function presentUri(uri)
   graph.cy.center(node);
 }
 
-var resultNodes = [];
+let resultNodes = [];
 
 /** Presents all search results from the previous search.
 * @return {Boolean} Whether the search results are nonempty.
@@ -127,8 +127,8 @@ function presentAll()
 function showSearchResults(query, uris)
 {
   resultNodes = [];
-  var table = document.getElementById("tab:searchresults");
-  for(var i = 0; i < table.rows.length;)
+  const table = document.getElementById("tab:searchresults");
+  for(let i = 0; i < table.rows.length;)
   {
     table.deleteRow(i);
   }
@@ -154,15 +154,15 @@ function showSearchResults(query, uris)
   }
   uris.forEach(uri=>
   {
-    var row = table.insertRow();
-    var cell = row.insertCell(0);
+    const row = table.insertRow();
+    const cell = row.insertCell(0);
     window.presentUri=presentUri;
     cell.innerHTML = `<a href="javascript:window.presentUri('${uri}');void(0)">
 		${uri.replace(sparql.SPARQL_PREFIX,"")}</a>`;
   });
 
-  var row = table.insertRow(0);
-  var cell = row.insertCell(0);
+  const row = table.insertRow(0);
+  const cell = row.insertCell(0);
   window.presentAll=presentAll;
   cell.innerHTML = `<a href="javascript:window.presentAll();void(0)">
 		Highlight All</a>`;
@@ -180,7 +180,7 @@ export function search(userQuery)
 {
   // prevent invalid SPARQL query and injection by keeping only alphanumeric English and German characters
   // if other languages with other characters are to be supported, extend the regular expression
-  var searchQuery = userQuery.replace(/[^A-Za-zäöüÄÖÜßéèôáà0-9]/g, ''); //.split(' ')[0];
+  const searchQuery = userQuery.replace(/[^A-Za-zäöüÄÖÜßéèôáà0-9]/g, ''); //.split(' ')[0];
   // use this when labels are available, URIs are not searched
   let sparqlQuery;
   if(!USE_BIF_CONTAINS||searchQuery.includes(' ')) // regex is slower than bif:contains but we have no choice with a space character

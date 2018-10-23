@@ -156,10 +156,10 @@ window.onclick = function(e)
   if (e&&e.target&&e.target.matches&&!e.target.matches('.dropdown-entry')&&!e.target.matches('.dropdown-menu')
   &&!e.target.matches('input#customfilter')) // don't close while user edits the text field of the custom filter
   {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    for (var d = 0; d < dropdowns.length; d++)
+    const dropdowns = document.getElementsByClassName("dropdown-content");
+    for (let d = 0; d < dropdowns.length; d++)
     {
-      var openDropdown = dropdowns[d];
+      const openDropdown = dropdowns[d];
       if (openDropdown.classList.contains('show'))
       {
         //openDropdown.classList.remove('show');

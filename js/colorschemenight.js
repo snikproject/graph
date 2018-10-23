@@ -3,7 +3,7 @@
 */
 import * as EDGE from "./edge.js";
 
-var colorschemenight =
+const colorschemenight =
   [
     {
       "selector": "node",

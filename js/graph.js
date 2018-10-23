@@ -17,13 +17,13 @@ import timer from "./timer.js";
 import * as NODE from "./node.js";
 
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
-var cy = null;
-var styled = null;
-var selectedNode = null;
-var path = null;
-var pathSource = null;
-var pathTarget = null;
-var starMode = false;
+let cy = null;
+let styled = null;
+let selectedNode = null;
+let path = null;
+let pathSource = null;
+let pathTarget = null;
+let starMode = false;
 
 const REMOVE_SINGLE_ELEMENTS_ONLY = true;
 
@@ -74,7 +74,7 @@ Hide all other nodes except when in star mode.
 function showPath(from, to)
 {
   progress(0);
-  var aStar = cy.elements().aStar(
+  const aStar = cy.elements().aStar(
     {
       root: from,
       goal: to,
@@ -114,7 +114,7 @@ function showWorm(from, to)
   {
     progress(0);
     cy.startBatch();
-    var edges = to.connectedEdges();
+    const edges = to.connectedEdges();
 
     highlight(edges);
     highlight(edges.connectedNodes());
@@ -188,7 +188,7 @@ function showDoubleStar(from, to)
     progress(0);
     cy.startBatch();
     // "A visibility: hidden node does not hide its connected edges." http://js.cytoscape.org/#style/visibility
-    var edges = from.connectedEdges();
+    const edges = from.connectedEdges();
     highlight(edges);
     highlight(edges.connectedNodes());
     cy.endBatch();
@@ -208,7 +208,7 @@ Hide all other nodes except when in star mode.
 function showStarPath(from, to)
 {
   progress(0);
-  var aStar = cy.elements().aStar(
+  const aStar = cy.elements().aStar(
     {
       root: from,
       goal: to,
@@ -225,7 +225,7 @@ function showStarPath(from, to)
     cy.add(path);
     highlight(path.edges());
     highlight(path.nodes());
-    var edges = path.nodes().connectedEdges();
+    const edges = path.nodes().connectedEdges();
     highlight(edges);
     highlight(edges.connectedNodes());
     cy.endBatch();

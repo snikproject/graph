@@ -4,7 +4,7 @@ All colors are inverted because an inversion filter will be applied to the canva
 */
 import * as EDGE from "./edge.js";
 
-var colorschemeday =
+const colorschemeday =
   [
     {
       "selector": "node",

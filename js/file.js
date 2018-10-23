@@ -32,7 +32,7 @@ Uploads a JSON file from the user.
 function uploadJson(event,callback)
 {
   const file = event.target.files[0];
-  var reader = new FileReader();
+  const reader = new FileReader();
   reader.onload = ()=>callback(JSON.parse(reader.result));
   reader.readAsText(file);
 }

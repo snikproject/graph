@@ -11,12 +11,12 @@ Call example: myTimer = timer("egg cooking"); cookEgg(); timer.stop("successfull
  */
 export default function timer(name)
 {
-  var start = new Date();
+  const start = new Date();
   return {
     stop: function(message)
     {
-      var end  = new Date();
-      var time = end.getTime() - start.getTime();
+      const end  = new Date();
+      const time = end.getTime() - start.getTime();
       const f = (time>config.minInfoTime)?log.info:((time>config.minDebugTime)?log.debug:log.trace);
       f(name, 'finished in', time, 'ms'+(message?` (${message})`:""));
     },

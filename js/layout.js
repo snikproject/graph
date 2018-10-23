@@ -8,7 +8,7 @@ import timer from "./timer.js";
 import * as NODE from "./node.js";
 import {progress} from "./progress.js";
 
-var activeLayout = undefined;
+let activeLayout = undefined;
 
 /**
 @param {string} layoutName Cytoscape.js layout name
@@ -185,10 +185,10 @@ export function runCached(cy,layoutConfig,subs)
 }
 
 /** Very fast but useless for most purposes except for testing.*/
-export var grid = {name: "grid"};
+export const grid = {name: "grid"};
 
 /**Fastest (but still slow) force directed Cytoscape.js layout found.*/
-export var euler =
+export const euler =
 {
   /*eslint no-unused-vars: "off"*/
   name: "euler",

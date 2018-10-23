@@ -45,6 +45,7 @@
 		"no-unneeded-ternary": ["error"],
 		"no-unexpected-multiline": ["off"],
 		"no-undef": ["error"],
+		"no-var": ["error"],
 		"curly": ["error"],
 		"camelcase": ["warn"],
 		"no-unused-vars": ["warn"],
@@ -64,4 +65,3 @@
 			}]
 		}
 	}
-

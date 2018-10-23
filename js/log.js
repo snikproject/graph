@@ -14,9 +14,9 @@ Logging to console or overlay or both, depending on availability (server call us
 function callSource()
 {
   // https://stackoverflow.com/questions/1340872/how-to-get-javascript-caller-function-line-number-how-to-get-javascript-caller
-  var e = new Error();
+  const e = new Error();
   if(!e.stack) {return "";} // old browser
-  var stack = e.stack.toString().split(/\r\n|\n/);
+  const stack = e.stack.toString().split(/\r\n|\n/);
   return "            [" + stack[2].replace(/.*\//,"") + ']';
 }
 
