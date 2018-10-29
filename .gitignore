@@ -6,6 +6,7 @@ cytoscape.js
 target
 node_modules
 config.js
+config.json
 lib
 dist
 scratch

@@ -1,0 +1,4 @@
+--require esm
+--require isomorphic-fetch
+--require jsdom-global/register
+--timeout 10000

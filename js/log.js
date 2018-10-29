@@ -4,6 +4,9 @@ Logging to console or overlay or both, depending on availability (server call us
 /* eslint no-console: 0 */
 // temporary solution. todo: use a logging library or write more elegantly using enums or integers
 
+// for mocha testing 
+if(!alert)  {var alert = ()=>{};}
+import * as config from "../config.json"
 
 /**
  * callSource - description

@@ -9,7 +9,7 @@ export default {
   module: {
     rules: [{
       test: /\.js/,
-      exclude: /(node_modules|bower_components)/,
+      exclude: /(node_modules|bower_components|config.json)/,
       use: [{
         loader: 'babel-loader',
       }],
