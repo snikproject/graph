@@ -7,7 +7,7 @@ import * as log from "./log.js";
 import timer from "./timer.js";
 import * as NODE from "./node.js";
 import {progress} from "./progress.js";
-import * as config from "../config.json";
+import config from "./config.js";
 
 let activeLayout = undefined;
 

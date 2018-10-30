@@ -3,7 +3,7 @@ Measures elapsed duration.
 @module */
 
 import * as log from "./log.js";
-import * as config from "../config.json";
+import config from "./config.js";
 
 /** Generates a timer object that logs the elapsed time after its stop function is called.
 Call example: myTimer = timer("egg cooking"); cookEgg(); timer.stop("successfull");

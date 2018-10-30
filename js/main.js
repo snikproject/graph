@@ -11,7 +11,7 @@ import * as file from "./file.js";
 import * as rdfGraph from "./rdfGraph.js";
 import * as layout from "./layout.js";
 import {progress} from "./progress.js";
-import * as config from "../config.json";
+import config from "./config.js";
 
 /** Entry point. Is run when DOM is loaded. **/
 function main()

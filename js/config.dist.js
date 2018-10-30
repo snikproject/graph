@@ -1,3 +1,6 @@
+/** @module */
+
+export default
 {
   "defaultSubOntologies": ["meta","bb","ob","ciox","he","it4it"],
   "logLevelConsole": "info",
@@ -10,7 +13,7 @@
     "image":
     {
       "max": {"width": 5000, "height": 4000},
-      "standard": {"width": 1920, "height": 1920}
-    }
-  }
-}
+      "standard": {"width": 1920, "height": 1920},
+    },
+  },
+};

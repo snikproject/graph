@@ -9,7 +9,7 @@ Logging to console or overlay or both, depending on availability (server call us
 /* eslint no-use-before-define: 0*/
 if(!alert)  {var alert = ()=>{};}
 
-import * as config from "../config.json";
+import config from "./config.js";
 
 /** @return {String} a padded, right aligned string with the line number of the caller of the caller */
 function callSource()
