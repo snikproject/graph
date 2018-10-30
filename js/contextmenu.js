@@ -5,7 +5,6 @@ import {ONTOLOGY_ISSUE_WARNING,MODIFIED} from "./about.js";
 import {classUse} from "./classuse.js";
 import * as graph from "./graph.js";
 import * as rdf from "./rdf.js";
-import * as log from "./log.js";
 import * as NODE from "./node.js";
 import * as EDGE from "./edge.js";
 

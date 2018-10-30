@@ -2,7 +2,6 @@
 Entry point.
 @module */
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
-import * as log from "./log.js";
 import addFilterEntries from "./filter.js";
 import addMenu from "./menu.js";
 import * as search from "./search.js";
@@ -12,7 +11,7 @@ import * as file from "./file.js";
 import * as rdfGraph from "./rdfGraph.js";
 import * as layout from "./layout.js";
 import {progress} from "./progress.js";
-import * as config from "../config.json"
+import * as config from "../config.json";
 
 /** Entry point. Is run when DOM is loaded. **/
 function main()

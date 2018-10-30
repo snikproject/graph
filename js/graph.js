@@ -11,7 +11,6 @@ import {style} from "./style.js";
 import {colorschemenight} from "./colorschemenight.js";
 import {colorschemeday} from "./colorschemeday.js";
 import * as sparql from "./sparql.js";
-import * as log from "./log.js";
 import {registerMenu} from "./contextmenu.js";
 import timer from "./timer.js";
 import * as NODE from "./node.js";
@@ -24,8 +23,6 @@ let path = null;
 let pathSource = null;
 let pathTarget = null;
 let starMode = false;
-
-const REMOVE_SINGLE_ELEMENTS_ONLY = true;
 
 /** Set whether star mode is active, where further stars will not hide other nodes but unhide instead.
 @param {boolean} mode whether star mode is active

@@ -4,16 +4,14 @@ Logging to console or overlay or both, depending on availability (server call us
 /* eslint no-console: 0 */
 // temporary solution. todo: use a logging library or write more elegantly using enums or integers
 
-// for mocha testing 
+// for mocha testing
+/* eslint no-var: 0*/
+/* eslint no-use-before-define: 0*/
 if(!alert)  {var alert = ()=>{};}
-import * as config from "../config.json"
 
-/**
- * callSource - description
- *
- * @return {type}  description
+import * as config from "../config.json";
 
- */
+/** @return {String} a padded, right aligned string with the line number of the caller of the caller */
 function callSource()
 {
   // https://stackoverflow.com/questions/1340872/how-to-get-javascript-caller-function-line-number-how-to-get-javascript-caller
