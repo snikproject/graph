@@ -17,7 +17,7 @@ ASK queries should also work but better use {@link ask} instead as it is more co
 export function sparql(query,graphOpt)
 {
   const url = SPARQL_ENDPOINT +
-  '?query=' + escape(query) +
+  '?query=' + encodeURIComponent(query) +
   '&format=json'+
   (graphOpt?('&default-graph-uri=' + encodeURIComponent(graphOpt)):"");
   return fetch(url)
@@ -33,7 +33,7 @@ export function sparql(query,graphOpt)
 export function ask(query,graphOpt)
 {
   const url = SPARQL_ENDPOINT +
-  '?query=' + escape(query) +
+  '?query=' + encodeURIComponent(query) +
   '&format=json'+
   (graphOpt?('&default-graph-uri=' + encodeURIComponent(graphOpt)):"");
   return fetch(url)
