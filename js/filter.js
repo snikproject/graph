@@ -48,7 +48,7 @@ class Filter
     //let input = document.createRange().createContextualFragment('<input type="checkbox" class="filterbox" autocomplete="off" checked="true">'); // can't attach events to fragments
     const input = document.createElement("input");
     input.type="checkbox";
-    input.class="filterbox";
+    input.classList.add("filterbox");
     input.autocomplete="off";
     input.checked="true";
     this.visible=true;

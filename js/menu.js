@@ -84,7 +84,7 @@ function addOptions()
 {
   document.getElementById("options").innerHTML =
   `<span class="dropdown-entry"><input type="checkbox" autocomplete="off" id="cumulativesearch"/>cumulative search</span>
-  <span  class="dropdown-entry"><input type="checkbox"  autocomplete="off" id="daymode"/>day mode</span> `;
+  <span  class="dropdown-entry"><input type="checkbox" autocomplete="off" id="daymode"/>day mode</span> `;
   const daymode = document.getElementById("daymode");
   daymode.addEventListener("change",()=>graph.invert(daymode.checked));
 }
@@ -154,15 +154,16 @@ function addMenu()
 window.onclick = function(e)
 {
   if (e&&e.target&&e.target.matches&&!e.target.matches('.dropdown-entry')&&!e.target.matches('.dropdown-menu')
-  &&!e.target.matches('input#customfilter')) // don't close while user edits the text field of the custom filter
+  &&!e.target.matches('input.filterbox')) // don't close while user edits the text field of the custom filter
   {
+    console.log(e.target);
     const dropdowns = document.getElementsByClassName("dropdown-content");
     for (let d = 0; d < dropdowns.length; d++)
     {
       const openDropdown = dropdowns[d];
       if (openDropdown.classList.contains('show'))
       {
-        //openDropdown.classList.remove('show');
+        openDropdown.classList.remove('show');
       }
     }
   }
