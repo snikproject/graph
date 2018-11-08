@@ -22,6 +22,7 @@ const filterData = [
   [`node[${NODE.SUBTOP}='${NODE.SUBTOP_ROLE}']`,`Role`],
   [`node[${NODE.SUBTOP}='${NODE.SUBTOP_FUNCTION}']`,`Function`],
   [`edge[p='http://www.w3.org/2000/01/rdf-schema#subClassOf']`,`subClassOf`],
+  [`edge[p!='http://www.w3.org/2000/01/rdf-schema#subClassOf']`,`non-subClassOf`],
   [`edge[p^='http://www.w3.org/2004/02/skos/core#']`,`inter-ontology-relations`],
   [`edge[p!^='http://www.w3.org/2004/02/skos/core#']`,`non-inter-ontology-relations`],
   //["edge[p='http://www.snik.eu/ontology/meta/subTopClass']","subTopClass"],
