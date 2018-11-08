@@ -67,10 +67,10 @@ function menuData()
       [
         ["manual.html","Manual"],
         ["http://www.snik.eu/de/snik-tutorial.pdf","Tutorial"],
+        ["https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured","YouTube Channel"],
         ["troubleshooting.html","Troubleshooting"],
         ["contribute.html","Contribute"],
         ["http://www.snik.eu/","Project Homepage"],
-        //        ["https://github.com/IMISE/snik-ontology/releases/download/0.3.0/snik-0.3-nociox.cys","Download Cytoscape Graph"],
         [about,"About SNIK Graph"],
         ["https://github.com/IMISE/snik-ontology/issues","Submit Feedback about the Ontology"],
         ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"],
@@ -84,7 +84,7 @@ function addOptions()
 {
   document.getElementById("options").innerHTML =
   `<span class="dropdown-entry"><input type="checkbox" autocomplete="off" id="cumulativesearch"/>cumulative search</span>
-  <span  class="dropdown-entry"><input type="checkbox"  autocomplete="off" id="daymode"/>day mode</span> `;
+  <span  class="dropdown-entry"><input type="checkbox" autocomplete="off" id="daymode"/>day mode</span> `;
   const daymode = document.getElementById("daymode");
   daymode.addEventListener("change",()=>graph.invert(daymode.checked));
 }
@@ -154,15 +154,16 @@ function addMenu()
 window.onclick = function(e)
 {
   if (e&&e.target&&e.target.matches&&!e.target.matches('.dropdown-entry')&&!e.target.matches('.dropdown-menu')
-  &&!e.target.matches('input#customfilter')) // don't close while user edits the text field of the custom filter
+  &&!e.target.matches('input.filterbox')) // don't close while user edits the text field of the custom filter
   {
+    console.log(e.target);
     const dropdowns = document.getElementsByClassName("dropdown-content");
     for (let d = 0; d < dropdowns.length; d++)
     {
       const openDropdown = dropdowns[d];
       if (openDropdown.classList.contains('show'))
       {
-        //openDropdown.classList.remove('show');
+        openDropdown.classList.remove('show');
       }
     }
   }
