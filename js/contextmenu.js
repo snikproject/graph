@@ -75,6 +75,13 @@ const defaultsNodes = {
       },
     },
     {
+      content: 'directed star',
+      select: node=>
+      {
+        graph.showStar(node,false,true);
+      },
+    },
+    {
       content: 'circle star',
       select: node=>
       {

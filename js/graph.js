@@ -126,8 +126,9 @@ function showWorm(from, to)
 Hide all other nodes except when in star mode.
 @param {node} node center of the star
 @param {Boolean} changeLayout arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
+@param {Boolean} directed only show edges that originate from node, not those that end in it. Optional and defaults to false.
 */
-function showStar(node, changeLayout)
+function showStar(node, changeLayout, directed)
 {
   progress(0);
   if(!starMode)
@@ -143,7 +144,9 @@ function showStar(node, changeLayout)
   const closeMatchEdges = node.connectedEdges().filter('[pl="closeMatch"]');
   const innerNodes = closeMatchEdges.connectedNodes();
   innerNodes.merge(node); // in case there is no close match edge
-  const edges = innerNodes.connectedEdges();
+  const edges = directed?
+    innerNodes.edgesTo('node')
+    :innerNodes.connectedEdges();
   const nodes  = edges.connectedNodes();
   const outerNodes = nodes.difference(innerNodes);
 
