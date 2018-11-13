@@ -12,10 +12,11 @@ export const SPARQL_LIMIT = 100;
 Intended for SELECT queries, DESCRIBE may also be possible but not tested.
 ASK queries should also work but better use {@link ask} instead as it is more convenient.
 {@param query} A valid SPARQL query.
-{@param graphOpt} An optional SPARQL graph. 
+{@param graphOpt} An optional SPARQL graph.
 */
-export function sparql(query,graphOpt)
+export function sparql(query)
 {
+  const graphOpt = SPARQL_GRAPH; //to ensure that dbpedia matches are not shown
   const url = SPARQL_ENDPOINT +
   '?query=' + encodeURIComponent(query) +
   '&format=json'+
@@ -30,8 +31,9 @@ export function sparql(query,graphOpt)
 {@param query} A valid SPARQL ask query.
 {@param graphOpt} An optional SPARQL graph.
 */
-export function ask(query,graphOpt)
+export function ask(query)
 {
+  const graphOpt = SPARQL_GRAPH; //to ensure that dbpedia matches are not shown
   const url = SPARQL_ENDPOINT +
   '?query=' + encodeURIComponent(query) +
   '&format=json'+
