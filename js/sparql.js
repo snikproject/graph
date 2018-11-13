@@ -31,9 +31,9 @@ export function sparql(query,graphOpt)
 {@param query} A valid SPARQL ask query.
 {@param graphOpt} An optional SPARQL graph.
 */
-export function ask(query)
+export function ask(query,graphOpt)
 {
-  if (!graphOpt){ graphOpt = SPARQL_GRAPH; }//to ensure that dbpedia matches are not shown 
+  if (!graphOpt){ graphOpt = SPARQL_GRAPH; }//to ensure that dbpedia matches are not shown
   const url = SPARQL_ENDPOINT +
   '?query=' + encodeURIComponent(query) +
   '&format=json'+
