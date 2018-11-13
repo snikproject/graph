@@ -14,9 +14,9 @@ ASK queries should also work but better use {@link ask} instead as it is more co
 {@param query} A valid SPARQL query.
 {@param graphOpt} An optional SPARQL graph.
 */
-export function sparql(query)
+export function sparql(query,graphOpt)
 {
-  const graphOpt = SPARQL_GRAPH; //to ensure that dbpedia matches are not shown
+  if (!graphOpt){ graphOpt = SPARQL_GRAPH; }//to ensure that dbpedia matches are not shown
   const url = SPARQL_ENDPOINT +
   '?query=' + encodeURIComponent(query) +
   '&format=json'+
@@ -33,7 +33,7 @@ export function sparql(query)
 */
 export function ask(query)
 {
-  const graphOpt = SPARQL_GRAPH; //to ensure that dbpedia matches are not shown
+  if (!graphOpt){ graphOpt = SPARQL_GRAPH; }//to ensure that dbpedia matches are not shown 
   const url = SPARQL_ENDPOINT +
   '?query=' + encodeURIComponent(query) +
   '&format=json'+
