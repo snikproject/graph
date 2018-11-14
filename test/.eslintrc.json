@@ -1,16 +1,16 @@
 {
 	"env":
 	{
-		"browser": false,
-		"es6": true,
-		"mocha": true,
-		"node": true
+		"mocha": true
 	},
 	"globals":
 	{
-		"cytoscape": false,
-		"dhtmlx": false 
+		"global": true,
+		"require": true
 	},
-	"extends": "../.eslintrc.json"
+	"rules":
+	{
+		"require-jsdoc": "off"
+	},
+	"plugins": ["mocha"]
 }
-
