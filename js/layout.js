@@ -40,12 +40,13 @@ export function positions(nodes)
 /** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it (use {@link module:layout.runCached} for that).
 @param {cy.cytoscape} cy the Cytoscape.js graph to run the layout on
 @param {json} layoutConfig the layout configuration, which includes the layout name and options
-@param {Set} subs Set of subontologies. If the subs are not given the layout still works but it is not cached.
+@param {Set} subs Set of subontologies. If the subs are not given the layout still works but it is not saved.
+@param {boolean} save Whether to save the layout on local storage.
 @returns whether the layout could successfully be applied. Does not indicate success of saving to cache.
 @example
 run(cy,{"name":"grid"},new Set(["meta","ciox"]))
 */
-export function run(cy,layoutConfig,subs)
+export function run(cy,layoutConfig,subs,save)
 {
   progress(0);
   if(cy.nodes().size()===0)
@@ -55,12 +56,42 @@ export function run(cy,layoutConfig,subs)
     return false;
   }
   const layoutTimer = timer("layout");
+  const separateSubs = subs&&(document.getElementById('separatesubs')||{}).checked;
+  if(separateSubs)
+  {
+    const virtualNodes = [];
+    for(const sub of subs)
+    {
+      virtualNodes.push({group: "nodes", data: { id: sub, mass: 400, type: "virtual"}});
+    }
+    cy.add(virtualNodes);
+    const virtualEdges = [];
+
+    const nodes = cy.nodes();
+    for(let i=0;i<nodes.length;i++)
+    {
+      const node = nodes[i];
+      const prefix = node.data(NODE.PREFIX);
+      if(prefix)
+      {
+        virtualEdges.push({group: "edges", data: { source: node.data(NODE.ID), target: prefix, springLength: 180 }});
+      }
+    }
+    log.debug(`Adding ${virtualEdges.length} virtual edges.`);
+    cy.add(virtualEdges);
+  }
   if(activeLayout) {activeLayout.stop();}
   activeLayout = cy.elements(":visible").layout(layoutConfig);
   activeLayout.on("layoutstop",()=>
   {
     layoutTimer.stop();
-    if(subs)
+    if(separateSubs)
+    {
+      const virtualNodes = cy.nodes("[type='virtual']");
+      log.debug(`Removing ${virtualNodes.length} virtual nodes.`);
+      cy.remove(virtualNodes); // connected edges should go away automatically
+    }
+    if(subs&&save)
     {
       if(typeof(localStorage)=== "undefined")
       {
@@ -144,7 +175,7 @@ export function runCached(cy,layoutConfig,subs)
   if(typeof(localStorage)=== "undefined")
   {
     log.error("Web storage not available, could not access browser-based cache.");
-    run(layoutConfig);
+    run(layoutConfig,subs,false);
     return;
   }
   const name = storageName(layoutConfig.name,subs);
@@ -182,7 +213,7 @@ export function runCached(cy,layoutConfig,subs)
   {
     log.warn("Layout not in cache, recalculating layout...");
   }
-  return run(cy,layoutConfig,subs);
+  return run(cy,layoutConfig,subs,true);
 }
 
 /** Very fast but useless for most purposes except for testing.*/
@@ -193,12 +224,12 @@ export const euler =
 {
   /*eslint no-unused-vars: "off"*/
   name: "euler",
-  springLength: edge => 800,
+  springLength: edge => edge.data("springLength")?edge.data("springLength"):800,
   animate: true,
   refresh: 50,
   maxSimulationTime: 20000,
   randomize: true,
   movementThreshold: 1,
   fit:true,
-  mass: node => 40,
+  mass: node => node.data("mass")?node.data("mass"):40,
 };

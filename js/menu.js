@@ -83,7 +83,8 @@ function menuData()
 function addOptions()
 {
   document.getElementById("options").innerHTML =
-  `<span class="dropdown-entry"><input type="checkbox" autocomplete="off" id="cumulativesearch"/>cumulative search</span>
+  `<span class="dropdown-entry"><input type="checkbox" autocomplete="off" id="separatesubs"/>separate subontologies</span>
+  <span class="dropdown-entry"><input type="checkbox" autocomplete="off" id="cumulativesearch"/>cumulative search</span>
   <span  class="dropdown-entry"><input type="checkbox" autocomplete="off" id="daymode"/>day mode</span> `;
   const daymode = document.getElementById("daymode");
   daymode.addEventListener("change",()=>graph.invert(daymode.checked));
