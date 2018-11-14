@@ -68,20 +68,17 @@ function presentUri(uri)
   }
   else
   {
-    const SEPERATE_SUBONTOLOGIES = subs&&document.getElementById('cumulativesearch').checked;
+    if(document.getElementById('cumulativesearch').checked)
     {
-      if(document.getElementById('cumulativesearch').checked)
+      if(firstCumulativeSearch)
       {
-        if(firstCumulativeSearch)
-        {
-          firstCumulativeSearch=false;
-          graph.hide(graph.cy.elements().nodes());
-        }
+        firstCumulativeSearch=false;
+        graph.hide(graph.cy.elements().nodes());
       }
-      else
-      {
-        graph.resetStyle();
-      }
+    }
+    else
+    {
+      graph.resetStyle();
     }
   }
   //graph.setSelectedNode(node);
