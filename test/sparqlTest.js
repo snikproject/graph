@@ -4,19 +4,32 @@ chai.should();
 const assert = chai.assert;
 const EXPECTED_CLASSES_MIN = 4000;
 const EXPECTED_CLASSES_MAX = 20000;
-
+const EXPECTED_META_CLASSES_MIN = 10;
+const EXPECTED_META_CLASSES_MAX = 25;
+const GRAPH_GROUP_SNIK = "http://www.snik.eu/ontology";
+const GRAPH_SNIK_META = "http://www.snik.eu/ontology/meta";
 
 describe('sparql', function()
 {
   describe('#sparql()', function()
   {
-    it('endpoint should contain between 4000 and 10000 classes', function()
+    it(`${GRAPH_GROUP_SNIK} should contain between ${EXPECTED_CLASSES_MIN} and ${EXPECTED_CLASSES_MAX} classes`, function()
     {
-      return sparql.sparql("select count(?class) as ?count {?class a owl:Class}")
+      return sparql.sparql("select count(?class) as ?count {?class a owl:Class}", GRAPH_GROUP_SNIK)
         .then(bindings=>
         {
           bindings[0].should.have.property("count");
           parseInt(bindings[0].count.value).should.be.within(EXPECTED_CLASSES_MIN,EXPECTED_CLASSES_MAX);
+        }
+        );
+    });
+    it(`${GRAPH_SNIK_META} should contain between ${EXPECTED_META_CLASSES_MIN} and ${EXPECTED_META_CLASSES_MAX} classes`, function()
+    {
+      return sparql.sparql("select count(?class) as ?count {?class a owl:Class}", GRAPH_SNIK_META)
+        .then(bindings=>
+        {
+          bindings[0].should.have.property("count");
+          parseInt(bindings[0].count.value).should.be.within(EXPECTED_META_CLASSES_MIN,EXPECTED_META_CLASSES_MAX);
         }
         );
     });
@@ -35,8 +48,7 @@ describe('sparql', function()
             'http://www.snik.eu/ontology/bb',
             'http://www.snik.eu/ontology/he',
             'http://www.snik.eu/ontology/it4it'];
-          const union = new Set([...graphs, expectedGraphs]);
-          const difference = new Set(expectedGraphs.filter(x => !graphs.has(x)));
+          const difference = new Set(expectedGraphs.filter(x => !graphs.has(x))); //es6 set difference, see http://2ality.com/2015/01/es6-set-operations.html
           assert.deepEqual([...difference],[]);
         }
         );
