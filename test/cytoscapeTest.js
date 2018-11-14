@@ -22,7 +22,7 @@ describe('cytoscape', function()
   it('load graph from sparql', function()
   {
     return loadGraphFromSparql(cy, subs).then(()=>
-      assert.closeTo(cy.nodes().size(),100,50)
+      assert.closeTo(cy.nodes().size(),7000,3000)
     );
   });
   it('calculate layout', function()
