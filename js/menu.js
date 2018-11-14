@@ -156,7 +156,6 @@ window.onclick = function(e)
   if (e&&e.target&&e.target.matches&&!e.target.matches('.dropdown-entry')&&!e.target.matches('.dropdown-menu')
   &&!e.target.matches('input.filterbox')) // don't close while user edits the text field of the custom filter
   {
-    console.log(e.target);
     const dropdowns = document.getElementsByClassName("dropdown-content");
     for (let d = 0; d < dropdowns.length; d++)
     {
