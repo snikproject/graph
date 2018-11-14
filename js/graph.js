@@ -329,33 +329,14 @@ function resetStyle()
 */
 function invert(enabled)
 {
-  const CSS =
-      `#cy {
-        -webkit-filter: invert(100%);
-        -moz-filter: invert(100%);
-        -o-filter: invert(100%);
-        -ms-filter: invert(100%);
-      }`;
-
-  const invertStyle = document.getElementById('invert');
-  if (invertStyle)
-  {
-    document.head.removeChild(invertStyle);
-  }
   if (enabled)
   {
-    {
-      const styleElement = document.createElement('style');
-      styleElement.type = 'text/css';
-      styleElement.id = 'invert';
-      styleElement.appendChild(document.createTextNode(CSS));
-      //injecting the css to the head
-      document.head.appendChild(styleElement);
-    }
+    document.getElementById("cy").style.backgroundColor = "white";
     cy.style().fromJson(style.style.concat(colorschemeday)).update();
   }
   else
   {
+    document.getElementById("cy").style.backgroundColor = "black";
     cy.style().fromJson(style.style.concat(colorschemenight)).update();
   }
 }

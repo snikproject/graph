@@ -79,7 +79,7 @@ export function downloadPng(full,highRes)
 {
   const options =
   {
-    "bg": "black",
+    "bg": (document.getElementById("daymode")||{}).checked?"white":"black", // background according to color mode
     "full": full,
   };
   if(highRes)
