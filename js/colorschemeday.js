@@ -9,7 +9,7 @@ const colorschemeday =
       "selector": "node",
       "css":
       {
-        "border-color": "rgb(255,255,255)",
+        "border-color": "rgb(0,0,0)",
         "background-color": "rgb(254,196,79)",
         'color': 'black',
       },
