@@ -33,7 +33,7 @@ const defaultsNodes = {
       select: node=> {classUse(node.data(NODE.ID),node.data(NODE.SUBTOP));},
     },
     {
-      content: 'hide',
+      content: 'remove',
       select: node=>
       {
         graph.cy.remove(node);
@@ -162,6 +162,13 @@ const defaultsRelations = {
           encodeURIComponent(edgeLabel+' v'+MODIFIED)+
           '&body='+encodeURIComponent('The edge "'+edgeLabel+'" is incorrect.\n\n**Details**\n')
         );
+      },
+    },
+    {
+      content: 'remove',
+      select: function(edge)
+      {
+        graph.cy.remove(edge);
       },
     },
     {
