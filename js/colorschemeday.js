@@ -73,7 +73,7 @@ const colorschemeday =
         // highlight skos interlinks
           if((String(edge.data(EDGE.PROPERTY)).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
           {
-            return "rgb(0,128,128)";
+            return "rgb(166,153,0)";
           }
           return "rgb(128,128,128)";
         },
