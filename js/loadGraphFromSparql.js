@@ -115,6 +115,7 @@ export default function loadGraphFromSparql(cy,subs)
       const labels = json[i].l.value.split("|");
       const ld = [];
       const le = [];
+      const lf = [];
       const la = [];
       for(const label of labels)
       {
@@ -123,6 +124,7 @@ export default function loadGraphFromSparql(cy,subs)
         {
         case "de": ld.push(stringAndTag[0]);break;
         case "en": le.push(stringAndTag[0]);break;
+        case "fa": lf.push(stringAndTag[0]);break;
         default: la.push(stringAndTag[0]);
         }
       }
@@ -134,6 +136,7 @@ export default function loadGraphFromSparql(cy,subs)
             id: json[i].c.value,
             ld: ld,
             le: le,
+            lf: lf,
             la: la,
             st: (json[i].st===undefined)?null:json[i].st.value.replace("http://www.snik.eu/ontology/meta/","").substring(0,1),
             prefix: (json[i].src===undefined)?null:json[i].src.value.replace("http://www.snik.eu/ontology/",""),

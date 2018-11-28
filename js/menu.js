@@ -7,7 +7,22 @@ import * as download from "./download.js";
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 import * as rdfGraph from "./rdfGraph.js";
+import * as NODE from "./node.js";
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
+
+export let languageAttribute = NODE.LABEL_ENGLISH;
+
+/** Sets the preferred node label language attribute. Use the values from node.js. */
+function setLanguage(attribute)
+{
+  languageAttribute = attribute;
+  // graph.cy.style(style); // does not display the style correctly and doesn't update the labels
+  // graph.cy.forceRender(); // does not update the labels either
+  // the nuclear option works
+  const elements = graph.cy.elements();
+  graph.cy.remove(elements);
+  elements.restore();
+}
 
 /** Notifies the user of the program version so that errors can be properly reported. */
 function about() {window.alert("SNIK Graph version "+MODIFIED);}
@@ -38,6 +53,7 @@ function menuData()
         [()=>download.downloadPng(true,false),"Save Image of Whole Graph"],
         [()=>download.downloadPng(false,true),"Save Image of Current View (high res)"],
         [()=>download.downloadPng(true,true),"Save Image of Whole Graph (high res)"],
+        [()=>setLanguage(NODE.LABEL_ENGLISH),"English"],
       ],
     },
     {
@@ -59,6 +75,16 @@ function menuData()
             ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser"],
             ["http://snik.eu/evaluation","Data Quality Evaluation"],
           ],
+    },
+    {
+      "label": "Language",
+      "id": "language",
+      "entries":
+      [
+        [()=>setLanguage(NODE.LABEL_ENGLISH),"English"],
+        [()=>setLanguage(NODE.LABEL_GERMAN),"German"],
+        [()=>setLanguage(NODE.LABEL_FARSI),"Farsi"],
+      ],
     },
     {
       "label": "Help",
