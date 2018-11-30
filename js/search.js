@@ -180,13 +180,13 @@ export function search(userQuery)
 {
   // prevent invalid SPARQL query and injection by keeping only alphanumeric English and German characters
   // if other languages with other characters are to be supported, extend the regular expression
-  const searchQuery = userQuery.replace(/[^A-Za-zäöüÄÖÜßéèôáà0-9]/g, ''); //.split(' ')[0];
+  const searchQuery = userQuery.replace(/[\x22\x27\x5C\xA\xD]/g, '');
   // use this when labels are available, URIs are not searched
   let sparqlQuery;
   if(!USE_BIF_CONTAINS||searchQuery.includes(' ')) // regex is slower than bif:contains but we have no choice with a space character
   {
     sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
-			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(replace(str(?l)," ",""),"${searchQuery}","i")) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
+			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(str(?l)),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
   }
   else // no space character and bif:contains is allowed, so use it
   {
