@@ -53,7 +53,6 @@ function menuData()
         [()=>download.downloadPng(true,false),"Save Image of Whole Graph"],
         [()=>download.downloadPng(false,true),"Save Image of Current View (high res)"],
         [()=>download.downloadPng(true,true),"Save Image of Whole Graph (high res)"],
-        [()=>setLanguage(NODE.LABEL_ENGLISH),"English"],
       ],
     },
     {
