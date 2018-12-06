@@ -60,7 +60,7 @@ const style =
             else if((it=node.data(NODE.LABEL_ENGLISH))&&it[0])     {label = it[0];}
             else if((it=node.data(NODE.LABEL_GERMAN))&&it[0]) {label = it[0];}
             else if((it=node.data(NODE.LABEL_OTHER))&&it[0])  {label = it[0];}
-            else if((it=node.data(NODE.LABEL_FARSI))&&it[0])  {label = it[0];}
+            else if((it=node.data(NODE.LABEL_PERSIAN))&&it[0])  {label = it[0];}
             else {label = node.data(NODE.ID);}
             if(SHOW_QUALITY) {label+="\n\u25CB\u25CF\u25CB\u25CB\u25CF";}
             if(node.data(NODE.INSTANCE)) {label+="*";}

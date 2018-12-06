@@ -83,7 +83,7 @@ function menuData()
       [
         [()=>setLanguage(NODE.LABEL_ENGLISH),"English"],
         [()=>setLanguage(NODE.LABEL_GERMAN),"German"],
-        [()=>setLanguage(NODE.LABEL_FARSI),"Farsi"],
+        [()=>setLanguage(NODE.LABEL_PERSIAN),"Persian"],
       ],
     },
     {

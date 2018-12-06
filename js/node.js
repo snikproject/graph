@@ -5,7 +5,7 @@ Not to be confused with the Node.js JavaScript runtime.
 export const ID = "id";
 export const LABEL_GERMAN = "ld";
 export const LABEL_ENGLISH = "le";
-export const LABEL_FARSI = "lf";
+export const LABEL_PERSIAN = "lf";
 export const LABEL_OTHER = "la";
 export const SUBTOP = "st";
 export const PREFIX = "prefix";
