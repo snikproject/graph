@@ -71,7 +71,9 @@ Hide all other nodes except when in star mode.
 function showPath(from, to)
 {
   progress(0);
-  const aStar = cy.elements().aStar(
+  const elements = cy.elements.css("display", "element");
+
+  const aStar = elements.aStar(
     {
       root: from,
       goal: to,
@@ -160,7 +162,7 @@ function showStar(node, changeLayout, directed)
         name: 'concentric',
         fit: true,
         levelWidth: function() {return 1;},
-        minNodeSpacing: 35,
+        minNodeSpacing: 122.5,
         concentric: function(layoutNode)
         {
           if(innerNodes.contains(layoutNode)) {return 2;}
