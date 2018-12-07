@@ -162,7 +162,7 @@ function showStar(node, changeLayout, directed)
         name: 'concentric',
         fit: true,
         levelWidth: function() {return 1;},
-        minNodeSpacing: 122.5,
+        minNodeSpacing: 175,
         concentric: function(layoutNode)
         {
           if(innerNodes.contains(layoutNode)) {return 2;}
