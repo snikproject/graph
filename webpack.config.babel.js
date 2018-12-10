@@ -1,4 +1,5 @@
 import path from 'path';
+import WebpackAutoInject from 'webpack-auto-inject-version';
 
 export default {
   entry: path.join(__dirname, 'js/main.js'),
@@ -9,7 +10,7 @@ export default {
   module: {
     rules: [{
       test: /\.js/,
-      exclude: /(node_modules|bower_components|config.json)/,
+      exclude: /(node_modules|bower_components)/,
       use: [{
         loader: 'babel-loader',
       }],
@@ -20,4 +21,5 @@ export default {
   },
   mode: 'development',
   devtool: 'source-map',
+  plugins: [new WebpackAutoInject()],
 };
