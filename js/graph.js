@@ -14,7 +14,6 @@ import * as sparql from "./sparql.js";
 import {registerMenu} from "./contextmenu.js";
 import timer from "./timer.js";
 import * as NODE from "./node.js";
-
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
 let cy = null;
 let styled = null;
@@ -367,6 +366,7 @@ function initGraph()
       minZoom: 0.02,
       maxZoom: 7,
     });
+  cy.panzoom(); // Google Maps like zoom UI element
   styled = cy.collection();
   styled = cy.collection();
   selectedNode = cy.collection();
