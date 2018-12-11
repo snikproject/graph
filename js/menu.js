@@ -9,16 +9,12 @@ import * as layout from "./layout.js";
 import * as rdfGraph from "./rdfGraph.js";
 import * as NODE from "./node.js";
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
-
-export let languageAttribute = NODE.LABEL_ENGLISH;
-//export let languageAttribute2 = NODE.LABEL_GERMAN;
-//export let languageAttribute3 = NODE.LABEL_PERSIAN;
-
+import * as language from "./lang/language.js";
 
 /** Sets the preferred node label language attribute. Use the values from node.js. */
-function setLanguage(attribute)
+function setLanguage(language)
 {
-  languageAttribute = attribute;
+  language.setLanguage(language);
   // graph.cy.style(style); // does not display the style correctly and doesn't update the labels
   // graph.cy.forceRender(); // does not update the labels either
   // the nuclear option works
