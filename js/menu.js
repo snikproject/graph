@@ -97,7 +97,7 @@ function menuData()
         ["contribute.html","Contribute"],
         ["http://www.snik.eu/","Project Homepage"],
         [about,"About SNIK Graph"],
-        ["https://github.com/IMISE/snik-ontology/issues","Submit Feedback about the Ontology"],
+        ["https://github.com/IMISE/snik-ontowww.snik.eu/graphlogy/issues","Submit Feedback about the Ontology"],
         ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"],
       ],
     },

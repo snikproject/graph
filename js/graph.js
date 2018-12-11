@@ -368,7 +368,6 @@ function initGraph()
     });
   cy.panzoom(); // Google Maps like zoom UI element
   styled = cy.collection();
-  styled = cy.collection();
   selectedNode = cy.collection();
   registerMenu();
 
