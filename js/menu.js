@@ -11,6 +11,9 @@ import * as NODE from "./node.js";
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
 
 export let languageAttribute = NODE.LABEL_ENGLISH;
+//export let languageAttribute2 = NODE.LABEL_GERMAN;
+//export let languageAttribute3 = NODE.LABEL_PERSIAN;
+
 
 /** Sets the preferred node label language attribute. Use the values from node.js. */
 function setLanguage(attribute)
@@ -97,7 +100,7 @@ function menuData()
         ["contribute.html","Contribute"],
         ["http://www.snik.eu/","Project Homepage"],
         [about,"About SNIK Graph"],
-        ["https://github.com/IMISE/snik-ontowww.snik.eu/graphlogy/issues","Submit Feedback about the Ontology"],
+        ["https://github.com/IMISE/snik-ontowww.snik.eu/ontology/issues","Submit Feedback about the Ontology"],
         ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"],
       ],
     },
