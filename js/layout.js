@@ -8,6 +8,7 @@ import timer from "./timer.js";
 import * as NODE from "./node.js";
 import {progress} from "./progress.js";
 import config from "./config.js";
+import {getStarMode} from "./graph.js";
 
 let activeLayout = undefined;
 
@@ -56,8 +57,9 @@ export function run(cy,layoutConfig,subs,save)
     return false;
   }
   const layoutTimer = timer("layout");
+  // a menu.js#separateSubs() function would be more elegant
   const separateSubs = subs&&(document.getElementById('separatesubs')||{}).checked;
-  if(separateSubs)
+  if(separateSubs&&!getStarMode())
   {
     const virtualNodes = [];
     for(const sub of subs)

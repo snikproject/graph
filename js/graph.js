@@ -28,6 +28,9 @@ let starMode = false;
 */
 function setStarMode(mode) {starMode=mode;}
 
+/** @return whether star mode is active */
+function getStarMode() {return starMode;}
+
 /** Hides elements using visibility: hidden.
 Do not use this for filters as they use the "display" attribute to properly interact with the other operations.
 @param {eles} eles the nodes to hide
@@ -392,4 +395,4 @@ function initGraph()
 function setSelectedNode(node) {selectedNode=node;}
 
 export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,
-  getSource,pathTarget,highlight,setSelectedNode,setSource,setTarget,showStar,setStarMode,hide,show};
+  getSource,pathTarget,highlight,setSelectedNode,setSource,setTarget,showStar,setStarMode,getStarMode,hide,show};
