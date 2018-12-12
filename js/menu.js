@@ -1,7 +1,6 @@
 /**
 Populates the menu bar on the top.
 @module */
-import {MODIFIED} from "./about.js";
 import * as log from "./log.js";
 import * as download from "./download.js";
 import * as graph from "./graph.js";
@@ -12,9 +11,9 @@ import loadGraphFromSparql from "./loadGraphFromSparql.js";
 import * as language from "./lang/language.js";
 
 /** Sets the preferred node label language attribute. Use the values from node.js. */
-function setLanguage(language)
+function setLanguage(lang)
 {
-  language.setLanguage(language);
+  language.setLanguage(lang);
   // graph.cy.style(style); // does not display the style correctly and doesn't update the labels
   // graph.cy.forceRender(); // does not update the labels either
   // the nuclear option works

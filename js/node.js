@@ -3,10 +3,10 @@ Not to be confused with the Node.js JavaScript runtime.
 @module */
 
 export const ID = "id";
+export const LABEL = "l";
 export const LABEL_GERMAN = "de";
 export const LABEL_ENGLISH = "en";
 export const LABEL_PERSIAN = "fa";
-export const LABEL_OTHER = "ot";
 export const SUBTOP = "st";
 export const PREFIX = "prefix";
 export const INSTANCE = "inst"; // whether this is an instance of some class

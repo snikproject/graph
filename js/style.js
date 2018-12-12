@@ -7,6 +7,7 @@ Cytoscape style file, excluding color information, which is contained in the col
 import * as NODE from "./node.js";
 import * as EDGE from "./edge.js";
 import * as menu from "./menu.js";
+import * as language from "./lang/language.js";
 
 const style =
   {
@@ -58,7 +59,7 @@ const style =
             const SHOW_QUALITY=false;
             let label;
             let it;
-            if((it=node.data(menu.language))&&it[0])     {label = it[0];}
+            if((it=node.data(language))&&it[0])     {label = it[0];}
             else if((it=node.data(NODE.LABEL_ENGLISH))&&it[0])     {label = it[0];}
             else if((it=node.data(NODE.LABEL_GERMAN))&&it[0]) {label = it[0];}
             else if((it=node.data(NODE.LABEL_OTHER))&&it[0])  {label = it[0];}
