@@ -1,3 +1,9 @@
+.cy-panzoom
+{
+  position: absolute;
+  bottom: 275px;
+  right: 60px;
+}
 a
 {
   cursor: pointer;
