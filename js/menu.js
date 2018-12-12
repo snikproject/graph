@@ -23,7 +23,7 @@ function setLanguage(lang)
 }
 
 /** Notifies the user of the program version so that errors can be properly reported. */
-function about() {window.alert("SNIK Graph version "+MODIFIED);}
+function about() {window.alert("SNIK Graph version "+"[AIV]{version} {date}[/AIV]");}
 
 /**
 Creates and returns the menus for the top menu bar.
