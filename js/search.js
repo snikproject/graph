@@ -120,14 +120,15 @@ function presentAll()
 }
 
 /**
- * @param  {String} query description
- * @param  {Array} uris  description
+ * @param  {String} query The user query.
+ * @param  {Set<String>} uris A set of OWL class URIs
  * @return {Boolean} Whether the search results are nonempty.
  */
 function showSearchResults(query, uris)
 {
   resultNodes = [];
   const table = document.getElementById("tab:searchresults");
+  // clear leftovers from last time
   for(let i = 0; i < table.rows.length;)
   {
     table.deleteRow(i);
@@ -152,12 +153,27 @@ function showSearchResults(query, uris)
   {
     document.getElementById("h2:searchresults").innerHTML=`${uris.size} Search Results for "${query}"`;
   }
+  // Preprocessing: Classify URIs as (0) in graph and visible, (1) in graph and invisible and (2) not in the graph.
+  const uriType = {};
+
   uris.forEach(uri=>
+  {
+    const node = graph.cy.getElementById(uri)[0];
+    if(node)
+    {
+      uriType[uri]=0;
+      if(!node.visible()) {uriType[uri]=1;}
+    }
+    else {uriType[uri]=2;}
+  });
+  const sortedUris = Array.from(uris);
+  sortedUris.sort((a,b)=>(uriType[a]-uriType[b]));
+  sortedUris.forEach(uri=>
   {
     const row = table.insertRow();
     const cell = row.insertCell(0);
     window.presentUri=presentUri;
-    cell.innerHTML = `<a href="javascript:window.presentUri('${uri}');void(0)">
+    cell.innerHTML = `<a class="search-class${uriType[uri]}"" href="javascript:window.presentUri('${uri}');void(0)">
 		${uri.replace(sparql.SPARQL_PREFIX,"")}</a>`;
   });
 
@@ -175,7 +191,9 @@ function showSearchResults(query, uris)
 }
 
 /** Searches the SPARQL endpoint for classes with the given label.
-Case and space insensitive when not using bif:contains. Can be used by node.js. */
+Case and space insensitive when not using bif:contains. Can be used by node.js.
+@return {Promise<Set>} A promise with a set of class URIs.
+*/
 export function search(userQuery)
 {
   // prevent invalid SPARQL query and injection by keeping only alphanumeric English and German characters

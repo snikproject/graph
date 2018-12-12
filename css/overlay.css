@@ -50,3 +50,7 @@
     right: 45px;
     font-size: 60px;
 }
+
+td>a.search-class0 {color: lightgreen;}
+td>a.search-class1 {color: yellow;}
+td>a.search-class2 {color: darkred;}

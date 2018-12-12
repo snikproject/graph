@@ -13,6 +13,7 @@ Intended for SELECT queries, DESCRIBE may also be possible but not tested.
 ASK queries should also work but better use {@link ask} instead as it is more convenient.
 {@param query} A valid SPARQL query.
 {@param graphOpt} An optional SPARQL graph.
+@return {Promise<Set>} A promise of a set of SPARQL select result bindings.
 */
 export function sparql(query,graphOpt)
 {
@@ -30,6 +31,7 @@ export function sparql(query,graphOpt)
 /** Query public SNIK SPARQL endpoint with an ASK (boolean) query.
 {@param query} A valid SPARQL ask query.
 {@param graphOpt} An optional SPARQL graph.
+@return {Promise<Boolean>} A promise of the boolean SPARQL ask result.
 */
 export function ask(query,graphOpt)
 {
