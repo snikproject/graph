@@ -3,12 +3,12 @@
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 import * as rdfGraph from "./rdfGraph.js";
-
+import * as language from "./lang/language.js";
 
 const buttonConfigs =
 [
-  ["Recalculate Layout", ()=>layout.run(graph.cy,layout.euler,rdfGraph.subs())],
-  ["Reset View", graph.resetStyle],
+  [language.getString("recalculateLayout"),"recalculateLayout", ()=>layout.run(graph.cy,layout.euler,rdfGraph.subs())],
+  [language.getString("resetView"),"resetView", graph.resetStyle],
 //  ["Reload", loadGraphFromSparql],
 //  ["Export", file.save],
 ];
@@ -21,6 +21,7 @@ export default function addButtons()
     const button = document.createElement("button");
     document.getElementById("buttons").appendChild(button);
     button.innerText = buttonConfig[0];
-    button.addEventListener("click",buttonConfig[1]);
+    button.id = buttonConfig[1];
+    button.addEventListener("click",buttonConfig[2]);
   }
 }

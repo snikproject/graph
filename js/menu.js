@@ -14,6 +14,17 @@ import * as language from "./lang/language.js";
 function setLanguage(lang)
 {
   language.setLanguage(lang);
+  const strings = language.getStrings();
+  for(const id of Object.keys(strings))
+  {
+    const element = document.getElementById(id);
+    if(!element)
+    {
+      console.warn(id+" does not exist");
+      continue;
+    }
+    element.textContent = strings[id];
+  }
   // graph.cy.style(style); // does not display the style correctly and doesn't update the labels
   // graph.cy.forceRender(); // does not update the labels either
   // the nuclear option works

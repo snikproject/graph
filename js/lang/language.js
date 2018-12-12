@@ -28,3 +28,12 @@ export function getString(key)
 {
   return strings[language][key];
 }
+
+/**
+ * getString - description
+ * @return {type}  description
+ */
+export function getStrings()
+{
+  return strings[language];
+}
