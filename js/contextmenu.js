@@ -1,7 +1,7 @@
 /**
 Creates the circular context menu that can be opened on top of a node.
 @module */
-import {ONTOLOGY_ISSUE_WARNING,MODIFIED} from "./about.js";
+import * as language from "./lang/language.js";
 import {classUse} from "./classuse.js";
 import * as graph from "./graph.js";
 import * as rdf from "./rdf.js";
@@ -17,7 +17,7 @@ const defaultsNodes = {
       select: node=>
       {
         {
-          if(confirm(ONTOLOGY_ISSUE_WARNING))
+          if(confirm(language.getString("ontologyIssueWarning")))
           {
             const url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
             encodeURIComponent(node.data(NODE.ID))+
