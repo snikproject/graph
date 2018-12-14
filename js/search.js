@@ -4,6 +4,7 @@ Textual node search.
 import * as graph from "./graph.js";
 import * as sparql from "./sparql.js";
 import * as log from "./log.js";
+import * as rdfGraph from "./rdfGraph.js";
 import * as NODE from "./node.js";
 
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
@@ -219,7 +220,7 @@ export function search(userQuery)
 			{?s skos:altLabel ?l.	?l <bif:contains> "${searchQuery}".}} order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
   }
   log.debug(sparqlQuery);
-  return sparql.sparql(sparqlQuery).then(bindings=>new Set(bindings.map(b=>b.s.value)));
+  return sparql.sparql(sparqlQuery,"http://www.snik.eu/ontology").then(bindings=>new Set(bindings.map(b=>b.s.value)));
   //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
   //filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
 }
