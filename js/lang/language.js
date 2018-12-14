@@ -13,11 +13,14 @@ const strings =
 
 let language = "en";
 
-/** Sets the user interface language. */
+/** Sets the user interface language if it exists.
+@returns {boolean} whether the language exists
+*/
 export function setLanguage(lang)
 {
-  if(!strings[lang]) {throw "Language "+lang+" not found.";}
+  if(!strings[lang]) {return false;}
   language=lang;
+  return true;
 }
 
 /**
