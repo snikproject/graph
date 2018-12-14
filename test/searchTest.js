@@ -1,5 +1,6 @@
 import * as search from '../js/search.js';
-import assert from 'assert';
+import chai from 'chai';
+const assert = chai.assert;
 
 function equals(as, bs)
 {
@@ -19,6 +20,7 @@ describe('search', function()
       // pairwise equality check
       for(let i=0;i<results.length;i++)
       {
+        assert.isAbove(results[i].size,3,"not enough hits for "+queries[i]+": "+[...results[i]].join(' '));
         for(let j=i+1;j<results.length;j++)
         {
           assert(equals(results[i],results[j]),

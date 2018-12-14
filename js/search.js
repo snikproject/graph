@@ -6,9 +6,10 @@ import * as sparql from "./sparql.js";
 import * as log from "./log.js";
 import * as NODE from "./node.js";
 
-const USE_BIF_CONTAINS = false; // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
+// disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
+// BIF contains also breaks space insensitiveness, which we require and also check in the unit test
+const USE_BIF_CONTAINS = false;
 let firstCumulativeSearch = true;
-
 
 /** Hides the overlay that shows the class search results. */
 export function hideSearchResults()
@@ -198,13 +199,18 @@ export function search(userQuery)
 {
   // prevent invalid SPARQL query and injection by keeping only alphanumeric English and German characters
   // if other languages with other characters are to be supported, extend the regular expression
-  const searchQuery = userQuery.replace(/[\x22\x27\x5C\xA\xD]/g, '');
+  // remove space to make queries space insensitive, as people might search for URI suffixes which can be similar to the label so we get more recall
+  // works in conjuction with also ignoring whitespace for labels in the SPARQL query
+  // If this results in too low of a precision, the search can be made space sensitive again by changing /[\x22\x27\x5C\xA\xD ]/ to /[\x22\x27\x5C\xA\xD]/
+  // and adapting the SPARQL query along with it.
+  // Does not work with bif:contains.
+  const searchQuery = userQuery.replace(/[\x22\x27\x5C\xA\xD ]/g, '');
   // use this when labels are available, URIs are not searched
   let sparqlQuery;
   if(!USE_BIF_CONTAINS||searchQuery.includes(' ')) // regex is slower than bif:contains but we have no choice with a space character
   {
     sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
-			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(str(?l)),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
+			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l)," ","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
   }
   else // no space character and bif:contains is allowed, so use it
   {
