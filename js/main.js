@@ -37,8 +37,8 @@ function main()
     .then(()=>
     {
       addMenu();
-      addFilterEntries(graph.cy,document.getElementById("filter"));
-      file.addFileLoadEntries(document.getElementById("file"));
+      addFilterEntries(graph.cy,document.getElementById("filter-div"));
+      file.addFileLoadEntries(document.getElementById("file-div"));
       search.addSearch();
       addButtons();
     })

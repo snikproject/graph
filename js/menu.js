@@ -23,7 +23,13 @@ function setLanguage(lang)
       console.warn(id+" does not exist");
       continue;
     }
-    element.textContent = strings[id];
+    const s = strings[id];
+    switch(element.tagName)
+    {
+    case "A":
+    case "SPAN": element.textContent = s; break;
+    }
+    // element.textContent = strings[id];
   }
   // graph.cy.style(style); // does not display the style correctly and doesn't update the labels
   // graph.cy.forceRender(); // does not update the labels either
@@ -116,7 +122,7 @@ function menuData()
 /** Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.*/
 function addOptions()
 {
-  document.getElementById("options").innerHTML =
+  document.getElementById("options-div").innerHTML =
   `<span class="dropdown-entry"><input type="checkbox" autocomplete="off" id="separatesubs"/>separate subontologies</span>
   <span class="dropdown-entry"><input type="checkbox" autocomplete="off" id="cumulativesearch"/>cumulative search</span>
   <span  class="dropdown-entry"><input type="checkbox" autocomplete="off" id="daymode"/>day mode</span> `;
@@ -140,11 +146,12 @@ function addMenu()
     li.appendChild(span);
     span.classList.add("dropdown-menu");
     span.innerText=menuDatum.label;
+    span.id=menuDatum.id;
 
     const div = document.createElement("div");
     li.appendChild(div);
     div.classList.add("dropdown-content");
-    div.id=menuDatum.id;
+    div.id=menuDatum.id+"-div";
 
     span.addEventListener("click",()=>
     {
@@ -162,7 +169,7 @@ function addMenu()
       const a = document.createElement("a");
       a.classList.add("dropdown-entry");
       div.appendChild(a);
-      a.innerHTML=entry[1];
+      a.innerHTML=entry[1];      
       switch(typeof entry[0])
       {
       case 'string':
