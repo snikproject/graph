@@ -1,55 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-
-	<title>My Sample Project</title>
-</head>
+<head><meta charset="utf-8"></head>
 <body>
-	<h1>My Sample Project</h1>
-<label for="button">
-	Click Me to Upload
- <input id="button" type="file" accept="application/json" onclick="dateiupload" style="display:none">
- </label>
+  <script>
+	const ENDPOINT = "http://dbpedia.org/sparql"
+	const GRAPH = "http://dbpedia.org";
 
-<script>
-document.write([...new Set([3,2,1,7])].sort());
-//const form = document.getElementById("form");
-//document.getElementById("button").addEventListener("click",form.submit);
-//form.addEventListener("submit",dateiupload);
-document.getElementById("button").addEventListener("change",dateiupload);
-
- function dateiupload(event)
- {
-    var dateien = event.target.files; // FileList objekt
-
-    // erste Datei auswählen (wichtig, weil IMMER ein FileList Objekt generiert wird)
-    var uploadDatei = dateien[0];
-
-    // Ein Objekt um Dateien einzulesen
-    var reader = new FileReader();
-
-    var senddata = new Object();
-    // Auslesen der Datei-Metadaten
-    senddata.name = uploadDatei.name;
-    senddata.date = uploadDatei.lastModified;
-    senddata.size = uploadDatei.size;
-    senddata.type = uploadDatei.type;
-
-    // Wenn der Dateiinhalt ausgelesen wurde...
-    reader.onload = function(theFileData) {
-      senddata.fileData = theFileData.target.result; // Ergebnis vom FileReader auslesen
-
-      /*
-      Code für AJAX-Request hier einfügen
-      */
-    }
-
-    // Die Datei einlesen und in eine Data-URL konvertieren
-    reader.readAsDataURL(uploadDatei);
-		return false;
-  }
-
-</script>
+	function sparql(endpoint, graph, query)
+	{
+	  const url = endpoint +
+	  '?query=' + encodeURIComponent(query) +
+	  '&format=json'+
+	  '&default-graph-uri=' + encodeURIComponent(graph);
+	  return fetch(url,{cache: "force-cache"});
+	}
+  const query = "select * {?s ?p ?o.}";
+	sparql(ENDPOINT,GRAPH,query);
+  </script>
 </body>
 </html>
