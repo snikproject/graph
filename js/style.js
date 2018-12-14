@@ -20,9 +20,11 @@ const style =
         'css':
         {
           'min-zoomed-font-size': 5,
-          'width': 'mapData(degree,0,39,51,250)',
-          'height': 'mapData(degree,0,39,51,250)',
-          //"height" : 88.5,
+          //'width': 'mapData(degree,0,39,51,250)',
+          //'height': 'mapData(degree,0,39,51,250)',
+	  'width': 39,
+	  'height': 39,
+	  'font-size': 11,
           'text-valign': 'center',
           'text-halign': 'center',
           'border-opacity': 1.0,
@@ -82,7 +84,9 @@ const style =
           'border-width': 5.0,
         },
       },
+      // degree is not used right now
       // limit node scaling to prevent huge nodes
+      /*
       {
         'selector': 'node[degree >= 39]',
         'css':
@@ -111,7 +115,7 @@ const style =
         {
           'font-size': 1,
         },
-      },
+      },*/
       {
         'selector': 'node.highlighted',
         'css':
