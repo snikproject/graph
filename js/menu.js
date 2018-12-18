@@ -20,13 +20,14 @@ function setLanguage(lang)
     const element = document.getElementById(id);
     if(!element)
     {
-      console.warn(id+" does not exist");
+      log.warn(id+" does not exist");
       continue;
     }
     const s = strings[id];
     switch(element.tagName)
     {
     case "A":
+    case "BUTTON":
     case "SPAN": element.textContent = s; break;
     }
     // element.textContent = strings[id];
@@ -59,7 +60,7 @@ function menuData()
       "id": "file",
       "entries":
       [
-        [loadGraphFromSparql,"Load from SPARQL Endpoint","load-from-sparql-endpoint"],
+        [loadGraphFromSparql,"Load from SPARQL Endpoint","load-sparql"],
         [download.downloadGraph,"Save Full Graph with Layout as Cytoscape File","save-cytoscape-full"],
         [download.downloadVisibleGraph,"Save Visible Graph with Layout as Cytoscape File","save-cytoscape-visible"],
         [download.downloadLayout,"Save Layout only","save-layout"],
@@ -86,7 +87,7 @@ function menuData()
       "entries":
           [
             ["http://www.snik.eu/sparql","SPARQL Endpoint","sparql-endpoint"],
-            ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser"],
+            ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser","rdf-browser"],
             ["http://snik.eu/evaluation","Data Quality Evaluation","data-quality-evaluation"],
           ],
     },
@@ -126,7 +127,7 @@ function addOptions()
   `<span class="dropdown-entry"><input type="checkbox" autocomplete="off"/><span id="separate-subs">separate subontologies</span></span>
   <span class="dropdown-entry"> <input type="checkbox" autocomplete="off"/><span id="cumulative-search">cumulative search</span></span>
   <span  class="dropdown-entry"><input type="checkbox" autocomplete="off"/><span id="day-mode">day mode</span></span>`;
-  const daymode = document.getElementById("daymode");
+  const daymode = document.getElementById("day-mode");
   daymode.addEventListener("change",()=>graph.invert(daymode.checked));
 }
 

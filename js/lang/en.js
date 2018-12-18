@@ -9,7 +9,7 @@ export default
   "save-cytoscape-full": "Save Full Graph with Layout as Cytoscape File",
   "save-cytoscape-visible": "Save Visible Graph with Layout as Cytoscape File",
   "save-layout": "Save Layout only",
-  "recalculate-layout-and-replace":"Recalculate Layout and Replace in Browser Cache",
+  "recalculate-layout-replace":"Recalculate Layout and Replace in Browser Cache",
   "save-image-current-view": "Save Image of Current View",
   "save-image-whole-graph": "Save Image of Whole Graph",
   "save-image-current-view-high-res": "Save Image of Current View (high res)",

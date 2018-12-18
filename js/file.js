@@ -68,16 +68,18 @@ Add an upload entry to the file menu.
 */
 function addLoadEntry(parent,id,description,func)
 {
-  const label = document.createElement("label");
-  label.classList.add("dropdown-entry");
-  label.for=id+"button";
-  label.innerText=description;
-  parent.prepend(label);
+  const span = document.createElement("span");
+  span.classList.add("dropdown-entry");
+  parent.prepend(span);
   const input = document.createElement("input");
   input.type="file";
-  input.id=id+"button";
   input.style.display="none";
-  label.appendChild(input);
+  span.appendChild(input);
+  const inner = document.createElement("span");
+  inner.innerText=description;
+  inner.id=id;
+  span.appendChild(inner);
+
   input.addEventListener("change",func);
 }
 
@@ -89,6 +91,6 @@ Cannot use the simpler default menu creation method because file upload only wor
 */
 export function addFileLoadEntries(parent)
 {
-  addLoadEntry(parent,"loadlayout","Load Layout",loadLayout);
-  addLoadEntry(parent,"loadgraph","Load Graph File with Layout",loadGraph);
+  addLoadEntry(parent,"load-layout","Load Layout",loadLayout);
+  addLoadEntry(parent,"load-graph-with-layout","Load Graph File with Layout",loadGraph);
 }

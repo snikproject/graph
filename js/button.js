@@ -7,8 +7,8 @@ import * as language from "./lang/language.js";
 
 const buttonConfigs =
 [
-  [language.getString("recalculateLayout"),"recalculateLayout", ()=>layout.run(graph.cy,layout.euler,rdfGraph.subs())],
-  [language.getString("resetView"),"resetView", graph.resetStyle],
+  [language.getString("recalculate-layout"),"recalculate-layout", ()=>layout.run(graph.cy,layout.euler,rdfGraph.subs())],
+  [language.getString("reset-view"),"reset-view", graph.resetStyle],
 //  ["Reload", loadGraphFromSparql],
 //  ["Export", file.save],
 ];
