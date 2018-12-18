@@ -59,15 +59,15 @@ function menuData()
       "id": "file",
       "entries":
       [
-        [loadGraphFromSparql,"Load from SPARQL Endpoint"],
-        [download.downloadGraph,"Save Full Graph with Layout as Cytoscape File"],
-        [download.downloadVisibleGraph,"Save Visible Graph with Layout as Cytoscape File"],
-        [download.downloadLayout,"Save Layout only"],
-        [()=>{layout.run(graph.cy,layout.euler,rdfGraph.subs());},"Recalculate Layout and Replace in Browser Cache"],
-        [()=>download.downloadPng(false,false),"Save Image of Current View "],
-        [()=>download.downloadPng(true,false),"Save Image of Whole Graph"],
-        [()=>download.downloadPng(false,true),"Save Image of Current View (high res)"],
-        [()=>download.downloadPng(true,true),"Save Image of Whole Graph (high res)"],
+        [loadGraphFromSparql,"Load from SPARQL Endpoint","load-from-sparql-endpoint"],
+        [download.downloadGraph,"Save Full Graph with Layout as Cytoscape File","save-cytoscape-full"],
+        [download.downloadVisibleGraph,"Save Visible Graph with Layout as Cytoscape File","save-cytoscape-visible"],
+        [download.downloadLayout,"Save Layout only","save-layout"],
+        [()=>{layout.run(graph.cy,layout.euler,rdfGraph.subs());},"Recalculate Layout and Replace in Browser Cache","recalculate-layout-replace"],
+        [()=>download.downloadPng(false,false),"Save Image of Current View","save-image-current-view"],
+        [()=>download.downloadPng(true,false),"Save Image of Whole Graph","save-image-whole-graph"],
+        [()=>download.downloadPng(false,true),"Save Image of Current View (high res)","save-image-current-view-high-res"],
+        [()=>download.downloadPng(true,true),"Save Image of Whole Graph (high res)","save-image-whole-graph-high-res"],
       ],
     },
     {
@@ -85,9 +85,9 @@ function menuData()
       "id":"services",
       "entries":
           [
-            ["http://www.snik.eu/sparql","SPARQL Endpoint"],
+            ["http://www.snik.eu/sparql","SPARQL Endpoint","sparql-endpoint"],
             ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser"],
-            ["http://snik.eu/evaluation","Data Quality Evaluation"],
+            ["http://snik.eu/evaluation","Data Quality Evaluation","data-quality-evaluation"],
           ],
     },
     {
@@ -95,9 +95,9 @@ function menuData()
       "id": "language",
       "entries":
       [
-        [()=>setLanguage(NODE.LABEL_ENGLISH),"English"],
-        [()=>setLanguage(NODE.LABEL_GERMAN),"German"],
-        [()=>setLanguage(NODE.LABEL_PERSIAN),"Persian"],
+        [()=>setLanguage(NODE.LABEL_ENGLISH),"English","english"],
+        [()=>setLanguage(NODE.LABEL_GERMAN),"German","german"],
+        [()=>setLanguage(NODE.LABEL_PERSIAN),"Persian","persian"],
       ],
     },
     {
@@ -123,9 +123,9 @@ function menuData()
 function addOptions()
 {
   document.getElementById("options-div").innerHTML =
-  `<span class="dropdown-entry"><input type="checkbox" autocomplete="off" id="separatesubs"/>separate subontologies</span>
-  <span class="dropdown-entry"><input type="checkbox" autocomplete="off" id="cumulativesearch"/>cumulative search</span>
-  <span  class="dropdown-entry"><input type="checkbox" autocomplete="off" id="daymode"/>day mode</span> `;
+  `<span class="dropdown-entry"><input type="checkbox" autocomplete="off"/><span id="separate-subs">separate subontologies</span></span>
+  <span class="dropdown-entry"> <input type="checkbox" autocomplete="off"/><span id="cumulative-search">cumulative search</span></span>
+  <span  class="dropdown-entry"><input type="checkbox" autocomplete="off"/><span id="day-mode">day mode</span></span>`;
   const daymode = document.getElementById("daymode");
   daymode.addEventListener("change",()=>graph.invert(daymode.checked));
 }
@@ -168,8 +168,9 @@ function addMenu()
     {
       const a = document.createElement("a");
       a.classList.add("dropdown-entry");
+      a.id=entry[2];
       div.appendChild(a);
-      a.innerHTML=entry[1];      
+      a.innerHTML=entry[1];
       switch(typeof entry[0])
       {
       case 'string':
