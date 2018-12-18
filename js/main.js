@@ -42,7 +42,11 @@ function main()
       search.addSearch();
       addButtons();
     })
-    .then(()=>progress(100));
+    .catch(e=>
+    {
+      alert("Error initializing SNIK Graph\n\n"+e);
+    })
+    .finally(()=>{progress(100);});
 }
 
 document.addEventListener("DOMContentLoaded",main);
