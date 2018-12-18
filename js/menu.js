@@ -13,7 +13,10 @@ import * as language from "./lang/language.js";
 /** Sets the preferred node label language attribute. Use the values from node.js. */
 function setLanguage(lang)
 {
-  language.setLanguage(lang);
+  if(!language.setLanguage(lang))
+  {
+    log.warn("could not set language "+lang);
+  }
   const strings = language.getStrings();
   for(const id of Object.keys(strings))
   {

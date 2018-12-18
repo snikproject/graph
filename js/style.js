@@ -57,14 +57,30 @@ const style =
           'label': function(node)
           {
             const SHOW_QUALITY=false;
-            let label;
-            let it;
-            if((it=node.data(language))&&it[0])     {label = it[0];}
-            else if((it=node.data(NODE.LABEL_ENGLISH))&&it[0])     {label = it[0];}
-            else if((it=node.data(NODE.LABEL_GERMAN))&&it[0]) {label = it[0];}
-            else if((it=node.data(NODE.LABEL_OTHER))&&it[0])  {label = it[0];}
-            else if((it=node.data(NODE.LABEL_PERSIAN))&&it[0])  {label = it[0];}
-            else {label = node.data(NODE.ID);}
+            let label = node.data(NODE.LABEL); // object with language code as keys and arrays of string as values
+            // Use the user-prefered language if available.
+	    let it;
+	    if((it=label[language.getLanguage()])&&(it=it[0])) {label = it;}
+	    // Try other languages 
+            else
+	    {
+	      let found = false;
+	      for(const lang of [NODE.LABEL_ENGLISH,NODE.LABEL_GERMAN,NODE.LABEL_PERSIAN])
+	      {
+                if((it=label[lang])&&it[0])
+	        {
+	         label = it[0];
+		 found = true;
+	         break;
+	        }
+              }
+              if(!found)
+	      {
+	      const keys = Object.keys(label);
+	      if(keys.length>0) {label = label[keys[0]];}
+	      else {label = node.data(NODE.ID);}
+	      }
+	    }
             if(SHOW_QUALITY) {label+="\n\u25CB\u25CF\u25CB\u25CB\u25CF";}
             if(node.data(NODE.INSTANCE)) {label+="*";}
             return label;

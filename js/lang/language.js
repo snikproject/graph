@@ -9,6 +9,7 @@ const strings =
 {
   'en': en,
   'de': de,
+  'fa': {}, // for future Persian UI labels and for Persian class labels
 };
 
 let language = "en";
@@ -23,9 +24,14 @@ export function setLanguage(lang)
   return true;
 }
 
+/** 
+@returns {string} the active language code, such as "en" or "de"
+*/
+export function getLanguage() {return language;}
+
 /**
  * getString - description
- * @return {type}  description
+ * @return {type}  descriptioa
  */
 export function getString(key)
 {

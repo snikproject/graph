@@ -73,7 +73,7 @@ Hide all other nodes except when in star mode.
 function showPath(from, to)
 {
   progress(0);
-  const elements = cy.elements.css("display", "element");
+  const elements = cy.elements.style("display", "element");
 
   const aStar = elements.aStar(
     {
