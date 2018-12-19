@@ -30,6 +30,7 @@ besides the unit tests (mocha, chai) we need to test a few things before releasi
 ## How to do a release (you need access to the bruchtal server)
 
 * first do the github release (close milestones and do the release procedure)
+* change the version number in package.json
 * ssh bruchtal -A (snik@bruchtal.imise.uni-leipzig.de)
 * STRG + R (reverse search) graph
 * cp js/config.dist.js js/config.js

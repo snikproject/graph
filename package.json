@@ -1,6 +1,6 @@
 {
   "name": "snikgraph",
-  "version": "0.8.0",
+  "version": "0.9.1",
   "description": "SNIK Graph",
   "main": "js/main.js",
   "homepage": "https://github.com/IMISE/snik-cytoscape.js#readme",
@@ -11,6 +11,7 @@
     "cytoscape-euler": "^1.2.1",
     "cytoscape-panzoom": "^2.5.3",
     "jquery": "^3.3.1",
+    "npm": "^6.5.0",
     "spin.js": "^4.0.0"
   },
   "devDependencies": {
