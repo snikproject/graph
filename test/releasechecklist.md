@@ -33,6 +33,7 @@ besides the unit tests (mocha, chai) we need to test a few things before releasi
 * change the version number in package.json
 * ssh bruchtal -A (snik@bruchtal.imise.uni-leipzig.de)
 * STRG + R (reverse search) graph
+* git pull
 * cp js/config.dist.js js/config.js
 * npm install
 * npm run build
