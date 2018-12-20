@@ -6,6 +6,6 @@
         // Firefox 50 is required by the Cytoscape.js context menu library
         "browsers": ["Firefox 50", "Edge 12","Chrome 54", "Opera 41", "Safari 10"]
       },
-      "useBuiltIns": "usage"
+      "useBuiltIns": "entry"
       }]]
 }
