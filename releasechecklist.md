@@ -1,9 +1,13 @@
 # Checklist before releasing a new version of SNIK Graph
 
-## ToDos before a new release to test the functionality of the SNIK Graph
+## ToDos before a new release on GitHub to test the functionality of the SNIK Graph
 
 besides the unit tests (mocha, chai) we need to test a few things before releasing:
 
+* `npm update`
+* `npm run build`
+* make sure that both index-dev.html and index-prod.html work
+* match the version number in package.json to the new release
 * load the graph (maybe in different browsers)
 * clear the cache and try to load again (press F5)
 * test all the filters (by turning them on and off)
@@ -27,16 +31,15 @@ besides the unit tests (mocha, chai) we need to test a few things before releasi
 * remove at least one node and one edge using the contextmenu and del-button
 * check if the description, LodLive and the other entries in the contextmenu are working
 
-## How to do a release (you need access to the bruchtal server)
+## How publish a new GitHub release on the bruchtal server
 
-* first do the github release (close milestones and do the release procedure)
-* change the version number in package.json
+* first do the GitHub release (close milestones and do the release procedure) and make sure that it runs locally
 * ssh bruchtal -A (snik@bruchtal.imise.uni-leipzig.de)
 * STRG + R (reverse search) graph
 * git pull
 * cp js/config.dist.js js/config.js
-* npm install
+* npm update 
 * npm run build
-* ln -s index-prod.html index.html
+* (first time) ln -s index-prod.html index.html
 * do the above mentioned tests in the browser
 * exit

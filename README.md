@@ -49,6 +49,8 @@ If you want the newest changes from the GitHub repository, execute `git pull` fi
 3. `npm run build`
 4. if there are new keys in the config file, you may need to copy `js/config.dist.js` to `js/config.js` again
 
+Make sure it runs locally before updating on the server, see releasechecklist.md.
+
 ### Code Style
 Specified in the ESlint config file `.eslintrc.json`.
 Use the [Cytoscape.js notation](http://js.cytoscape.org/#notation/functions) for JSDoc types and generic parameters, such as "ele" for "a collection of a single element (node or edge)".
