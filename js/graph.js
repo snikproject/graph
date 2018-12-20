@@ -16,7 +16,6 @@ import timer from "./timer.js";
 import * as NODE from "./node.js";
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
 let cy = null;
-let styled = null;
 let selectedNode = null;
 let path = null;
 let pathSource = null;
@@ -39,7 +38,6 @@ function hide(eles)
 {
   eles.style("visibility","hidden");
   // Merge is in place. See http://js.cytoscape.org/#eles.merge
-  styled.merge(eles);
 }
 
 /** Show (unhide) the given elements using visibility: visible.
@@ -50,7 +48,6 @@ function show(eles)
 {
   eles.style("visibility","visible");
   // Unmerge is in place. See http://js.cytoscape.org/#eles.unmerge
-  styled.unmerge(eles);
 }
 
 /** Highlight the given elements using the 'highlighted' css class from the color scheme stylesheet and show them.
@@ -60,8 +57,21 @@ function highlight(eles)
 {
   eles.style("visibility","visible");
   //highlight(eles.edgesWith(styled)); // is this needed? if yes, prevent endless loop
-  styled.merge(eles);
   eles.addClass('highlighted');
+}
+
+/** Removes all highlighting (except selection) and shows all hidden nodes. */
+function resetStyle()
+{
+  starMode=false;
+  progress(0);
+  //setFirstCumulativeSearch(true);
+  //selectedNode = undefined;
+  cy.startBatch();
+  cy.elements(".highlighted").removeClass("highlighted");
+  cy.elements(":hidden").style("visibility","visible");
+  cy.endBatch();
+  progress(100);
 }
 
 /** Highlight all nodes and edges on a shortest path between "from" and "to".
@@ -73,8 +83,11 @@ Hide all other nodes except when in star mode.
 function showPath(from, to)
 {
   progress(0);
-
-  const aStar = cy.elements().aStar(
+  if(starMode) {show(cy.elements(":hidden"));} // temporarily make all hidden nodes visible so that they can be used for pathfinding
+  const elements = cy.elements(":visible");
+  hide(cy.elements());
+  if(starMode) {show(cy.elements(".highlighted"));}
+  const aStar = elements.aStar(
     {
       root: from,
       goal: to,
@@ -83,19 +96,16 @@ function showPath(from, to)
   if (path)
   {
     cy.startBatch();
-    if(!starMode)
-    {
-      starMode=true;
-      hide(cy.elements());
-    }
+    starMode=true;
     cy.add(path);
     highlight(path);
     cy.endBatch();
   }
   else
   {
-    alert('no path found');
     progress(100);
+    if(!starMode) {resetStyle();} // keep it as it was before the path operation
+    alert('no path found');
     return false;
   }
   progress(100);
@@ -114,8 +124,9 @@ function showWorm(from, to)
   {
     progress(0);
     cy.startBatch();
-    const edges = to.connectedEdges();
-
+    show(to.connectedEdges());
+    const edges = to.connectedEdges(":visible");
+    hide(to.connectedEdges());
     highlight(edges);
     highlight(edges.connectedNodes());
     cy.endBatch();
@@ -134,27 +145,24 @@ Hide all other nodes except when in star mode.
 function showStar(node, changeLayout, directed)
 {
   progress(0);
-  if(!starMode)
-  {
-    hide(cy.elements());
-  }
-  starMode=true;
-
   cy.startBatch();
-
+  if(starMode) {show(cy.elements(":hidden"));}
+  starMode=true;
   // open 2 levels deep on closeMatch
   //const inner = node; // if you don't want to include close match, define inner like this
-  const closeMatchEdges = node.connectedEdges().filter('[pl="closeMatch"]');
-  const innerNodes = closeMatchEdges.connectedNodes();
+  const closeMatchEdges = node.connectedEdges(":visible").filter('[pl="closeMatch"]');
+  const innerNodes = closeMatchEdges.connectedNodes(":visible");
   innerNodes.merge(node); // in case there is no close match edge
   const edges = directed?
     innerNodes.edgesTo('node')
-    :innerNodes.connectedEdges();
-  const nodes  = edges.connectedNodes();
+    :innerNodes.connectedEdges(":visible");
+  const nodes  = edges.connectedNodes(":visible");
   const outerNodes = nodes.difference(innerNodes);
-
+  hide(cy.elements());
+  highlight(node);
   highlight(nodes);
   highlight(edges);
+  show(cy.elements(".highlighted"));
 
   if(changeLayout)
   {
@@ -188,15 +196,7 @@ function showDoubleStar(from, to)
 {
   if(showWorm(from, to))
   {
-    progress(0);
-    cy.startBatch();
-    // "A visibility: hidden node does not hide its connected edges." http://js.cytoscape.org/#style/visibility
-    const edges = from.connectedEdges();
-    highlight(edges);
-    highlight(edges.connectedNodes());
-    cy.endBatch();
-    progress(100);
-    return true;
+    return showWorm(to, from);
   }
   return false;
 }
@@ -211,7 +211,10 @@ Hide all other nodes except when in star mode.
 function showStarPath(from, to)
 {
   progress(0);
-  const aStar = cy.elements().aStar(
+  cy.startBatch();
+  if(starMode) {show(cy.elements(":hidden"));}
+  starMode=true;
+  const aStar = cy.elements(":visible").aStar(
     {
       root: from,
       goal: to,
@@ -219,28 +222,32 @@ function showStarPath(from, to)
   path = aStar.path;
   if (path)
   {
-    cy.startBatch();
-    if(!starMode)
-    {
-      hide(cy.elements());
-      starMode=true;
-    }
     cy.add(path);
     highlight(path.edges());
     highlight(path.nodes());
-    const edges = path.nodes().connectedEdges();
+    const edges = path.nodes().connectedEdges(":visible");
     highlight(edges);
-    highlight(edges.connectedNodes());
+    highlight(edges.connectedNodes(":visible"));
+    hide(cy.elements());
+    show(cy.elements(".highlighted"));
     cy.endBatch();
+    progress(100);
+    return true;
   }
   else
   {
-    alert('no path found');
+    cy.endBatch();
     progress(100);
+    // keep it as it was before the operation
+    if(starMode)
+    {
+      hide(cy.elements());
+      show(cy.elements(".highlighted"));
+    }
+    else {resetStyle();}
+    alert('no path found');
     return false;
   }
-  progress(100);
-  return true;
 }
 
 /** Returns the start node for all path operations
@@ -309,24 +316,6 @@ function setTarget(node)
       pathTarget.data(NODE.ID).replace(sparql.SPARQL_PREFIX,'');
 }
 
-/** Removes all highlighting (except selection) and shows all hidden nodes. */
-function resetStyle()
-{
-  starMode=false;
-  progress(0);
-  //setFirstCumulativeSearch(true);
-  //selectedNode = undefined;
-  cy.startBatch();
-  styled.style("visibility","visible");
-  styled.removeClass('highlighted');
-  styled = cy.collection();
-  styled.style("visibility","visible");
-  styled.removeClass('highlighted');
-  styled = cy.collection();
-  cy.endBatch();
-  progress(100);
-}
-
 /** Inverts the screen colors in the canvas for day mode. Uses an inverted node js style file to keep node colors.
 @param {boolean} enabled whether the canvas colors should be inverted
 */
@@ -369,7 +358,6 @@ function initGraph()
       maxZoom: 7,
     });
   cy.panzoom(); // Google Maps like zoom UI element
-  styled = cy.collection();
   selectedNode = cy.collection();
   registerMenu();
 
@@ -383,7 +371,6 @@ function initGraph()
     selectedNode = event.target;
   });
 
-  styled = cy.collection();
   initTimer.stop();
   return cy;
 }
