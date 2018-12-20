@@ -9,7 +9,7 @@ const strings =
 {
   'en': en,
   'de': de,
-  'fa': {}, // for future Persian UI labels and for Persian class labels
+  'fa': {idStrings: {}, messageStrings: {}}, // for future Persian UI labels and for Persian class labels
 };
 
 let language = "en";
@@ -24,7 +24,7 @@ export function setLanguage(lang)
   return true;
 }
 
-/** 
+/**
 @returns {string} the active language code, such as "en" or "de"
 */
 export function getLanguage() {return language;}
@@ -35,14 +35,16 @@ export function getLanguage() {return language;}
  */
 export function getString(key)
 {
-  return strings[language][key];
+  const ss = strings[language];
+  if(!ss.all) {ss.all={...ss.idStrings,...ss.messageStrings};}
+  {return ss.all[key];}
 }
 
 /**
  * getString - description
  * @return {type}  description
  */
-export function getStrings()
+export function getIdStrings()
 {
-  return strings[language];
+  return strings[language].idStrings;
 }

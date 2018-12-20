@@ -17,7 +17,7 @@ function setLanguage(lang)
   {
     log.warn("could not set language "+lang);
   }
-  const strings = language.getStrings();
+  const strings = language.getIdStrings();
   for(const id of Object.keys(strings))
   {
     const element = document.getElementById(id);
