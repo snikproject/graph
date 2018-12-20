@@ -159,7 +159,7 @@ const defaultsRelations = {
         window.open
         (
           'https://github.com/IMISE/snik-ontology/issues/new?title='+
-          encodeURIComponent(edgeLabel+' v'+MODIFIED)+
+          encodeURIComponent(edgeLabel)+
           '&body='+encodeURIComponent('The edge "'+edgeLabel+'" is incorrect.\n\n**Details**\n')
         );
       },
