@@ -11,7 +11,7 @@ const assert = require('chai').assert;
 describe('cytoscape', function()
 {
   let cy;
-  const subs = new Set(["meta","it4it"]);
+  const subs = new Set(["meta","bb"]);
 
   it('create empty graph', function()
   {
@@ -22,7 +22,7 @@ describe('cytoscape', function()
   it('load graph from sparql', function()
   {
     return loadGraphFromSparql(cy, subs).then(()=>
-      assert.closeTo(cy.nodes().size(),7000,3000)
+      assert.closeTo(cy.nodes().size(),1134,100)
     );
   });
   it('calculate layout', function()
