@@ -58,6 +58,15 @@
     "type": "git",
     "url": "https://github.com/IMISE/snik-cytoscape.js.git"
   },
-  "author": "Konrad Höffner",
+  "author": {
+    "name": "Konrad Höffner",
+    "url": "https://github.com/konradhoeffner/"
+  },
+  "contributors": [
+    {
+      "name": "Thomas Pause",
+      "url": "https://github.com/T-P-1"
+    }
+  ],
   "license": "CC-BY-SA-4.0"
 }
