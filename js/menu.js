@@ -90,7 +90,7 @@ function menuData()
       "entries":
           [
             ["http://www.snik.eu/sparql","SPARQL Endpoint","sparql-endpoint"],
-            ["http://lodview.it/lodview/?sparql=http%3A%2F%2Fwww.snik.eu%2Fsparql&prefix=http%3A%2F%2Fwww.snik.eu%2Fontology%2F&IRI=http%3A%2F%2Fwww.snik.eu%2Fontology%2Fmeta%2FTop","RDF Browser","rdf-browser"],
+            ["http://www.snik.eu/ontology","RDF Browser","rdf-browser"],
             ["http://snik.eu/evaluation","Data Quality Evaluation","data-quality-evaluation"],
           ],
     },
