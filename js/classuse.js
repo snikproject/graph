@@ -19,34 +19,34 @@ function classUse(clazz,subTop)
 
   switch(subTop)
   {
-  case "R":
-  {
-    innerType = "meta:Role";
-    middleType = "meta:Function";
-    outerType = "meta:EntityType";
-    break;
-  }
-  case "F":
-  {
+    case "R":
+    {
+      innerType = "meta:Role";
+      middleType = "meta:Function";
+      outerType = "meta:EntityType";
+      break;
+    }
+    case "F":
+    {
     // choose arbitrarily between the two possibilities and ask what the SNIK team thinks
-    innerType = "meta:Function";
-    middleType = "meta:Role";
-    outerType = "meta:EntityType";
-    break;
-  }
-  case "E":
-  {
+      innerType = "meta:Function";
+      middleType = "meta:Role";
+      outerType = "meta:EntityType";
+      break;
+    }
+    case "E":
+    {
     // reverse of role
-    innerType = "meta:EntityType";
-    middleType = "meta:Function";
-    outerType = "meta:Role";
-    break;
-  }
-  default:
-  {
-    log.error("Unknown subtop. Cannot display class use.");
-    return;
-  }
+      innerType = "meta:EntityType";
+      middleType = "meta:Function";
+      outerType = "meta:Role";
+      break;
+    }
+    default:
+    {
+      log.error("Unknown subtop. Cannot display class use.");
+      return;
+    }
   }
 
   const query =

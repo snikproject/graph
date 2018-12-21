@@ -29,9 +29,9 @@ function setLanguage(lang)
     const s = strings[id];
     switch(element.tagName)
     {
-    case "A":
-    case "BUTTON":
-    case "SPAN": element.textContent = s; break;
+      case "A":
+      case "BUTTON":
+      case "SPAN": element.textContent = s; break;
     }
     // element.textContent = strings[id];
   }
@@ -177,18 +177,18 @@ function addMenu()
       a.innerHTML=entry[1];
       switch(typeof entry[0])
       {
-      case 'string':
-      {
-        a.href=entry[0];
-        a.target="_blank";
-        break;
-      }
-      case 'function':
-      {
-        a.addEventListener("click",entry[0]);
-        break;
-      }
-      default: log.error("unknown menu entry action type: "+typeof entry[0]);
+        case 'string':
+        {
+          a.href=entry[0];
+          a.target="_blank";
+          break;
+        }
+        case 'function':
+        {
+          a.addEventListener("click",entry[0]);
+          break;
+        }
+        default: log.error("unknown menu entry action type: "+typeof entry[0]);
       }
       //
     }
