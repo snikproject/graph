@@ -12,7 +12,7 @@ describe('language', function()
       it('should contain the language '+lang,()=>
       {
         assert(language.setLanguage(lang),"Language not found.");
-        assert.isAbove(Object.keys(language.getStrings()).length,29);
+        assert.isAbove(Object.keys(language.getIdStrings()).length,27);
         assert.isOk(language.getString("file"),"Key 'file' not found.");
       });
     }
