@@ -17,7 +17,7 @@ const defaultsNodes = {
       select: node=>
       {
         {
-          if(confirm(language.getString("ontologyIssueWarning")))
+          if(confirm(language.getString("ontology-issue-warning")))
           {
             const url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
             encodeURIComponent(node.data(NODE.ID))+
