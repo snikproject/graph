@@ -3,7 +3,7 @@ Entry point.
 @module */
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
 import addFilterEntries from "./filter.js";
-import addMenu from "./menu.js";
+import {addMenu} from "./menu.js";
 import * as search from "./search.js";
 import addButtons from "./button.js";
 import * as graph from "./graph.js";

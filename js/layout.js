@@ -6,6 +6,7 @@ If a breakthrough occurs in JavaScript graph layouting, update here and possibly
 import * as log from "./log.js";
 import timer from "./timer.js";
 import * as NODE from "./node.js";
+import * as menu from "./menu.js";
 import {progress} from "./progress.js";
 import config from "./config.js";
 import {getStarMode} from "./graph.js";
@@ -58,7 +59,7 @@ export function run(cy,layoutConfig,subs,save)
   }
   const layoutTimer = timer("layout");
   // a menu.js#separateSubs() function would be more elegant
-  const separateSubs = subs&&(document.getElementById('separatesubs')||{}).checked;
+  const separateSubs = subs&&menu.separateSubs();
   if(separateSubs&&!getStarMode())
   {
     const virtualNodes = [];

@@ -4,13 +4,12 @@ Textual node search.
 import * as graph from "./graph.js";
 import * as sparql from "./sparql.js";
 import * as log from "./log.js";
-import * as rdfGraph from "./rdfGraph.js";
+import * as menu from "./menu.js";
 import * as NODE from "./node.js";
 
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
 const USE_BIF_CONTAINS = false;
-let firstCumulativeSearch = true;
 
 /** Hides the overlay that shows the class search results. */
 export function hideSearchResults()
@@ -68,21 +67,7 @@ function presentUri(uri)
     createFailDialog("Class not in graph",uri+' is only available on the SPARQL endpoint but not in the graph.',uri);
     return false;
   }
-  else
-  {
-    if(document.getElementById('cumulativesearch').checked)
-    {
-      if(firstCumulativeSearch)
-      {
-        firstCumulativeSearch=false;
-        graph.hide(graph.cy.elements().nodes());
-      }
-    }
-    else
-    {
-      graph.resetStyle();
-    }
-  }
+  if(!menu.cumulativeSearch()) {graph.resetStyle();}
   //graph.setSelectedNode(node);
   graph.highlight(nodes);
   hideSearchResults();
@@ -103,21 +88,9 @@ function presentAll()
     return false;
   }
   hideSearchResults();
-  if(document.getElementById('cumulativesearch').checked)
-  {
-    if(firstCumulativeSearch)
-    {
-      firstCumulativeSearch=false;
-      graph.hide(graph.cy.elements());
-    }
-  }
-  else
-  {
-    graph.resetStyle();
-    firstCumulativeSearch=true;
-  }
+  if(!menu.cumulativeSearch()) {graph.resetStyle();}
   graph.highlight(resultNodes);
-  graph.cy.fit(resultNodes);
+  graph.cy.fit(graph.cy.elements(".highlighted"));
   return true;
 }
 

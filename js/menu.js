@@ -127,16 +127,21 @@ function menuData()
 function addOptions()
 {
   document.getElementById("options-div").innerHTML =
-  `<span class="dropdown-entry"><input type="checkbox" autocomplete="off"/><span id="separate-subs">separate subontologies</span></span>
-  <span class="dropdown-entry"> <input type="checkbox" autocomplete="off"/><span id="cumulative-search">cumulative search</span></span>
-  <span  class="dropdown-entry"><input type="checkbox" autocomplete="off"/><span id="day-mode">day mode</span></span>`;
-  const daymode = document.getElementById("day-mode");
+  `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span id="separate-subs">separate subontologies</span></span>
+  <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span id="cumulative-search">cumulative search</span></span>
+  <span  class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="off"/><span id="day-mode">day mode</span></span>`;
+  const daymode = document.getElementById("day-mode-checkbox");
   daymode.addEventListener("change",()=>graph.invert(daymode.checked));
 }
 
+/** @returns whether subontologies are to be displayed separately. */
+export function separateSubs() {return document.getElementById('separate-subs-checkbox').checked;}
+
+/** @returns whether cumulative search is activated. */
+export function cumulativeSearch() {return document.getElementById('cumulative-search-checkbox').checked;}
 
 /** Adds the menu to the DOM element with the "top" id and sets up the event listeners. */
-function addMenu()
+export function addMenu()
 {
   //const frag = new DocumentFragment();
   const ul = document.createElement("ul");
@@ -214,5 +219,3 @@ window.onclick = function(e)
     }
   }
 };
-
-export default addMenu;

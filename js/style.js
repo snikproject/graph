@@ -54,6 +54,7 @@ const style =
         {
           const SHOW_QUALITY=false;
           let label = node.data(NODE.LABEL); // object with language code as keys and arrays of string as values
+          if(!label) {return node.data(NODE.ID);}
           // Use the user-prefered language if available.
           let it;
           if((it=label[language.getLanguage()])&&(it=it[0])) {label = it;}
