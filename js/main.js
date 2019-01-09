@@ -48,7 +48,7 @@ function main()
     })
     .catch(e=>
     {
-      log.warn();(e);
+      log.warn(e);
       alert("Error initializing SNIK Graph\n\n"+e);
     })
     .finally(()=>{progress(100);});
