@@ -12,6 +12,7 @@ import * as rdfGraph from "./rdfGraph.js";
 import * as layout from "./layout.js";
 import {progress} from "./progress.js";
 import config from "./config.js";
+import * as log from "./log.js";
 
 /** Entry point. Is run when DOM is loaded. **/
 function main()
@@ -37,6 +38,9 @@ function main()
     .then(()=>
     {
       addMenu();
+    })
+    .then(()=>
+    {
       addFilterEntries(graph.cy,document.getElementById("filter-div"));
       file.addFileLoadEntries(document.getElementById("file-div"));
       search.addSearch();
@@ -44,6 +48,7 @@ function main()
     })
     .catch(e=>
     {
+      log.warn(e);
       alert("Error initializing SNIK Graph\n\n"+e);
     })
     .finally(()=>{progress(100);});

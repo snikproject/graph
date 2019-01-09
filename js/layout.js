@@ -58,7 +58,6 @@ export function run(cy,layoutConfig,subs,save)
     return false;
   }
   const layoutTimer = timer("layout");
-  // a menu.js#separateSubs() function would be more elegant
   const separateSubs = subs&&menu.separateSubs();
   if(separateSubs&&!getStarMode())
   {
