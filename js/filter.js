@@ -52,14 +52,17 @@ class Filter
     input.classList.add("filterbox");
     input.autocomplete="off";
     input.checked="true";
-    this.visible=true;
-    this.elements=null;
     this.label=label;
     this.a = document.createElement("a");
     this.a.classList.add("dropdown-entry");
     this.a.appendChild(input);
     this.a.appendChild(document.createTextNode(label));
+    this.cssClass = `filter-${label}`;
+    this.visible = true;
+    //this.cssVar = `${this.cssClass}-display`;
+    cy.elements(selector).addClass(this.cssClass);
     input.addEventListener("input",()=>this.setVisible(input.checked));
+    filters.push(this);
     // don't add this filter to filters yet because it is not active anyways
   }
 
@@ -72,47 +75,20 @@ class Filter
   */
   setVisible(visible)
   {
-    if(this.visible===visible) {return;} // no change
+    if(this.visible===visible) {return;}
     this.visible=visible;
 
-    if(this.elements===null) // first time, lazy init
+    this.cy.style().selector("*").style("display","element");
+
+    const hiddenSelectors = filters.filter(f => !f.visible).map(f => f.selector);
+    if(hiddenSelectors.length===0)
     {
-      filters.push(this); // the others need to know about this one now
-      const initTimer = timer("Initializing filter "+this.label);
-      this.elements = this.cy.elements(this.selector);
-      this.elements = this.elements.union(this.elements.connectedEdges());
-      initTimer.stop();
+      this.cy.style().update();
+      return;
     }
-    if(visible)
-    {
-      // this.elements.show(); alone could break other filters
-      // only show elements that aren't hidden by another filter
-      const visibleTimer = timer("Set visible filter "+this.label);
-      let visibleElements = this.cy.collection(this.elements);
-      for(const filter of filters)
-      {
-        if(filter.visible) {continue;}
-        if(!filter.elements) {throw new Error("filter does not have elements "+filter);}
-        // we don't have to check if it's different from this filter because this one is active and those aren't
-        visibleElements=visibleElements.difference(filter.elements);
-      }
-      //visibleElements.show();
-      visibleElements.style("display","element");
-      visibleTimer.stop();
-      log.trace(`filter ${this.label} ${visibleElements.size()} shown, (${visibleElements.nodes().size()} nodes) `+
-                  `of ${this.elements.size()} filter elements, `+
-                   `${this.elements.size()-visibleElements.size()} prevented by other filters.`);
-    }
-    else
-    {
-      const hiddenTimer = timer("Set hidden filter "+this.label);
-      // not analogously to the other case, one filter is enough to hide
-      // would be nice to know however, how many of them were already hidden for debug
-      //this.elements.hide();
-      this.elements.style("display","none"); // hides its connecting edges, see https://github.com/cytoscape/cytoscape.js/issues/1544.
-      hiddenTimer.stop();
-      log.trace("filter "+this.label+" "+this.elements.size()+" hidden");
-    }
+    const hiddenSelector = hiddenSelectors.reduce((a,b)=>a+ ',' +b);
+
+    this.cy.style().selector(hiddenSelector).style("display","none").update();
   }
 }
 
@@ -123,9 +99,10 @@ Add filter entries to the filter menu.
 */
 function addFilterEntries(cy, parent)
 {
-  for(const filter of filterData)
+  for(const datum of filterData)
   {
-    parent.appendChild(new Filter(cy,filter[0],filter[1]).a);
+    const filter = new Filter(cy,datum[0],datum[1]);
+    parent.appendChild(filter.a);
   }
 }
 
