@@ -37,6 +37,7 @@ function main()
     .then(()=>
     {
       addMenu();
+
       addFilterEntries(graph.cy,document.getElementById("filter-div"));
       file.addFileLoadEntries(document.getElementById("file-div"));
       search.addSearch();
@@ -44,6 +45,7 @@ function main()
     })
     .catch(e=>
     {
+      console.error(e);
       alert("Error initializing SNIK Graph\n\n"+e);
     })
     .finally(()=>{progress(100);});
