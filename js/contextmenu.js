@@ -125,7 +125,7 @@ const defaultsNodes = {
       {
         if(graph.getSource()&&graph.getSource()!==node)
         {
-          graph.showStarPath(graph.getSource(), node);
+          graph.showPath(graph.getSource(), node,true);
         }
       },
     },

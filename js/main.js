@@ -37,6 +37,7 @@ function main()
     })
     .then(()=>
     {
+      graph.cy.elements().addClass("unfiltered");
       addMenu();
     })
     .then(()=>

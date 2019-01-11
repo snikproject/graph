@@ -1,8 +1,5 @@
 /**
-Provides graph operations such as initialization, wayfinding, highlighting, showing and hiding.
-While star operations and reset style use the Cytoscape.js visibility attribute while filters use the "display" attribute
-This ensures that filters and star operations interact properly, for example that resetting the style does not show filtered nodes.
-See http://js.cytoscape.org/#style/visibility.
+Provides graph operations such as initialization, wayfinding and highlighting.
 
 @module graph*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
@@ -31,23 +28,22 @@ function setStarMode(mode) {starMode=mode;}
 function getStarMode() {return starMode;}
 
 /** Hides elements using visibility: hidden.
-Do not use this for filters as they use the "display" attribute to properly interact with the other operations.
+Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
 @param {eles} eles the nodes to hide
 */
 function hide(eles)
 {
-  eles.style("visibility","hidden");
-  // Merge is in place. See http://js.cytoscape.org/#eles.merge
+  eles.addClass('hidden');
+  eles.removeClass('highlighted');
 }
 
-/** Show (unhide) the given elements using visibility: visible.
-Do not use this for filters as they use the "display" attribute to properly interact with the other operations.
+/** Show (unhide) the given elements.
+Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
 @param {cy.collection} eles the elements to show
 */
 function show(eles)
 {
-  eles.style("visibility","visible");
-  // Unmerge is in place. See http://js.cytoscape.org/#eles.unmerge
+  eles.removeClass('hidden');
 }
 
 /** Highlight the given elements using the 'highlighted' css class from the color scheme stylesheet and show them.
@@ -55,8 +51,7 @@ function show(eles)
 */
 function highlight(eles)
 {
-  eles.style("visibility","visible");
-  //highlight(eles.edgesWith(styled)); // is this needed? if yes, prevent endless loop
+  eles.removeClass('hidden');
   eles.addClass('highlighted');
 }
 
@@ -68,8 +63,8 @@ function resetStyle()
   //setFirstCumulativeSearch(true);
   //selectedNode = undefined;
   cy.startBatch();
-  cy.elements(".highlighted").removeClass("highlighted");
-  cy.elements(":hidden").style("visibility","visible");
+  cy.elements().removeClass("highlighted");
+  cy.elements().removeClass("hidden");
   cy.endBatch();
   progress(100);
 }
@@ -78,15 +73,14 @@ function resetStyle()
 Hide all other nodes except when in star mode.
 @param {node} from path start node
 @param {node} to path target node
+@param {Boolean} starpath whether to show the star around all nodes on the path
 @returns whether a path could be found
 */
-function showPath(from, to)
+function showPath(from, to,starPath)
 {
   progress(0);
-  if(starMode) {show(cy.elements(":hidden"));} // temporarily make all hidden nodes visible so that they can be used for pathfinding
-  const elements = cy.elements(":visible");
-  hide(cy.elements());
-  if(starMode) {show(cy.elements(".highlighted"));}
+  const elements = cy.elements(".unfiltered");
+
   const aStar = elements.aStar(
     {
       root: from,
@@ -96,9 +90,19 @@ function showPath(from, to)
   if (path)
   {
     cy.startBatch();
-    starMode=true;
     cy.add(path);
+    if(starPath)
+    {
+      const edges = path.connectedEdges(".unfiltered");
+      path.merge(edges);
+      path.merge(edges.connectedNodes(".unfiltered"));
+    }
     highlight(path);
+    if(!starMode)
+    {
+      starMode=true;
+      hide(elements.not(path));
+    }
     cy.endBatch();
   }
   else
@@ -112,30 +116,6 @@ function showPath(from, to)
   return true;
 }
 
-/** Show a "spider worm" between two nodes, which combines a star around "from" with a shortest path to "to".
-Hide all other nodes except when in star mode.
-@param {node} from path start node
-@param {node} to path target node, gets a "star" around it as well
-@returns whether a path could be found
-*/
-function showWorm(from, to)
-{
-  if(showPath(from, to))
-  {
-    progress(0);
-    cy.startBatch();
-    show(to.connectedEdges());
-    const edges = to.connectedEdges(":visible");
-    hide(to.connectedEdges());
-    highlight(edges);
-    highlight(edges.connectedNodes());
-    cy.endBatch();
-    progress(100);
-    return true;
-  }
-  return false;
-}
-
 /** Highlight the give node and all its directly connected nodes (in both directions).
 Hide all other nodes except when in star mode.
 @param {node} node center of the star
@@ -146,23 +126,25 @@ function showStar(node, changeLayout, directed)
 {
   progress(0);
   cy.startBatch();
-  if(starMode) {show(cy.elements(":hidden"));}
-  starMode=true;
   // open 2 levels deep on closeMatch
   //const inner = node; // if you don't want to include close match, define inner like this
-  const closeMatchEdges = node.connectedEdges(":visible").filter('[pl="closeMatch"]');
-  const innerNodes = closeMatchEdges.connectedNodes(":visible");
+  const closeMatchEdges = node.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
+  const innerNodes = closeMatchEdges.connectedNodes(".unfiltered");
   innerNodes.merge(node); // in case there is no close match edge
   const edges = directed?
-    innerNodes.edgesTo('node')
-    :innerNodes.connectedEdges(":visible");
-  const nodes  = edges.connectedNodes(":visible");
+    innerNodes.edgesTo('node.unfiltered')
+    :innerNodes.connectedEdges(".unfiltered");
+  const nodes  = edges.connectedNodes(".unfiltered");
   const outerNodes = nodes.difference(innerNodes);
-  hide(cy.elements());
-  highlight(node);
-  highlight(nodes);
-  highlight(edges);
-  show(cy.elements(".highlighted"));
+  const star = node.merge(nodes).merge(edges);
+
+  if(!starMode)
+  {
+    starMode=true;
+    hide(cy.elements().not(star));
+  }
+
+  highlight(star);
 
   if(changeLayout)
   {
@@ -186,6 +168,22 @@ function showStar(node, changeLayout, directed)
   progress(100);
 }
 
+/** Show a "spider worm" between two nodes, which combines a star around "from" with a shortest path to "to".
+Hide all other nodes except when in star mode.
+@param {node} from path start node
+@param {node} to path target node, gets a "star" around it as well
+@returns whether a path could be found
+*/
+function showWorm(from, to)
+{
+  if(showPath(from, to))
+  {
+    showStar(to);
+    return true;
+  }
+  return false;
+}
+
 /** Highlight the given two nodes, directly connected nodes (in both directions) of both of them and a shortest path between the two.
 Hide all other nodes except when in star mode.
 @param {node} from path start node
@@ -194,60 +192,13 @@ Hide all other nodes except when in star mode.
 */
 function showDoubleStar(from, to)
 {
-  if(showWorm(from, to))
+  if(showPath(from, to))
   {
-    return showWorm(to, from);
-  }
-  return false;
-}
-
-/**
-/** Highlight the shortest path between the two given nodes and nodes directly connected (in both directions) to all nodes on the path.
-Hide all other nodes except when in star mode.
-@param {node} from path start node
-@param {node} to path target node
-@returns whether a path could be found
-*/
-function showStarPath(from, to)
-{
-  progress(0);
-  cy.startBatch();
-  if(starMode) {show(cy.elements(":hidden"));}
-  starMode=true;
-  const aStar = cy.elements(":visible").aStar(
-    {
-      root: from,
-      goal: to,
-    });
-  path = aStar.path;
-  if (path)
-  {
-    cy.add(path);
-    highlight(path.edges());
-    highlight(path.nodes());
-    const edges = path.nodes().connectedEdges(":visible");
-    highlight(edges);
-    highlight(edges.connectedNodes(":visible"));
-    hide(cy.elements());
-    show(cy.elements(".highlighted"));
-    cy.endBatch();
-    progress(100);
+    showStar(to);
+    showStar(from);
     return true;
   }
-  else
-  {
-    cy.endBatch();
-    progress(100);
-    // keep it as it was before the operation
-    if(starMode)
-    {
-      hide(cy.elements());
-      show(cy.elements(".highlighted"));
-    }
-    else {resetStyle();}
-    alert('no path found');
-    return false;
-  }
+  return false;
 }
 
 /** Returns the start node for all path operations
@@ -380,5 +331,5 @@ function initGraph()
 */
 function setSelectedNode(node) {selectedNode=node;}
 
-export {invert,resetStyle,showDoubleStar,showWorm,showPath,showStarPath,initGraph,cy,
-  getSource,pathTarget,highlight,setSelectedNode,setSource,setTarget,showStar,setStarMode,getStarMode,hide,show};
+export {invert,resetStyle,showDoubleStar,showWorm,showPath,initGraph,cy,
+  getSource,pathTarget,highlight,setSelectedNode,setSource,setTarget,showStar,setStarMode,getStarMode,show,hide};

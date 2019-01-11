@@ -6,8 +6,6 @@ See http://js.cytoscape.org/#style/visibility.
 
 @module
 */
-import timer from "./timer.js";
-import * as log from "./log.js";
 import * as NODE from "./node.js";
 
 const filterData = [
@@ -30,6 +28,7 @@ const filterData = [
 ];
 
 const filters = [];
+const GRAPH_GETS_ADDITIONS = true;
 
 /**
 Toggles the visibility of a set of nodes defined by a selector.
@@ -59,11 +58,10 @@ class Filter
     this.a.appendChild(document.createTextNode(label));
     this.cssClass = `filter-${label}`;
     this.visible = true;
-    //this.cssVar = `${this.cssClass}-display`;
+    // Does not apply to elements that get added later, so only use if you don't add elements to the graph. Alternative if you want to use this update this after adding something.
     cy.elements(selector).addClass(this.cssClass);
     input.addEventListener("input",()=>this.setVisible(input.checked));
     filters.push(this);
-    // don't add this filter to filters yet because it is not active anyways
   }
 
   /** label */
@@ -78,17 +76,31 @@ class Filter
     if(this.visible===visible) {return;}
     this.visible=visible;
 
-    this.cy.style().selector("*").style("display","element");
+    this.cy.startBatch();
 
-    const hiddenSelectors = filters.filter(f => !f.visible).map(f => f.selector);
+    const hiddenSelectors =
+      filters
+        .filter(f => !f.visible)
+        .map(f => GRAPH_GETS_ADDITIONS? f.selector : ('.'+f.cssClass)); // class selector may be faster
+
     if(hiddenSelectors.length===0)
     {
-      this.cy.style().update();
-      return;
+      this.cy.elements().removeClass("filtered");
+      // cytoscape.js does not have a class negation selector so we need to add a negation class ourselves
+      // see https://stackoverflow.com/questions/54108410/how-to-negate-class-selector-in-cytoscape-js
+      this.cy.elements().addClass("unfiltered");
     }
-    const hiddenSelector = hiddenSelectors.reduce((a,b)=>a+ ',' +b);
-
-    this.cy.style().selector(hiddenSelector).style("display","none").update();
+    else
+    {
+      const hiddenSelector = hiddenSelectors.reduce((a,b)=>a+ ',' +b);
+      const filtered = this.cy.elements(hiddenSelector);
+      filtered.addClass("filtered");
+      filtered.removeClass("unfiltered");
+      const unfiltered = this.cy.elements().not(filtered);
+      unfiltered.removeClass("filtered");
+      unfiltered.addClass("unfiltered");
+    }
+    this.cy.endBatch();
   }
 }
 

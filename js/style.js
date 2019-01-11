@@ -161,6 +161,20 @@ const style =
         'text-margin-y': '-1em',
       },
     },
+    {
+      'selector': '.filtered',
+      'css':
+      {
+        'display': 'none',
+      },
+    },
+    {
+      'selector': '.hidden',
+      'css':
+      {
+        'visibility': 'hidden',
+      },
+    },
   ],
 };
 export {style};
