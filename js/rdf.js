@@ -16,6 +16,13 @@ const prefixes =
   ["rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#"],
 ];
 
+/**@return {String} the prefix part of a URI if it is defined in this file.*/
+export function longPrefix(uri)
+{
+  for(const prefix of prefixes) {if(uri.startsWith(prefix[1])) {return prefix[1].replace(/\/$/,'');}}
+  return uri;
+}
+
 /** Shortens a URI if possible using SNIK prefixes defined in this file.
  * @param  {String} uri a URI, for example "http://www.snik.eu/ontology/meta/Function".
  * @return {String} the shortened URI, for example "meta:Function". If no prefix applies, return the input as is.
