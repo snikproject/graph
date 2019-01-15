@@ -31,6 +31,12 @@ function main()
     }
   }, true);
 
+  addMenu();
+  addFilterEntries(graph.cy,util.getElementById("filter-div"));
+  file.addFileLoadEntries(util.getElementById("file-div"));
+  search.addSearch();
+  addButtons();
+
   loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies))
     .then(()=>
     {
@@ -39,14 +45,6 @@ function main()
     .then(()=>
     {
       graph.cy.elements().addClass("unfiltered");
-      addMenu();
-    })
-    .then(()=>
-    {
-      addFilterEntries(graph.cy,util.getElementById("filter-div"));
-      file.addFileLoadEntries(util.getElementById("file-div"));
-      search.addSearch();
-      addButtons();
     })
     .catch(e=>
     {
