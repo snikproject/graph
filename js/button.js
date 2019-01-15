@@ -4,6 +4,7 @@ import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 import * as rdfGraph from "./rdfGraph.js";
 import * as language from "./lang/language.js";
+import * as util from "./util.js";
 
 const buttonConfigs =
 [
@@ -19,7 +20,7 @@ export default function addButtons()
   for(const buttonConfig of buttonConfigs)
   {
     const button = document.createElement("button");
-    document.getElementById("buttons").appendChild(button);
+    util.getElementById("buttons").appendChild(button);
     button.innerText = buttonConfig[0];
     button.id = buttonConfig[1];
     button.addEventListener("click",buttonConfig[2]);

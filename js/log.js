@@ -53,7 +53,7 @@ export function error(s)
   {
     const argumentsArray = Array.prototype.slice.call(arguments);
     argumentsArray.push(callSource());
-    console.log.apply(console,argumentsArray);
+    console.error.apply(console,argumentsArray);
   }
 }
 
@@ -65,7 +65,7 @@ export function warn(s)
   {
     const argumentsArray = Array.prototype.slice.call(arguments);
     argumentsArray.push(callSource());
-    console.log.apply(console,argumentsArray);
+    console.warn.apply(console,argumentsArray);
   }
 }
 

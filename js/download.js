@@ -4,6 +4,7 @@ Lets the user download files generated from the loaded graph.
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
 import config from "./config.js";
+import * as util from "./util.js";
 
 let a = null; // reused for all downloading, not visible to the user
 
@@ -64,10 +65,7 @@ export function downloadVisibleGraph()
 }
 
 /** Downloads all node positions. Can only be applied later with a compatible graph already loaded.*/
-export function downloadLayout()
-{
-  return downloadJson(layout.positions(graph.cy.nodes()),"layout.json");
-}
+export function downloadLayout() {return downloadJson(layout.positions(graph.cy.nodes()),"layout.json");}
 
 /**
 Download the graph as a PNG (lossless compression).
@@ -79,7 +77,7 @@ export function downloadPng(full,highRes)
 {
   const options =
   {
-    "bg": (document.getElementById("daymode")||{}).checked?"white":"black", // background according to color mode
+    "bg": util.getElementById("daymode").checked?"white":"black", // background according to color mode
     "full": full,
   };
   if(highRes)

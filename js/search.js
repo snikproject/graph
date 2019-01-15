@@ -6,6 +6,7 @@ import * as sparql from "./sparql.js";
 import * as log from "./log.js";
 import * as menu from "./menu.js";
 import * as NODE from "./node.js";
+import * as util from "./util.js";
 
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
@@ -14,8 +15,8 @@ const USE_BIF_CONTAINS = false;
 /** Hides the overlay that shows the class search results. */
 export function hideSearchResults()
 {
-  document.getElementById("overlay").style.width = "0%";
-  document.getElementById("overlay").display = "none";
+  util.getElementById("overlay").style.width = "0%";
+  util.getElementById("overlay").display = "none";
 }
 
 /** Notifies the user of an error.
@@ -102,17 +103,17 @@ function presentAll()
 function showSearchResults(query, uris)
 {
   resultNodes = [];
-  const table = document.getElementById("tab:searchresults");
+  const table = util.getElementById("tab:searchresults");
   // clear leftovers from last time
   for(let i = 0; i < table.rows.length;)
   {
     table.deleteRow(i);
   }
-  document.getElementById("overlay").display = "block";
-  document.getElementById("overlay").style.width = "100%";
+  util.getElementById("overlay").display = "block";
+  util.getElementById("overlay").style.width = "100%";
   if(uris.size===0)
   {
-    document.getElementById("h2:searchresults").innerHTML=`No Search Results for "${query}"`;
+    util.getElementById("h2:searchresults").innerHTML=`No Search Results for "${query}"`;
     return false;
   }
   if(uris.size===1)
@@ -122,11 +123,11 @@ function showSearchResults(query, uris)
   }
   if(uris.size===sparql.SPARQL_LIMIT)
   {
-    document.getElementById("h2:searchresults").innerHTML=`First ${sparql.SPARQL_LIMIT} Search Results for "${query}"`;
+    util.getElementById("h2:searchresults").innerHTML=`First ${sparql.SPARQL_LIMIT} Search Results for "${query}"`;
   }
   else
   {
-    document.getElementById("h2:searchresults").innerHTML=`${uris.size} Search Results for "${query}"`;
+    util.getElementById("h2:searchresults").innerHTML=`${uris.size} Search Results for "${query}"`;
   }
   // Preprocessing: Classify URIs as (0) in graph and visible, (1) in graph and invisible and (2) not in the graph.
   const uriType = {};
@@ -202,7 +203,7 @@ export function search(userQuery)
 * @return {false} false to prevent page reload triggered by submit.*/
 function showSearch(userQuery)
 {
-  document.getElementById("overlay").style.display= "block";
+  util.getElementById("overlay").style.display= "block";
   search(userQuery).then(uris =>
   {
     showSearchResults(userQuery,uris);
@@ -214,8 +215,8 @@ function showSearch(userQuery)
  *  Add a click listener to hide the search results to the element with the "closelink" id.*/
 export function addSearch()
 {
-  document.getElementById('closelink').addEventListener("click", hideSearchResults);
-  document.getElementById("search").addEventListener("submit",(event)=>
+  util.getElementById('closelink').addEventListener("click", hideSearchResults);
+  util.getElementById("search").addEventListener("submit",(event)=>
   {
     event.preventDefault();
     hideSearchResults();

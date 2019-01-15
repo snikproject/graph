@@ -9,6 +9,7 @@ import * as rdfGraph from "./rdfGraph.js";
 import * as NODE from "./node.js";
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
 import * as language from "./lang/language.js";
+import * as util from "./util.js";
 
 /** Sets the preferred node label language attribute. Use the values from node.js. */
 function setLanguage(lang)
@@ -20,7 +21,7 @@ function setLanguage(lang)
   const strings = language.getIdStrings();
   for(const id of Object.keys(strings))
   {
-    const element = document.getElementById(id);
+    const element = util.getElementById(id);
     if(!element)
     {
       log.warn(id+" does not exist");
@@ -126,19 +127,22 @@ function menuData()
 /** Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.*/
 function addOptions()
 {
-  document.getElementById("options-div").innerHTML =
+  util.getElementById("options-div").innerHTML =
   `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span id="separate-subs">separate subontologies</span></span>
   <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span id="cumulative-search">cumulative search</span></span>
   <span  class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="off"/><span id="day-mode">day mode</span></span>`;
-  const daymode = document.getElementById("day-mode-checkbox");
+  const daymode = util.getElementById("day-mode-checkbox");
   daymode.addEventListener("change",()=>graph.invert(daymode.checked));
 }
 
 /** @returns whether subontologies are to be displayed separately. */
-export function separateSubs() {return document.getElementById('separate-subs-checkbox').checked;}
+export function separateSubs()
+{
+  return util.getElementById('separate-subs-checkbox').checked;
+}
 
 /** @returns whether cumulative search is activated. */
-export function cumulativeSearch() {return document.getElementById('cumulative-search-checkbox').checked;}
+export function cumulativeSearch() {return util.getElementById('cumulative-search-checkbox').checked;}
 
 /** Adds the menu to the DOM element with the "top" id and sets up the event listeners. */
 export function addMenu()
@@ -198,7 +202,7 @@ export function addMenu()
       //
     }
   }
-  document.getElementById("top").prepend(ul);
+  util.getElementById("top").prepend(ul);
   addOptions();
 }
 

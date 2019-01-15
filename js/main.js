@@ -13,6 +13,7 @@ import * as layout from "./layout.js";
 import {progress} from "./progress.js";
 import config from "./config.js";
 import * as log from "./log.js";
+import * as util from "./util.js";
 
 /** Entry point. Is run when DOM is loaded. **/
 function main()
@@ -42,14 +43,14 @@ function main()
     })
     .then(()=>
     {
-      addFilterEntries(graph.cy,document.getElementById("filter-div"));
-      file.addFileLoadEntries(document.getElementById("file-div"));
+      addFilterEntries(graph.cy,util.getElementById("filter-div"));
+      file.addFileLoadEntries(util.getElementById("file-div"));
       search.addSearch();
       addButtons();
     })
     .catch(e=>
     {
-      log.warn(e);
+      log.error(e);
       alert("Error initializing SNIK Graph\n\n"+e);
     })
     .finally(()=>{progress(100);});

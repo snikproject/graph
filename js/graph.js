@@ -11,6 +11,8 @@ import * as sparql from "./sparql.js";
 import {registerMenu} from "./contextmenu.js";
 import timer from "./timer.js";
 import * as NODE from "./node.js";
+import * as util from "./util.js";
+
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
 let cy = null;
 let selectedNode = null;
@@ -217,14 +219,14 @@ function getSource()
 function setSource(node)
 {
   if(!node) {return false;}
-  //document.getElementById('centersource').hidden=false;
+  //util.getElementById('centersource').hidden=false;
   if(pathTarget !== null)
   {
     /*
-        document.getElementById('shortestpath').hidden=false;
-        document.getElementById('spiderworm').hidden=false;
-        document.getElementById('doublestar').hidden=false;
-        document.getElementById('starpath').hidden=false;
+        util.getElementById('shortestpath').hidden=false;
+        util.getElementById('spiderworm').hidden=false;
+        util.getElementById('doublestar').hidden=false;
+        util.getElementById('starpath').hidden=false;
         */
     cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
   }
@@ -235,7 +237,7 @@ function setSource(node)
   pathSource = node;
   pathSource.addClass('source');
   /*
-      document.getElementById('sourcelabel').innerHTML=
+      util.getElementById('sourcelabel').innerHTML=
       pathSource.data(NODE.ID).replace(sparql.SPARQL_PREFIX,'');
       */
   return true;
@@ -248,13 +250,13 @@ function setSource(node)
 function setTarget(node)
 {
   if(!node) {return false;}
-  document.getElementById('centertarget').hidden=false;
+  util.getElementById('centertarget').hidden=false;
   if(pathSource !== null)
   {
-    document.getElementById('shortestpath').hidden=false;
-    document.getElementById('spiderworm').hidden=false;
-    document.getElementById('doublestar').hidden=false;
-    document.getElementById('starpath').hidden=false;
+    util.getElementById('shortestpath').hidden=false;
+    util.getElementById('spiderworm').hidden=false;
+    util.getElementById('doublestar').hidden=false;
+    util.getElementById('starpath').hidden=false;
     cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
   }
   if(pathTarget!==null)
@@ -263,7 +265,7 @@ function setTarget(node)
   }
   pathTarget = node;
   pathTarget.addClass('target');
-  document.getElementById('targetlabel').innerHTML=
+  util.getElementById('targetlabel').innerHTML=
       pathTarget.data(NODE.ID).replace(sparql.SPARQL_PREFIX,'');
 }
 
@@ -274,12 +276,12 @@ function invert(enabled)
 {
   if (enabled)
   {
-    document.getElementById("cy").style.backgroundColor = "white";
+    util.getElementById("cy").style.backgroundColor = "white";
     cy.style().fromJson(style.style.concat(colorschemeday)).update();
   }
   else
   {
-    document.getElementById("cy").style.backgroundColor = "black";
+    util.getElementById("cy").style.backgroundColor = "black";
     cy.style().fromJson(style.style.concat(colorschemenight)).update();
   }
 }
@@ -302,7 +304,7 @@ function initGraph()
 
   cy = cytoscape(
     {
-      container: document.getElementById('cy'),
+      container: util.getElementById('cy'),
       style: style.style.concat(colorschemenight),
       wheelSensitivity: 0.3,
       minZoom: 0.02,
