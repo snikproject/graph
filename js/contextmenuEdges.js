@@ -69,6 +69,7 @@ export const defaultsRelations = {
   menuRadius: 110, // the radius of the circular menu in pixels
   selector: `edge[${EDGE.GRAPH} != "http://www.snik.eu/ontology/limes-exact"]`, // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: edgeCommands,
+  
   fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
   activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
   openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
@@ -103,6 +104,7 @@ export const defaultsLimesRelations = {
       },
     },
   ]),
+  
   fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
   activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
   openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)

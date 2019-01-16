@@ -1,5 +1,5 @@
 /**
-Creates the circular context menu that can be opened on top of a node.
+Creates the circular context menu that can be opened on top of a node/edge.
 @module */
 import * as graph from "./graph.js";
 import * as nodes from "./contextmenuNodes.js";
