@@ -149,7 +149,7 @@ const defaultsNodes = {
 function edgeLabel(edge) {return rdf.short(edge.data(EDGE.SOURCE)) +" "+ rdf.short(edge.data(EDGE.PROPERTY)) +" "+ rdf.short(edge.data(EDGE.TARGET));}
 
 const defaultsRelations = {
-  menuRadius: 100, // the radius of the circular menu in pixels
+  menuRadius: 150, // the radius of the circular menu in pixels
   selector: 'edge', // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: [
     {
@@ -162,6 +162,27 @@ const defaultsRelations = {
           'https://github.com/IMISE/snik-ontology/issues/new?title='+
           encodeURIComponent(edgeLabel(edge))+
           '&body='+encodeURIComponent('The edge "'+edgeLabel(edge)+'" is incorrect.\n\n**Details**\n')
+        );
+      },
+    },
+    {
+      content: 'confirm limes link',
+      select: function(edge)
+      {
+        graph.cy.remove(edge);
+        const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
+
+    sparql
+
+    DELETE DATA FROM <http://www.snik.eu/limes-exact>
+    {<${edge.data(EDGE.SOURCE)}> <${rdf.short(edge.data(EDGE.PROPERTY))}> <${rdf.short(edge.data(EDGE.TARGET))}>.}
+    INSERT DATA INTO <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
+    {<${edge.data(EDGE.SOURCE)}> <${rdf.short(edge.data(EDGE.PROPERTY))}> <${rdf.short(edge.data(EDGE.TARGET))}>.}
+    `;
+        window.open
+        (
+          'https://github.com/IMISE/snik-ontology/issues/new?title='+
+          encodeURIComponent(edgeLabel(edge))+'&body='+encodeURIComponent(body)
         );
       },
     },
@@ -182,27 +203,6 @@ const defaultsRelations = {
     sparql
 
     DELETE DATA FROM <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
-    {<${edge.data(EDGE.SOURCE)}> <${rdf.short(edge.data(EDGE.PROPERTY))}> <${rdf.short(edge.data(EDGE.TARGET))}>.}
-`;
-        window.open
-        (
-          'https://github.com/IMISE/snik-ontology/issues/new?title='+
-          encodeURIComponent(edgeLabel(edge))+'&body='+encodeURIComponent(body)
-        );
-      },
-    },
-    {
-      content: 'confirm link',
-      select: function(edge)
-      {
-        graph.cy.remove(edge);
-        const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
-
-    sparql
-
-    DELETE DATA FROM <http://www.snik.eu/limes-exact>
-    {<${edge.data(EDGE.SOURCE)}> <${rdf.short(edge.data(EDGE.PROPERTY))}> <${rdf.short(edge.data(EDGE.TARGET))}>.}
-    INSERT DATA INTO <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
     {<${edge.data(EDGE.SOURCE)}> <${rdf.short(edge.data(EDGE.PROPERTY))}> <${rdf.short(edge.data(EDGE.TARGET))}>.}
 `;
         window.open
