@@ -83,8 +83,9 @@ const colorschemeday =
       "selector": "edge.selected",
       "css":
       {
-        "color": "rgb(255,255,128)",
+        "color": "rgb(255,255,128)", // label color
         "line-color": "rgb(255,255,128)",
+        'mid-target-arrow-color': 'rgb(255,255,128)',
       },
     },
     {
@@ -93,6 +94,7 @@ const colorschemeday =
       {
         'color': 'rgb(128,255,128)',
         'line-color': 'rgb(128,255,128)',
+        'mid-target-arrow-color': 'rgb(128,255,128)',
       },
     },
   ];

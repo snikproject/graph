@@ -113,8 +113,23 @@ const style =
       },
     },
     {
-      "selector" : "edge",
-      "css" : {
+      'selector': 'edge:unselected',
+      'css':
+      {
+        'opacity': 0.5,
+        'width': 2.0,
+      },
+    },
+    {
+      'selector': 'edge.highlighted,edge:selected',
+      'css':
+      {
+        'opacity': 1.0,
+        'text-opacity': 1,
+        'mid-target-arrow-shape': 'triangle',
+        'width': 4.0,
+        'edge-text-rotation': 'autorotate',
+        'text-margin-y': '-1em',
         'min-zoomed-font-size': 9,
         'label': function(edge)
         {
@@ -124,41 +139,6 @@ const style =
           {label+=" \u26A0";}
           return label;
         },
-      },
-    },
-    {
-      'selector': 'edge[!selected]',
-      'css':
-      {
-        'opacity': 0.5,
-        'width': 2.0,
-        'edge-text-rotation': 'autorotate',
-        'text-margin-y': '-1em',
-        'text-opacity': 0,
-      },
-    },
-    {
-      'selector': 'edge.selected',
-      'css':
-      {
-        'text-opacity': 1,
-        'opacity': 1.0,
-        'width': 4.0,
-        'edge-text-rotation': 'autorotate',
-        'text-margin-y': '-1em',
-      },
-    },
-    {
-      'selector': 'edge.highlighted',
-      'css':
-      {
-        'opacity': 1.0,
-        'text-opacity': 1,
-        'mid-target-arrow-color': 'rgb(128,255,128)',
-        'mid-target-arrow-shape': 'triangle',
-        'width': 4.0,
-        'edge-text-rotation': 'autorotate',
-        'text-margin-y': '-1em',
       },
     },
     {

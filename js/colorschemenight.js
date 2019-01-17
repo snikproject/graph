@@ -55,7 +55,7 @@ const colorschemenight =
       "css": {"border-color": "rgb(255,90,90)"},
     },
     {
-      "selector": "edge[!selected]",
+      "selector": "edge:unselected",
       "css":
       {
         'line-color': function(edge)
@@ -70,19 +70,21 @@ const colorschemenight =
       },
     },
     {
-      "selector": "edge.selected",
+      "selector": "edge:selected",
       "css":
       {
-        "color": "rgb(255,255,128)",
+        "color": "rgb(255,255,128)", // label color
         "line-color": "rgb(255,255,128)",
+        'mid-target-arrow-color': 'rgb(255,255,128)',
       },
     },
     {
       "selector": "edge.highlighted",
       "css":
       {
-        'color': 'rgb(128,255,128)',
+        'color': 'rgb(128,255,128)', // label color
         'line-color': 'rgb(128,255,128)',
+        'mid-target-arrow-color': 'rgb(128,255,128)',
       },
     },
   ];
