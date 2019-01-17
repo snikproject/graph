@@ -36,11 +36,17 @@ const edgeCommands = [
     {
       graph.cy.remove(edge);
       const body = `Please permanently delete the edge ${edgeLabel(edge)}:
-
-  sparql
-
-  DELETE DATA FROM <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
-  {<${edge.data(EDGE.SOURCE)}> <${rdf.short(edge.data(EDGE.PROPERTY))}> <${rdf.short(edge.data(EDGE.TARGET))}>.}
+\`\`\`
+sparql
+DELETE DATA FROM <${edge.data(EDGE.SOURCE)}>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+\`\`\`
+Undo with
+\`\`\`
+sparql
+INSERT DATA INTO <${edge.data(EDGE.SOURCE)}>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+\`\`\`
 `;
       window.open
       (
@@ -69,7 +75,7 @@ export const defaultsRelations = {
   menuRadius: 110, // the radius of the circular menu in pixels
   selector: `edge[${EDGE.GRAPH} != "http://www.snik.eu/ontology/limes-exact"]`, // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: edgeCommands,
-  
+
   fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
   activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
   openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
@@ -88,14 +94,22 @@ export const defaultsLimesRelations = {
       {
         graph.cy.remove(edge);
         const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
-
-      sparql
-
-      DELETE DATA FROM <http://www.snik.eu/limes-exact>
-      {<${edge.data(EDGE.SOURCE)}> <${rdf.short(edge.data(EDGE.PROPERTY))}> <${rdf.short(edge.data(EDGE.TARGET))}>.}
-      INSERT DATA INTO <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
-      {<${edge.data(EDGE.SOURCE)}> <${rdf.short(edge.data(EDGE.PROPERTY))}> <${rdf.short(edge.data(EDGE.TARGET))}>.}
-      `;
+\`\`\`
+sparql
+DELETE DATA FROM <http://www.snik.eu/limes-exact>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+INSERT DATA INTO <${edge.data(EDGE.SOURCE)}>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+\`\`\`
+Undo with
+\`\`\`
+sparql
+DELETE DATA FROM <http://www.snik.eu/limes-exact>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+INSERT DATA INTO <${edge.data(EDGE.SOURCE)}>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+\`\`\`
+`;
         window.open
         (
           'https://github.com/IMISE/snik-ontology/issues/new?title='+
@@ -104,7 +118,7 @@ export const defaultsLimesRelations = {
       },
     },
   ]),
-  
+
   fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
   activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
   openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
