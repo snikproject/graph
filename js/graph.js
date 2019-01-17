@@ -128,17 +128,16 @@ function showStar(node, changeLayout, directed)
 {
   progress(0);
   cy.startBatch();
+
   // open 2 levels deep on closeMatch
-  //const inner = node; // if you don't want to include close match, define inner like this
+  let inner = node; // if you don't want to include close match, define inner like this
   const closeMatchEdges = node.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
-  const innerNodes = closeMatchEdges.connectedNodes(".unfiltered");
-  innerNodes.merge(node); // in case there is no close match edge
+  inner = inner.union(closeMatchEdges.connectedNodes(".unfiltered")); // in case there is no close match edge
   const edges = directed?
-    innerNodes.edgesTo('node.unfiltered')
-    :innerNodes.connectedEdges(".unfiltered");
+    inner.edgesTo('.unfiltered')
+    :inner.connectedEdges(".unfiltered");
   const nodes  = edges.connectedNodes(".unfiltered");
-  const outerNodes = nodes.difference(innerNodes);
-  const star = node.merge(nodes).merge(edges);
+  const star = inner.union(nodes).union(edges);
 
   if(!starMode)
   {
@@ -150,6 +149,7 @@ function showStar(node, changeLayout, directed)
 
   if(changeLayout)
   {
+    const outerNodes = nodes.difference(inner);
     nodes.layout(
       {
         name: 'concentric',
@@ -158,7 +158,7 @@ function showStar(node, changeLayout, directed)
         minNodeSpacing: 175,
         concentric: function(layoutNode)
         {
-          if(innerNodes.contains(layoutNode)) {return 2;}
+          if(inner.contains(layoutNode)) {return 2;}
           if(outerNodes.contains(layoutNode)) {return 1;}
           throw new Error("unexpected node in star");
         },
@@ -313,12 +313,12 @@ function initGraph()
   cy.panzoom(); // Google Maps like zoom UI element
   selectedNode = cy.collection();
   registerMenu();
-
+  /*
   cy.on('select', 'edge', function(event)
   {
     highlight(event.target);
   });
-
+*/
   cy.on('select', 'node', function(event)
   {
     selectedNode = event.target;
