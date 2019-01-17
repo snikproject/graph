@@ -68,7 +68,7 @@ function menuData()
         [download.downloadGraph,"Save Full Graph with Layout as Cytoscape File","save-cytoscape-full"],
         [download.downloadVisibleGraph,"Save Visible Graph with Layout as Cytoscape File","save-cytoscape-visible"],
         [download.downloadLayout,"Save Layout only","save-layout"],
-        [()=>{layout.run(graph.cy,layout.euler,rdfGraph.subs());},"Recalculate Layout and Replace in Browser Cache","recalculate-layout-replace"],
+        [()=>{layout.run(graph.cy,layout.euler,rdfGraph.subs(),true);},"Recalculate Layout and Replace in Browser Cache","recalculate-layout-replace"],
         [()=>download.downloadPng(false,false),"Save Image of Current View","save-image-current-view"],
         [()=>download.downloadPng(true,false),"Save Image of Whole Graph","save-image-whole-graph"],
         [()=>download.downloadPng(false,true),"Save Image of Current View (high res)","save-image-current-view-high-res"],
