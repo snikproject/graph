@@ -10,7 +10,7 @@ import * as util from "./util.js";
 
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
-const USE_BIF_CONTAINS = false;
+// const USE_BIF_CONTAINS = false;
 
 /** Hides the overlay that shows the class search results. */
 export function hideSearchResults()
@@ -179,10 +179,11 @@ export function search(userQuery)
   // If this results in too low of a precision, the search can be made space sensitive again by changing /[\x22\x27\x5C\xA\xD ]/ to /[\x22\x27\x5C\xA\xD]/
   // and adapting the SPARQL query along with it.
   // Does not work with bif:contains.
+  // to avoid injection attacks and errors, so not allowed characters are replaced to match sparul syntax
   const searchQuery = userQuery.replace(/[\x22\x27\x5C\xA\xD ]/g, '');
   // use this when labels are available, URIs are not searched
   let sparqlQuery;
-  if(!USE_BIF_CONTAINS||searchQuery.includes(' ')) // regex is slower than bif:contains but we have no choice with a space character
+  if(!searchQuery.includes(' '))
   {
     sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
 			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l)," ","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
