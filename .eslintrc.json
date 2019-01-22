@@ -19,7 +19,8 @@
 		"cytoscape": false,
 		"dhtmlx": true,
 		"Spinner": true,
-		"config": true
+		"config": true,
+		"log": true
 	},
 	"extends":
 	[

@@ -3,7 +3,6 @@ Due to JavaScript being a slow mostly single-threaded language with no really fa
 After the first time, the layout is cached and reused, until major changes occur in the graph.
 If a breakthrough occurs in JavaScript graph layouting, update here and possibly remove cache.
 @module */
-import * as log from "./log.js";
 import timer from "./timer.js";
 import * as NODE from "./node.js";
 import * as menu from "./menu.js";
@@ -143,7 +142,7 @@ export function presetLayout(cy,pos)
   const status = run(cy,layoutConfig);
   if(misses>0||hits<positions.length)
   {
-    log.warn(`...${hits}/${cy.nodes().size()} node positions set. ${pos.length-hits} superfluous layout positions .`);
+    log.info(`...${hits}/${cy.nodes().size()} node positions set. ${pos.length-hits} superfluous layout positions .`);
     const precision = hits/pos.length;
     const recall = hits/cy.nodes().size();
     if(precision<config.layoutCacheMinPrecision)
@@ -208,7 +207,7 @@ export function runCached(cy,layoutConfig,subs)
     }
     catch(e)
     {
-      log.error("Could not load cache item, recalculating layout...",e);
+      log.warn("Could not load cache item, recalculating layout...",e);
     }
   }
   else // cache miss

@@ -2,7 +2,6 @@
 Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.
 @module */
 import * as sparql from "./sparql.js";
-import * as log from "./log.js";
 import * as rdfGraph from "./rdfGraph.js";
 import timer from "./timer.js";
 
