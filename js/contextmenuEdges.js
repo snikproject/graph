@@ -39,13 +39,13 @@ const edgeCommands = [
       const body = `Please permanently delete the edge ${edgeLabel(edge)}:
 \`\`\`
 sparql
-DELETE DATA FROM <${edge.data(EDGE.SOURCE)}>
+DELETE DATA FROM <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
 \`\`\`
 Undo with
 \`\`\`
 sparql
-INSERT DATA INTO <${edge.data(EDGE.SOURCE)}>
+INSERT DATA INTO <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
 \`\`\`
 ${lang.CONSTANTS.SPARUL_WARNING}`;
