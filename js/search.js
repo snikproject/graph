@@ -176,11 +176,15 @@ export function search(userQuery)
   // if other languages with other characters are to be supported, extend the regular expression
   // remove space to make queries space insensitive, as people might search for URI suffixes which can be similar to the label so we get more recall
   // works in conjuction with also ignoring whitespace for labels in the SPARQL query
-  // If this results in too low of a precision, the search can be made space sensitive again by changing /[\x22\x27\x5C\xA\xD ]/ to /[\x22\x27\x5C\xA\xD]/
+  // If this results in too low of a precision, the search can be made space sensitive again by changing /[\x22\x27\x5C\x0A\x0D ]/ to /[\x22\x27\x5C\x0A\x0D]/
   // and adapting the SPARQL query along with it.
   // Does not work with bif:contains.
   // to avoid injection attacks and errors, so not allowed characters are replaced to match sparul syntax
-  const searchQuery = userQuery.replace(/[\x22\x27\x5C\xA\xD ]/g, '');
+  // [156]  	STRING_LITERAL1	  ::=  	"'" ( ([^#x27#x5C#xA#xD]) | ECHAR )* "'"
+  // [157]  	STRING_LITERAL2	  ::=  	'"' ( ([^#x22#x5C#xA#xD]) | ECHAR )* '"'
+  // source: https://www.w3.org/TR/sparql11-query/#func-lcase
+  // Hexadecimal escape sequences require a leading zero in JavaScript, see https://mathiasbynens.be/notes/javascript-escapes.
+  const searchQuery = userQuery.replace(/[\x22\x27\x5C\x0A\x0D ]/g, '');
   // use this when labels are available, URIs are not searched
   let sparqlQuery;
   if(!searchQuery.includes(' '))

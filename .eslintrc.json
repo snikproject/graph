@@ -47,6 +47,7 @@
 		"no-unexpected-multiline": ["off"],
 		"no-undef": ["error"],
 		"no-var": ["error"],
+		"no-control-regex": ["off"],
 		"curly": ["error"],
 		"camelcase": ["warn"],
 		"no-unused-vars": ["warn"],
