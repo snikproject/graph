@@ -48,3 +48,9 @@ export function getIdStrings()
 {
   return strings[language].idStrings;
 }
+
+/* These strings have a fixed language because they are intended for the developers. */
+export const CONSTANTS =
+{
+  SPARUL_WARNING: 'Please be careful with all SPARUL operations and always create a <a href="https://wiki.imise.uni-leipzig.de/Projekte/SNIK/ontologie/sparql">SPARQL dump</a> as a backup beforehand.',
+};
