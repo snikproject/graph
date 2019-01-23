@@ -126,7 +126,19 @@ const style =
       {
         'opacity': 1.0,
         'text-opacity': 1,
-        'mid-target-arrow-shape': 'triangle',
+        'mid-target-arrow-shape': function(edge)
+        {
+          // no arrow for properties edges
+          switch(edge.data(EDGE.PROPERTY))
+          {
+            case "http://www.snik.eu/ontology/meta/isAssociatedWith":
+            case "http://www.w3.org/2004/02/skos/core#closeMatch":
+            case "http://www.w3.org/2004/02/skos/core#relatedMatch":
+            case "http://www.w3.org/2004/02/skos/core#related":
+            case "http://www.w3.org/2004/02/skos/core#exactMatch": return "none";
+          }
+          return "triangle";
+        },
         'width': 4.0,
         'edge-text-rotation': 'autorotate',
         'text-margin-y': '-1em',
