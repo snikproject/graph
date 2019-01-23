@@ -96,17 +96,17 @@ export const defaultsLimesRelations = {
         const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
 \`\`\`
 sparql
-DELETE DATA FROM <http://www.snik.eu/limes-exact>
+DELETE DATA FROM <http://www.snik.eu/ontology/limes-exact>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-INSERT DATA INTO <${edge.data(EDGE.SOURCE)}>
+INSERT DATA INTO <http://www.snik.eu/ontology/match>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
 \`\`\`
 Undo with
 \`\`\`
 sparql
-DELETE DATA FROM <http://www.snik.eu/limes-exact>
+DELETE DATA FROM <http://www.snik.eu/ontology/match>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-INSERT DATA INTO <${edge.data(EDGE.SOURCE)}>
+INSERT DATA INTO <http://www.snik.eu/ontology/limes-exact>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
 \`\`\`
 `;
