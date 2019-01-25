@@ -184,10 +184,10 @@ export function search(userQuery)
   // [157]  	STRING_LITERAL2	  ::=  	'"' ( ([^#x22#x5C#xA#xD]) | ECHAR )* '"'
   // source: https://www.w3.org/TR/sparql11-query/#func-lcase
   // Hexadecimal escape sequences require a leading zero in JavaScript, see https://mathiasbynens.be/notes/javascript-escapes.
-  const searchQuery = userQuery.replace(/[\x22\x27\x5C\x0A\x0D ]/g, '');
+  const searchQuery = userQuery.replace(/[\x22\x27\x5C\x0A\x0D -]/g, '');
   // use this when labels are available, URIs are not searched
   const sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
-			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l)," ","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
+			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l),"[ -]","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
   log.debug(sparqlQuery);
   return sparql.sparql(sparqlQuery,"http://www.snik.eu/ontology").then(bindings=>new Set(bindings.map(b=>b.s.value)));
   //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
