@@ -186,18 +186,8 @@ export function search(userQuery)
   // Hexadecimal escape sequences require a leading zero in JavaScript, see https://mathiasbynens.be/notes/javascript-escapes.
   const searchQuery = userQuery.replace(/[\x22\x27\x5C\x0A\x0D ]/g, '');
   // use this when labels are available, URIs are not searched
-  let sparqlQuery;
-  if(!searchQuery.includes(' '))
-  {
-    sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
+  const sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
 			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l)," ","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
-  }
-  else // no space character and bif:contains is allowed, so use it
-  {
-    sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
-			{?s rdfs:label ?l.		?l <bif:contains> "${searchQuery}".} UNION
-			{?s skos:altLabel ?l.	?l <bif:contains> "${searchQuery}".}} order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
-  }
   log.debug(sparqlQuery);
   return sparql.sparql(sparqlQuery,"http://www.snik.eu/ontology").then(bindings=>new Set(bindings.map(b=>b.s.value)));
   //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
