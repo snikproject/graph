@@ -43,3 +43,16 @@ export function ask(query,graphOpt)
     .then(response => {return response.json();})
     .then(json=>{return json.boolean;});
 }
+
+export function sparql(query,graphOpt)
+{
+  //if (!graphOpt){ graphOpt = SPARQL_GRAPH; }//to ensure that dbpedia matches are not shown
+  const url = SPARQL_ENDPOINT +
+  '?query=' + encodeURIComponent(query) +
+  '&format=json'+
+  (graphOpt?('&default-graph-uri=' + encodeURIComponent(graphOpt)):"");
+  return fetch(url)
+    .then(response => {return response.json();})
+    .then(json => {return json.results.bindings;})
+    .catch(err =>log.error(`Error executing SPARQL query ${query}: ${err}`));
+}

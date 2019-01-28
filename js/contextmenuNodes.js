@@ -6,6 +6,7 @@ import {classUse} from "./classuse.js";
 import * as graph from "./graph.js";
 import * as rdf from "./rdf.js";
 import * as NODE from "./node.js";
+import * as sparql from "./sparql.js";
 
 export const defaultsNodes = {
   menuRadius: 220, // the radius of the circular menu in pixels
@@ -34,6 +35,44 @@ export const defaultsNodes = {
       select: node=>
       {
         graph.cy.remove(node);
+      },
+    },
+    {
+      content: 'remove permanently',
+      select: node=>
+      {
+        graph.cy.remove(node);
+        const clazzShort  = rdf.short(node.data(NODE.ID));
+        sparql
+          .sparql(`describe  <${node.data(NODE.ID)}>}`)
+          .then(bindings=>
+          {
+            const body = `Please permanently delete the class ${clazzShort}:
+\`\`\`
+sparql
+# WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} AS EITHER SUBJECT OR OBJECT
+# ALWAYS CREATE A BACKUP BEFORE THIS OPERATION AS A MISTAKE MAY DELETE THE WHOLE GRAPH.
+
+DELETE DATA FROM <${rdf.longPrefix(node.data(NODE.ID))}>
+{
+  {<${node.data(NODE.ID)}> ?p ?y.} UNION {?x ?p <${node.data(NODE.ID)}>.}
+}
+\`\`\`
+WARNING: UNDO IS NOT GUARANTEED TO WORK AND MAY HAVE UNINTENDED CONSEQUENCES IF OTHER EDITS OCCUR BETWEEN DELETION AND UNDO.
+
+Undo based on these triples:
+\`\`\`
+${bindings}
+\`\`\`
+${language.CONSTANTS.SPARUL_WARNING}`;
+            window.open
+            (
+              'https://github.com/IMISE/snik-ontology/issues/new?title='+
+          encodeURIComponent('Remove class '+clazzShort)+
+          '&body='+
+          encodeURIComponent(body)
+            );
+          });
       },
     },
     {
