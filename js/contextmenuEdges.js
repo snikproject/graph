@@ -93,7 +93,7 @@ export const defaultsLimesRelations = {
       content: 'confirm limes link',
       select: function(edge)
       {
-        graph.cy.remove(edge);
+        edge.data(EDGE.GRAPH,"http://www.snik.eu/ontology/match");
         const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
 \`\`\`
 sparql
