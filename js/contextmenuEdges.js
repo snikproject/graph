@@ -4,7 +4,7 @@ Creates the circular context menu that can be opened on top of an edge.
 import * as graph from "./graph.js";
 import * as rdf from "./rdf.js";
 import * as EDGE from "./edge.js";
-import * as lang from "./lang/language.js";
+import * as language from "./lang/language.js";
 
 /** Creates a human readable string of the triple an edge represents. */
 function edgeLabel(edge) {return rdf.short(edge.data(EDGE.SOURCE)) +" "+ rdf.short(edge.data(EDGE.PROPERTY)) +" "+ rdf.short(edge.data(EDGE.TARGET));}
@@ -48,7 +48,7 @@ sparql
 INSERT DATA INTO <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
 \`\`\`
-${lang.CONSTANTS.SPARUL_WARNING}`;
+${language.CONSTANTS.SPARUL_WARNING}`;
       window.open
       (
         'https://github.com/IMISE/snik-ontology/issues/new?title='+
@@ -110,7 +110,7 @@ DELETE DATA FROM <http://www.snik.eu/ontology/match>
 INSERT DATA INTO <http://www.snik.eu/ontology/limes-exact>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
 \`\`\`
-${lang.CONSTANTS.SPARUL_WARNING}`;
+${language.CONSTANTS.SPARUL_WARNING}`;
 
         window.open
         (
