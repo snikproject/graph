@@ -97,13 +97,14 @@ export function run(cy,layoutConfig,subs,save)
     {
       if(typeof(localStorage)=== "undefined")
       {
-        log.error("web storage not available, could not write to cache.");
+        log.warn("web storage not available, could not write to cache.");
         progress(100);
         return true;
       }
       const pos = positions(cy.nodes());
       const name = storageName(layoutConfig.name,subs);
       localStorage.setItem(name,JSON.stringify(pos));
+      log.info("Replaced layout cache.");
     }
     progress(100);
   });
