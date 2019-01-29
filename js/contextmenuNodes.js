@@ -43,22 +43,24 @@ export const defaultsNodes = {
       {
         graph.cy.remove(node);
         const clazzShort  = rdf.short(node.data(NODE.ID));
-        sparql
-          .sparql(`describe  <${node.data(NODE.ID)}>}`)
+        sparql.describe(node.data(NODE.ID))
           .then(bindings=>
           {
             const body = `Please permanently delete the class ${clazzShort}:
 \`\`\`
 sparql
-# WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} AS EITHER SUBJECT OR OBJECT
+# WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} FROM THE GRAPH AS EITHER SUBJECT OR OBJECT
 # ALWAYS CREATE A BACKUP BEFORE THIS OPERATION AS A MISTAKE MAY DELETE THE WHOLE GRAPH.
+# THERE MAY BE DATA LEFT OVER IN OTHER GRAPHS, SUCH AS <http://www.snik.eu/ontology/limes-exact> or <http://www.snik.eu/ontology/match>.
+# THERE MAY BE LEFTOVER DATA IN AXIOMS OR ANNOTATIONS, CHECK THE UNDO DATA FOR SUCH THINGS.
 
 DELETE DATA FROM <${rdf.longPrefix(node.data(NODE.ID))}>
 {
   {<${node.data(NODE.ID)}> ?p ?y.} UNION {?x ?p <${node.data(NODE.ID)}>.}
 }
 \`\`\`
-WARNING: UNDO IS NOT GUARANTEED TO WORK AND MAY HAVE UNINTENDED CONSEQUENCES IF OTHER EDITS OCCUR BETWEEN DELETION AND UNDO.
+**Warning: Restoring a class with the following triples is not guaranteed to work and may have unintended consequences if other edits occur between the deletion and restoration.
+This only contains the triples from graph ${rdf.longPrefix(node.data(NODE.ID))}.**
 
 Undo based on these triples:
 \`\`\`
