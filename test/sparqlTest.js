@@ -15,7 +15,7 @@ describe('sparql', function()
   {
     it(`${GRAPH_GROUP_SNIK} should contain between ${EXPECTED_CLASSES_MIN} and ${EXPECTED_CLASSES_MAX} classes`, function()
     {
-      return sparql.sparql("select count(?class) as ?count {?class a owl:Class}", GRAPH_GROUP_SNIK)
+      return sparql.select("select count(?class) as ?count {?class a owl:Class}", GRAPH_GROUP_SNIK)
         .then(bindings=>
         {
           bindings[0].should.have.property("count");
@@ -25,7 +25,7 @@ describe('sparql', function()
     });
     it(`${GRAPH_SNIK_META} should contain between ${EXPECTED_META_CLASSES_MIN} and ${EXPECTED_META_CLASSES_MAX} classes`, function()
     {
-      return sparql.sparql("select count(?class) as ?count {?class a owl:Class}", GRAPH_SNIK_META)
+      return sparql.select("select count(?class) as ?count {?class a owl:Class}", GRAPH_SNIK_META)
         .then(bindings=>
         {
           bindings[0].should.have.property("count");
@@ -35,7 +35,7 @@ describe('sparql', function()
     });
     it('should contain the snik subontology graphs', function()
     {
-      return sparql.sparql("select distinct(?g) {graph ?g {?class a owl:Class.}}")
+      return sparql.select("select distinct(?g) {graph ?g {?class a owl:Class.}}")
         .then(bindings=>
         {
           const graphs = new Set();

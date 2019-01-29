@@ -72,7 +72,7 @@ function classUse(clazz,subTop)
       }
     }
   }`;
-  sparql.sparql(query,"http://www.snik.eu/ontology").then((json)=>
+  sparql.select(query,"http://www.snik.eu/ontology").then((json)=>
   {
     const inner = new Set();
     const middle = new Set();

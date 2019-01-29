@@ -100,8 +100,8 @@ export default function loadGraphFromSparql(cy,subs)
   const classes = undefined;//localStorage.getItem('classes');
   // if not in cache, load
   const classPromise = (classes===undefined)?
-    sparql.sparql(classQuery):Promise.resolve(classes);
-  const propertyPromise = sparql.sparql(propertyQuery);
+    sparql.select(classQuery):Promise.resolve(classes);
+  const propertyPromise = sparql.select(propertyQuery);
   const nodePromise = emptyPromise();
   const edgePromise = emptyPromise();
 

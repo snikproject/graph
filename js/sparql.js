@@ -7,14 +7,13 @@ export const SPARQL_GRAPH = "http://www.snik.eu/ontology";
 export const SPARQL_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies
 export const SPARQL_LIMIT = 100;
 
-/** Query public SNIK SPARQL endpoint.
-Intended for SELECT queries, DESCRIBE may also be possible but not tested.
+/** Query public SNIK SPARQL endpoint with a SELECT query.
 ASK queries should also work but better use {@link ask} instead as it is more convenient.
 {@param query} A valid SPARQL query.
 {@param graphOpt} An optional SPARQL graph.
 @return {Promise<Set>} A promise of a set of SPARQL select result bindings.
 */
-export function sparql(query,graphOpt)
+export function select(query,graphOpt)
 {
   //if (!graphOpt){ graphOpt = SPARQL_GRAPH; }//to ensure that dbpedia matches are not shown
   const url = SPARQL_ENDPOINT +

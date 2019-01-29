@@ -188,7 +188,7 @@ export function search(userQuery)
   const sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
 			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l),"[ -]","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
   log.debug(sparqlQuery);
-  return sparql.sparql(sparqlQuery,"http://www.snik.eu/ontology").then(bindings=>new Set(bindings.map(b=>b.s.value)));
+  return sparql.select(sparqlQuery,"http://www.snik.eu/ontology").then(bindings=>new Set(bindings.map(b=>b.s.value)));
   //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
   //filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
 }
