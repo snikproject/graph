@@ -61,6 +61,13 @@ Instead of "eles", "cy.collection" may be used as JSDoc type.
 * `npm run build` transpiles the code for browsers without full ES6 support, used by index-babel.html
 * `npm run jsdoc` generates the API documentation
 
+### LogLevels
+* `trace`: very verbose information for debugging  
+* `debug`: information for debugging
+* `info`: generally useful information, not only for developers (default)
+* `warn`: for problems that are recoverable
+* `error`: for errors that shut down the application
+
 ## Adaptation
 
 If you like SNIK Graph and want to use it with different data, please open an issue.
