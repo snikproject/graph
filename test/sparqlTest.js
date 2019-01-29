@@ -71,6 +71,14 @@ describe('sparql', function()
         .then(()=>{sparql.deleteTriple("this","isa","test","http://www.snik.eu/ontology/test");}); // cleanup
     });;*/
   });
+
+  describe('#describe()', function()
+  {
+    it('should return a turtle description of meta:Top', function()
+    {
+      sparql.describe("http://www.snik.eu/ontology/meta/Top").then(nt=>assert(nt.includes("meta:EntityType	rdfs:subClassOf	meta:Top")));
+    });
+  });
 });
 
 /* to test:

@@ -43,15 +43,20 @@ export function ask(query,graphOpt)
     .then(json=>{return json.boolean;});
 }
 
-export function sparql(query,graphOpt)
+/** Query the public SNIK SPARQL endpoint with a describe query, which describes a single resource.
+@param {string} uri A resource URI
+@param {string} graphOpt An optional SPARQL graph.
+@return {string} A promise of the boolean SPARQL ask result.
+*/
+export function describe(uri,graphOpt)
 {
-  //if (!graphOpt){ graphOpt = SPARQL_GRAPH; }//to ensure that dbpedia matches are not shown
+  const query = "describe <"+uri+">";
   const url = SPARQL_ENDPOINT +
   '?query=' + encodeURIComponent(query) +
-  '&format=json'+
+  '&format=text'+
   (graphOpt?('&default-graph-uri=' + encodeURIComponent(graphOpt)):"");
+
   return fetch(url)
-    .then(response => {return response.json();})
-    .then(json => {return json.results.bindings;})
+    .then(response => response.text())
     .catch(err =>log.error(`Error executing SPARQL query ${query}: ${err}`));
 }
