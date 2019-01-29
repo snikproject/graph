@@ -12,7 +12,6 @@ import * as rdfGraph from "./rdfGraph.js";
 import * as layout from "./layout.js";
 import {progress} from "./progress.js";
 import config from "./config.js";
-import * as log from "./log.js";
 import * as util from "./util.js";
 
 /** Entry point. Is run when DOM is loaded. **/
@@ -20,6 +19,7 @@ function main()
 {
   progress(0);
   graph.initGraph();
+  log.setLevel(config.logLevelConsole);
 
   window.addEventListener('keydown', e=>
   {
@@ -32,10 +32,16 @@ function main()
   }, true);
 
   addMenu();
+  log.info('Menu added');
   addFilterEntries(graph.cy,util.getElementById("filter-div"));
+  log.info('filter entries added');
   file.addFileLoadEntries(util.getElementById("file-div"));
+  log.info('fileLoadEntries added');
   search.addSearch();
+  log.info('search field added');
+
   addButtons();
+  log.info('buttons added');
 
   loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies))
     .then(()=>

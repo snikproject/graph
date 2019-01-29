@@ -2,7 +2,6 @@
 Show the environment of a single node using a special layout.
 @module */
 import * as sparql from "./sparql.js";
-import * as log from "./log.js";
 import * as graph from "./graph.js";
 import * as NODE from "./node.js";
 

@@ -2,7 +2,6 @@
 Helper functions for RDF properties.
 @module */
 import * as rdf from "./rdf.js";
-import * as log from "./log.js";
 import * as NODE from "./node.js";
 
 const propertyData = [
@@ -65,6 +64,6 @@ export function possible(subjectNode,objectNode)
     &&((element.uri!=="http://www.w3.org/2000/01/rdf-schema#subClassOf")||(subjectNode.data(NODE.SUBTOP)===objectNode.data(NODE.SUBTOP))); // rdfs:subClassOf only with the same subtop
   }
   );
-  log.trace(`possible properties between ${subjectNode.data(NODE.ID)} and ${objectNode.data(NODE.ID)}:`, possibleProperties);
+  log.info(`possible properties between ${subjectNode.data(NODE.ID)} and ${objectNode.data(NODE.ID)}:`, possibleProperties);
   return possibleProperties;
 }

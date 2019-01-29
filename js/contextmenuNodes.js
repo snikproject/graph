@@ -15,15 +15,13 @@ export const defaultsNodes = {
       content: 'ticket',
       select: node=>
       {
+        if(confirm(language.getString("ontology-issue-warning")))
         {
-          if(confirm(language.getString("ontology-issue-warning")))
-          {
-            const url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
+          const url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
             encodeURIComponent(node.data(NODE.ID))+
             '&body='+encodeURIComponent('The class '+node.data(NODE.ID)+
             ' has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n');
-            window.open(url);
-          }
+          window.open(url);
         }
       },
     },

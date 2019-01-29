@@ -3,7 +3,6 @@ Textual node search.
 @module */
 import * as graph from "./graph.js";
 import * as sparql from "./sparql.js";
-import * as log from "./log.js";
 import * as menu from "./menu.js";
 import * as NODE from "./node.js";
 import * as util from "./util.js";

@@ -1,7 +1,6 @@
 /**
 Populates the menu bar on the top.
 @module */
-import * as log from "./log.js";
 import * as download from "./download.js";
 import * as graph from "./graph.js";
 import * as layout from "./layout.js";
