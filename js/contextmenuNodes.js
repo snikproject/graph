@@ -15,16 +15,15 @@ export const defaultsNodes = {
       content: 'ticket',
       select: node=>
       {
+        if(confirm(language.getString("ontology-issue-warning")))
         {
-          if(confirm(language.getString("ontology-issue-warning")))
-          {
-            const url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
+          const url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
             encodeURIComponent(node.data(NODE.ID))+
             '&body='+encodeURIComponent('The class '+node.data(NODE.ID)+
             ' has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n');
-            window.open(url);
-          }
+          window.open(url);
         }
+        log.info("Ticket for Node " + node.data(NODE.ID) + " written.");
       },
     },
     {
@@ -36,6 +35,7 @@ export const defaultsNodes = {
       select: node=>
       {
         graph.cy.remove(node);
+        log.info("Node " + node.data(NODE.ID) + " removed.");
       },
     },
     {
@@ -43,6 +43,7 @@ export const defaultsNodes = {
       select: node=>
       {
         graph.setSource(node);
+        log.info("Node " + node.data(NODE.ID) + " set as path source.");
       },
     },
     {
@@ -50,6 +51,7 @@ export const defaultsNodes = {
       select: node=>
       {
         window.open('https://www.snik.eu/ontowiki/view/?r='+node.data(NODE.ID)+"&m="+rdf.sub(node.data(NODE.ID)));
+        log.info("Node " + node.data(NODE.ID) + " edited.");
       },
     },
     {
@@ -63,6 +65,7 @@ export const defaultsNodes = {
       content: 'description',
       select: node=>
       {
+        log.info("Open Description for Node " + node.data(NODE.ID) + ".");
         window.open(node.data(NODE.ID));
       },
     },

@@ -28,6 +28,7 @@ const edgeCommands = [
     select: function(edge)
     {
       graph.cy.remove(edge);
+      log.info("Edge #" + edge.data(EDGE.ID) + " between " + edge.data(EDGE.SOURCE) + " and " + edge.data(EDGE.TARGET) + " removed.");
     },
   },
   {
@@ -53,6 +54,7 @@ INSERT DATA INTO <${edge.data(EDGE.SOURCE)}>
         'https://github.com/IMISE/snik-ontology/issues/new?title='+
         encodeURIComponent(edgeLabel(edge))+'&body='+encodeURIComponent(body)
       );
+      log.info("Edge #" + edge.data(EDGE.ID) + " between " + edge.data(EDGE.SOURCE) + " and " + edge.data(EDGE.TARGET) + " removed permanently.");
     },
   },
   {
@@ -60,6 +62,7 @@ INSERT DATA INTO <${edge.data(EDGE.SOURCE)}>
     select: function(edge)
     {
       window.open('https://www.snik.eu/ontowiki/view/?r='+edge.data(EDGE.SOURCE)+"&m="+rdf.sub(edge.data(EDGE.SOURCE)));
+      log.info("Edge #" + edge.data(EDGE.ID) + " between " + edge.data(EDGE.SOURCE) + " and " + edge.data(EDGE.TARGET) + " edited.");
     },
   },
   {
@@ -115,6 +118,7 @@ INSERT DATA INTO <${edge.data(EDGE.SOURCE)}>
           'https://github.com/IMISE/snik-ontology/issues/new?title='+
             encodeURIComponent(edgeLabel(edge))+'&body='+encodeURIComponent(body)
         );
+        log.info("Limes-link for Edge #" + edge.data(EDGE.ID) + " between " + edge.data(EDGE.SOURCE) + " and " + edge.data(EDGE.TARGET) + " confirmed.");
       },
     },
   ]),
