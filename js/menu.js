@@ -9,6 +9,7 @@ import * as NODE from "./node.js";
 import loadGraphFromSparql from "./loadGraphFromSparql.js";
 import * as language from "./lang/language.js";
 import * as util from "./util.js";
+import * as file from "./file.js";
 
 /** Sets the preferred node label language attribute. Use the values from node.js. */
 function setLanguage(lang)
@@ -64,6 +65,8 @@ function menuData()
       "entries":
       [
         [loadGraphFromSparql,"Load from SPARQL Endpoint","load-sparql"],
+        [file.loadGraph,"Load Graph File with Layout","load-graph-with-layout"],
+        [file.loadLayout,"Load Layout","load-layout"],
         [download.downloadGraph,"Save Full Graph with Layout as Cytoscape File","save-cytoscape-full"],
         [download.downloadVisibleGraph,"Save Visible Graph with Layout as Cytoscape File","save-cytoscape-visible"],
         [download.downloadLayout,"Save Layout only","save-layout"],
