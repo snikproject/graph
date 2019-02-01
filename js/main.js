@@ -54,7 +54,7 @@ function main()
     })
     .catch(e=>
     {
-      log.error(e);
+      log.error("Error initializing SNIK Graph "+e);
       alert("Error initializing SNIK Graph\n\n"+e);
     })
     .finally(()=>{progress(100);});

@@ -78,9 +78,11 @@ export function run(cy,layoutConfig,subs,save)
         virtualEdges.push({group: "edges", data: { source: node.data(NODE.ID), target: prefix, springLength: 180 }});
       }
     }
+    log.info("Separate subontologies checked");
     log.debug(`Adding ${virtualEdges.length} virtual edges.`);
     cy.add(virtualEdges);
   }
+  else{log.info("Separate subontologies unchecked");}
   if(activeLayout) {activeLayout.stop();}
   activeLayout = cy.elements(":visible").layout(layoutConfig);
   activeLayout.on("layoutstop",()=>

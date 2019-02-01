@@ -33,6 +33,7 @@ function browserCheckTranspiled()
   (navigator.sayswho.name === 'Chrome' && navigator.sayswho.version < 54)
   )
   {alert(`Your browser ${navigator.sayswho.name} version ${navigator.sayswho.version} may be outdated. Graph may not work properly.`);}
+  log.warn("Browser outdated. Graph may not work properly.");
 }
 
 /* eslint no-unused-vars: 0 */ // included from index
@@ -46,4 +47,5 @@ function browserCheckNonTranspiled()
   (navigator.sayswho.name === 'Chrome' && navigator.sayswho.version < 61)
   )
   {alert(`Your browser ${navigator.sayswho.name} version ${navigator.sayswho.version} may be outdated for the development build. Graph may not work properly. Try using the transpiled production build.`);}
+  log.warn("Browser outdated for the development build. Graph may not work properly. Try using the transpiled production build");
 }

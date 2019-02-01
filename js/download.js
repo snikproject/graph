@@ -29,6 +29,7 @@ export function downloadJson(data,fileName)
   a.download = fileName;
   a.click();
   window.URL.revokeObjectURL(url);
+  log.info("JSON File downloaded: "+fileName);
 }
 
 /**
@@ -49,6 +50,7 @@ export function downloadUrl(url, fileName)
   a.download = fileName;
   a.click();
   window.URL.revokeObjectURL(url);
+  log.info("File downloaded: "+fileName);
 }
 
 /** Downloads the whole layouted graph as a Cytoscape JSON file. */

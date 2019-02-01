@@ -137,6 +137,7 @@ export default function loadGraphFromSparql(cy,subs)
       /*console.log(json[i].l);
         console.log(json[i].l.value);*/
     }
+    log.info(json.length+" Nodes loaded from SPARQL");
     cy.add(nodes);
     nodePromise.resolve();
   }).catch(e=>
@@ -169,6 +170,7 @@ export default function loadGraphFromSparql(cy,subs)
           //position: { x: 200, y: 200 }
         });
     }
+    log.info(json.length+" Properties loaded from SPARQL");
     // remove isolated nodes (too costly in SPARQL query)
     // deactivated for now, so that isolated nodes can be found and fixed
     //cy.nodes("[[degree=0]]").remove();

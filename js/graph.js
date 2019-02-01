@@ -112,6 +112,7 @@ function showPath(from, to,starPath)
     progress(100);
     if(!starMode) {resetStyle();} // keep it as it was before the path operation
     alert('no path found');
+    log.warn("No path found!");
     return false;
   }
   progress(100);

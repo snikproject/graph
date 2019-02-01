@@ -201,6 +201,7 @@ function showSearch(userQuery)
   search(userQuery).then(uris =>
   {
     showSearchResults(userQuery,uris);
+    log.info("Display search results for: "+userQuery);
   });
   return false; // prevent page reload triggered by submit
 }
