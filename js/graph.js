@@ -54,7 +54,7 @@ function show(eles)
 function highlight(eles)
 {
   eles.removeClass('hidden');
-  eles.addClass('highlighted');
+  //eles.addClass('highlighted');
 }
 
 /** Removes all highlighting (except selection) and shows all hidden nodes. */
