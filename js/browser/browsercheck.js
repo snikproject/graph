@@ -46,6 +46,9 @@ function browserCheckNonTranspiled()
   (navigator.sayswho.name === 'Internet Explorer') ||
   (navigator.sayswho.name === 'Chrome' && navigator.sayswho.version < 61)
   )
-  {alert(`Your browser ${navigator.sayswho.name} version ${navigator.sayswho.version} may be outdated for the development build. Graph may not work properly. Try using the transpiled production build.`);}
-  log.warn("Browser outdated for the development build. Graph may not work properly. Try using the transpiled production build");
+  {
+    const warning = `Your browser ${navigator.sayswho.name} version ${navigator.sayswho.version} may be outdated for the development build. Graph may not work properly. Try using the transpiled production build.`;
+    alert(warning);
+    log.warn("Browser outdated for the development build. Graph may not work properly. Try using the transpiled production build");
+  }
 }
