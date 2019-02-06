@@ -5,6 +5,7 @@ import chai from 'chai';
 const assert = chai.assert;
 // the global "log" is normally registered in the index file, so we have to do that here
 import * as log from 'loglevel';
+import * as rdf from '../js/rdf.js';
 global.log = log;
 // the global "Fuse" is normally registered in the index file, so we have to do that here
 import Fuse from 'fuse.js';
@@ -65,7 +66,7 @@ Result 2: "${[...results[j]]}"`);
       for(const query of queries)
       {
         const results = await fuse.search(query);
-        assert.includeMembers(results,correctResults);
+        assert.includeMembers(results,correctResults.map(r=>rdf.long(r)));
       }
     }
   });
