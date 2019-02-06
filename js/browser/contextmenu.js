@@ -12,7 +12,7 @@ The extension itself is already registered through the plain HTML/JS import in i
 which makes available cy.cxtmenu().*/
 export function registerMenu()
 {
-  log.debug("Register Context Menu");
+  log.trace("Register Context Menu");
   for(const cmd of nodes.defaultsNodes.commands)
   {
     const tmp = cmd.select;

@@ -33,16 +33,15 @@ function main()
     }, true);
 
     menu.addMenu();
-    log.info('Menu added');
+    log.debug('Menu added');
     addFilterEntries(graph.cy,util.getElementById("filter-div"));
-    log.info('filter entries added');
+    log.debug('filter entries added');
     file.addFileLoadEntries(util.getElementById("file-div"));
-    log.info('fileLoadEntries added');
+    log.debug('fileLoadEntries added');
     search.addSearch();
-    log.info('search field added');
-
+    log.debug('search field added');
     addButtons();
-    log.info('buttons added');
+    log.debug('buttons added');
 
     try
     {
