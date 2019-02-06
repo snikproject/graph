@@ -53,7 +53,7 @@ function show(eles)
 function highlight(eles)
 {
   eles.removeClass('hidden');
-  //eles.addClass('highlighted');
+  eles.addClass('highlighted');
 }
 
 /** Removes all highlighting (except selection) and shows all hidden nodes. */
@@ -95,7 +95,7 @@ function showPath(from, to,starPath)
       path.merge(edges);
       path.merge(edges.connectedNodes(".unfiltered"));
     }
-    highlight(path);
+    show(path);
     if(!starMode)
     {
       starMode=true;
@@ -139,7 +139,7 @@ function showStar(node, changeLayout, directed)
     hide(cy.elements().not(star));
   }
 
-  highlight(star);
+  show(star);
 
   if(changeLayout)
   {
