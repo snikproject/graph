@@ -83,7 +83,7 @@ const colorschemeday =
       "selector": "edge.starmode",
       "css":
       {
-        'color': 'rgb(30,30,30)', // label color
+        'color': 'rgb(3,3,3)', // label color
         'mid-target-arrow-color': 'rgb(89,89,89)',
       },
     },
@@ -91,9 +91,9 @@ const colorschemeday =
       "selector": "edge:selected,edge.highlighted",
       "css":
       {
-        "color": "rgb(255,255,128)", // label color
-        "line-color": "rgb(255,255,128)",
-        'mid-target-arrow-color': 'rgb(255,255,128)',
+        "color": "rgb(0,0,128)", // label color
+        "line-color": "rgb(0,0,128)",
+        'mid-target-arrow-color': 'rgb(0,0,128)',
       },
     },
   ];
