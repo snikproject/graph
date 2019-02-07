@@ -114,12 +114,6 @@ export function showSearchResults(query, uris)
   {
     table.deleteRow(i);
   }
-  const header = table.insertRow();
-  const showInGraph = header.insertCell();
-  showInGraph.innerText = "Locate in Graph";
-  const showInLodLive = header.insertCell();
-  showInLodLive.innerText = "Show Description";
-  
   util.getElementById("overlay").display = "block";
   util.getElementById("overlay").style.width = "100%";
   if(uris.length===0)
@@ -162,8 +156,7 @@ export function showSearchResults(query, uris)
     window.presentUri=presentUri;
     locateCell.innerHTML = `<a class="search-class${uriType[uri]}"" href="javascript:window.presentUri('${uri}');void(0)">
 		${uri.replace(sparql.SPARQL_PREFIX,"")}</a>`;
-    lodLiveCell.innerHTML = `<a class="search-class${uriType[uri]}"" href="${uri}" target="_blank">
-		${uri.replace(sparql.SPARQL_PREFIX,"")}</a>`;
+    lodLiveCell.innerHTML = `<a class="search-class0"" href="${uri}" target="_blank">Description</a>`;
   });
 
   const row = table.insertRow(0);
