@@ -121,7 +121,7 @@ const style =
       },
     },
     {
-      'selector': 'edge.highlighted,edge:selected',
+      'selector': 'edge.highlighted,edge:selected,edge.starmode',
       'css':
       {
         'opacity': 1.0,
@@ -142,7 +142,7 @@ const style =
         'width': 4.0,
         'edge-text-rotation': 'autorotate',
         'text-margin-y': '-1em',
-        'min-zoomed-font-size': 9,
+        'min-zoomed-font-size': 5,
         'label': function(edge)
         {
           let label = edge.data(EDGE.PROPERTY_LABEL);

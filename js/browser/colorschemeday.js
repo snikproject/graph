@@ -80,21 +80,20 @@ const colorschemeday =
       },
     },
     {
-      "selector": "edge.selected",
+      "selector": "edge.starmode",
+      "css":
+      {
+        'color': 'rgb(128,128,128)', // label color
+        'mid-target-arrow-color': 'rgb(128,128,128)',
+      },
+    },
+    {
+      "selector": "edge:selected,edge.highlighted",
       "css":
       {
         "color": "rgb(255,255,128)", // label color
         "line-color": "rgb(255,255,128)",
         'mid-target-arrow-color': 'rgb(255,255,128)',
-      },
-    },
-    {
-      "selector": "edge.highlighted",
-      "css":
-      {
-        'color': 'rgb(128,255,128)',
-        'line-color': 'rgb(128,255,128)',
-        'mid-target-arrow-color': 'rgb(128,255,128)',
       },
     },
   ];

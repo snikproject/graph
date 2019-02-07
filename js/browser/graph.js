@@ -56,6 +56,16 @@ function highlight(eles)
   eles.addClass('highlighted');
 }
 
+/**
+@param {cy.collection} eles the elements to assign the star mode css class to
+*/
+function starStyle(eles)
+{
+  eles.removeClass('hidden');
+  eles.addClass('starmode');
+}
+
+
 /** Removes all highlighting (except selection) and shows all hidden nodes. */
 function resetStyle()
 {
@@ -64,6 +74,7 @@ function resetStyle()
   //selectedNode = undefined;
   cy.startBatch();
   cy.elements().removeClass("highlighted");
+  cy.elements().removeClass("starmode");
   cy.elements().removeClass("hidden");
   cy.endBatch();
 }
@@ -95,7 +106,7 @@ function showPath(from, to,starPath)
       path.merge(edges);
       path.merge(edges.connectedNodes(".unfiltered"));
     }
-    show(path);
+    starStyle(path);
     if(!starMode)
     {
       starMode=true;
@@ -139,7 +150,7 @@ function showStar(node, changeLayout, directed)
     hide(cy.elements().not(star));
   }
 
-  show(star);
+  starStyle(star);
 
   if(changeLayout)
   {
