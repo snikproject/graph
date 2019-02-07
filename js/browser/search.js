@@ -110,6 +110,12 @@ export function showSearchResults(query, uris)
   {
     table.deleteRow(i);
   }
+  const header = table.insertRow();
+  const showInGraph = header.insertCell();
+  showInGraph.innerText = "Locate in Graph";
+  const showInLodLive = header.insertCell();
+  showInLodLive.innerText = "Show Description";
+  
   util.getElementById("overlay").display = "block";
   util.getElementById("overlay").style.width = "100%";
   if(uris.length===0)
@@ -147,14 +153,17 @@ export function showSearchResults(query, uris)
   uris.forEach(uri=>
   {
     const row = table.insertRow();
-    const cell = row.insertCell(0);
+    const locateCell = row.insertCell();
+    const lodLiveCell = row.insertCell();
     window.presentUri=presentUri;
-    cell.innerHTML = `<a class="search-class${uriType[uri]}"" href="javascript:window.presentUri('${uri}');void(0)">
+    locateCell.innerHTML = `<a class="search-class${uriType[uri]}"" href="javascript:window.presentUri('${uri}');void(0)">
+		${uri.replace(sparql.SPARQL_PREFIX,"")}</a>`;
+    lodLiveCell.innerHTML = `<a class="search-class${uriType[uri]}"" href="${uri}" target="_blank">
 		${uri.replace(sparql.SPARQL_PREFIX,"")}</a>`;
   });
 
   const row = table.insertRow(0);
-  const cell = row.insertCell(0);
+  const cell = row.insertCell();
   window.presentAll=presentAll;
   cell.innerHTML = `<a href="javascript:window.presentAll();void(0)">
 		Highlight All</a>`;
