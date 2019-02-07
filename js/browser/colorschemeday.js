@@ -85,8 +85,6 @@ const colorschemeday =
       {
         "opacity": 1,
         'color': 'rgb(10,10,10)', // label color
-        'line-color':  'rgb(10,10,10)', // label color
-        'mid-target-arrow-color': 'rgb(10,10,10)',
       },
     },
     {
