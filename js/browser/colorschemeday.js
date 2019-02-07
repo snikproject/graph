@@ -84,7 +84,8 @@ const colorschemeday =
       "css":
       {
         "opacity": 1,
-        'color': 'rgb(10,10,10)', // label color
+        'mid-target-arrow-color': 'rgb(128,128,128)',
+        'color': 'rgb(20,20,20)', // label color
       },
     },
     {
