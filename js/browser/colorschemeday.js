@@ -75,7 +75,7 @@ const colorschemeday =
           {
             return "rgb(160,150,10)";
           }
-          return "rgb(89,89,89)";
+          return "rgb(128,128,128)";
         },
       },
     },
@@ -83,8 +83,10 @@ const colorschemeday =
       "selector": "edge.starmode",
       "css":
       {
-        'color': 'rgb(3,3,3)', // label color
-        'mid-target-arrow-color': 'rgb(89,89,89)',
+        "opacity": 1,
+        'color': 'rgb(10,10,10)', // label color
+        'line-color':  'rgb(10,10,10)', // label color
+        'mid-target-arrow-color': 'rgb(10,10,10)',
       },
     },
     {
