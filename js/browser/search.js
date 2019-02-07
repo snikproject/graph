@@ -57,16 +57,20 @@ function createFailDialog(title, text,/*uri*/)
 
 
 /** When user selects a URI from the search candidates, this URI gets centered and highlighted.
-* @param  {String} uri The URI of a class in the graph. */
+* @param {String} uri The URI of a class in the graph. */
 function presentUri(uri)
 {
   graph.cy.zoom(0.6);
   const nodes = graph.cy.elements().nodes().filter(`node[id= "${uri}"]`);
-  const node = nodes[0];
   if(nodes.length<1)
   {
-    //alert(uri+' is only available on the SPARQL endpoint but not in the graph.');
     createFailDialog("Class not in graph",uri+' is only available on the SPARQL endpoint but not in the graph.',uri);
+    return false;
+  }
+  const node = nodes[0];
+  if(!nodes.visible())
+  {
+    createFailDialog("Class not visible",uri+' is not visible. Please adjust filters.',uri);
     return false;
   }
   if(!menu.cumulativeSearch()) {graph.resetStyle();}
