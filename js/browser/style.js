@@ -143,6 +143,7 @@ const style =
         'edge-text-rotation': 'autorotate',
         'text-margin-y': '-1em',
         'min-zoomed-font-size': 5,
+        'font-size': 11,
         'label': function(edge)
         {
           let label = edge.data(EDGE.PROPERTY_LABEL);
