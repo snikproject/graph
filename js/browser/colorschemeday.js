@@ -73,9 +73,9 @@ const colorschemeday =
         // highlight skos interlinks
           if((String(edge.data(EDGE.PROPERTY)).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
           {
-            return "rgb(166,153,0)";
+            return "rgb(160,150,10)";
           }
-          return "rgb(128,128,128)";
+          return "rgb(89,89,89)";
         },
       },
     },
@@ -83,8 +83,8 @@ const colorschemeday =
       "selector": "edge.starmode",
       "css":
       {
-        'color': 'rgb(128,128,128)', // label color
-        'mid-target-arrow-color': 'rgb(128,128,128)',
+        'color': 'rgb(30,30,30)', // label color
+        'mid-target-arrow-color': 'rgb(89,89,89)',
       },
     },
     {
