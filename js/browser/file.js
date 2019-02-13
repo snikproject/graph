@@ -7,7 +7,7 @@ import timer from "../timer.js";
 /** Loads a local text file.
 When developing on Google Chrome, you may need to start the browser with "--allow-file-access-from-files".
 See also https://bugs.chromium.org/p/chromium/issues/detail?id=47416.*/
-export function readTextFile(fileName)
+function readTextFile(fileName)
 {
   const headers = new Headers();
   const init = { method: 'GET',
@@ -79,7 +79,9 @@ function addLoadEntry(parent,id,description,func)
   inner.innerText=description;
   inner.id=id;
   span.appendChild(inner);
-
+  // click event needs to trigger at the hidden input element so that it opens the file chooser dialog
+  span.addEventListener("click",()=>input.click());
+  // completed file chooser dialog triggers change event
   input.addEventListener("change",func);
 }
 
