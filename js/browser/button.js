@@ -9,10 +9,16 @@ import * as menu from "./menu.js";
 
 const buttonConfigs =
 [
-  [language.getString("recalculate-layout"),"recalculate-layout", ()=>
-  {
-    layout.run(graph.cy,layout.euler,rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),true);
-  }],
+  [
+    language.getString("recalculate-layout"),"recalculate-layout", ()=>
+    {
+      layout.run(graph.cy,layout.euler,rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),true);
+    }],
+  [
+    "Tight Layout","recalculate-layout", ()=>
+    {
+      layout.run(graph.cy,layout.eulerTight,rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),false);
+    }],
   [language.getString("reset-view"),"reset-view", graph.resetStyle],
 //  ["Reload", loadGraphFromSparql],
 //  ["Export", file.save],

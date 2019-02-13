@@ -205,12 +205,20 @@ export function runCached(cy,layoutConfig,subs,separateSubs)
 /** Very fast but useless for most purposes except for testing.*/
 export const grid = {name: "grid"};
 
+/** @returns the preferred spring length of an edge */
+function springLength(edge)
+{
+  const len = edge.data("springLength");
+  if(len) {return len;}
+  return 800;
+}
+
 /**Fastest (but still slow) force directed Cytoscape.js layout found.*/
 export const euler =
 {
   /*eslint no-unused-vars: "off"*/
   name: "euler",
-  springLength: edge => edge.data("springLength")?edge.data("springLength"):800,
+  springLength: edge => springLength(edge),
   animate: true,
   refresh: 50,
   maxSimulationTime: 40000,
@@ -220,4 +228,18 @@ export const euler =
   movementThreshold: 1,
   fit:true,
   mass: node => node.data("mass")?node.data("mass"):40,
+};
+
+/**Fastest (but still slow) force directed Cytoscape.js layout found.*/
+export const eulerTight =
+{
+  /*eslint no-unused-vars: "off"*/
+  name: "euler",
+  springLength: 40,
+  animate: false,
+  refresh: 50,
+  randomize: false,
+  movementThreshold: 1,
+  fit:true,
+  mass: 40,
 };
