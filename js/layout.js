@@ -164,18 +164,19 @@ export function presetLayout(cy,pos)
 @param {cy.cytoscape} cy the Cytoscape.js graph to run the layout on
 @param {json} layoutConfig the layout configuration, which includes the layout name and options
 @param {Set} subs Set of subontologies. If the subs are not given the layout still works but it is not cached.
+@param {boolean} separateSubs Whether to separate the graph based on the subontologies.
 @returns whether the layout could successfully be applied. Does not indicate success of loading from cache,
 in which case it is calculated anew.
 */
-export function runCached(cy,layoutConfig,subs)
+export function runCached(cy,layoutConfig,subs,separateSubs)
 {
   if(typeof(localStorage)=== "undefined")
   {
     log.error("Web storage not available, could not access browser-based cache.");
-    run(layoutConfig,subs,false);
+    run(layoutConfig,subs,separateSubs,false);
     return;
   }
-  const name = storageName(layoutConfig.name,subs);
+  const name = storageName(layoutConfig.name,subs,separateSubs);
   // web storage
   const cacheItem = localStorage.getItem(name);
   if(cacheItem) // cache hit
@@ -197,7 +198,7 @@ export function runCached(cy,layoutConfig,subs)
   {
     log.warn("Layout not in cache, recalculating layout...");
   }
-  return run(cy,layoutConfig,subs,true);
+  return run(cy,layoutConfig,subs,separateSubs,true);
 }
 
 /** Very fast but useless for most purposes except for testing.*/
