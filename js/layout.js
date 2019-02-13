@@ -12,10 +12,11 @@ let activeLayout = undefined;
 /**
 @param {string} layoutName Cytoscape.js layout name
 @param {Set} subs the subontology identifiers included in the graph. Used to retrieve the correct layout later.
+@param {boolean} separateSubs Whether to separate the graph based on the subontologies.
 @returns the storage name coded by the layout and the subontologies
 @example storageName("euler",new Set(["meta","ob","bb"]));
 */
-function storageName(layoutName,subs) {return "layout"+layoutName+[...subs].sort().toString().replace(/[^a-z]/g,"");}
+function storageName(layoutName,subs,separateSubs) {return "layout"+layoutName+[...subs].sort().toString().replace(/[^a-z]/g,"")+(!!separateSubs);}
 
 /** Returns an array containing the positions of the given nodes
 @param {cy.collection} nodes the nodes whose positions are returned
@@ -97,7 +98,7 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
         return true;
       }
       const pos = positions(cy.nodes());
-      const name = storageName(layoutConfig.name,subs);
+      const name = storageName(layoutConfig.name,subs,separateSubs);
       localStorage.setItem(name,JSON.stringify(pos));
       log.info("Replaced layout cache.");
     }

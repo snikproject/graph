@@ -74,7 +74,7 @@ function menuData()
         [async ()=>
         {
           await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));
-          progress(()=>layout.run(graph.cy,layout.euler,rdfGraph.subs(),separateSubs(),true));
+          progress(()=>layout.runCached(graph.cy,layout.euler,rdfGraph.subs(),separateSubs()));
         },
         "Load from SPARQL Endpoint","load-sparql"],
         [download.downloadGraph,"Save Full Graph with Layout as Cytoscape File","save-cytoscape-full"],
