@@ -9,7 +9,7 @@ import * as NODE from "../node.js";
 import loadGraphFromSparql from "../loadGraphFromSparql.js";
 import * as language from "../lang/language.js";
 import * as util from "./util.js";
-import * as file from "./file.js";
+import config from "../config.js";
 import progress from "./progress.js";
 
 /** @returns whether subontologies are to be displayed separately. */
@@ -71,7 +71,12 @@ function menuData()
       "id": "file",
       "entries":
       [
-        [loadGraphFromSparql,"Load from SPARQL Endpoint","load-sparql"],
+        [async ()=>
+        {
+          await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));
+          progress(()=>layout.run(graph.cy,layout.euler,rdfGraph.subs(),separateSubs(),true));
+        },
+        "Load from SPARQL Endpoint","load-sparql"],
         [download.downloadGraph,"Save Full Graph with Layout as Cytoscape File","save-cytoscape-full"],
         [download.downloadVisibleGraph,"Save Visible Graph with Layout as Cytoscape File","save-cytoscape-visible"],
         [download.downloadLayout,"Save Layout only","save-layout"],
