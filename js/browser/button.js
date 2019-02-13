@@ -11,7 +11,7 @@ const buttonConfigs =
 [
   [language.getString("recalculate-layout"),"recalculate-layout", ()=>
   {
-    layout.run(graph.cy,layout.euler,rdfGraph.subs(),menu.separateSubs&&!graph.getStarMode());
+    layout.run(graph.cy,layout.euler,rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),true);
   }],
   [language.getString("reset-view"),"reset-view", graph.resetStyle],
 //  ["Reload", loadGraphFromSparql],
