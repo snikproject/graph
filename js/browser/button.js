@@ -19,6 +19,12 @@ const buttonConfigs =
     {
       layout.run(graph.cy,layout.eulerTight,rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),false);
     }],
+  [
+    "Custom Layout","recalculate-layout", ()=>
+    {
+      layout.run(graph.cy,layout.eulerVariable(util.getElementById("layout-range").value),rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),false);
+    }],
+
   [language.getString("reset-view"),"reset-view", graph.resetStyle],
 //  ["Reload", loadGraphFromSparql],
 //  ["Export", file.save],
@@ -27,6 +33,22 @@ const buttonConfigs =
 /** Populate the buttons on the top bar using the JSON configuration. */
 export default function addButtons()
 {
+  const text = document.createElement("input");
+  text.type="text";
+  text.style="width:3em";
+
+  const range = document.createElement("input");
+  range.type="range";
+  range.id="layout-range";
+  range.min=10;
+  range.max=999;
+  range.value=40;
+  range.width="10em";
+  range.onchange=()=>text.value=range.value;
+  text.value=range.value;
+
+  util.getElementById("buttons").appendChild(range);
+  util.getElementById("buttons").appendChild(text);
   for(const buttonConfig of buttonConfigs)
   {
     const button = document.createElement("button");

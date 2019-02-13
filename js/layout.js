@@ -243,3 +243,20 @@ export const eulerTight =
   fit:true,
   mass: 40,
 };
+
+/** Creates a euler layout with custom spring length. */
+export function eulerVariable(len)
+{
+  const layout =
+  {
+    name: "euler",
+    springLength: len,
+    animate: false,
+    refresh: 50,
+    randomize: false,
+    movementThreshold: 1,
+    fit:true,
+    mass: 40,
+  };
+  return layout;
+}
