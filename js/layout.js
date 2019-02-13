@@ -178,19 +178,6 @@ export function runCached(cy,layoutConfig,subs)
   const name = storageName(layoutConfig.name,subs);
   // web storage
   const cacheItem = localStorage.getItem(name);
-  // file
-  /*
-  if(!cacheItem)
-  {
-  log.warn("Web storage cache miss, trying to load from file...");
-  file.readTextFile("cache/"+storageName)
-  .then(text=>
-  {
-  cacheItem = text;
-})
-.catch(e=>{log.warn("File cache miss.");});
-}
-*/
   if(cacheItem) // cache hit
   {
     try
