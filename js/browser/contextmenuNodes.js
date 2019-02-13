@@ -7,6 +7,7 @@ import * as graph from "./graph.js";
 import * as rdf from "../rdf.js";
 import * as NODE from "../node.js";
 import * as sparql from "../sparql.js";
+import config from "../config.js";
 
 export const defaultsNodes = {
   menuRadius: 220, // the radius of the circular menu in pixels
@@ -177,7 +178,7 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
   ],
   fillColor: 'rgba(200, 200, 200, 0.95)', // the background colour of the menu
   activeFillColor: 'rgba(150, 0, 0, 1)', // the colour used to indicate the selected command
-  openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
+  openMenuEvents: config.openMenuEvents, // cytoscape events that will open the menu (space separated)
   itemColor: 'rgba(80,0,0)', // the colour of text in the command's content
   itemTextShadowColor: 'gray', // the text shadow colour of the command's content
   zIndex: 9999, // the z-index of the ui div

@@ -5,6 +5,7 @@ import * as graph from "./graph.js";
 import * as rdf from "../rdf.js";
 import * as EDGE from "../edge.js";
 import * as language from "../lang/language.js";
+import config from "../config.js";
 
 /** Creates a human readable string of the triple an edge represents. */
 function edgeLabel(edge) {return rdf.short(edge.data(EDGE.SOURCE)) +" "+ rdf.short(edge.data(EDGE.PROPERTY)) +" "+ rdf.short(edge.data(EDGE.TARGET));}
@@ -79,7 +80,7 @@ export const defaultsRelations = {
 
   fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
   activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
-  openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
+  openMenuEvents: config.openMenuEvents, // cytoscape events that will open the menu (space separated)
   itemColor: 'white', // the colour of text in the command's content
   itemTextShadowColor: 'gray', // the text shadow colour of the command's content
   zIndex: 9999, // the z-index of the ui div
@@ -123,7 +124,7 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
 
   fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
   activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
-  openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
+  openMenuEvents: config.openMenuEvents, // cytoscape events that will open the menu (space separated)
   itemColor: 'white', // the colour of text in the command's content
   itemTextShadowColor: 'gray', // the text shadow colour of the command's content
   zIndex: 9999, // the z-index of the ui div
