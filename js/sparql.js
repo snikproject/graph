@@ -9,20 +9,27 @@ export const SPARQL_LIMIT = 100;
 /** Query public SNIK SPARQL endpoint with a SELECT query.
 ASK queries should also work but better use {@link ask} instead as it is more convenient.
 {@param query} A valid SPARQL query.
-{@param graphOpt} An optional SPARQL graph.
+{@param graph} An optional SPARQL graph.
 @return {Promise<Set>} A promise of a set of SPARQL select result bindings.
 */
-export function select(query,graphOpt)
+export async function select(query,graph)
 {
-  //if (!graphOpt){ graphOpt = SPARQL_GRAPH; }//to ensure that dbpedia matches are not shown
-  const url = SPARQL_ENDPOINT +
-  '?query=' + encodeURIComponent(query) +
-  '&format=json'+
-  (graphOpt?('&default-graph-uri=' + encodeURIComponent(graphOpt)):"");
-  return fetch(url)
-    .then(response => {return response.json();})
-    .then(json => {return json.results.bindings;})
-    .catch(err =>log.error(`Error executing SPARQL query ${query}: ${err}`));
+  let url = SPARQL_ENDPOINT + '?query=' + encodeURIComponent(query) + '&format=json';
+  if(graph) {url+= '&default-graph-uri=' + encodeURIComponent(graph);}
+  try
+  {
+    const response = await fetch(url);
+    const json = await response.json();
+    const bindings = json.results.bindings;
+
+    console.groupCollapsed("SPARQL "+query.split('\n',1)[0]+"...");
+    log.debug(url);
+    log.debug(query);
+    console.groupEnd();
+
+    return bindings;
+  }
+  catch(err) {log.error(`Error executing SPARQL query:\n${query}\nURL: ${url}\n\n`,err);}
 }
 
 /** Query public SNIK SPARQL endpoint with an ASK (boolean) query.

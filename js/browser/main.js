@@ -19,6 +19,7 @@ function main()
 {
   progress(async ()=>
   {
+    console.groupCollapsed("Initializing");
     graph.initGraph();
     log.setLevel(config.logLevelConsole);
 
@@ -32,6 +33,7 @@ function main()
       }
     }, true);
 
+    console.groupCollapsed("Add menu");
     menu.addMenu();
     log.debug('Menu added');
     addFilterEntries(graph.cy,util.getElementById("filter-div"));
@@ -42,6 +44,7 @@ function main()
     log.debug('search field added');
     addButtons();
     log.debug('buttons added');
+    console.groupEnd();
 
     try
     {
@@ -54,6 +57,7 @@ function main()
       log.error("Error initializing SNIK Graph "+e);
       alert("Error initializing SNIK Graph\n\n"+e);
     }
+    finally {console.groupEnd();}
   });
 }
 

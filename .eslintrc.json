@@ -35,7 +35,7 @@
 		"semi": ["error","always"],
 		"no-use-before-define": ["error"],
 		"no-shadow": ["warn"],
-		"no-console": ["warn"],
+		"no-console": ["off"],
 		"no-duplicate-imports": ["error"],
 		"dot-notation": ["error"],
 		"eqeqeq": ["error"],
