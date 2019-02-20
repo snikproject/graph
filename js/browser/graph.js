@@ -76,6 +76,7 @@ function resetStyle()
   cy.elements().removeClass("highlighted");
   cy.elements().removeClass("starmode");
   cy.elements().removeClass("hidden");
+  if(pathSource!==null) {pathSource.removeClass('source');}
   cy.endBatch();
 }
 
@@ -234,10 +235,7 @@ function setSource(node)
         */
     cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
   }
-  if(pathSource!==null)
-  {
-    pathSource.removeClass('source');
-  }
+  if(pathSource!==null) {pathSource.removeClass('source');}
   pathSource = node;
   pathSource.addClass('source');
   /*
