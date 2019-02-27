@@ -10,28 +10,34 @@ import * as EDGE from "../edge.js";
 /** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
 The extension itself is already registered through the plain HTML/JS import in index.html,
 which makes available cy.cxtmenu().*/
-export function registerMenu()
+export function registerMenu(enabled)
 {
-  log.trace("Register Context Menu");
-  for(const cmd of nodes.defaultsNodes.commands)
+  if(enabled)
   {
-    const tmp = cmd.select;
-    cmd.select = node =>
-    {
-      log.info("Context Menu: Operation "+cmd.content+" on node "+node.data(NODE.ID));
-      tmp(node);
-    };
+    //code goes here
   }
-  for(const cmd of edges.defaultsLimesRelations.commands)
-  {
-    const tmp = cmd.select;
-    cmd.select = edge =>
+  else{
+    log.trace("Register Context Menu");
+    for(const cmd of nodes.defaultsNodes.commands)
     {
-      log.info("Context Menu: Operation "+cmd.content+" on edge between "+edge.data(EDGE.SOURCE)+" and "+edge.data(EDGE.TARGET));
-      tmp(edge);
-    };
+      const tmp = cmd.select;
+      cmd.select = node =>
+      {
+        log.info("Context Menu: Operation "+cmd.content+" on node "+node.data(NODE.ID));
+        tmp(node);
+      };
+    }
+    for(const cmd of edges.defaultsLimesRelations.commands)
+    {
+      const tmp = cmd.select;
+      cmd.select = edge =>
+      {
+        log.info("Context Menu: Operation "+cmd.content+" on edge between "+edge.data(EDGE.SOURCE)+" and "+edge.data(EDGE.TARGET));
+        tmp(edge);
+      };
+    }
+    graph.cy.cxtmenu(nodes.defaultsNodes);
+    graph.cy.cxtmenu(edges.defaultsRelations);
+    graph.cy.cxtmenu(edges.defaultsLimesRelations);
   }
-  graph.cy.cxtmenu(nodes.defaultsNodes);
-  graph.cy.cxtmenu(edges.defaultsRelations);
-  graph.cy.cxtmenu(edges.defaultsLimesRelations);
 }

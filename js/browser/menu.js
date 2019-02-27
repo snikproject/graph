@@ -145,9 +145,12 @@ function addOptions()
   util.getElementById("options-div").innerHTML =
   `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span id="separate-subs">separate subontologies</span></span>
   <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span id="cumulative-search">cumulative search</span></span>
-  <span  class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="off"/><span id="day-mode">day mode</span></span>`;
+  <span class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="off"/><span id="day-mode">day mode</span></span>
+  <span class="dropdown-entry"><input type="checkbox" id="user-type-checkbox" autocomplete="off"/><span id="developer version">developer version</span></span>`;
   const daymode = util.getElementById("day-mode-checkbox");
   daymode.addEventListener("change",()=>graph.invert(daymode.checked));
+  const devMode = util.getElementById("user-type-checkbox");
+  devMode.addEventListener("change",()=>contextmenu.developer(devMode.checked));
 }
 
 /** @returns whether cumulative search is activated. */
