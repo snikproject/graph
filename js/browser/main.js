@@ -20,6 +20,8 @@ function main()
   progress(async ()=>
   {
     console.groupCollapsed("Initializing");
+    menu.addMenu();
+    log.debug('Menu added');
     graph.initGraph();
     log.setLevel(config.logLevelConsole);
 
@@ -34,8 +36,7 @@ function main()
     }, true);
 
     console.groupCollapsed("Add menu");
-    menu.addMenu();
-    log.debug('Menu added');
+
     addFilterEntries(graph.cy,util.getElementById("filter-div"));
     log.debug('filter entries added');
     file.addFileLoadEntries(util.getElementById("file-div"));

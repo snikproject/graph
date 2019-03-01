@@ -7,27 +7,32 @@ import * as edges from "./contextmenuEdges.js";
 import * as NODE from "../node.js";
 import * as EDGE from "../edge.js";
 
+const cxtmenus = [];
+
 /** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
 The extension itself is already registered through the plain HTML/JS import in index.html,
-which makes available cy.cxtmenu().*/
-export function registerMenu(enabled)
+which makes available cy.cxtmenu().
+@param {boolean} enabled check if devMode is active or not */
+export default function(enabled)
 {
+  cxtmenus.forEach(menu=>menu.destroy());
+  cxtmenus.length=0;
   if(enabled)
   {
-    //code goes here
-  }
-  else{
-    log.trace("Register Context Menu");
-    for(const cmd of nodes.defaultsNodes.commands)
+    log.trace("Enabled DevMode. Register Context Menu");
+    for(const cmd of nodes.devNodes.commands.filter(cmd=>!cmd.select.wrapped))
     {
       const tmp = cmd.select;
       cmd.select = node =>
       {
-        log.info("Context Menu: Operation "+cmd.content+" on node "+node.data(NODE.ID));
+        log.info("Context Menu: DevMode Operation "+cmd.content+" on node "+node.data(NODE.ID));
         tmp(node);
       };
+      cmd.select.wrapped = true;
     }
-    for(const cmd of edges.defaultsLimesRelations.commands)
+    cxtmenus.push(graph.cy.cxtmenu(nodes.devNodes));
+
+    for(const cmd of edges.devLimesRelations.commands.filter(cmd=>!cmd.select.wrapped))
     {
       const tmp = cmd.select;
       cmd.select = edge =>
@@ -35,9 +40,36 @@ export function registerMenu(enabled)
         log.info("Context Menu: Operation "+cmd.content+" on edge between "+edge.data(EDGE.SOURCE)+" and "+edge.data(EDGE.TARGET));
         tmp(edge);
       };
+      cmd.select.wrapped = true;
     }
-    graph.cy.cxtmenu(nodes.defaultsNodes);
-    graph.cy.cxtmenu(edges.defaultsRelations);
-    graph.cy.cxtmenu(edges.defaultsLimesRelations);
+    cxtmenus.push(graph.cy.cxtmenu(edges.devRelations));
+    cxtmenus.push(graph.cy.cxtmenu(edges.devLimesRelations));
+  }
+
+  else{
+    log.trace("Disabled DevMode. Register Context Menu");
+    for(const cmd of nodes.defaultsNodes.commands.filter(cmd=>!cmd.select.wrapped))
+    {
+      const tmp = cmd.select;
+      cmd.select = node =>
+      {
+        log.info("Context Menu: Operation "+cmd.content+" on node "+node.data(NODE.ID));
+        tmp(node);
+      };
+      cmd.select.wrapped = true;
+    }
+    cxtmenus.push(graph.cy.cxtmenu(nodes.defaultsNodes));
+
+    for(const cmd of edges.defaultsRelations.commands.filter(cmd=>!cmd.select.wrapped))
+    {
+      const tmp = cmd.select;
+      cmd.select = edge =>
+      {
+        log.info("Context Menu: Operation "+cmd.content+" on edge between "+edge.data(EDGE.SOURCE)+" and "+edge.data(EDGE.TARGET));
+        tmp(edge);
+      };
+      cmd.select.wrapped = true;
+    }
+    cxtmenus.push(graph.cy.cxtmenu(edges.defaultsRelations));
   }
 }

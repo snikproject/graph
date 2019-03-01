@@ -32,6 +32,9 @@ const edgeCommands = [
       graph.cy.remove(edge);
     },
   },
+];
+//collection of expert edge commands to use in devRelations and devLimesRelations
+const devEdgeCommands = [
   {
     content: 'remove permanently',
     select: function(edge)
@@ -71,10 +74,10 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
       alert(JSON.stringify(edge.data(),null,2));
     },
   },
-];
+]
 
 export const defaultsRelations = {
-  menuRadius: 110, // the radius of the circular menu in pixels
+  menuRadius: 100, // the radius of the circular menu in pixels
   selector: `edge[${EDGE.GRAPH} != "http://www.snik.eu/ontology/limes-exact"]`, // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: edgeCommands,
 
@@ -86,10 +89,23 @@ export const defaultsRelations = {
   zIndex: 9999, // the z-index of the ui div
 };
 
-export const defaultsLimesRelations = {
+export const devRelations = {
+  menuRadius: 150, // the radius of the circular menu in pixels
+  selector: `edge[${EDGE.GRAPH} != "http://www.snik.eu/ontology/limes-exact"]`, // elements matching this Cytoscape.js selector will trigger cxtmenus
+  commands: devEdgeCommands.concat(edgeCommands),
+
+  fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
+  activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
+  openMenuEvents: config.openMenuEvents, // cytoscape events that will open the menu (space separated)
+  itemColor: 'white', // the colour of text in the command's content
+  itemTextShadowColor: 'gray', // the text shadow colour of the command's content
+  zIndex: 9999, // the z-index of the ui div
+};
+
+export const devLimesRelations = {
   menuRadius: 150, // the radius of the circular menu in pixels
   selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`, // elements matching this Cytoscape.js selector will trigger cxtmenus
-  commands: edgeCommands.concat([
+  commands: devRelations.commands.concat([
     {
       content: 'confirm limes link',
       select: function(edge)
