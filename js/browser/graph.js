@@ -137,8 +137,14 @@ function showStar(node, changeLayout, directed)
 
   // open 2 levels deep on closeMatch
   let inner = node; // if you don't want to include close match, define inner like this
-  const closeMatchEdges = node.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
-  inner = inner.union(closeMatchEdges.connectedNodes(".unfiltered")); // in case there is no close match edge
+  let closeMatchEdges;
+  for(let innerSize = 0; innerSize<inner.size();)
+  {
+    innerSize=inner.size();
+    closeMatchEdges = inner.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
+    inner = inner.union(closeMatchEdges.connectedNodes(".unfiltered")); // in case there is no close match edge
+  }
+
   const edges = directed?
     inner.edgesTo('.unfiltered')
     :inner.connectedEdges(".unfiltered");
@@ -156,6 +162,19 @@ function showStar(node, changeLayout, directed)
   if(changeLayout)
   {
     const outerNodes = nodes.difference(inner);
+    // nodes = nodes
+    //   .sort((a,b)=>
+    //   {
+    //     //        const pa = Math.min(a.connectedEdges(inner).map(n=>n.data("pl").split('').reduce((na,nb)=>na.charCodeAt(0)+nb.charCodeAt(0))));
+    //     //        const pb = Math.min(b.connectedEdges(inner).map(n=>n.data("pl").split('').reduce((na,nb)=>na.charCodeAt(0)+nb.charCodeAt(0))));
+    //     console.log(a.data("id")+" "+ a.connectedEdges(inner).map(e=>e.data("pl").length).toString());
+    //     console.log(b.data("id")+" "+b.connectedEdges(inner).map(e=>e.data("pl").length).toString());
+    //     const pa = Math.min(a.connectedEdges(inner).map(e=>e.data("pl").length));
+    //     const pb = Math.min(b.connectedEdges(inner).map(e=>e.data("pl").length));
+    //
+    //     return pa-pb;
+    //   });
+
     nodes.layout(
       {
         name: 'concentric',
