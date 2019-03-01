@@ -162,20 +162,15 @@ function showStar(node, changeLayout, directed)
   if(changeLayout)
   {
     const outerNodes = nodes.difference(inner);
-    // nodes = nodes
-    //   .sort((a,b)=>
-    //   {
-    //     //        const pa = Math.min(a.connectedEdges(inner).map(n=>n.data("pl").split('').reduce((na,nb)=>na.charCodeAt(0)+nb.charCodeAt(0))));
-    //     //        const pb = Math.min(b.connectedEdges(inner).map(n=>n.data("pl").split('').reduce((na,nb)=>na.charCodeAt(0)+nb.charCodeAt(0))));
-    //     console.log(a.data("id")+" "+ a.connectedEdges(inner).map(e=>e.data("pl").length).toString());
-    //     console.log(b.data("id")+" "+b.connectedEdges(inner).map(e=>e.data("pl").length).toString());
-    //     const pa = Math.min(a.connectedEdges(inner).map(e=>e.data("pl").length));
-    //     const pb = Math.min(b.connectedEdges(inner).map(e=>e.data("pl").length));
-    //
-    //     return pa-pb;
-    //   });
+    const sorted = nodes
+      .sort((a,b)=>
+      {
+        const pa = Math.min(a.edgesTo(inner).map(n=>n.data("pl").split('').reduce((na,nb)=>na+nb.charCodeAt(0),0)));
+        const pb = Math.min(b.edgesTo(inner).map(n=>n.data("pl").split('').reduce((na,nb)=>na+nb.charCodeAt(0),0)));
+        return pa-pb;
+      });
 
-    nodes.layout(
+    sorted.layout(
       {
         name: 'concentric',
         fit: true,
