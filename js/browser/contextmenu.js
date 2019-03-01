@@ -20,7 +20,7 @@ export default function(enabled)
   if(enabled)
   {
     log.trace("Enabled DevMode. Register Context Menu");
-    for(const cmd of nodes.devNodes.commands.filter(cmd=>!cmd.select.wrapped))
+    for(const cmd of nodes.devNodes.commands.filter(c=>!c.select.wrapped))
     {
       const tmp = cmd.select;
       cmd.select = node =>
@@ -32,7 +32,7 @@ export default function(enabled)
     }
     cxtmenus.push(graph.cy.cxtmenu(nodes.devNodes));
 
-    for(const cmd of edges.devLimesRelations.commands.filter(cmd=>!cmd.select.wrapped))
+    for(const cmd of edges.devLimesRelations.commands.filter(c=>!c.select.wrapped))
     {
       const tmp = cmd.select;
       cmd.select = edge =>
@@ -46,9 +46,10 @@ export default function(enabled)
     cxtmenus.push(graph.cy.cxtmenu(edges.devLimesRelations));
   }
 
-  else{
+  else
+  {
     log.trace("Disabled DevMode. Register Context Menu");
-    for(const cmd of nodes.defaultsNodes.commands.filter(cmd=>!cmd.select.wrapped))
+    for(const cmd of nodes.defaultsNodes.commands.filter(c=>!c.select.wrapped))
     {
       const tmp = cmd.select;
       cmd.select = node =>
@@ -60,7 +61,7 @@ export default function(enabled)
     }
     cxtmenus.push(graph.cy.cxtmenu(nodes.defaultsNodes));
 
-    for(const cmd of edges.defaultsRelations.commands.filter(cmd=>!cmd.select.wrapped))
+    for(const cmd of edges.defaultsRelations.commands.filter(c=>!c.select.wrapped))
     {
       const tmp = cmd.select;
       cmd.select = edge =>

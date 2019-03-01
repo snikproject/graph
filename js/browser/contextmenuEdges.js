@@ -74,7 +74,7 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
       alert(JSON.stringify(edge.data(),null,2));
     },
   },
-]
+];
 
 export const defaultsRelations = {
   menuRadius: 100, // the radius of the circular menu in pixels
