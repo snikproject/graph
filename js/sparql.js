@@ -23,13 +23,21 @@ export async function select(query,graph)
     const bindings = json.results.bindings;
 
     console.groupCollapsed("SPARQL "+query.split('\n',1)[0]+"...");
-    log.debug(url);
+    if(bindings.length<100)
+    {
+      console.table(bindings.map(b=>Object.keys(b).reduce((result,key)=>{result[key]=b[key].value;return result;},{})));
+    }
     log.debug(query);
+    log.debug(url);
     console.groupEnd();
 
     return bindings;
   }
-  catch(err) {log.error(`Error executing SPARQL query:\n${query}\nURL: ${url}\n\n`,err);}
+  catch(err)
+  {
+    log.error(err);
+    log.error(`Error executing SPARQL query:\n${query}\nURL: ${url}\n\n`);
+  }
 }
 
 /** Query public SNIK SPARQL endpoint with an ASK (boolean) query.
