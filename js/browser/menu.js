@@ -55,6 +55,12 @@ function setLanguage(lang)
 /** Notifies the user of the program version so that errors can be properly reported. */
 function about() {window.alert("SNIK Graph version "+"[AIV]{version} {date}[/AIV]");}
 
+/** Creates a GitHub issue for the visualization. */
+function visualizationFeedback()
+{
+  window.open("https://github.com/IMISE/snik-cytoscape.js/issues/new?body="+encodeURIComponent(log.logs.reduce((a,b)=>a+"\n"+b)));
+}
+
 /**
 Creates and returns the menus for the top menu bar.
 The format is an array of menu elements.
@@ -134,7 +140,7 @@ function menuData()
         ["http://www.snik.eu/","Project Homepage"],
         [about,"About SNIK Graph"],
         ["https://github.com/IMISE/snik-ontowww.snik.eu/ontology/issues","Submit Feedback about the Ontology"],
-        ["https://github.com/IMISE/snik-cytoscape.js/issues","Submit Feedback about the Visualization"],
+        [visualizationFeedback,"Submit Feedback about the Visualization"],
       ],
     },
   ];
@@ -151,7 +157,7 @@ function addOptions()
   const dayMode = util.getElementById("day-mode-checkbox");
   dayMode.addEventListener("change",()=>{graph.invert(dayMode.checked);log.trace("Set dayMode to "+dayMode.checked);});
   const devMode = util.getElementById("user-type-checkbox");
-  devMode.addEventListener("change",()=>{contextmenu(devMode.checked);log.trace("Set devmode to "+devMode.checked);});
+  devMode.addEventListener("change",()=>{contextmenu(devMode.checked);log.trace("Set devMode to "+devMode.checked);});
   const cumuSearch = util.getElementById("cumulative-search-checkbox");
   cumuSearch.addEventListener("change",()=>{log.trace("Set cumulative search to "+cumuSearch.checked);});
 }

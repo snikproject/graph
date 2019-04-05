@@ -19,12 +19,16 @@ function main()
 {
   log.setLevel(config.logLevelConsole);
   log.logs = [];
-  const tmp = log.debug;
-  log.debug = message  =>
+  const funcs = ["error","warn","debug","trace"];
+  for(const f of funcs)
   {
-    log.logs.push(message);
-    tmp(message);
-  };
+    const tmp = log[f];
+    log[f] = message  =>
+    {
+      log.logs.push(message);
+      tmp(message);
+    };
+  }
 
   //logs.length = 0;
   progress(async ()=>
@@ -55,9 +59,6 @@ function main()
     addButtons();
     log.debug('buttons added');
     console.groupEnd();
-
-    // schmebug("Test");
-    // console.log(logs);
 
     try
     {
