@@ -19,7 +19,12 @@ let language = "en";
 */
 export function setLanguage(lang)
 {
-  if(!strings[lang]) {return false;}
+  log.trace(`Set language from ${language} to ${lang}.`);
+  if(!strings[lang])
+  {
+    log.warn(`Language ${lang} not found. Keeping language ${language}.`);
+    return false;
+  }
   language=lang;
   return true;
 }
