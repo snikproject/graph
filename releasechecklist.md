@@ -34,11 +34,12 @@ besides the unit tests (mocha, chai) we need to test a few things before releasi
 ## How publish a new GitHub release on the bruchtal server
 
 * first do the GitHub release (close milestones and do the release procedure) and make sure that it runs locally
+* attach package-lock.json to the Assets
 * ssh bruchtal -A (snik@bruchtal.imise.uni-leipzig.de)
 * STRG + R (reverse search) graph
 * git pull
 * cp js/config.dist.js js/config.js
-* npm update 
+* npm update
 * npm run build
 * (first time) ln -s index-prod.html index.html
 * do the above mentioned tests in the browser
