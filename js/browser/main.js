@@ -74,7 +74,6 @@ function main()
     finally
     {
       console.groupEnd();
-      console.log("Logs: "+log.logs);
     }
   });
 }
