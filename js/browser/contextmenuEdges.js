@@ -36,6 +36,14 @@ const edgeCommands = [
 //collection of expert edge commands to use in devRelations and devLimesRelations
 const devEdgeCommands = [
   {
+    content: 'description (if it exists)',
+    select: node=>
+    {
+      if(node.data(EDGE.AXIOM)) {window.open(node.data(EDGE.AXIOM));}
+      else {alert("There is no description for this edge.");}
+    },
+  },
+  {
     content: 'remove permanently',
     select: function(edge)
     {

@@ -89,12 +89,19 @@ export default function loadGraphFromSparql(cy,subs)
   //  replace(str(?d),"http://www.snik.eu/ontology/","s:") as ?d
   //  replace(str(?g),"http://www.snik.eu/ontology/","s:") as ?g
   const propertyQuery =
-  `select  ?c ?p ?d ?g
+  `select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
   ${froms}
   {
     owl:Class ^a ?c,?d.
     graph ?g {?c ?p ?d.}
     filter(?p!=meta:subTopClass)
+    OPTIONAL
+    {
+     ?ax a owl:Axiom;
+         owl:annotatedSource ?c;
+         owl:annotatedProperty ?p;
+         owl:annotatedTarget ?d.
+    }
   }`;
   const sparqlClassesTimer = timer("sparql-classes");
   const classes = undefined;//localStorage.getItem('classes');
@@ -166,6 +173,7 @@ export default function loadGraphFromSparql(cy,subs)
             p: json[i].p.value,//Labels_DE: [json[i].l.value]
             pl: json[i].p.value.replace(/.*[#/]/,""),
             g: json[i].g.value,
+            ax: json[i].ax===undefined?null:json[i].ax.value,
           },
           //position: { x: 200, y: 200 }
         });
