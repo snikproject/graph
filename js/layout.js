@@ -260,3 +260,15 @@ export function eulerVariable(len)
   };
   return layout;
 }
+
+/** Layout for compound graphs */
+export const cose =
+{
+  name: "cose",
+  animate: true,
+  refresh: 50,
+  numIter: 500,
+  initialTemp: 1000,
+  nestingFactor: 1.01,
+  randomize: false,
+};

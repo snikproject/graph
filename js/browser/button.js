@@ -24,6 +24,11 @@ const buttonConfigs =
     {
       layout.run(graph.cy,layout.eulerVariable(util.getElementById("layout-range").value),rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),false);
     }],
+  [
+    "Compound Layout","recalculate-layout", ()=>
+    {
+      layout.run(graph.cy,layout.cose,rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),false);
+    }],
 
   [language.getString("reset-view"),"reset-view", graph.resetStyle],
 //  ["Reload", loadGraphFromSparql],
