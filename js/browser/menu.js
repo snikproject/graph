@@ -61,6 +61,21 @@ function visualizationFeedback()
   window.open("https://github.com/IMISE/snik-cytoscape.js/issues/new?body="+encodeURIComponent(log.logs.reduce((a,b)=>a+"\n"+b)));
 }
 
+/** Show all nodes that are connected via close matches to visible nodes. */
+function showCloseMatches()
+{
+  log.trace("show close matches start");
+  const visible = graph.cy.elements('.unfiltered').not('.hidden');
+  //const closeMatchEdges = graph.cy.edges('[pl="closeMatch"]');
+  const newEdges = visible.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
+  console.log(newEdges);
+  graph.show(newEdges);
+  graph.show(newEdges.connectedNodes(".unfiltered"));
+  log.trace("show close matches end");
+  //closeMatchEdges.connectedNodes();
+  //".unfiltered";
+}
+
 /**
 Creates and returns the menus for the top menu bar.
 The format is an array of menu elements.
@@ -106,6 +121,14 @@ function menuData()
       "label": "Options",
       "id": "options",
       "entries": [], // filled by addOptions()
+    },
+    {
+      "label": "Operations",
+      "id":"operations",
+      "entries":
+          [
+            [showCloseMatches,"Show Close Matches","show-close-matches"],
+          ],
     },
     {
       "label": "Services",
