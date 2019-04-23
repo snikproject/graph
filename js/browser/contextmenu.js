@@ -19,7 +19,7 @@ export default function(enabled)
   cxtmenus.length=0;
   if(enabled)
   {
-    log.trace("Enabled DevMode. Register Context Menu");
+    log.debug("Enabled DevMode. Register Context Menu");
     for(const cmd of nodes.devNodes.commands.filter(c=>!c.select.wrapped))
     {
       const tmp = cmd.select;
@@ -48,7 +48,7 @@ export default function(enabled)
 
   else
   {
-    log.trace("Disabled DevMode. Register Context Menu");
+    log.debug("Disabled DevMode. Register Context Menu");
     for(const cmd of nodes.defaultsNodes.commands.filter(c=>!c.select.wrapped))
     {
       const tmp = cmd.select;

@@ -107,14 +107,14 @@ function combineMatch(enabled)
 /** Show all nodes that are connected via close matches to visible nodes. */
 function showCloseMatches()
 {
-  log.trace("show close matches start");
+  log.debug("show close matches start");
   const visible = graph.cy.elements('.unfiltered').not('.hidden');
   //const closeMatchEdges = graph.cy.edges('[pl="closeMatch"]');
   const newEdges = visible.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
   console.log(newEdges);
   graph.show(newEdges);
   graph.show(newEdges.connectedNodes(".unfiltered"));
-  log.trace("show close matches end");
+  log.debug("show close matches end");
   //closeMatchEdges.connectedNodes();
   //".unfiltered";
 }
@@ -223,16 +223,16 @@ function addOptions()
   <span class="dropdown-entry"><input type="checkbox" id="user-type-checkbox" autocomplete="on"/><span id="dev-mode">dev mode</span></span>
   <span class="dropdown-entry"><input type="checkbox" id="combine-match-checkbox" autocomplete="off"/><span id="combine-match">combine matches</span></span>`;
   const dayMode = util.getElementById("day-mode-checkbox");
-  dayMode.addEventListener("change",()=>{graph.invert(dayMode.checked);log.trace("Set dayMode to "+dayMode.checked);});
+  dayMode.addEventListener("change",()=>{graph.invert(dayMode.checked);log.debug("Set dayMode to "+dayMode.checked);});
   const devMode = util.getElementById("user-type-checkbox");
-  devMode.addEventListener("change",()=>{contextmenu(devMode.checked);log.trace("Set devMode to "+devMode.checked);});
+  devMode.addEventListener("change",()=>{contextmenu(devMode.checked);log.debug("Set devMode to "+devMode.checked);});
   const cumuSearch = util.getElementById("cumulative-search-checkbox");
-  cumuSearch.addEventListener("change",()=>{log.trace("Set cumulative search to "+cumuSearch.checked);});
+  cumuSearch.addEventListener("change",()=>{log.debug("Set cumulative search to "+cumuSearch.checked);});
   const combineMatchMode  = util.getElementById("combine-match-checkbox");
   combineMatchMode.addEventListener("change",()=>
   {
     combineMatch(combineMatchMode.checked);
-    log.trace("Set combine match mode to "+combineMatchMode.checked);
+    log.debug("Set combine match mode to "+combineMatchMode.checked);
   });
 }
 
