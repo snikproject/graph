@@ -153,7 +153,7 @@ function addOptions()
   `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span id="separate-subs">separate subontologies</span></span>
   <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span id="cumulative-search">cumulative search</span></span>
   <span class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="on"/><span id="day-mode">day mode</span></span>
-  <span class="dropdown-entry"><input type="checkbox" id="user-type-checkbox" autocomplete="on"/><span id="developer version">developer version</span></span>`;
+  <span class="dropdown-entry"><input type="checkbox" id="user-type-checkbox" autocomplete="on"/><span id="dev-mode">developer mode</span></span>`;
   const dayMode = util.getElementById("day-mode-checkbox");
   dayMode.addEventListener("change",()=>{graph.invert(dayMode.checked);log.trace("Set dayMode to "+dayMode.checked);});
   const devMode = util.getElementById("user-type-checkbox");

@@ -23,6 +23,7 @@ export default
     "separate-subs": "Separate Subontologies",
     "cumulative-search": "Cumulative Search",
     "day-mode": "Day Mode",
+    "dev-mode": "Developer Mode",
     // services ******************************************
     "services": "Services",
     "sparql-endpoint": "SPARQL Endpoint",

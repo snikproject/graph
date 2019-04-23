@@ -23,6 +23,7 @@ export default
     "separate-subs": "nach Subontologien aufspalten",
     "cumulative-search": "Kumulative Suche",
     "day-mode": "Tag-Modus",
+    "dev-mode": "Entwickler-Modus",
     // services ******************************************
     "services": "Services",
     "sparql-endpoint": "SPARQL Endpunkt",
@@ -41,7 +42,7 @@ export default
     "reset-view": "Ansicht zurücksetzen",
   },
   messageStrings:
-  {  
+  {
     "no-search-results-for": "Keine Suchresultate für",
     "ontology-issue-warning": "Bitte hier nur Feedback zur Ontologie hinterlassen! Bitte prüfen Sie vorher, ob es schon eine Issue mit diesem Thema gibt. Wenn nicht, bearbeiten wir Ihr Feedback so schnell wie möglich.",
   },
