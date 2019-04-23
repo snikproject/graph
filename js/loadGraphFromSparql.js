@@ -57,6 +57,7 @@ export default function loadGraphFromSparql(cy,subs)
 {
   const rdfGraphs = [...(new Set([...rdfGraph.helper(),...subs]))];
   const froms = rdfGraphs.map(sub=>`from <http://www.snik.eu/ontology/${sub}>`).reduce((a,b)=>a+"\n"+b);
+  const fromNamed = froms.replace("FROM","FROM NAMED");
   cy.elements().remove();
   // Optimization failed, was actually slower. Great example of premature optimization.
   // Idea was to keep bindings short to minimize data sent over network but failed probably due to caching, compression and function overhead.
@@ -90,17 +91,20 @@ export default function loadGraphFromSparql(cy,subs)
   //  replace(str(?g),"http://www.snik.eu/ontology/","s:") as ?g
   const propertyQuery =
   `select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
-  ${froms}
+  ${fromNamed}
   {
-    owl:Class ^a ?c,?d.
     graph ?g {?c ?p ?d.}
-    filter(?p!=meta:subTopClass)
-    OPTIONAL
+    graph ?h
     {
-     ?ax a owl:Axiom;
-         owl:annotatedSource ?c;
-         owl:annotatedProperty ?p;
-         owl:annotatedTarget ?d.
+     owl:Class ^a ?c,?d.
+     filter(?p!=meta:subTopClass)
+     OPTIONAL
+     {
+      ?ax a owl:Axiom;
+          owl:annotatedSource ?c;
+          owl:annotatedProperty ?p;
+          owl:annotatedTarget ?d.
+     }
     }
   }`;
   const sparqlClassesTimer = timer("sparql-classes");
