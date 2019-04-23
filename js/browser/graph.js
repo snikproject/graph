@@ -150,6 +150,10 @@ function showStar(node, changeLayout, directed)
     :inner.connectedEdges(".unfiltered");
   const nodes  = edges.connectedNodes(".unfiltered");
   const star = inner.union(nodes).union(edges);
+  // show edges between outer nodes to visible nodes
+  const outerNodes = nodes.difference(inner);
+  // connect new nodes with all existing unfiltered visible ones
+  //show(outerNodes.edgesWith(cy.nodes(".unfiltered").not(".hidden")));
 
   if(!starMode)
   {
@@ -158,10 +162,11 @@ function showStar(node, changeLayout, directed)
   }
 
   starStyle(star);
+  const visible = cy.nodes(".unfiltered").not(".hidden");
+  starStyle(visible.edgesWith(visible));
 
   if(changeLayout)
   {
-    const outerNodes = nodes.difference(inner);
     const sorted = nodes
       .sort((a,b)=>
       {
