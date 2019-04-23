@@ -13,11 +13,11 @@ const cxtmenus = [];
 The extension itself is already registered through the plain HTML/JS import in index.html,
 which makes available cy.cxtmenu().
 @param {boolean} enabled check if devMode is active or not */
-export default function(enabled)
+export default function(dev, ext)
 {
   cxtmenus.forEach(menu=>menu.destroy());
   cxtmenus.length=0;
-  if(enabled)
+  if(dev)
   {
     log.debug("Enabled DevMode. Register Context Menu");
     for(const cmd of nodes.devNodes.commands.filter(c=>!c.select.wrapped))
@@ -45,8 +45,36 @@ export default function(enabled)
     cxtmenus.push(graph.cy.cxtmenu(edges.devRelations));
     cxtmenus.push(graph.cy.cxtmenu(edges.devLimesRelations));
   }
+  {
+    if(ext)
+    {log.debug("Enabled ExtMode. Register Context Menu");}
+    for(const cmd of nodes.devNodes.commands.filter(c=>!c.select.wrapped))
+    {
+      const tmp = cmd.select;
+      cmd.select = node =>
+      {
+        log.info("Context Menu: DevMode Operation "+cmd.content+" on node "+node.data(NODE.ID));
+        tmp(node);
+      };
+      cmd.select.wrapped = true;
+    }
+    cxtmenus.push(graph.cy.cxtmenu(nodes.extNodes));
 
-  else
+    for(const cmd of edges.devLimesRelations.commands.filter(c=>!c.select.wrapped))
+    {
+      const tmp = cmd.select;
+      cmd.select = edge =>
+      {
+        log.info("Context Menu: Operation "+cmd.content+" on edge between "+edge.data(EDGE.SOURCE)+" and "+edge.data(EDGE.TARGET));
+        tmp(edge);
+      };
+      cmd.select.wrapped = true;
+    }
+    cxtmenus.push(graph.cy.cxtmenu(edges.devRelations));
+    cxtmenus.push(graph.cy.cxtmenu(edges.devLimesRelations));
+  }
+
+  if(!dev && !ext)
   {
     log.debug("Disabled DevMode. Register Context Menu");
     for(const cmd of nodes.defaultsNodes.commands.filter(c=>!c.select.wrapped))

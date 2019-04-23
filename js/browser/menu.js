@@ -220,12 +220,15 @@ function addOptions()
   `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span id="separate-subs">separate subontologies</span></span>
   <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span id="cumulative-search">cumulative search</span></span>
   <span class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="on"/><span id="day-mode">day mode</span></span>
-  <span class="dropdown-entry"><input type="checkbox" id="user-type-checkbox" autocomplete="on"/><span id="dev-mode">dev mode</span></span>
+  <span class="dropdown-entry"><input type="checkbox" id="dev-mode-checkbox" autocomplete="on"/><span id="dev-mode">dev mode</span></span>
+  <span class="dropdown-entry"><input type="checkbox" id="ext-mode-checkbox" autocomplete="on"/><span id="ext-mode">extended mode</span></span>
   <span class="dropdown-entry"><input type="checkbox" id="combine-match-checkbox" autocomplete="off"/><span id="combine-match">combine matches</span></span>`;
   const dayMode = util.getElementById("day-mode-checkbox");
   dayMode.addEventListener("change",()=>{graph.invert(dayMode.checked);log.debug("Set dayMode to "+dayMode.checked);});
-  const devMode = util.getElementById("user-type-checkbox");
-  devMode.addEventListener("change",()=>{contextmenu(devMode.checked);log.debug("Set devMode to "+devMode.checked);});
+  const devMode = util.getElementById("dev-mode-checkbox");
+  const extMode = util.getElementById("ext-mode-checkbox");
+  devMode.addEventListener("change",()=>{contextmenu(devMode.checked,extMode.checked);log.debug("Set devMode to "+devMode.checked);});
+  extMode.addEventListener("change",()=>{contextmenu(devMode.checked,extMode.checked);log.debug("Set extMode to "+extMode.checked);});
   const cumuSearch = util.getElementById("cumulative-search-checkbox");
   cumuSearch.addEventListener("change",()=>{log.debug("Set cumulative search to "+cumuSearch.checked);});
   const combineMatchMode  = util.getElementById("combine-match-checkbox");

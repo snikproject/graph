@@ -14,7 +14,7 @@ export const defaultsNodes = {
   selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
   commands: [
     {
-      content: 'ticket',
+      content: 'edit/report',
       select: node=>
       {
         if(confirm(language.getString("ontology-issue-warning")))
@@ -46,13 +46,6 @@ export const defaultsNodes = {
       },
     },
     {
-      content: 'LodLive',
-      select: node=>
-      {
-        window.open('http://en.lodlive.it/?'+node.data(NODE.ID));
-      },
-    },
-    {
       content: 'description',
       select: node=>
       {
@@ -66,13 +59,7 @@ export const defaultsNodes = {
         graph.showStar(node,false);
       },
     },
-    {
-      content: 'directed star',
-      select: node=>
-      {
-        graph.showStar(node,false,true);
-      },
-    },
+
     {
       content: 'circle star',
       select: node=>
@@ -102,23 +89,17 @@ export const defaultsNodes = {
       },
     },
     {
-      content: 'doublestar',
+      content: 'find neighbours',
       select: node=>
       {
-        if(graph.getSource()&&graph.getSource()!==node)
-        {
-          graph.showDoubleStar(graph.getSource(), node);
-        }
+        window.open("under construction!", node);
       },
     },
     {
-      content: 'starpath',
+      content: 'combine close matches',
       select: node=>
       {
-        if(graph.getSource()&&graph.getSource()!==node)
-        {
-          graph.showPath(graph.getSource(), node,true);
-        }
+        window.open("under construction!", node);
       },
     },
   ],
@@ -132,7 +113,7 @@ export const defaultsNodes = {
 export const devNodes = {
   menuRadius: 220, // the radius of the circular menu in pixels
   selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
-  commands: defaultsNodes.commands.concat([
+  commands: [
     {
       content: 'remove permanently',
       select: node=>
@@ -174,7 +155,7 @@ export const devNodes = {
       },
     },
     {
-      content: 'edit',
+      content: 'Onto Wiki',
       select: node=>
       {
         window.open('https://www.snik.eu/ontowiki/view/?r='+node.data(NODE.ID)+"&m="+rdf.sub(node.data(NODE.ID)));
@@ -187,7 +168,53 @@ export const devNodes = {
         alert(JSON.stringify(node.data(),null,2));
       },
     },
-  ]),
+  ],
+  fillColor: 'rgba(200, 200, 200, 0.95)', // the background colour of the menu
+  activeFillColor: 'rgba(150, 0, 0, 1)', // the colour used to indicate the selected command
+  openMenuEvents: config.openMenuEvents, // cytoscape events that will open the menu (space separated)
+  itemColor: 'rgba(80,0,0)', // the colour of text in the command's content
+  itemTextShadowColor: 'gray', // the text shadow colour of the command's content
+  zIndex: 9999, // the z-index of the ui div
+};
+export const extNodes = {
+  menuRadius: 220, // the radius of the circular menu in pixels
+  selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
+  commands: [
+    {
+      content: 'doublestar',
+      select: node=>
+      {
+        if(graph.getSource()&&graph.getSource()!==node)
+        {
+          graph.showDoubleStar(graph.getSource(), node);
+        }
+      },
+    },
+    {
+      content: 'starpath',
+      select: node=>
+      {
+        if(graph.getSource()&&graph.getSource()!==node)
+        {
+          graph.showPath(graph.getSource(), node,true);
+        }
+      },
+    },
+    {
+      content: 'directed star',
+      select: node=>
+      {
+        graph.showStar(node,false,true);
+      },
+    },
+    {
+      content: 'LodLive',
+      select: node=>
+      {
+        window.open('http://en.lodlive.it/?'+node.data(NODE.ID));
+      },
+    },
+  ],
   fillColor: 'rgba(200, 200, 200, 0.95)', // the background colour of the menu
   activeFillColor: 'rgba(150, 0, 0, 1)', // the colour used to indicate the selected command
   openMenuEvents: config.openMenuEvents, // cytoscape events that will open the menu (space separated)

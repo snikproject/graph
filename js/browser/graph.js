@@ -333,7 +333,7 @@ function initGraph()
     });
   cy.panzoom(); // Google Maps like zoom UI element
   selectedNode = cy.collection();
-  contextmenu(util.getElementById("user-type-checkbox").checked);
+  contextmenu(util.getElementById("dev-mode-checkbox").checked,util.getElementById("ext-mode-checkbox").checked);
   /*
   cy.on('select', 'edge', function(event)
   {
