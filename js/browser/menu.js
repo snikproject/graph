@@ -61,6 +61,65 @@ function visualizationFeedback()
   window.open("https://github.com/IMISE/snik-cytoscape.js/issues/new?body="+encodeURIComponent(log.logs.reduce((a,b)=>a+"\n"+b)));
 }
 
+let parents = null;
+
+/** Sets whether close matches are grouped in compound nodes. */
+function combineMatch(enabled)
+{
+  if(!enabled)
+  {
+    if(parents)
+    {
+      parents.remove();
+      graph.cy.nodes().move({parent:null});
+    }
+    return;
+  }
+  parents = graph.cy.collection();
+  // Can be calculated only once per session but then it needs to be synchronized with in-visualization ontology edits.
+  const matchEdges = graph.cy.edges('[pl="closeMatch"]').filter('.unfiltered').not('.hidden');
+  const matchGraph = graph.cy.nodes('.unfiltered').not('.hidden').union(matchEdges);
+  //graph.hide(graph.cy.elements());
+  //graph.show(matchGraph);
+
+  const components = matchGraph.components();
+  for(let i=0; i < components.length; i++)
+  {
+    const comp = components[i];
+    if(comp.length===1) {continue;}
+    const id = 'parent'+i;
+    graph.cy.add({
+      group: 'nodes',
+      data: { id: id },
+      position: { x: 0, y: 0 },
+    });
+    const parent = graph.cy.getElementById(id);
+    parents.add(parent);
+    const nodes = comp.nodes();
+    for(let j=0; j < nodes.length ;j++)
+    {
+      nodes[j].move({parent:id});
+    }
+  }
+  //const closeMatchNodes = closeMatchEdges.connectedNodes();
+}
+
+/** Show all nodes that are connected via close matches to visible nodes. */
+function showCloseMatches()
+{
+  log.trace("show close matches start");
+  const visible = graph.cy.elements('.unfiltered').not('.hidden');
+  //const closeMatchEdges = graph.cy.edges('[pl="closeMatch"]');
+  const newEdges = visible.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
+  console.log(newEdges);
+  graph.show(newEdges);
+  graph.show(newEdges.connectedNodes(".unfiltered"));
+  log.trace("show close matches end");
+  //closeMatchEdges.connectedNodes();
+  //".unfiltered";
+}
+
+
 /**
 Creates and returns the menus for the top menu bar.
 The format is an array of menu elements.
@@ -108,6 +167,14 @@ function menuData()
       "entries": [], // filled by addOptions()
     },
     {
+      "label": "Operations",
+      "id":"operations",
+      "entries":
+          [
+            [showCloseMatches,"Show Close Matches","show-close-matches"],
+          ],
+    },
+    {
       "label": "Services",
       "id":"services",
       "entries":
@@ -153,13 +220,20 @@ function addOptions()
   `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span id="separate-subs">separate subontologies</span></span>
   <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span id="cumulative-search">cumulative search</span></span>
   <span class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="on"/><span id="day-mode">day mode</span></span>
-  <span class="dropdown-entry"><input type="checkbox" id="user-type-checkbox" autocomplete="on"/><span id="dev-mode">developer mode</span></span>`;
+  <span class="dropdown-entry"><input type="checkbox" id="user-type-checkbox" autocomplete="on"/><span id="developer version">developer version</span></span>
+  <span class="dropdown-entry"><input type="checkbox" id="combine-match-checkbox" autocomplete="off"/><span id="combine-match">combine matches</span></span>`;
   const dayMode = util.getElementById("day-mode-checkbox");
   dayMode.addEventListener("change",()=>{graph.invert(dayMode.checked);log.trace("Set dayMode to "+dayMode.checked);});
   const devMode = util.getElementById("user-type-checkbox");
   devMode.addEventListener("change",()=>{contextmenu(devMode.checked);log.trace("Set devMode to "+devMode.checked);});
   const cumuSearch = util.getElementById("cumulative-search-checkbox");
   cumuSearch.addEventListener("change",()=>{log.trace("Set cumulative search to "+cumuSearch.checked);});
+  const combineMatchMode  = util.getElementById("combine-match-checkbox");
+  combineMatchMode.addEventListener("change",()=>
+  {
+    combineMatch(combineMatchMode.checked);
+    log.trace("Set combine match mode to "+combineMatchMode.checked);
+  });
 }
 
 /** @returns whether cumulative search is activated. */

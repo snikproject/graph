@@ -237,6 +237,9 @@ export const eulerTight =
   name: "euler",
   springLength: 40,
   animate: false,
+  maxSimulationTime: 40000,
+  maxIterations: 500,
+  timeStep: 80,
   refresh: 50,
   randomize: false,
   movementThreshold: 1,
@@ -260,3 +263,15 @@ export function eulerVariable(len)
   };
   return layout;
 }
+
+/** Layout for compound graphs */
+export const cose =
+{
+  name: "cose",
+  animate: true,
+  refresh: 50,
+  numIter: 500,
+  initialTemp: 1000,
+  nestingFactor: 1.01,
+  randomize: false,
+};

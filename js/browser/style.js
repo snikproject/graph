@@ -168,6 +168,14 @@ const style =
         'visibility': 'hidden',
       },
     },
+    {
+      'selector': '$node > node', // compound nodes
+      'css': {
+        'background-color': '#ff0000',
+        'shape': 'rectangle',
+      },
+    },
+
   ],
 };
 export {style};
