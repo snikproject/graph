@@ -5,15 +5,15 @@ import * as graph from "./graph.js";
 import * as rdf from "../rdf.js";
 import * as EDGE from "../edge.js";
 import * as language from "../lang/language.js";
-import config from "../config.js";
+import {logWrap,menuDefaults} from "./contextmenu.js";
 
 /** Creates a human readable string of the triple an edge represents. */
 function edgeLabel(edge) {return rdf.short(edge.data(EDGE.SOURCE)) +" "+ rdf.short(edge.data(EDGE.PROPERTY)) +" "+ rdf.short(edge.data(EDGE.TARGET));}
 
-//collection of common edge commands to use in defaultsRelations and defaultsLimesRelations
-const edgeCommands = [
+//collection of common edge commands to use in baseMenu and defaultsLimesRelations
+const baseCommands = [
   {
-    content: 'report as incorrect',
+    content: 'edit / report',
     select: function(edge)
     {
       //window.open("https://bitbucket.org/imise/snik-ontology/issues/new?title="+
@@ -27,14 +27,8 @@ const edgeCommands = [
   },
   {
     content: 'remove',
-    select: function(edge)
-    {
-      graph.cy.remove(edge);
-    },
+    select: graph.cy.remove,
   },
-];
-//collection of expert edge commands to use in devRelations and devLimesRelations
-const devEdgeCommands = [
   {
     content: 'description (if it exists)',
     select: node=>
@@ -43,6 +37,9 @@ const devEdgeCommands = [
       else {alert("There is no description for this edge.");}
     },
   },
+];
+//collection of expert edge commands to use in devMenu and baseLimesMenu
+const devCommands = [
   {
     content: 'remove permanently',
     select: function(edge)
@@ -69,7 +66,8 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
     },
   },
   {
-    content: 'edit',
+    // Open the source class of the triple in OntoWiki because you can edit the triple there.
+    content: 'OntoWiki',
     select: function(edge)
     {
       window.open('https://www.snik.eu/ontowiki/view/?r='+edge.data(EDGE.SOURCE)+"&m="+rdf.sub(edge.data(EDGE.SOURCE)));
@@ -84,42 +82,14 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
   },
 ];
 
-export const defaultsRelations = {
-  menuRadius: 100, // the radius of the circular menu in pixels
-  selector: `edge[${EDGE.GRAPH} != "http://www.snik.eu/ontology/limes-exact"]`, // elements matching this Cytoscape.js selector will trigger cxtmenus
-  commands: edgeCommands,
-
-  fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
-  activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
-  openMenuEvents: config.openMenuEvents, // cytoscape events that will open the menu (space separated)
-  itemColor: 'white', // the colour of text in the command's content
-  itemTextShadowColor: 'gray', // the text shadow colour of the command's content
-  zIndex: 9999, // the z-index of the ui div
-};
-
-export const devRelations = {
-  menuRadius: 150, // the radius of the circular menu in pixels
-  selector: `edge[${EDGE.GRAPH} != "http://www.snik.eu/ontology/limes-exact"]`, // elements matching this Cytoscape.js selector will trigger cxtmenus
-  commands: devEdgeCommands.concat(edgeCommands),
-
-  fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
-  activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
-  openMenuEvents: config.openMenuEvents, // cytoscape events that will open the menu (space separated)
-  itemColor: 'white', // the colour of text in the command's content
-  itemTextShadowColor: 'gray', // the text shadow colour of the command's content
-  zIndex: 9999, // the z-index of the ui div
-};
-
-export const devLimesRelations = {
-  menuRadius: 150, // the radius of the circular menu in pixels
-  selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`, // elements matching this Cytoscape.js selector will trigger cxtmenus
-  commands: devRelations.commands.concat([
+const limesCommands =
+[
+  {
+    content: 'confirm limes link',
+    select: function(edge)
     {
-      content: 'confirm limes link',
-      select: function(edge)
-      {
-        edge.data(EDGE.GRAPH,"http://www.snik.eu/ontology/match");
-        const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
+      edge.data(EDGE.GRAPH,"http://www.snik.eu/ontology/match");
+      const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
 \`\`\`
 sparql
 DELETE DATA FROM <http://www.snik.eu/ontology/limes-exact>
@@ -137,19 +107,49 @@ INSERT DATA INTO <http://www.snik.eu/ontology/limes-exact>
 \`\`\`
 ${language.CONSTANTS.SPARUL_WARNING}`;
 
-        window.open
-        (
-          'https://github.com/IMISE/snik-ontology/issues/new?title='+
-            encodeURIComponent(edgeLabel(edge))+'&body='+encodeURIComponent(body)
-        );
-      },
+      window.open
+      (
+        'https://github.com/IMISE/snik-ontology/issues/new?title='+
+          encodeURIComponent(edgeLabel(edge))+'&body='+encodeURIComponent(body)
+      );
     },
-  ]),
+  },
+];
 
-  fillColor: 'rgba(255, 255, 50, 0.35)', // the background colour of the menu
-  activeFillColor: 'rgba(255, 255, 80, 0.35)', // the colour used to indicate the selected command
-  openMenuEvents: config.openMenuEvents, // cytoscape events that will open the menu (space separated)
-  itemColor: 'white', // the colour of text in the command's content
-  itemTextShadowColor: 'gray', // the text shadow colour of the command's content
-  zIndex: 9999, // the z-index of the ui div
-};
+const baseMenu = Object.assign(menuDefaults(),
+  {
+    menuRadius: 100, // the radius of the circular menu in pixels
+    selector: `edge[${EDGE.GRAPH} != "http://www.snik.eu/ontology/limes-exact"]`, // elements matching this Cytoscape.js selector will trigger cxtmenus
+    commands: baseCommands,
+  });
+
+const baseLimesMenu = Object.assign(menuDefaults(),
+  {
+    menuRadius: 150,
+    selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`,
+    commands: baseCommands.concat(limesCommands),
+  });
+
+const devMenu = Object.assign(menuDefaults(),
+  {
+    menuRadius: 150,
+    selector: `edge[${EDGE.GRAPH} != "http://www.snik.eu/ontology/limes-exact"]`,
+    commands: baseCommands.concat(devCommands),
+  });
+
+const devLimesMenu = Object.assign(menuDefaults(),
+  {
+    menuRadius: 150,
+    selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`,
+    commands: baseCommands.concat(devCommands,limesCommands),
+  });
+
+/** Register modular edge context menu. */
+export default function edgeMenus(dev)
+{
+  if(dev) {return [devMenu,devLimesMenu];}
+  return [baseMenu,baseLimesMenu];
+}
+
+[...baseCommands,...limesCommands,...devCommands].forEach((cmd)=>
+  logWrap(cmd,(edge)=>`edge with property ${edge.data(EDGE.PROPERTY)} between ${edge.data(EDGE.SOURCE)} ${edge.data(EDGE.TARGET)}`));

@@ -1,3 +1,7 @@
+/**
+Various utility methods.s
+@module */
+
 /** getElementById with exception handling. */
 export function getElementById(id)
 {

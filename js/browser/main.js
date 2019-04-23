@@ -13,6 +13,7 @@ import * as layout from "../layout.js";
 import progress from "./progress.js";
 import config from "../config.js";
 import * as util from "./util.js";
+import {registerContextMenu} from "./contextmenu.js";
 
 /** Entry point. Is run when DOM is loaded. **/
 function main()
@@ -37,6 +38,7 @@ function main()
     menu.addMenu();
     log.debug('Menu added');
     graph.initGraph();
+    registerContextMenu(util.getElementById("dev-mode-checkbox").checked,util.getElementById("ext-mode-checkbox").checked);
 
     window.addEventListener('keydown', e=>
     {
