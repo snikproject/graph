@@ -24,6 +24,10 @@ export default
     "cumulative-search": "Kumulative Suche",
     "day-mode": "Tag-Modus",
     "dev-mode": "Entwickler-Modus",
+    "combine-match": "Übereinstimmungen zusammenfassen",
+    // operations ****************************************
+    "operations": "Operationen",
+    "show-close-matches": "zeige close matches",    
     // services ******************************************
     "services": "Services",
     "sparql-endpoint": "SPARQL Endpunkt",
