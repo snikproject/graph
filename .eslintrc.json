@@ -17,9 +17,7 @@
 	"globals":
 	{
 		"cytoscape": false,
-		"dhtmlx": true,
 		"Spinner": true,
-		"config": true,
 		"log": true,
 		"Fuse": true
 	},
