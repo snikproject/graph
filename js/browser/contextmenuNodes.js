@@ -7,6 +7,7 @@ import * as graph from "./graph.js";
 import * as rdf from "../rdf.js";
 import * as NODE from "../node.js";
 import * as sparql from "../sparql.js";
+import * as util from "./util.js";
 import {logWrap,menuDefaults} from "./contextmenu.js";
 
 const menu = Object.assign(menuDefaults(),
@@ -25,11 +26,8 @@ const baseCommands =
     {
       if(confirm(language.getString("ontology-issue-warning")))
       {
-        const url = 'https://github.com/IMISE/snik-ontology/issues/new?title='+
-          encodeURIComponent(node.data(NODE.ID))+
-          '&body='+encodeURIComponent('The class '+node.data(NODE.ID)+
-          ' has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n');
-        window.open(url);
+        const body = `The class ${node.data(NODE.ID)} has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n`;
+        util.createGitHubIssue(util.REPO_ONTOLOGY,node.data(NODE.ID),body);
       }
     },
   },

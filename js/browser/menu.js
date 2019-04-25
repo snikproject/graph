@@ -58,7 +58,7 @@ function about() {window.alert("SNIK Graph version "+"[AIV]{version} {date}[/AIV
 /** Creates a GitHub issue for the visualization. */
 function visualizationFeedback()
 {
-  window.open("https://github.com/IMISE/snik-cytoscape.js/issues/new?body="+encodeURIComponent(log.logs.reduce((a,b)=>a+"\n"+b)));
+  util.createGitHubIssue(util.REPO_APPLICATION,"",log.logs.reduce((a,b)=>a+"\n"+b));
 }
 
 let parents = null;
