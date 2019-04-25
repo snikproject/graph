@@ -1,0 +1,14 @@
+{
+ "compilerOptions":
+ {
+  "allowJs": true,
+  "checkJs": true,
+  "outDir": "tsout",
+  "lib": ["esnext","dom"],
+  "module": "ESNext",
+  "noImplicitAny": false,
+  "strict": true
+ },
+"include": ["js/**/*","globals.d.ts"]
+}
+
