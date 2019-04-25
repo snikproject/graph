@@ -2,7 +2,7 @@
 Imprecise, just to cover the majority of cases.
 */
 
-navigator.sayswho= (function()
+const sayswho= (function()
 {
   const ua= navigator.userAgent;
   let tem,
@@ -28,11 +28,11 @@ Only an approximation: Using some browser name and versions, may fail to warn or
 function browserCheckTranspiled()
 {
   if (
-    (navigator.sayswho.name === 'Firefox' && navigator.sayswho.version < 50) ||
-  (navigator.sayswho.name === 'Internet Explorer') ||
-  (navigator.sayswho.name === 'Chrome' && navigator.sayswho.version < 54)
+    (sayswho.name === 'Firefox' && sayswho.version < 50) ||
+  (sayswho.name === 'Internet Explorer') ||
+  (sayswho.name === 'Chrome' && sayswho.version < 54)
   )
-  {alert(`Your browser ${navigator.sayswho.name} version ${navigator.sayswho.version} may be outdated. Graph may not work properly.`);}
+  {alert(`Your browser ${sayswho.name} version ${sayswho.version} may be outdated. Graph may not work properly.`);}
   log.warn("Browser outdated. Graph may not work properly.");
 }
 
@@ -42,12 +42,12 @@ Only an approximation: Using some browser name and versions, may fail to warn or
 function browserCheckNonTranspiled()
 {
   if (
-    (navigator.sayswho.name === 'Firefox' && navigator.sayswho.version < 60) ||
-  (navigator.sayswho.name === 'Internet Explorer') ||
-  (navigator.sayswho.name === 'Chrome' && navigator.sayswho.version < 61)
+    (sayswho.name === 'Firefox' && sayswho.version < 60) ||
+  (sayswho.name === 'Internet Explorer') ||
+  (sayswho.name === 'Chrome' && sayswho.version < 61)
   )
   {
-    const warning = `Your browser ${navigator.sayswho.name} version ${navigator.sayswho.version} may be outdated for the development build. Graph may not work properly. Try using the transpiled production build.`;
+    const warning = `Your browser ${sayswho.name} version ${sayswho.version} may be outdated for the development build. Graph may not work properly. Try using the transpiled production build.`;
     alert(warning);
     log.warn("Browser outdated for the development build. Graph may not work properly. Try using the transpiled production build");
   }

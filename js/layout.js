@@ -19,7 +19,7 @@ let activeLayout = undefined;
 function storageName(layoutName,subs,separateSubs) {return "layout"+layoutName+subs.sort().toString().replace(/[^a-z]/g,"")+(!!separateSubs);}
 
 /** Returns an array containing the positions of the given nodes
-@param {cy.collection} nodes the nodes whose positions are returned
+@param {cytoscape.NodeCollection} nodes the nodes whose positions are returned
 @returns an array containing the positions of the given nodes
 @example
 // returns [["http://www.snik.eu...",{"x":0,"y":0}],...]
@@ -37,7 +37,7 @@ export function positions(nodes)
 }
 
 /** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it (use {@link module:layout.runCached} for that).
-@param {cy.cytoscape} cy the Cytoscape.js graph to run the layout on
+@param {cytoscape.Core} cy the Cytoscape.js graph to run the layout on
 @param {json} layoutConfig the layout configuration, which includes the layout name and options
 @param {array} subs Set of subontologies. If the subs are not given the layout still works but it is not saved.
 @param {boolean} separateSubs Whether to separate the graph based on the subontologies.
@@ -109,7 +109,7 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
 
 /** Applies a preset layout matching the node id's to the first element of each subarray in pos. Nodes without matching entry
 in pos are set to position {x:0,y:0}, positions without matching node id are ignored.
-@param {cytoscape} cy the Cytoscape.js graph to apply the positions on, node id's need to match those in the given positions
+@param {cytoscape.Core} cy the Cytoscape.js graph to apply the positions on, node id's need to match those in the given positions
 @param {array} pos an array of arrays, each of which contains the positions for a node id
 @returns whether the layout could be successfully applied
 @example

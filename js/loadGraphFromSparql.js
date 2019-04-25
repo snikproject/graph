@@ -5,7 +5,8 @@ import * as sparql from "./sparql.js";
 import config from "./config.js";
 import timer from "./timer.js";
 
-/** https://github.com/binded/empty-promise/blob/master/src/index.js, is there a shorter or build in option?*/
+/** https://github.com/binded/empty-promise/blob/master/src/index.js, is there a shorter or build in option?
+*/
 function emptyPromise()
 {
   let callbacks;
@@ -15,7 +16,6 @@ function emptyPromise()
   {
     callbacks = { resolve, reject };
   });
-
   p.done = () => done;
   p.resolve = (val) =>
   {

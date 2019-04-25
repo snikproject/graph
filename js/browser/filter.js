@@ -37,7 +37,7 @@ class Filter
 {
   /**
   Creates filter with HTML elements, filter functionality and listeners.
-  @param {cytoscape} cy the cytoscape graph
+  @param {cytoscape.Core} cy the cytoscape graph
   @param {string} selector a Cytoscape.js selector, see {@link http://js.cytoscape.org/#selectors}
   @param {string} label the menu entry label
   */
@@ -108,8 +108,8 @@ class Filter
 
 /**
 Add filter entries to the filter menu.
-@param {cytoscape} cy the cytoscape graph
-@param {Element} parent the parent element to attach the entries to
+@param {cytoscape.Core} cy the cytoscape graph
+@param {HTMLElement} parent the parent element to attach the entries to
 */
 function addFilterEntries(cy, parent)
 {

@@ -29,7 +29,7 @@ function getStarMode() {return starMode;}
 
 /** Hides elements using visibility: hidden.
 Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
-@param {eles} eles the nodes to hide
+@param {cytoscape.Collection} eles the elements to hide
 */
 function hide(eles)
 {
@@ -81,8 +81,8 @@ function resetStyle()
 
 /** Highlight all nodes and edges on a shortest path between "from" and "to".
 Hide all other nodes except when in star mode.
-@param {node} from path start node
-@param {node} to path target node
+@param {cytoscape.NodeSingular} from path start node
+@param {cytoscape.NodeSingular} to path target node
 @param {Boolean} starpath whether to show the star around all nodes on the path
 @returns whether a path could be found
 */
@@ -126,7 +126,7 @@ function showPath(from, to,starPath)
 
 /** Highlight the give node and all its directly connected nodes (in both directions).
 Hide all other nodes except when in star mode.
-@param {node} node center of the star
+@param {cytoscape.NodeSingular} node center of the star
 @param {Boolean} changeLayout arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
 @param {Boolean} directed only show edges that originate from node, not those that end in it. Optional and defaults to false.
 */
@@ -195,8 +195,8 @@ function showStar(node, changeLayout, directed)
 
 /** Show a "spider worm" between two nodes, which combines a star around "from" with a shortest path to "to".
 Hide all other nodes except when in star mode.
-@param {node} from path start node
-@param {node} to path target node, gets a "star" around it as well
+@param {cytoscape.NodeSingular} from path start node
+@param {cytoscape.NodeSingular} to path target node, gets a "star" around it as well
 @returns whether a path could be found
 */
 function showWorm(from, to)
@@ -211,8 +211,8 @@ function showWorm(from, to)
 
 /** Highlight the given two nodes, directly connected nodes (in both directions) of both of them and a shortest path between the two.
 Hide all other nodes except when in star mode.
-@param {node} from path start node
-@param {node} to path target node
+@param {cytoscape.NodeSingular} from path start node
+@param {cytoscape.NodeSingular} to path target node
 @returns whether a path could be found
 */
 function showDoubleStar(from, to)
@@ -236,7 +236,7 @@ function getSource()
 }
 
 /** Set the given node as source for all path operations.
-@param {node} node the new source
+@param {cytoscape.NodeSingular} node the new source
 @returns whether node is not null
 */
 function setSource(node)
@@ -264,7 +264,7 @@ function setSource(node)
 }
 
 /** Set the given node as target for all path operations.
-@param {node} node the new source
+@param {cytoscape.NodeSingular} node the new source
 @returns whether node is not null
 */
 function setTarget(node)
@@ -348,7 +348,7 @@ function initGraph()
 }
 
 /** Selects a node.
-@param {node} node the node to select
+@param {cytoscape.NodeSingular} node the node to select
 */
 function setSelectedNode(node) {selectedNode=node;}
 

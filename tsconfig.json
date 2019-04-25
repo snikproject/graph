@@ -5,10 +5,12 @@
   "checkJs": true,
   "outDir": "tsout",
   "lib": ["esnext","dom"],
+  "allowSyntheticDefaultImports": true,
+  "typeRoots": [ "./node_modules/@types" ],
   "module": "ESNext",
+  "esModuleInterop": true,
   "noImplicitAny": false,
   "strict": true
  },
-"include": ["js/**/*","globals.d.ts"]
+"include": ["js/**/*","globals.d.ts","test.ts"]
 }
-
