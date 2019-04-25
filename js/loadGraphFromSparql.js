@@ -5,17 +5,6 @@ import * as sparql from "./sparql.js";
 import config from "./config.js";
 import timer from "./timer.js";
 
-String.prototype.hashCode = function()
-{
-  let hash = 0, i = 0;
-  const len = this.length;
-  while (i < len)
-  {
-    hash  = ((hash << 5) - hash + this.charCodeAt(i++)) << 0;
-  }
-  return hash;
-};
-
 /** https://github.com/binded/empty-promise/blob/master/src/index.js, is there a shorter or build in option?*/
 function emptyPromise()
 {
