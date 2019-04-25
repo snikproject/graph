@@ -27,7 +27,7 @@ const baseCommands = [
   },
   {
     content: 'remove',
-    select: graph.cy.remove,
+    select: (edge)=>graph.cy.remove(edge),
   },
   {
     content: 'description (if it exists)',
