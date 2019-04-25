@@ -2,7 +2,7 @@
 Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.
 @module */
 import * as sparql from "./sparql.js";
-import * as rdfGraph from "./rdfGraph.js";
+import config from "./config.js";
 import timer from "./timer.js";
 
 String.prototype.hashCode = function()
@@ -48,14 +48,14 @@ function emptyPromise()
 // function expand(short) {return short.replace("s:","http://www.snik.eu/ontology/");}
 
 /** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
-@param{cytoscape} cy the cytoscape graph to load the data into
+@param{cy} cy the cytoscape graph to load the data into
 @param{Set} subs Set of subontologies to load.
 @example
 loadGraphFromSparql(cy,new Set(["meta","bb"]))
 */
 export default function loadGraphFromSparql(cy,subs)
 {
-  const rdfGraphs = [...(new Set([...rdfGraph.helper(),...subs]))];
+  const rdfGraphs = [config.helperGraphs,...subs];
   const froms = rdfGraphs.map(sub=>`FROM <http://www.snik.eu/ontology/${sub}>`).reduce((a,b)=>a+"\n"+b);
   const fromNamed = froms.replace(/FROM/g,"FROM NAMED");
   cy.elements().remove();

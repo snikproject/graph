@@ -11,12 +11,12 @@ let activeLayout = undefined;
 
 /**
 @param {string} layoutName Cytoscape.js layout name
-@param {Set} subs the subontology identifiers included in the graph. Used to retrieve the correct layout later.
+@param {array} subs the subontology identifiers included in the graph. Used to retrieve the correct layout later.
 @param {boolean} separateSubs Whether to separate the graph based on the subontologies.
 @returns the storage name coded by the layout and the subontologies
 @example storageName("euler",new Set(["meta","ob","bb"]));
 */
-function storageName(layoutName,subs,separateSubs) {return "layout"+layoutName+[...subs].sort().toString().replace(/[^a-z]/g,"")+(!!separateSubs);}
+function storageName(layoutName,subs,separateSubs) {return "layout"+layoutName+subs.sort().toString().replace(/[^a-z]/g,"")+(!!separateSubs);}
 
 /** Returns an array containing the positions of the given nodes
 @param {cy.collection} nodes the nodes whose positions are returned
@@ -39,7 +39,7 @@ export function positions(nodes)
 /** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it (use {@link module:layout.runCached} for that).
 @param {cy.cytoscape} cy the Cytoscape.js graph to run the layout on
 @param {json} layoutConfig the layout configuration, which includes the layout name and options
-@param {Set} subs Set of subontologies. If the subs are not given the layout still works but it is not saved.
+@param {array} subs Set of subontologies. If the subs are not given the layout still works but it is not saved.
 @param {boolean} separateSubs Whether to separate the graph based on the subontologies.
 @param {boolean} save Whether to save the layout on local storage.
 @returns whether the layout could successfully be applied. Does not indicate success of saving to cache.

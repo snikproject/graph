@@ -8,7 +8,6 @@ import * as search from "./search.js";
 import addButtons from "./button.js";
 import * as graph from "./graph.js";
 import * as file from "./file.js";
-import * as rdfGraph from "../rdfGraph.js";
 import * as layout from "../layout.js";
 import progress from "./progress.js";
 import config from "../config.js";
@@ -66,7 +65,7 @@ function main()
     {
       await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));
       graph.cy.elements().addClass("unfiltered");
-      layout.runCached(graph.cy,layout.euler,rdfGraph.subs(),menu.separateSubs());
+      layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,menu.separateSubs());
     }
     catch(e)
     {

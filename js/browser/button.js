@@ -2,7 +2,7 @@
 @module */
 import * as graph from "./graph.js";
 import * as layout from "../layout.js";
-import * as rdfGraph from "../rdfGraph.js";
+import config from "../config.js";
 import * as language from "../lang/language.js";
 import * as util from "./util.js";
 import * as menu from "./menu.js";
@@ -12,22 +12,22 @@ const buttonConfigs =
   [
     language.getString("recalculate-layout"),"recalculate-layout", ()=>
     {
-      layout.run(graph.cy,layout.euler,rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),true);
+      layout.run(graph.cy,layout.euler,config.defaultSubOntologies,menu.separateSubs()&&!graph.getStarMode(),true);
     }],
   [
     "Tight Layout","recalculate-layout", ()=>
     {
-      layout.run(graph.cy,layout.eulerTight,rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),false);
+      layout.run(graph.cy,layout.eulerTight,config.defaultSubOntologies,menu.separateSubs()&&!graph.getStarMode(),false);
     }],
   [
     "Custom Layout","recalculate-layout", ()=>
     {
-      layout.run(graph.cy,layout.eulerVariable(util.getElementById("layout-range").value),rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),false);
+      layout.run(graph.cy,layout.eulerVariable(util.getElementById("layout-range").value),config.defaultSubOntologies,menu.separateSubs()&&!graph.getStarMode(),false);
     }],
   [
     "Compound Layout","recalculate-layout", ()=>
     {
-      layout.run(graph.cy,layout.cose,rdfGraph.subs(),menu.separateSubs()&&!graph.getStarMode(),false);
+      layout.run(graph.cy,layout.cose,config.defaultSubOntologies,menu.separateSubs()&&!graph.getStarMode(),false);
     }],
 
   [language.getString("reset-view"),"reset-view", graph.resetStyle],

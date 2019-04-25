@@ -4,7 +4,6 @@ Populates the menu bar on the top and initializes the context menu.
 import * as download from "./download.js";
 import * as graph from "./graph.js";
 import * as layout from "../layout.js";
-import * as rdfGraph from "../rdfGraph.js";
 import * as NODE from "../node.js";
 import loadGraphFromSparql from "../loadGraphFromSparql.js";
 import * as language from "../lang/language.js";
@@ -140,7 +139,7 @@ function menuData()
         [async ()=>
         {
           await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));
-          progress(()=>layout.runCached(graph.cy,layout.euler,rdfGraph.subs(),separateSubs()));
+          progress(()=>layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,separateSubs()));
         },
         "Load from SPARQL Endpoint","load-sparql"],
         [download.downloadGraph,"Save Full Graph with Layout as Cytoscape File","save-cytoscape-full"],
@@ -148,7 +147,7 @@ function menuData()
         [download.downloadLayout,"Save Layout only","save-layout"],
         [()=>
         {
-          progress(()=>layout.run(graph.cy,layout.euler,rdfGraph.subs(),separateSubs(),true));
+          progress(()=>layout.run(graph.cy,layout.euler,config.defaultSubOntologies,separateSubs(),true));
         },"Recalculate Layout and Replace in Browser Cache","recalculate-layout-replace"],
         [()=>download.downloadPng(false,false),"Save Image of Current View","save-image-current-view"],
         [()=>download.downloadPng(true,false),"Save Image of Whole Graph","save-image-whole-graph"],
