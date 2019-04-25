@@ -23,6 +23,7 @@
     "@babel/preset-env": "^7.4.3",
     "@babel/register": "^7.4.0",
     "@types/cytoscape": "^3.4.1",
+    "@types/loglevel": "^1.5.4",
     "babel-loader": "^8.0.5",
     "chai": "^4.2.0",
     "docdash": "^1.1.0",
