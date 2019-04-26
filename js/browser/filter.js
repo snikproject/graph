@@ -50,7 +50,7 @@ class Filter
     input.type="checkbox";
     input.classList.add("filterbox");
     input.autocomplete="off";
-    input.checked="true";
+    input.checked=true;
     this.label=label;
     this.a = document.createElement("a");
     this.a.classList.add("dropdown-entry");

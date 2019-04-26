@@ -81,12 +81,13 @@ function resetStyle()
 
 /** Highlight all nodes and edges on a shortest path between "from" and "to".
 Hide all other nodes except when in star mode.
+
 @param {cytoscape.NodeSingular} from path start node
 @param {cytoscape.NodeSingular} to path target node
-@param {Boolean} starpath whether to show the star around all nodes on the path
+@param {Boolean} [starPath] whether to show the star around all nodes on the path
 @returns whether a path could be found
 */
-function showPath(from, to,starPath)
+function showPath(from, to, starPath)
 {
   const elements = cy.elements(".unfiltered");
 
@@ -127,8 +128,8 @@ function showPath(from, to,starPath)
 /** Highlight the give node and all its directly connected nodes (in both directions).
 Hide all other nodes except when in star mode.
 @param {cytoscape.NodeSingular} node center of the star
-@param {Boolean} changeLayout arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
-@param {Boolean} directed only show edges that originate from node, not those that end in it. Optional and defaults to false.
+@param {Boolean} [changeLayout=false] arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
+@param {Boolean} [directed=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.
 */
 function showStar(node, changeLayout, directed)
 {

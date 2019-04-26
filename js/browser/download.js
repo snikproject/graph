@@ -12,7 +12,7 @@ let a = null; // reused for all downloading, not visible to the user
 Create a JSON file out of a JSON data string and lets the user download it.
 Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
 @param {string} data a JSON string
-@param {string} filename the name of the downloaded file
+@param {string} fileName the name of the downloaded file
 */
 export function downloadJson(data,fileName)
 {
@@ -36,7 +36,7 @@ export function downloadJson(data,fileName)
 Lets the user download a file.
 Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
 @param {string} url a URL that resolves to a file
-@param {string} filename the name of the downloaded file
+@param {string} fileName the name of the downloaded file
 */
 export function downloadUrl(url, fileName)
 {
