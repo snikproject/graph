@@ -203,7 +203,7 @@ export async function search(userQuery)
 }
 
 /**Search the class labels and display the result to the user.
-* @return {false} false to prevent page reload triggered by submit.*/
+* @return {Promise<false>} false to prevent page reload triggered by submit.*/
 async function showSearch(userQuery)
 {
   util.getElementById("overlay").style.display= "block";
@@ -221,6 +221,7 @@ export function addSearch()
   {
     event.preventDefault();
     hideSearchResults();
+    // @ts-ignore
     showSearch(event.target.children.query.value);
   });
 }

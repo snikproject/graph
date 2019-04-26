@@ -6,6 +6,7 @@ import config from "./config.js";
 import timer from "./timer.js";
 
 /** https://github.com/binded/empty-promise/blob/master/src/index.js, is there a shorter or build in option?
+@returns {object} an empty promise that can be resolved or rejected from the outside.
 */
 function emptyPromise()
 {
@@ -16,13 +17,16 @@ function emptyPromise()
   {
     callbacks = { resolve, reject };
   });
+  // @ts-ignore
   p.done = () => done;
+  // @ts-ignore
   p.resolve = (val) =>
   {
     callbacks.resolve(val);
     done = true;
     return p;
   };
+  // @ts-ignore
   p.reject = (val) =>
   {
     callbacks.reject(val);
@@ -106,6 +110,7 @@ export default function loadGraphFromSparql(cy,subs)
   classPromise.then((json)=>
   {
     sparqlClassesTimer.stop(json.length+" classes");
+    /** @type{cytoscape.ElementDefinition[]} */
     const nodes = [];
     for(let i=0;i<json.length;i++)
     {

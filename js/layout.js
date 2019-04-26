@@ -12,7 +12,7 @@ let activeLayout = undefined;
 /**
 @param {string} layoutName Cytoscape.js layout name
 @param {array} subs the subontology identifiers included in the graph. Used to retrieve the correct layout later.
-@param {boolean} separateSubs Whether to separate the graph based on the subontologies.
+@param {boolean} [separateSubs=false] Whether to separate the graph based on the subontologies.
 @returns the storage name coded by the layout and the subontologies
 @example storageName("euler",new Set(["meta","ob","bb"]));
 */
@@ -39,9 +39,9 @@ export function positions(nodes)
 /** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it (use {@link module:layout.runCached} for that).
 @param {cytoscape.Core} cy the Cytoscape.js graph to run the layout on
 @param {object} layoutConfig the layout configuration, which includes the layout name and options
-@param {array} subs Set of subontologies. If the subs are not given the layout still works but it is not saved.
-@param {boolean} separateSubs Whether to separate the graph based on the subontologies.
-@param {boolean} save Whether to save the layout on local storage.
+@param {array} [subs] Set of subontologies. If the subs are not given the layout still works but it is not saved.
+@param {boolean} [separateSubs=false] Whether to separate the graph based on the subontologies.
+@param {boolean} [save=false] Whether to save the layout on local storage.
 @returns whether the layout could successfully be applied. Does not indicate success of saving to cache.
 @example
 run(cy,{"name":"grid"},new Set(["meta","ciox"]))
@@ -56,12 +56,14 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
   const layoutTimer = timer("layout");
   if(subs&&separateSubs)
   {
+    /** @type{cytoscape.ElementDefinition[]} */
     const virtualNodes = [];
     for(const sub of subs)
     {
       virtualNodes.push({group: "nodes", data: { id: sub, mass: 400, type: "virtual"}});
     }
     cy.add(virtualNodes);
+    /** @type{cytoscape.ElementDefinition[]} */
     const virtualEdges = [];
 
     const nodes = cy.nodes();
@@ -164,9 +166,9 @@ export function presetLayout(cy,pos)
 /** Cached version of {@link module:layout.run}.
 @param {cytoscape.Core} cy the Cytoscape.js graph to run the layout on
 @param {object} layoutConfig the layout configuration, which includes the layout name and options
-@param {Set} subs Set of subontologies. If the subs are not given the layout still works but it is not cached.
-@param {boolean} separateSubs Whether to separate the graph based on the subontologies.
-@returns whether the layout could successfully be applied. Does not indicate success of loading from cache,
+@param {string[]} subs Set of subontologies. If the subs are not given the layout still works but it is not cached.
+@param {boolean} [separateSubs=false] Whether to separate the graph based on the subontologies.
+@returns {boolean} whether the layout could successfully be applied. Does not indicate success of loading from cache,
 in which case it is calculated anew.
 */
 export function runCached(cy,layoutConfig,subs,separateSubs)
@@ -174,8 +176,7 @@ export function runCached(cy,layoutConfig,subs,separateSubs)
   if(typeof(localStorage)=== "undefined")
   {
     log.error("Web storage not available, could not access browser-based cache.");
-    run(layoutConfig,subs,separateSubs,false);
-    return;
+    return run(cy,layoutConfig,subs,separateSubs,false);
   }
   const name = storageName(layoutConfig.name,subs,separateSubs);
   // web storage
