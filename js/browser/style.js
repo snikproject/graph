@@ -6,6 +6,7 @@ Cytoscape style file, excluding color information, which is contained in the col
 import * as NODE from "../node.js";
 import * as EDGE from "../edge.js";
 import * as language from "../lang/language.js";
+/** @type{object} */
 const style =
 {
   'format_version': '1.0',

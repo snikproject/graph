@@ -60,7 +60,7 @@ export function ask(query,graphOpt)
 
 /** Query the public SNIK SPARQL endpoint with a describe query, which describes a single resource.
 @param {string} uri A resource URI
-@param {string} graphOpt An optional SPARQL graph.
+@param {string} [graphOpt] An optional SPARQL graph.
 @return {Promise<string|void>} A promise of the SPARQL describe result as text.
 */
 export function describe(uri,graphOpt)

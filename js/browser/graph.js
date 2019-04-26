@@ -39,7 +39,7 @@ function hide(eles)
 
 /** Show (unhide) the given elements.
 Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
-@param {cy.collection} eles the elements to show
+@param {cytoscape.Collection} eles the elements to show
 */
 function show(eles)
 {
@@ -47,7 +47,7 @@ function show(eles)
 }
 
 /** Highlight the given elements using the 'highlighted' css class from the color scheme stylesheet and show them.
-@param {cy.collection} eles the elements to highlight
+@param {cytoscape.Collection} eles the elements to highlight
 */
 function highlight(eles)
 {
@@ -56,7 +56,7 @@ function highlight(eles)
 }
 
 /**
-@param {cy.collection} eles the elements to assign the star mode css class to
+@param {cytoscape.Collection} eles the elements to assign the star mode css class to
 */
 function starStyle(eles)
 {

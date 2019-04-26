@@ -13,5 +13,6 @@
   "noImplicitAny": false,
   "strict": false
  },
-"include": ["js/**/*","globals.d.ts","test.ts"]
+"include": ["js/**/*","globals.d.ts","test.ts"],
+"exclude": ["node_modules"]
 }

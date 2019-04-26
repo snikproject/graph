@@ -1,7 +1,6 @@
 /** Browser version checking to warn the user if the browser may not be able to display SNIK graph properly.
 Imprecise, just to cover the majority of cases.
-*/
-
+@type{object} */
 const sayswho= (function()
 {
   const ua= navigator.userAgent;
