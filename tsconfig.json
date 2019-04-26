@@ -5,6 +5,7 @@
   "checkJs": true,
   "outDir": "tsout",
   "lib": ["esnext","dom"],
+  "target": "es6",
   "allowSyntheticDefaultImports": true,
   "typeRoots": [ "./node_modules/@types" ],
   "module": "ESNext",
