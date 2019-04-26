@@ -38,7 +38,7 @@ export function positions(nodes)
 
 /** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it (use {@link module:layout.runCached} for that).
 @param {cytoscape.Core} cy the Cytoscape.js graph to run the layout on
-@param {json} layoutConfig the layout configuration, which includes the layout name and options
+@param {object} layoutConfig the layout configuration, which includes the layout name and options
 @param {array} subs Set of subontologies. If the subs are not given the layout still works but it is not saved.
 @param {boolean} separateSubs Whether to separate the graph based on the subontologies.
 @param {boolean} save Whether to save the layout on local storage.
@@ -162,8 +162,8 @@ export function presetLayout(cy,pos)
 }
 
 /** Cached version of {@link module:layout.run}.
-@param {cy.cytoscape} cy the Cytoscape.js graph to run the layout on
-@param {json} layoutConfig the layout configuration, which includes the layout name and options
+@param {cytoscape.Core} cy the Cytoscape.js graph to run the layout on
+@param {object} layoutConfig the layout configuration, which includes the layout name and options
 @param {Set} subs Set of subontologies. If the subs are not given the layout still works but it is not cached.
 @param {boolean} separateSubs Whether to separate the graph based on the subontologies.
 @returns whether the layout could successfully be applied. Does not indicate success of loading from cache,

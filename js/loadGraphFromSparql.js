@@ -37,8 +37,8 @@ function emptyPromise()
 // function expand(short) {return short.replace("s:","http://www.snik.eu/ontology/");}
 
 /** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
-@param{cy} cy the cytoscape graph to load the data into
-@param{Set} subs Set of subontologies to load.
+@param{cytoscape.Core} cy the cytoscape graph to load the data into
+@param{string[]} subs subontologies to load.
 @example
 loadGraphFromSparql(cy,new Set(["meta","bb"]))
 */
