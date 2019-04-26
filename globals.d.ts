@@ -6,4 +6,5 @@ declare global
 {
   const log: log.DefaultLogger;
   const Fuse: Fuse.Fuse;
+  const cytoscape: cytoscape.cytoscape;
 }
