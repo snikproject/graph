@@ -24,35 +24,9 @@ export function hideSearchResults()
  * @param  {String} title   title of the error message
  * @param  {String} text    text of the error message
  */
-function createFailDialog(title, text,/*uri*/)
+function createFailDialog(title, text,uri)
 {
-  log.error(`${title}: ${text}`);
-  //alert(`${title}: ${text}`);
-  /*
-  return document.createDocumentFragment("<div class='dialog' title='" + title + "'><p>" + text + "</p></div>")
-    .dialog({
-      resizable: false,
-      height:240,
-      width:600,
-      modal: true,
-      buttons: {
-        "Browse on LodView": function()
-        {
-          window.open(uri);
-          $(this).dialog("close");
-        },
-        "LodLive": function()
-        {
-          window.open('http://en.lodlive.it/?'+uri);
-          $(this).dialog("close");
-        },
-        "Close": function()
-        {
-          $(this).dialog("close");
-        },
-      },
-    });
-    */
+  log.error(`${title}: ${text}, ${uri}`);
 }
 
 
@@ -108,12 +82,15 @@ function presentAll()
 export function showSearchResults(query, uris)
 {
   resultNodes = [];
+  /** @type{HTMLTableElement} */
   const table = util.getElementById("tab:searchresults");
+
   // clear leftovers from last time
   for(let i = 0; i < table.rows.length;)
   {
     table.deleteRow(i);
   }
+  // @ts-ignore
   util.getElementById("overlay").display = "block";
   util.getElementById("overlay").style.width = "100%";
   if(uris.length===0)
@@ -153,6 +130,7 @@ export function showSearchResults(query, uris)
     const row = table.insertRow();
     const locateCell = row.insertCell();
     const lodLiveCell = row.insertCell();
+    // @ts-ignore
     window.presentUri=presentUri;
     locateCell.innerHTML = `<a class="search-class${uriType[uri]}"" href="javascript:window.presentUri('${uri}');void(0)">
 		${uri.replace(sparql.SPARQL_PREFIX,"")}</a>`;
@@ -161,6 +139,7 @@ export function showSearchResults(query, uris)
 
   const row = table.insertRow(0);
   const cell = row.insertCell();
+  // @ts-ignore
   window.presentAll=presentAll;
   cell.innerHTML = `<a href="javascript:window.presentAll();void(0)">
 		Highlight All</a>`;
