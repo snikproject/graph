@@ -170,7 +170,17 @@ function menuData()
       "id":"operations",
       "entries":
           [
-            [showCloseMatches,"Show Close Matches","show-close-matches"],
+            [showCloseMatches,"show close matches","show-close-matches"],
+
+            [()=>{layout.run(graph.cy,layout.euler,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),true);}, "recalculate layout", "recalculate-layout"],
+
+            [()=>{layout.run(graph.cy,layout.eulerTight,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "tight layout","tight-layout"],
+
+            [()=>{layout.run(graph.cy,layout.eulerVariable(util.getElementById("layout-range").value),config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "custom layout","custom-layout"],
+
+            [()=>{layout.run(graph.cy,layout.cose,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "compound layout","compound-layout"],
+
+            [graph.resetStyle, "reset view","reset-view"],
           ],
     },
     {
@@ -188,9 +198,9 @@ function menuData()
       "id": "language",
       "entries":
       [
-        [()=>setLanguage(NODE.LABEL_ENGLISH),"English","english"],
-        [()=>setLanguage(NODE.LABEL_GERMAN),"German","german"],
-        [()=>setLanguage(NODE.LABEL_PERSIAN),"Persian","persian"],
+        [()=>setLanguage(NODE.LABEL_ENGLISH),"english","english"],
+        [()=>setLanguage(NODE.LABEL_GERMAN),"german","german"],
+        [()=>setLanguage(NODE.LABEL_PERSIAN),"persian","persian"],
       ],
     },
     {

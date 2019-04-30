@@ -20,14 +20,20 @@ export default
     "filter": "Filter",
     // options********************************************
     "options": "Options",
-    "separate-subs": "Separate Subontologies",
-    "cumulative-search": "Cumulative Search",
-    "day-mode": "Day Mode",
-    "dev-mode": "Developer Mode",
-    "combine-match": "Übereinstimmungen zusammenfassen",
+    "separate-subs": "separate subontologies",
+    "cumulative-search": "cumulative search",
+    "day-mode": "day mode",
+    "dev-mode": "developer mode",
+    "ext-mode": "extended mode",
+    "combine-match": "Combine Matches",
     // operations ****************************************
     "operations": "Operations",
-    "show-close-matches": "show close matches",    
+    "show-close-matches": "show close matches",
+    "recalculate-layout": "recalculate layout",
+    "tight-layout": "tight layout",
+    "custom-layout": "custom layout",
+    "compound-layout": "compound layout",
+    "reset-view": "reset view",
     // services ******************************************
     "services": "Services",
     "sparql-endpoint": "SPARQL Endpoint",
@@ -35,15 +41,13 @@ export default
     "data-quality-evaluation": "Data Quality Evaluation",
     // language ******************************************
     "language": "Language",
-    "english": "English",
-    "german": "German",
-    "persian": "Persian",
+    "english": "english",
+    "german": "german",
+    "persian": "persian",
     // help **********************************************
     "help": "Help",
     // don't translate the help options yet because they are -english anyways
     //buttons
-    "recalculate-layout": "Recalculate Layout",
-    "reset-view": "Reset View",
   },
   messageStrings:
   {

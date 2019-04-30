@@ -24,10 +24,16 @@ export default
     "cumulative-search": "Kumulative Suche",
     "day-mode": "Tag-Modus",
     "dev-mode": "Entwickler-Modus",
+    "ext-mode": "Erweiterter Modus",
     "combine-match": "Übereinstimmungen zusammenfassen",
     // operations ****************************************
     "operations": "Operationen",
-    "show-close-matches": "zeige close matches",    
+    "show-close-matches": "Zeige close matches",
+    "recalculate-layout": "Layout neu berechnen",
+    "tight-layout": "Dichtes Layout",
+    "custom-layout": "Benutzerdefiniertes Layout",
+    "compound-layout": "verbundenes Layout",
+    "reset-view": "Ansicht zurücksetzen",
     // services ******************************************
     "services": "Services",
     "sparql-endpoint": "SPARQL Endpunkt",
@@ -42,8 +48,6 @@ export default
     "help": "Hilfe",
     // don't translate the help options yet because they are -english anyways
     //buttons
-    "recalculate-layout": "Layout neu berechnen",
-    "reset-view": "Ansicht zurücksetzen",
   },
   messageStrings:
   {
