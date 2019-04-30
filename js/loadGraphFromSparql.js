@@ -5,18 +5,9 @@ import * as sparql from "./sparql.js";
 import config from "./config.js";
 import timer from "./timer.js";
 
-String.prototype.hashCode = function()
-{
-  let hash = 0, i = 0;
-  const len = this.length;
-  while (i < len)
-  {
-    hash  = ((hash << 5) - hash + this.charCodeAt(i++)) << 0;
-  }
-  return hash;
-};
-
-/** https://github.com/binded/empty-promise/blob/master/src/index.js, is there a shorter or build in option?*/
+/** https://github.com/binded/empty-promise/blob/master/src/index.js, is there a shorter or build in option?
+@returns {object} an empty promise that can be resolved or rejected from the outside.
+*/
 function emptyPromise()
 {
   let callbacks;
@@ -26,14 +17,16 @@ function emptyPromise()
   {
     callbacks = { resolve, reject };
   });
-
+  // @ts-ignore
   p.done = () => done;
+  // @ts-ignore
   p.resolve = (val) =>
   {
     callbacks.resolve(val);
     done = true;
     return p;
   };
+  // @ts-ignore
   p.reject = (val) =>
   {
     callbacks.reject(val);
@@ -48,8 +41,8 @@ function emptyPromise()
 // function expand(short) {return short.replace("s:","http://www.snik.eu/ontology/");}
 
 /** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
-@param{cy} cy the cytoscape graph to load the data into
-@param{Set} subs Set of subontologies to load.
+@param{cytoscape.Core} cy the cytoscape graph to load the data into
+@param{string[]} subs subontologies to load.
 @example
 loadGraphFromSparql(cy,new Set(["meta","bb"]))
 */
@@ -117,6 +110,7 @@ export default function loadGraphFromSparql(cy,subs)
   classPromise.then((json)=>
   {
     sparqlClassesTimer.stop(json.length+" classes");
+    /** @type{cytoscape.ElementDefinition[]} */
     const nodes = [];
     for(let i=0;i<json.length;i++)
     {

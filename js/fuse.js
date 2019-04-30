@@ -66,7 +66,8 @@ export async function createIndex()
 }
 
 /** Searches the Fuse index for classes with a similar label.
-@return {Promise<Set>} A promise with a set of class URIs.
+@param {string} userQuery
+@return {Promise<string[]>} the class URIs found.
 */
 export async function search(userQuery)
 {

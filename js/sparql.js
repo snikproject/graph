@@ -10,7 +10,7 @@ export const SPARQL_LIMIT = 100;
 ASK queries should also work but better use {@link ask} instead as it is more convenient.
 {@param query} A valid SPARQL query.
 {@param graph} An optional SPARQL graph.
-@return {Promise<Set>} A promise of a set of SPARQL select result bindings.
+@return {Promise<object[]>} A promise of a set of SPARQL select result bindings.
 */
 export async function select(query,graph)
 {
@@ -37,13 +37,14 @@ export async function select(query,graph)
   {
     log.error(err);
     log.error(`Error executing SPARQL query:\n${query}\nURL: ${url}\n\n`);
+    return [];
   }
 }
 
 /** Query public SNIK SPARQL endpoint with an ASK (boolean) query.
 {@param query} A valid SPARQL ask query.
 {@param graphOpt} An optional SPARQL graph.
-@return {Promise<Boolean>} A promise of the boolean SPARQL ask result.
+@return {Promise<boolean>} A promise of the boolean SPARQL ask result.
 */
 export function ask(query,graphOpt)
 {
@@ -59,8 +60,8 @@ export function ask(query,graphOpt)
 
 /** Query the public SNIK SPARQL endpoint with a describe query, which describes a single resource.
 @param {string} uri A resource URI
-@param {string} graphOpt An optional SPARQL graph.
-@return {string} A promise of the boolean SPARQL ask result.
+@param {string} [graphOpt] An optional SPARQL graph.
+@return {Promise<string|void>} A promise of the SPARQL describe result as text.
 */
 export function describe(uri,graphOpt)
 {

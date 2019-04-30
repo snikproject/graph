@@ -232,14 +232,19 @@ function addOptions()
   <span class="dropdown-entry"><input type="checkbox" id="dev-mode-checkbox" autocomplete="off"/><span id="dev-mode">dev mode</span></span>
   <span class="dropdown-entry"><input type="checkbox" id="ext-mode-checkbox" autocomplete="off"/><span id="ext-mode">extended mode</span></span>
   <span class="dropdown-entry"><input type="checkbox" id="combine-match-checkbox" autocomplete="off"/><span id="combine-match">combine matches</span></span>`;
+  /** @type {HTMLInputElement} */
   const dayMode = util.getElementById("day-mode-checkbox");
   dayMode.addEventListener("change",()=>{graph.invert(dayMode.checked);log.debug("Set dayMode to "+dayMode.checked);});
+  /** @type {HTMLInputElement} */
   const devMode = util.getElementById("dev-mode-checkbox");
+  /** @type {HTMLInputElement} */
   const extMode = util.getElementById("ext-mode-checkbox");
   devMode.addEventListener("change",()=>{log.debug("Set devMode to "+devMode.checked);registerContextMenu(devMode.checked,extMode.checked);});
   extMode.addEventListener("change",()=>{log.debug("Set extMode to "+extMode.checked);registerContextMenu(devMode.checked,extMode.checked);});
+  /** @type {HTMLInputElement} */
   const cumuSearch = util.getElementById("cumulative-search-checkbox");
   cumuSearch.addEventListener("change",()=>{log.debug("Set cumulative search to "+cumuSearch.checked);});
+  /** @type {HTMLInputElement} */
   const combineMatchMode  = util.getElementById("combine-match-checkbox");
   combineMatchMode.addEventListener("change",()=>
   {

@@ -1,0 +1,18 @@
+{
+ "compilerOptions":
+ {
+  "allowJs": true,
+  "checkJs": true,
+  "outDir": "tsout",
+  "lib": ["esnext","dom"],
+  "target": "es6",
+  "allowSyntheticDefaultImports": true,
+  "typeRoots": [ "./node_modules/@types" ],
+  "module": "ESNext",
+  "esModuleInterop": true,
+  "noImplicitAny": false,
+  "strict": false
+ },
+"include": ["js/**/*","globals.d.ts","test.ts"],
+"exclude": ["node_modules"]
+}

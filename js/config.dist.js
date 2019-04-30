@@ -7,7 +7,9 @@ export default
   "helperGraphs": ["limes-exact","match"],
   "searchCloseMatch": true,
   'openMenuEvents': 'cxttapstart', // space-separated cytoscape events that will open the menu; only `cxttapstart` and/or `taphold` work here, see https://github.com/cytoscape/cytoscape.js-cxtmenu
+  /** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */
   "logLevelConsole": "info",
+  /** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */
   "logLevelDisplay": "error",
   "layoutCacheMinRecall": 0.95,
   "layoutCacheMinPrecision": 0.5,

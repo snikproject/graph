@@ -35,8 +35,8 @@ export function setLanguage(lang)
 export function getLanguage() {return language;}
 
 /**
- * getString - description
- * @return {type}  descriptioa
+ * @param {string} key
+ * @return {string} description
  */
 export function getString(key)
 {
@@ -46,8 +46,8 @@ export function getString(key)
 }
 
 /**
- * getString - description
- * @return {type}  description
+ * returns the id strings for the active language
+ * @return {string}  description
  */
 export function getIdStrings()
 {

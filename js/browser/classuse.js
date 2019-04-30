@@ -8,7 +8,8 @@ import * as NODE from "../node.js";
 /** Centers a class and shows directly and indirectly connected roles, functions and entity types in a concentric layout.
 Hides all other nodes. Resetting the view unhides the other nodes but keeps the layout of those shown before.
 Recalculate the layout to place those nodes in relation to the whole graph again.
-@param {string} The URI of the class.
+@param {string} clazz The URI of the class.
+@param {string} subTop The sub top letter of the class (R,F or E)
  */
 export default function classUse(clazz,subTop)
 {

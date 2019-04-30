@@ -7,6 +7,7 @@
 import * as util from "./util.js";
 //import * as menu from "./menu.js";
 
+/** @type{[string, string,()=>void][]} */
 // const buttonConfigs =
 // [
 //   [
@@ -40,15 +41,15 @@ export default function addButtons()
 {
   const text = document.createElement("input");
   text.type="text";
-  text.style="width:3em";
-
+  text.style.width="3em";
+  /** @type{HTMLInputElement} */
   const range = document.createElement("input");
   range.type="range";
   range.id="layout-range";
   range.min=10;
   range.max=999;
   range.value=40;
-  range.width="10em";
+  range.style.width="10em";
   range.onchange=()=>text.value=range.value;
   text.value=range.value;
 

@@ -6,7 +6,7 @@
   "homepage": "https://github.com/IMISE/snik-cytoscape.js#readme",
   "dependencies": {
     "@babel/polyfill": "^7.4.3",
-    "cytoscape": "^3.3.6",
+    "cytoscape": "^3.5.4",
     "cytoscape-cxtmenu": "^3.1.0",
     "cytoscape-euler": "^1.2.1",
     "cytoscape-panzoom": "^2.5.3",
@@ -22,6 +22,8 @@
     "@babel/plugin-transform-modules-systemjs": "^7.4.0",
     "@babel/preset-env": "^7.4.3",
     "@babel/register": "^7.4.0",
+    "@types/cytoscape": "^3.4.1",
+    "@types/loglevel": "^1.5.4",
     "babel-loader": "^8.0.5",
     "chai": "^4.2.0",
     "docdash": "^1.1.0",
