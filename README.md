@@ -56,6 +56,11 @@ Specified in the ESlint config file `.eslintrc.json`.
 Use the [Cytoscape.js notation](http://js.cytoscape.org/#notation/functions) for JSDoc types and generic parameters, such as "ele" for "a collection of a single element (node or edge)".
 Instead of "eles", "cy.collection" may be used as JSDoc type.
 
+### TypeScript
+
+The code is vanilla ES6 JavaScript, only the JSDoc comments contain TypeScript types.
+Use the `typecheck` script to use TypeScript as a static type checker.
+
 ### Scripts
 * `npm run test` runs the mocha tests
 * `npm run build` transpiles the code for browsers without full ES6 support, used by index-babel.html
