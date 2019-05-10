@@ -18,14 +18,14 @@ import {registerContextMenu} from "./contextmenu.js";
 function main()
 {
   log.setLevel(config.logLevelConsole);
-  const logs = [];
   const funcs = ["error","warn","debug","trace"];
   for(const f of funcs)
   {
     const tmp = log[f];
     log[f] = message  =>
     {
-      logs.push(message);
+      if(!log.logs) {log.logs=[];}
+      log.logs.push(message);
       tmp(message);
     };
   }
