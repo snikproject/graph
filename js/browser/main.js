@@ -18,7 +18,7 @@ import {registerContextMenu} from "./contextmenu.js";
 function main()
 {
   log.setLevel(config.logLevelConsole);
-  const funcs = ["error","warn","debug","trace"];
+  const funcs = ["error","warn","info","debug"]; // keep trace out of the persistant log as it is too verbose
   for(const f of funcs)
   {
     const tmp = log[f];
