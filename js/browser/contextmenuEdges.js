@@ -26,7 +26,7 @@ const baseCommands = [
     select: node=>
     {
       if(node.data(EDGE.AXIOM)) {window.open(node.data(EDGE.AXIOM));}
-      else {alert("There is no description for this edge.");}
+      else {log.warn("There is no description for this edge.");}
     },
   },
 ];

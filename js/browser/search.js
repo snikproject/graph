@@ -64,7 +64,7 @@ function presentAll()
   if(resultNodes.length<1)
   {
     hideSearchResults();
-    alert("All search results are only available on the SPARQL endpoint but not in the graph.");
+    log.warn("All search results are only available on the SPARQL endpoint but not in the graph.");
     return false;
   }
   hideSearchResults();
