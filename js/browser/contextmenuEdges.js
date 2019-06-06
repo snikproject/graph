@@ -6,7 +6,7 @@ import * as rdf from "../rdf.js";
 import * as util from "./util.js";
 import * as EDGE from "../edge.js";
 import * as language from "../lang/language.js";
-import {logWrap,menuDefaults} from "./contextmenu.js";
+import {logWrap,menuDefaults} from "./contextmenuUtil.js";
 
 /** Creates a human readable string of the triple an edge represents. */
 function edgeLabel(edge) {return rdf.short(edge.data(EDGE.SOURCE)) +" "+ rdf.short(edge.data(EDGE.PROPERTY)) +" "+ rdf.short(edge.data(EDGE.TARGET));}

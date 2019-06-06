@@ -8,7 +8,7 @@ import * as rdf from "../rdf.js";
 import * as NODE from "../node.js";
 import * as sparql from "../sparql.js";
 import * as util from "./util.js";
-import {logWrap,menuDefaults} from "./contextmenu.js";
+import {logWrap,menuDefaults} from "./contextmenuUtil.js";
 
 const menu = Object.assign(menuDefaults(),
   {
