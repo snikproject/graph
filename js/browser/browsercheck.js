@@ -31,8 +31,10 @@ function browserCheckTranspiled()
   (sayswho.name === 'Internet Explorer') ||
   (sayswho.name === 'Chrome' && sayswho.version < 54)
   )
-  {alert(`Your browser ${sayswho.name} version ${sayswho.version} may be outdated. Graph may not work properly.`);}
-  log.warn("Browser outdated. Graph may not work properly.");
+  {
+    alert(`Your browser ${sayswho.name} version ${sayswho.version} may be outdated. Graph may not work properly.`);
+    log.warn("Browser outdated. Graph may not work properly.");
+  }
 }
 
 /* eslint no-unused-vars: 0 */ // included from index
