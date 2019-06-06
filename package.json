@@ -28,6 +28,7 @@
     "@types/loglevel": "^1.5.4",
     "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
+    "circular-dependency-plugin": "^5.0.2",
     "docdash": "^1.1.1",
     "es6-promise": "^4.2.6",
     "eslint": "^5.16.0",
