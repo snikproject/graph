@@ -6,7 +6,7 @@
   "homepage": "https://github.com/IMISE/snik-cytoscape.js#readme",
   "dependencies": {
     "@babel/polyfill": "^7.4.3",
-    "cytoscape": "^3.5.4",
+    "cytoscape": "^3.7.0",
     "cytoscape-cxtmenu": "^3.1.0",
     "cytoscape-euler": "^1.2.1",
     "cytoscape-panzoom": "^2.5.3",
@@ -34,7 +34,7 @@
     "eslint-plugin-mocha": "^5.3.0",
     "esm": "^3.2.22",
     "isomorphic-fetch": "^2.2.1",
-    "jsdoc": "^3.5.5",
+    "jsdoc": "^3.6.2",
     "jsdom": "^13.2.0",
     "jsdom-global": "^3.0.2",
     "mocha": "^5.2.0",
