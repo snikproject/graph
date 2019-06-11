@@ -291,7 +291,6 @@ export function addMenu()
 
     for(const entry of menuDatum.entries)
     {
-      console.log(entry);
       const a = document.createElement("a");
       a.classList.add("dropdown-entry");
       a.id=entry[2];
