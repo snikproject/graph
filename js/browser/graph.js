@@ -316,7 +316,7 @@ function initGraph()
   // remove nodes or edges from the graph (not the SPARQL endpoint) with the delete key
   document.addEventListener('keydown',function(e)
   {
-    if(e.keyCode === 46) // delete key
+    if(e.keyCode === 8 || e.keyCode === 46) // backspace (for mac) or delete key
     {
       cy.remove(':selected');
     }

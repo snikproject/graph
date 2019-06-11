@@ -8,4 +8,5 @@ declare global
   const Fuse: Fuse.Fuse;
   function cytoscape() : cytoscape.Core;
   const Notyf: object;
+  const hotkeys: function;
 }

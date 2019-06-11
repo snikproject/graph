@@ -172,15 +172,15 @@ function menuData()
           [
             [showCloseMatches,"show close matches","show-close-matches"],
 
-            [()=>{layout.run(graph.cy,layout.euler,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),true);}, "recalculate layout", "recalculate-layout"],
+            [()=>{layout.run(graph.cy,layout.euler,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),true);}, "recalculate layout", "recalculate-layout","ctrl+alt+l"],
 
-            [()=>{layout.run(graph.cy,layout.eulerTight,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "tight layout","tight-layout"],
+            [()=>{layout.run(graph.cy,layout.eulerTight,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "tight layout","tight-layout","ctrl+alt+t"],
 
             //[()=>{layout.run(graph.cy,layout.eulerVariable(util.getElementById("layout-range").value),config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "custom layout","custom-layout"],
 
-            [()=>{layout.run(graph.cy,layout.cose,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "compound layout","compound-layout"],
+            [()=>{layout.run(graph.cy,layout.cose,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "compound layout","compound-layout","ctrl+alt+c"],
 
-            [graph.resetStyle, "reset view","reset-view"],
+            [graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
           ],
     },
     {
@@ -291,6 +291,7 @@ export function addMenu()
 
     for(const entry of menuDatum.entries)
     {
+      console.log(entry);
       const a = document.createElement("a");
       a.classList.add("dropdown-entry");
       a.id=entry[2];
@@ -307,11 +308,20 @@ export function addMenu()
         case 'function':
         {
           a.addEventListener("click",entry[0]);
+          // we only use hotkeys for functions
+          const hotkey = entry[3];
+          if(hotkey)
+          {
+            hotkeys(hotkey,entry[0]);
+            a.innerHTML=a.innerHTML+` (${hotkey.toUpperCase()})`;
+            console.log(hotkey);
+            console.log(entry);
+            console.log(a);
+          }
           break;
         }
         default: log.error("unknown menu entry action type: "+typeof entry[0]);
       }
-      //
     }
   }
   util.getElementById("top").prepend(ul);

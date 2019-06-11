@@ -11,6 +11,7 @@
     "cytoscape-euler": "^1.2.1",
     "cytoscape-panzoom": "^2.5.3",
     "fuse.js": "^3.4.5",
+    "hotkeys-js": "^3.6.11",
     "jquery": "^3.4.1",
     "loglevel": "^1.6.2",
     "notyf": "^3.0.4",
