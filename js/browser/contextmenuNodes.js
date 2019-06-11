@@ -79,20 +79,20 @@ const baseCommands =
       }
     },
   },
-  {
-    content: 'find neighbours',
-    select: node=>
-    {
-      window.open("under construction!", node);
-    },
-  },
-  {
-    content: 'combine close matches',
-    select: node=>
-    {
-      window.open("under construction!", node);
-    },
-  },
+  // {
+  //   content: 'find neighbours',
+  //   select: node=>
+  //   {
+  //     log.warn("'find neighbours' not implemented yet!", node);
+  //   },
+  // },
+  // {
+  //   content: 'combine close matches',
+  //   select: node=>
+  //   {
+  //     log.warn("'combine close matches' not implemented yet!", node);
+  //   },
+  // },
 ];
 
 /** Developer Commands that are not useful for non-dev users  ***********************************************************************************/

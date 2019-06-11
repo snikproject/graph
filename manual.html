@@ -15,29 +15,85 @@ SNIK Graph is the research prototype of a graph visualization of the Hospital In
 The graph consists of nodes, which are concepts from the ontology, and edges between nodes, which are relationships (properties) between concepts. Select an edge to see the edge label (relationship type) and direction.
 
 <h2>Context Menu</h2>
-Right click on a node to open the context menu and choose among:
+Right click on a node/edge to open the context menu and choose among:
 <h3>Description</h3>
 Opens the node in an RDF browser, which shows all its properties and values.
 <h3>Star</h3>
+<img src="img/star.png"/><br/>
 Highlights the node and all it's directly connected nodes.
-<h3>Submit Ticket</h3>
-If you are a domain expert and notice incorrectly modelled facts or connections of a node.
-
-<h2>Menu</h2>
-If you want to preserve a path operation through operations like a search, you can mark a node as a path source in the context menu.
-<h3>Shortest Path</h3>
-<img src="img/shortestpath.png"/><br/>
-Is only shown when source and target nodes are set.
-The shortest path highlights all nodes and edges in the shortest path between a selected source and the target node.
-Displaying a shortest path hides all other and edges.
-<h3>Spider Worm</h3>
+<h3>Directed Star</h3>
+<img src="img/directedStar.png"/><br/>
+Shows only target neighbours (outgoing edges).
+<h3>Path</h3>
+<img src="img/path.png"/><br/>
+Shortest Path between source and target nodes (has to be set before).
+<h3>Spiderworm</h3>
 <img src="img/spiderworm.png"/><br/>
 Is only shown when source and target nodes are set.
 The <i>Spider Worm</i> consists of the shortest path between a selected source and target node plus all edges of the target node and the other node of each of those edges.
 Displaying a spiderworm hides all other nodes and edges.
-<h3>Double Star</h3>
+<!--<h3>Find neighbours</h3>
+under construction-->
+<h3>Combine close Matches</h3>
+Merge equivalent classes from different subontologies.
+<h3>Edit/report</h3>
+If you are a domain expert and notice incorrectly modelled facts or connections of a node feel free to send us an issue.
+<h3>Class use</h3>
+Visualizes the interplay of role, function and entity type (related to the Meta model).
+<h3>Remove</h3>
+Removes the selected item from the view (until the graph is reloaded).
+<h3>Set path as source</h3>
+Sets the starting point for path operations.
+<h3>Doublestar (extended mode)</h3>
+<img src="img/doublestar.png"/><br/>
 Is only shown when source and target nodes are set.
 The double star is like the spiderworm but shows connected nodes for both source and target, not just the target.
+<h3>Starpath (extended mode)</h3>
+Creates a path and star every node along it.
+<h3>Circle star (extended mode)</h3>
+<img src="img/circlestar.png"/><br/>
+A star using a circular layout.
+<h3>LodLive (extended mode)</h3>
+Third party data visualization exploration tool.
+<h3>Remove permanently (dev mode)</h3>
+Send us an issue to delete the selected item permanently. Also removes it until graph is reloaded.
+<h3>Onto Wiki (dev mode)</h3>
+Access restricted ontology editing tool.
+<h3>Debug (dev mode)</h3>
+Get debug information to the edge/node from the JSON File
+
+<h2>Menu</h2>
+<h3>File</h3>
+Holds different File Options like loading and saving the graph in different ways.
+<h3>Filter</h3>
+A collection of filters to display relevant subgraphs.
+<h3>Options</h3>
+Here you can find different checkboxes for the scope of the context menu, for day mode, cumulative Search and the 'Seperate Subontologies' function, which spreads the SNIK Graph into subgraphs of the subontologies.
+<h3>Operations</h3>
+This part of the menu holds the layout features. You can use Tight Layout (for a more narrow view), compound layout (knows combined matches), also you can recalculate the layout or reset all operations to get to the starting point of the visualization.
+<figure>
+<img src="img/tightLayout.png">
+<figcaption>Tight Layout</figcaption>
+</figure>
+<figure>
+<img src="img/compoundLayout.png">
+<figcaption>Compound Layout</figcaption>
+</figure>
+<h3>Services</h3>
+
+<h3>Language</h3>
+Language switch, you can choose between English, German and Persian
+<h3>Help</h3>
+Common Help Menu, holds e.g. this manual
+</br>
+</br>
+<h2>Search Field</h2>
+Full text search with a fuzzy approach for best results.
+<h2>Layout Buttons</h2>
+Shortcut Buttons for most often used layout operations. Described in Operations
+<h3>Zoom Element (down right postion)</h3>
+A google-maps-like pan and zoom element for the navigation in the graph
+
 <h2>Requirements and Technical Problems</h2>
 SNIK Graph runs in your browser using JavaScript, so any modern browser with activated JavaScript should work. Obviously this includes deactivating noScript and similar extensions.
 If you encounter technical problems, please <a href="https://bitbucket.org/imise/snik-cytoscape.js/issues/new">submit a bug report ticket</a>.

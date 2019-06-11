@@ -84,3 +84,9 @@ li a
     display: block;
     text-align: left;
 }
+
+figure {
+    border-style: groove none groove none;
+    border-width: 1px;
+    border-colour: white;
+}
