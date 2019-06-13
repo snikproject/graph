@@ -313,9 +313,6 @@ export function addMenu()
           {
             hotkeys(hotkey,entry[0]);
             a.innerHTML=a.innerHTML+` (${hotkey.toUpperCase()})`;
-            console.log(hotkey);
-            console.log(entry);
-            console.log(a);
           }
           break;
         }
