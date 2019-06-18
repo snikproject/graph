@@ -13,6 +13,7 @@ Recalculate the layout to place those nodes in relation to the whole graph again
  */
 export default function classUse(clazz,subTop)
 {
+  graph.cy.startBatch();
   let innerType = "meta:Role";
   let middleType = "meta:Function";
   let outerType = "meta:EntityType";
@@ -105,8 +106,14 @@ export default function classUse(clazz,subTop)
       selectedNodes.merge(cNodes);
       //selectedEdges = selectedEdges.union(cNodes.connectedEdges());
     }
+
     graph.show(selectedNodes);
+    // ************** Bug Workaround #210, Display Edges at the Correct Position
+    graph.highlight(selectedNodes.edgesWith(selectedNodes));
+    graph.hide(selectedNodes.edgesWith(selectedNodes));
+    // **********************************
     graph.show(selectedNodes.edgesWith(selectedNodes));
+
 
     for (let i = 0; i < selectedNodes.length; i++)	{graph.show(selectedNodes[i]);/*selectedNodes[i].restore();*/}
     /*
@@ -152,4 +159,5 @@ export default function classUse(clazz,subTop)
     graph.cy.fit(selectedNodes);
   }
   );
+  graph.cy.endBatch();
 }
