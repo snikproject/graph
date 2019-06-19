@@ -99,7 +99,7 @@ export default function classUse(clazz,subTop)
 
     const classes = new Set([...inner, ...middle,...outer,...outerx]);
     const selectedNodes = graph.cy.collection(`node[id='${clazz}']`);
-    //let selectedEdges = graph.cy.nodes("node[noth='ing']");
+
     for(const c of classes)
     {
       const cNodes = graph.cy.nodes(`node[id='${c}']`);
@@ -107,24 +107,8 @@ export default function classUse(clazz,subTop)
       //selectedEdges = selectedEdges.union(cNodes.connectedEdges());
     }
 
-    graph.show(selectedNodes);
-    // ************** Bug Workaround #210, Display Edges at the Correct Position
-    graph.highlight(selectedNodes.edgesWith(selectedNodes));
-    graph.hide(selectedNodes.edgesWith(selectedNodes));
-    // **********************************
-    graph.show(selectedNodes.edgesWith(selectedNodes));
+    const selectedElements = selectedNodes.merge(selectedNodes.edgesWith(selectedNodes));
 
-
-    for (let i = 0; i < selectedNodes.length; i++)	{graph.show(selectedNodes[i]);/*selectedNodes[i].restore();*/}
-    /*
-    for (let i = 0; i < selectedEdges.length; i++)
-    {
-      // ignore cytoscape warnings for edges with only one endpointin the active nodes
-      disableConsole();
-      selectedEdges[i].restore();
-      enableConsole();
-    }
-    */
     selectedNodes.layout(
       {
         name: 'concentric',
@@ -153,6 +137,8 @@ export default function classUse(clazz,subTop)
         },
       }
     ).run();
+
+    graph.show(selectedElements);
 
     const centerNode = graph.cy.nodes(`node[id='${clazz}']`);
     graph.cy.center(centerNode);
