@@ -17,7 +17,7 @@ export default function timer(name)
     {
       const end  = new Date();
       const time = end.getTime() - start.getTime();
-      const f = (time>config.minInfoTime)?log.info:((time>config.minDebugTime)?log.info:log.info);
+      const f = (time>config.minInfoTime)?log.info:((time>config.minDebugTime)?log.debug:log.debug);
       f(name, 'finished in', time, 'ms'+(message?` (${message})`:""));
     },
   };

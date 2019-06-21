@@ -57,7 +57,7 @@ function main()
   {
     console.groupCollapsed("Initializing");
     menu.addMenu();
-    log.info('Menu added');
+    log.debug('Menu added');
     graph.initGraph();
     registerContextMenu(util.getElementById("dev-mode-checkbox").checked,util.getElementById("ext-mode-checkbox").checked);
 
@@ -74,13 +74,13 @@ function main()
     console.groupCollapsed("Add menu");
 
     addFilterEntries(graph.cy,util.getElementById("filter-div"));
-    log.info('filter entries added');
+    log.debug('filter entries added');
     file.addFileLoadEntries(util.getElementById("file-div"));
-    log.info('fileLoadEntries added');
+    log.debug('fileLoadEntries added');
     search.addSearch();
-    log.info('search field added');
+    log.debug('search field added');
     addButtons();
-    log.info('buttons added');
+    log.debug('buttons added');
     console.groupEnd();
 
     try

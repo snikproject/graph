@@ -77,7 +77,7 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
       }
     }
     log.info("Separate subontologies checked");
-    log.info(`Adding ${virtualEdges.length} virtual edges.`);
+    log.debug(`Adding ${virtualEdges.length} virtual edges.`);
     cy.add(virtualEdges);
   }
   else{log.info("Separate subontologies unchecked");}
@@ -89,7 +89,7 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
     if(subs&&separateSubs)
     {
       const virtualNodes = cy.nodes("[type='virtual']");
-      log.info(`Removing ${virtualNodes.length} virtual nodes.`);
+      log.debug(`Removing ${virtualNodes.length} virtual nodes.`);
       cy.remove(virtualNodes); // connected edges should go away automatically
     }
     if(subs&&save)
@@ -157,7 +157,7 @@ export function presetLayout(cy,pos)
   }
   else
   {
-    log.info("...layout applied with 100% overlap.");
+    log.debug("...layout applied with 100% overlap.");
   }
   if(hits===0) {return false;}
   return status;

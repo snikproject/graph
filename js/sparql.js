@@ -28,8 +28,8 @@ export async function select(query,graph)
     {
       console.table(bindings.map(b=>Object.keys(b).reduce((result,key)=>{result[key]=b[key].value;return result;},{})));
     }
-    log.info(query);
-    log.info(url);
+    log.debug(query);
+    log.debug(url);
     console.groupEnd();
 
     return bindings;

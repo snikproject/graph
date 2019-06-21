@@ -16,7 +16,7 @@ which makes available cy.cxtmenu().
 */
 export function registerContextMenu(dev, ext)
 {
-  log.info(`Register Context Menu. Developer Entries: ${dev}, Extended Entries: ${ext}`);
+  log.debug(`Register Context Menu. Developer Entries: ${dev}, Extended Entries: ${ext}`);
   cxtmenus.forEach(menu=>menu.destroy());
   cxtmenus.length=0;
   [...nodeMenus(dev,ext),...edgeMenus(dev)].forEach(menu=>{cxtmenus.push(graph.cy.cxtmenu(menu));});
