@@ -23,12 +23,13 @@ export async function select(query,graph)
     const bindings = json.results.bindings;
 
     console.groupCollapsed("SPARQL "+query.split('\n',1)[0]+"...");
+    //is never entered on our data with limitation to 99
     if(bindings.length<100)
     {
       console.table(bindings.map(b=>Object.keys(b).reduce((result,key)=>{result[key]=b[key].value;return result;},{})));
     }
-    log.debug(query);
-    log.debug(url);
+    log.info(query);
+    log.info(url);
     console.groupEnd();
 
     return bindings;

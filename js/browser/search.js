@@ -174,7 +174,7 @@ export async function search(userQuery)
   // use this when labels are available, URIs are not searched
   const sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
 			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l),"[ -]","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
-  log.debug(sparqlQuery);
+  log.info(sparqlQuery);
   const bindings = await sparql.select(sparqlQuery,"http://www.snik.eu/ontology");
   return bindings.map(b=>b.s.value);
   //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.

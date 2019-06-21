@@ -57,7 +57,7 @@ function main()
   {
     console.groupCollapsed("Initializing");
     menu.addMenu();
-    log.debug('Menu added');
+    log.info('Menu added');
     graph.initGraph();
     registerContextMenu(util.getElementById("dev-mode-checkbox").checked,util.getElementById("ext-mode-checkbox").checked);
 
@@ -74,13 +74,13 @@ function main()
     console.groupCollapsed("Add menu");
 
     addFilterEntries(graph.cy,util.getElementById("filter-div"));
-    log.debug('filter entries added');
+    log.info('filter entries added');
     file.addFileLoadEntries(util.getElementById("file-div"));
-    log.debug('fileLoadEntries added');
+    log.info('fileLoadEntries added');
     search.addSearch();
-    log.debug('search field added');
+    log.info('search field added');
     addButtons();
-    log.debug('buttons added');
+    log.info('buttons added');
     console.groupEnd();
 
     try
@@ -91,6 +91,7 @@ function main()
     }
     catch(e)
     {
+      log.error(e);
       log.error("Error initializing SNIK Graph "+e);
     }
     finally

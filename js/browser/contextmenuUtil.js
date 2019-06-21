@@ -7,7 +7,7 @@ export function logWrap(cmd,messageFunction)
   const tmp = cmd.select;
   cmd.select = ele =>
   {
-    log.debug("Context Menu: Operation "+cmd.content+" on "+messageFunction(ele));
+    log.info("Context Menu: Operation "+cmd.content+" on "+messageFunction(ele));
     tmp(ele);
   };
   cmd.select.wrapped = true;
