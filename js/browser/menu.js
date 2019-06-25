@@ -166,8 +166,8 @@ function menuData()
       "entries": [], // filled by addOptions()
     },
     {
-      "label": "Operations",
-      "id":"operations",
+      "label": "Layout",
+      "id":"layout",
       "entries":
           [
             [showCloseMatches,"show close matches","show-close-matches"],
@@ -210,6 +210,7 @@ function menuData()
       [
         ["manual.html","Manual"],
         ["http://www.snik.eu/de/snik-tutorial.pdf","Tutorial"],
+        ["layoutHelp.html","Layout Help"],
         ["https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured","YouTube Channel"],
         ["troubleshooting.html","Troubleshooting"],
         ["contribute.html","Contribute"],
