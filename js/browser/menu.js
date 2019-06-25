@@ -57,7 +57,7 @@ function about() {window.alert("SNIK Graph version "+"[AIV]{version} {date}[/AIV
 /** Creates a GitHub issue for the visualization. */
 function visualizationFeedback()
 {
-  util.createGitHubIssue(util.REPO_APPLICATION,"",log.logs.reduce((a,b)=>a+"\n"+b));
+  util.createGitHubIssue(util.REPO_APPLICATION/*,"",log.logs.reduce((a,b)=>a+"\n"+b)*/);
 }
 
 let parents = null;
@@ -190,7 +190,7 @@ function menuData()
           [
             ["http://www.snik.eu/sparql","SPARQL Endpoint","sparql-endpoint"],
             ["http://www.snik.eu/ontology","RDF Browser","rdf-browser"],
-            ["http://snik.eu/evaluation","Data Quality Evaluation","data-quality-evaluation"],
+            //["http://snik.eu/evaluation","Data Quality Evaluation","data-quality-evaluation"],
           ],
     },
     {

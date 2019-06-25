@@ -26,19 +26,19 @@ export default
     "dev-mode": "Entwickler-Modus",
     "ext-mode": "Erweiterter Modus",
     "combine-match": "Übereinstimmungen zusammenfassen",
-    // operations ****************************************
-    "operations": "Operationen",
+    // layout*********************************************
+    "layout": "Layout",
     "show-close-matches": "Zeige close matches",
     "recalculate-layout": "Layout neu berechnen",
     "tight-layout": "Dichtes Layout",
-    "custom-layout": "Benutzerdefiniertes Layout",
+    //"custom-layout": "Benutzerdefiniertes Layout",
     "compound-layout": "verbundenes Layout",
     "reset-view": "Ansicht zurücksetzen",
     // services ******************************************
     "services": "Services",
     "sparql-endpoint": "SPARQL Endpunkt",
     "rdf-browser": "RDF Browser",
-    "data-quality-evaluation": "Daten-Qualitäts-Erhebung",
+    //"data-quality-evaluation": "Daten-Qualitäts-Erhebung",
     // language ******************************************
     "language": "Sprache",
     "english": "Englisch",
