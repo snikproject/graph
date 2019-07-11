@@ -36,8 +36,8 @@ const baseCommands =
     select: node=> {classUse(node.data(NODE.ID),node.data(NODE.SUBTOP));},
   },
   {
-    content: 'remove',
-    select: node=> {graph.cy.remove(node);},
+    content: 'hide',
+    select: node=> {graph.hide(node);},
   },
   {
     content: 'set as path source',

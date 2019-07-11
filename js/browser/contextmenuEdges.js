@@ -18,8 +18,8 @@ const baseCommands = [
     select: (edge)=>util.createGitHubIssue(util.REPO_ONTOLOGY,edgeLabel(edge),'The edge "'+edgeLabel(edge)+'" is incorrect.\n\n**Details**\n'),
   },
   {
-    content: 'remove',
-    select: (edge)=>graph.cy.remove(edge),
+    content: 'hide',
+    select: (edge)=>graph.hide(edge),
   },
   {
     content: 'description (if it exists)',
