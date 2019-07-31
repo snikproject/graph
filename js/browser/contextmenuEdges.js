@@ -99,6 +99,8 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
   },
 ];
 
+/** Context menu for edges in base mode that are either confirmed interlinks (skos:closeMatch and friends in the match graph) or meta relations, such as meta:updates.
+Offers base commands.*/
 const baseMenu = Object.assign(menuDefaults(),
   {
     menuRadius: 100, // the radius of the circular menu in pixels
@@ -106,6 +108,8 @@ const baseMenu = Object.assign(menuDefaults(),
     commands: baseCommands,
   });
 
+/** Context menu for edges in base mode that are unconfirmed interlinks, that is skos:closeMatch and friends in the limes-exact graph.
+Offers base and confirm commands.*/
 const baseLimesMenu = Object.assign(menuDefaults(),
   {
     menuRadius: 150,
@@ -113,6 +117,8 @@ const baseLimesMenu = Object.assign(menuDefaults(),
     commands: baseCommands.concat(limesCommands),
   });
 
+/** Context menu for edges in development mode that are either confirmed interlinks (skos:closeMatch and friends in the match graph) or meta relations, such as meta:updates.
+    Offers base and development commands.*/
 const devMenu = Object.assign(menuDefaults(),
   {
     menuRadius: 150,
@@ -120,6 +126,8 @@ const devMenu = Object.assign(menuDefaults(),
     commands: baseCommands.concat(devCommands),
   });
 
+/** Context menu for edges in development mode that are unconfirmed interlinks, that is skos:closeMatch and friends in the limes-exact graph.
+  Offers base, development and confirm commands.*/
 const devLimesMenu = Object.assign(menuDefaults(),
   {
     menuRadius: 150,
@@ -127,7 +135,9 @@ const devLimesMenu = Object.assign(menuDefaults(),
     commands: baseCommands.concat(devCommands,limesCommands),
   });
 
-/** Register modular edge context menu. */
+/** Register modular edge context menu. Does have additional functionality in development mode but not in extended mode.
+@param {boolean} dev whether development mode is activated.
+*/
 export default function edgeMenus(dev)
 {
   if(dev) {return [devMenu,devLimesMenu];}
