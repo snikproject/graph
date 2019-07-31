@@ -58,7 +58,7 @@ function about() {window.alert("SNIK Graph version "+"[AIV]{version} {date}[/AIV
 function visualizationFeedback()
 {
   util.createGitHubIssue(util.REPO_APPLICATION,"","Please type your issue here:\n\n\n\n"+
-  "!!Please do not delete the following text, because its the log for developers!!\n\n" + log.logs.reduce((a,b)=>a+"\n"+b));
+  "!!Please do not delete the following text, because its the log for developers!!\n\n", log.logs);
 }
 
 let parents = null;

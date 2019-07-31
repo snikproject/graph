@@ -16,13 +16,27 @@ export function getElementById(id)
 export const REPO_APPLICATION = "https://github.com/IMISE/snik-cytoscape.js";
 export const REPO_ONTOLOGY = "https://github.com/IMISE/snik-ontology";
 
-/** Open a new issue on the GitHub repository. */
-export function createGitHubIssue(repo,title,body)
+/** Open a new issue on the GitHub repository.
+@param {string} repo GIT repository URL
+@param {string} title issue title
+@param {string} body issue body text
+@param {array} logs optional array of github markdown formatted log strings
+*/
+export function createGitHubIssue(repo,title,body,logs)
 {
-  //shorten the front end to avoid 414 Error URI too large
-  var encodedBody = encodeURIComponent(body);
-  if (encodedBody.length > LOG_LIMIT){
-    encodedBody = encodedBody.slice(-7500, -1);
+  let encodedBody = encodeURIComponent(body);
+  if(logs)
+  {
+    const encodedLogs = logs.map(l=>encodeURIComponent(l));
+    let encodedLog = encodedLogs.reduce((a,b)=>a+"%0A"+b);
+
+    while(encodedLog.length > LOG_LIMIT)
+    {
+    //remove log elements from the front until the length of the log is under the limit to avoid 414 Error URI too large
+      encodedLogs.shift();
+      encodedLog = encodedLogs.reduce((a,b)=>a+"%0A"+b);
+    }
+    encodedBody+="%0A%60%60%60"+encodedLog+"%60%60%60";
   }
   window.open(`${repo}/issues/new?title=${encodeURIComponent(title)}&body=${encodedBody}`);
 }
