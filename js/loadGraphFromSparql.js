@@ -58,8 +58,6 @@ export default function loadGraphFromSparql(cy,subs)
   //group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
   //substr(replace(str(sample(?st)),".*[#/]",""),1,1) as ?st replace(str(?src),".*[#/]","") as ?src sample(?inst) as ?inst
   // only show classes with labels
-  // degree too time consuming, remove for development
-  // #count(?o) as ?degree
   // too slow, remove isolated nodes in post processing
   // #{?c ?p ?o.} UNION {?o ?p ?c}.
   const classQuery =
@@ -133,7 +131,6 @@ export default function loadGraphFromSparql(cy,subs)
             st: (json[i].st===undefined)?null:json[i].st.value.replace("http://www.snik.eu/ontology/meta/","").substring(0,1),
             prefix: (json[i].src===undefined)?null:json[i].src.value.replace("http://www.snik.eu/ontology/",""),
             inst: json[i].inst!==undefined,
-            //degree: parseInt(json[i].degree.value),
           },
           //position: { x: 200, y: 200 }
         });

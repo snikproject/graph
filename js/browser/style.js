@@ -6,6 +6,9 @@ Cytoscape style file, excluding color information, which is contained in the col
 import * as NODE from "../node.js";
 import * as EDGE from "../edge.js";
 import * as language from "../lang/language.js";
+// see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing
+const nodeSize = node => Math.log(node.degree()+3)*25;
+
 /** @type{object} */
 const style =
 {
@@ -20,8 +23,8 @@ const style =
       'css':
       {
         'min-zoomed-font-size': 5,
-        'width': 39,
-        'height': 39,
+        'width':    nodeSize,
+        'height':   nodeSize,
         'font-size': 11,
         'text-valign': 'center',
         'text-halign': 'center',
