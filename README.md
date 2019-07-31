@@ -14,7 +14,6 @@ Requires a browser with ES6 module support:
 * Chrome 61
 * Edge 16
 
-Chrome needs the "--allow-file-access-from-files" parameter to load modules locally but still fails to load them from files in version 69.0.3497.100, so for developing with Chrome you need a local web server.
 
 ### index-prod.html
 This is the transpiled version that is deployed at http://www.snik.eu/graph. Seeing the changes requires a `npm run build`, so it is not recommended for development.
@@ -36,6 +35,12 @@ If you notice different behaviour on your browser, i.e. your browser is newer an
 4. link or copy `index-prod.html` or `index-dev.html` to index.html
 
 If the website and the SPARQL endpoint are on different domains, you may need to bypass CORS.
+
+### Browser Settings 
+These are only needed if you access index-dev.html locally over the file prototocol, that is without using a web server, for example as `file:///home/konrad/projekte/snik/cytoscape/index-dev.html`.
+
+* Firefox needs `security.fileuri.strict_origin_policy;false` in `about:config`
+* Chrome needs the "--allow-file-access-from-files" parameter to load modules locally but still fails to load them from files in version 69.0.3497.100, so for developing with Chrome you need a local web server.
 
 ### Publish
 
