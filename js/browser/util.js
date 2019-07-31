@@ -2,6 +2,9 @@
 Various utility methods.s
 @module */
 
+
+const LOG_LIMIT = 7500;
+
 /** getElementById with exception handling. */
 export function getElementById(id)
 {
@@ -16,5 +19,10 @@ export const REPO_ONTOLOGY = "https://github.com/IMISE/snik-ontology";
 /** Open a new issue on the GitHub repository. */
 export function createGitHubIssue(repo,title,body)
 {
-  window.open(`${repo}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`);
+  //shorten the front end to avoid 414 Error URI too large
+  var encodedBody = encodeURIComponent(body);
+  if (encodedBody.length > LOG_LIMIT){
+    encodedBody = encodedBody.slice(-7500, -1);
+  }
+  window.open(`${repo}/issues/new?title=${encodeURIComponent(title)}&body=${encodedBody}`);
 }

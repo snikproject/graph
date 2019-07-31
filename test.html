@@ -2,20 +2,20 @@
 <html>
 <head><meta charset="utf-8"></head>
 <body>
+<script src="node_modules/pastebin-js/bin/pastebin.js"></script>
   <script>
-	const ENDPOINT = "http://dbpedia.org/sparql"
-	const GRAPH = "http://dbpedia.org";
-
-	function sparql(endpoint, graph, query)
-	{
-	  const url = endpoint +
-	  '?query=' + encodeURIComponent(query) +
-	  '&format=json'+
-	  '&default-graph-uri=' + encodeURIComponent(graph);
-	  return fetch(url,{cache: "force-cache"});
-	}
-  const query = "select * {?s ?p ?o.}";
-	sparql(ENDPOINT,GRAPH,query);
+  var PastebinAPI = require('node_modules/pastebin-js/bin/pastebin.js')
+  var pastebin = new PastebinAPI();
+  pastebin
+ .getPaste('76b2yNRt');
+ // .then(function (data) {
+ //   // data contains the raw paste
+ //   console.log(data);
+ // })
+ // .fail(function (err) {
+ //   // Something went wrong
+ //   console.log(err);
+ // })
   </script>
 </body>
 </html>

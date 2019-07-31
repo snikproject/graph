@@ -8,7 +8,7 @@ export default
   "searchCloseMatch": true,
   'openMenuEvents': 'cxttapstart', // space-separated cytoscape events that will open the menu; only `cxttapstart` and/or `taphold` work here, see https://github.com/cytoscape/cytoscape.js-cxtmenu
   /** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */
-  "logLevelConsole": "info",
+  "logLevelConsole": "debug",
   /** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */
   "logLevelDisplay": "warn",
   "layoutCacheMinRecall": 0.95,
