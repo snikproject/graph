@@ -8,17 +8,9 @@ import * as NODE from "../node.js";
 import * as util from "./util.js";
 import * as fuse from "../fuse.js";
 
-
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
 // const USE_BIF_CONTAINS = false;
-
-/** Hides the overlay that shows the class search results. */
-export function hideSearchResults()
-{
-  util.getElementById("overlay").style.width = "0%";
-  util.getElementById("overlay").display = "none";
-}
 
 /** Notifies the user of an error.
  * @param  {String} title   title of the error message
@@ -28,7 +20,6 @@ function createFailDialog(title, text,uri)
 {
   log.error(`${title}: ${text}, ${uri}`);
 }
-
 
 /** When user selects a URI from the search candidates, this URI gets centered and highlighted.
 * @param {String} uri The URI of a class in the graph. */
@@ -50,7 +41,7 @@ function presentUri(uri)
   if(!menu.cumulativeSearch()) {graph.resetStyle();}
   //graph.setSelectedNode(node);
   graph.highlight(nodes);
-  hideSearchResults();
+  MicroModal.close("overlay");
   graph.cy.center(node);
 }
 
@@ -61,13 +52,12 @@ let resultNodes = [];
 */
 function presentAll()
 {
+  MicroModal.close("overlay");
   if(resultNodes.length<1)
   {
-    hideSearchResults();
     log.warn("All search results are only available on the SPARQL endpoint but not in the graph.");
     return false;
   }
-  hideSearchResults();
   if(!menu.cumulativeSearch()) {graph.resetStyle();}
   graph.highlight(resultNodes);
   graph.cy.fit(graph.cy.elements(".highlighted"));
@@ -141,8 +131,7 @@ export function showSearchResults(query, uris)
   const cell = row.insertCell();
   // @ts-ignore
   window.presentAll=presentAll;
-  cell.innerHTML = `<a href="javascript:window.presentAll();void(0)">
-		Highlight All</a>`;
+  cell.innerHTML = `<a href="javascript:window.presentAll();void(0)">Highlight All</a>`;
 
   const suris = new Set(uris);
   resultNodes = graph.cy.elements().nodes().filter((node)=>
@@ -185,21 +174,19 @@ export async function search(userQuery)
 * @return {Promise<false>} false to prevent page reload triggered by submit.*/
 async function showSearch(userQuery)
 {
-  util.getElementById("overlay").style.display= "block";
+  //util.getElementById("overlay").style.display= "block";
+  MicroModal.show("overlay");
   const uris = await fuse.search(userQuery);
   showSearchResults(userQuery,uris);
   return false; // prevent page reload triggered by submit
 }
 
-/** Add search functionality to the text field with the "search" id.
- *  Add a click listener to hide the search results to the element with the "closelink" id.*/
+/** Add search functionality to the text field with the "search" id. */
 export function addSearch()
 {
-  util.getElementById('closelink').addEventListener("click", hideSearchResults);
   util.getElementById("search").addEventListener("submit",(event)=>
   {
     event.preventDefault();
-    hideSearchResults();
     // @ts-ignore
     showSearch(event.target.children.query.value);
   });

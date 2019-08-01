@@ -17,6 +17,8 @@ import {registerContextMenu} from "./contextmenu.js";
 /** Entry point. Is run when DOM is loaded. **/
 function main()
 {
+  MicroModal.init({openTrigger: 'data-custom-open'});
+
   const notyf = new Notyf(
     {
       types: [
@@ -66,7 +68,6 @@ function main()
       if((e.key==='Escape'||e.key==='Esc'||e.keyCode===27))// && (e.target.nodeName==='BODY'))
       {
         e.preventDefault();
-        search.hideSearchResults();
         return false;
       }
     }, true);

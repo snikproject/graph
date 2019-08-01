@@ -21,7 +21,8 @@
 		"log": true,
 		"Fuse": true,
 		"hotkeys": true,
-		"Notyf": true
+		"Notyf": true,
+		"MicroModal": true
 	},
 	"extends":
 	[
