@@ -41,7 +41,7 @@ function presentUri(uri)
   if(!menu.cumulativeSearch()) {graph.resetStyle();}
   //graph.setSelectedNode(node);
   graph.highlight(nodes);
-  MicroModal.close("overlay");
+  MicroModal.close("searchresults");
   graph.cy.center(node);
 }
 
@@ -52,7 +52,7 @@ let resultNodes = [];
 */
 function presentAll()
 {
-  MicroModal.close("overlay");
+  MicroModal.close("searchresults");
   if(resultNodes.length<1)
   {
     log.warn("All search results are only available on the SPARQL endpoint but not in the graph.");
@@ -80,9 +80,6 @@ export function showSearchResults(query, uris)
   {
     table.deleteRow(i);
   }
-  // @ts-ignore
-  util.getElementById("overlay").display = "block";
-  util.getElementById("overlay").style.width = "100%";
   if(uris.length===0)
   {
     util.getElementById("h2:searchresults").innerHTML=`No Search Results for "${query}"`;
@@ -174,8 +171,7 @@ export async function search(userQuery)
 * @return {Promise<false>} false to prevent page reload triggered by submit.*/
 async function showSearch(userQuery)
 {
-  //util.getElementById("overlay").style.display= "block";
-  MicroModal.show("overlay");
+  MicroModal.show("searchresults");
   const uris = await fuse.search(userQuery);
   showSearchResults(userQuery,uris);
   return false; // prevent page reload triggered by submit
