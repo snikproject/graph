@@ -21,6 +21,7 @@ function main()
 
   const notyf = new Notyf(
     {
+      duration: 10000,
       types: [
         {
           type: 'warn',
