@@ -63,7 +63,7 @@ export default function addButtons()
     const button = document.createElement("button");
     util.getElementById("buttons").appendChild(button);
     button.innerText = buttonConfig[0];
-    button.id = buttonConfig[1];
+    button.setAttribute("data-i18n",buttonConfig[1]);
     button.addEventListener("click",buttonConfig[2]);
   }
 }

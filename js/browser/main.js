@@ -75,9 +75,9 @@ function main()
 
     console.groupCollapsed("Add menu");
 
-    addFilterEntries(graph.cy,util.getElementById("filter-div"));
+    addFilterEntries(graph.cy,util.getElementById("filter-menu-content"));
     log.debug('filter entries added');
-    file.addFileLoadEntries(util.getElementById("file-div"));
+    file.addFileLoadEntries(util.getElementById("file-menu-content"));
     log.debug('fileLoadEntries added');
     search.addSearch();
     log.debug('search field added');

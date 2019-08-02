@@ -45,7 +45,7 @@ Add an upload entry to the file menu.
 @param {string} description the text of the menu item
 @param {function} func the function to be executed when the user clicks on the menu entry
 */
-function addLoadEntry(parent,id,description,func)
+function addLoadEntry(parent,i18n,description,func)
 {
   const span = document.createElement("span");
   span.classList.add("dropdown-entry");
@@ -56,7 +56,7 @@ function addLoadEntry(parent,id,description,func)
   span.appendChild(input);
   const inner = document.createElement("span");
   inner.innerText=description;
-  inner.id=id;
+  inner.setAttribute("data-i18n",i18n);
   span.appendChild(inner);
   // click event needs to trigger at the hidden input element so that it opens the file chooser dialog
   span.addEventListener("click",()=>input.click());

@@ -26,20 +26,24 @@ function setLanguage(lang)
     log.warn("could not set language "+lang);
   }
   const strings = language.getIdStrings();
-  for(const id of Object.keys(strings))
+  for(const key of Object.keys(strings))
   {
-    const element = util.getElementById(id);
-    if(!element)
+    const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
+    if(elements.length===0)
     {
-      log.warn(id+" does not exist");
+      log.warn(`i18n key ${key} not used`);
       continue;
     }
-    const s = strings[id];
-    switch(element.tagName)
+    for(const element of elements)
     {
-      case "A":
-      case "BUTTON":
-      case "SPAN": element.textContent = s; break;
+      const s = strings[key];
+      switch(element.tagName)
+      {
+        case "A":
+        case "BUTTON":
+        case "SPAN": element.textContent = s; break;
+        default: log.warn(`Cannot assign text "${s}" to element with i18n key ${key} because its tag type ${element.tagName} is unsupported.`);
+      }
     }
     // element.textContent = strings[id];
   }
@@ -134,6 +138,7 @@ function menuData()
   return [
     {
       "label": "File",
+      "i18n": "file",
       "id": "file",
       "entries":
       [
@@ -158,27 +163,25 @@ function menuData()
     },
     {
       "label": "Filter",
+      "i18n": "filter",
       "id": "filter",
       "entries": [], // filled by addFilterEntries() from filter.js
     },
     {
       "label": "Options",
+      "i18n": "options",
       "id": "options",
       "entries": [], // filled by addOptions()
     },
     {
       "label": "Layout",
-      "id":"layout",
+      "i18n":"layout",
       "entries":
           [
             [showCloseMatches,"show close matches","show-close-matches"],
-
             [()=>{layout.run(graph.cy,layout.euler,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),true);}, "recalculate layout", "recalculate-layout","ctrl+alt+l"],
-
             [()=>{layout.run(graph.cy,layout.eulerTight,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "tight layout","tight-layout","ctrl+alt+t"],
-
             //[()=>{layout.run(graph.cy,layout.eulerVariable(util.getElementById("layout-range").value),config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "custom layout","custom-layout"],
-
             [()=>{layout.run(graph.cy,layout.cose,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "compound layout","compound-layout","ctrl+alt+c"],
 
             [graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
@@ -186,7 +189,7 @@ function menuData()
     },
     {
       "label": "Services",
-      "id":"services",
+      "i18n":"services",
       "entries":
           [
             ["http://www.snik.eu/sparql","SPARQL Endpoint","sparql-endpoint"],
@@ -196,7 +199,7 @@ function menuData()
     },
     {
       "label": "Language",
-      "id": "language",
+      "i18n": "language",
       "entries":
       [
         [()=>setLanguage(NODE.LABEL_ENGLISH),"english","english"],
@@ -206,7 +209,7 @@ function menuData()
     },
     {
       "label": "Help",
-      "id": "help",
+      "i18n": "help",
       "entries":
       [
         ["manual.html","Manual"],
@@ -227,13 +230,13 @@ function menuData()
 /** Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.*/
 function addOptions()
 {
-  util.getElementById("options-div").innerHTML =
-  `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span id="separate-subs">separate subontologies</span></span>
-  <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span id="cumulative-search">cumulative search</span></span>
-  <span class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="on"/><span id="day-mode">day mode</span></span>
-  <span class="dropdown-entry"><input type="checkbox" id="dev-mode-checkbox" autocomplete="off"/><span id="dev-mode">dev mode</span></span>
-  <span class="dropdown-entry"><input type="checkbox" id="ext-mode-checkbox" autocomplete="off"/><span id="ext-mode">extended mode</span></span>
-  <span class="dropdown-entry"><input type="checkbox" id="combine-match-checkbox" autocomplete="off"/><span id="combine-match">combine matches</span></span>`;
+  util.getElementById("options-menu-content").innerHTML =
+  `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span data-i18n="separate-subs">separate subontologies</span></span>
+  <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span data-i18n="cumulative-search">cumulative search</span></span>
+  <span class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="on"/><span data-i18n="day-mode">day mode</span></span>
+  <span class="dropdown-entry"><input type="checkbox" id="dev-mode-checkbox" autocomplete="off"/><span data-i18n="dev-mode">dev mode</span></span>
+  <span class="dropdown-entry"><input type="checkbox" id="ext-mode-checkbox" autocomplete="off"/><span data-i18n="ext-mode">extended mode</span></span>
+  <span class="dropdown-entry"><input type="checkbox" id="combine-match-checkbox" autocomplete="off"/><span data-i18n="combine-match">combine matches</span></span>`;
   /** @type {HTMLInputElement} */
   const separateSubs = util.getElementById("separate-subs-checkbox");
   separateSubs.addEventListener("change",()=>{log.debug("Set separate Subontologies to "+separateSubs.checked);});
@@ -276,12 +279,12 @@ export function addMenu()
     li.appendChild(span);
     span.classList.add("dropdown-menu");
     span.innerText=menuDatum.label;
-    span.id=menuDatum.id;
+    span.setAttribute("data-i18n",menuDatum.i18n);
 
     const div = document.createElement("div");
     li.appendChild(div);
     div.classList.add("dropdown-content");
-    div.id=menuDatum.id+"-div";
+    if(menuDatum.id) {div.id=menuDatum.id+"-menu-content";}
 
     span.addEventListener("click",()=>
     {
@@ -298,7 +301,7 @@ export function addMenu()
     {
       const a = document.createElement("a");
       a.classList.add("dropdown-entry");
-      a.id=entry[2];
+      a.setAttribute("data-i18n",entry[2]);
       div.appendChild(a);
       a.innerHTML=entry[1];
       switch(typeof entry[0])
