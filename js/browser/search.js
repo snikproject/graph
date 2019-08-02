@@ -12,39 +12,6 @@ import * as fuse from "../fuse.js";
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
 // const USE_BIF_CONTAINS = false;
 
-/** Notifies the user of an error.
- * @param  {String} title   title of the error message
- * @param  {String} text    text of the error message
- */
-function createFailDialog(title, text,uri)
-{
-  log.error(`${title}: ${text}, ${uri}`);
-}
-
-/** When user selects a URI from the search candidates, this URI gets centered and highlighted.
-* @param {String} uri The URI of a class in the graph. */
-function presentUri(uri)
-{
-  graph.cy.zoom(0.6);
-  const nodes = graph.cy.elements().nodes().filter(`node[id= "${uri}"]`);
-  if(nodes.length<1)
-  {
-    createFailDialog("Class not in graph",uri+' is only available on the SPARQL endpoint but not in the graph.',uri);
-    return false;
-  }
-  const node = nodes[0];
-  if(!nodes.visible())
-  {
-    createFailDialog("Class not visible",uri+' is not visible. Please adjust filters.',uri);
-    return false;
-  }
-  if(!menu.cumulativeSearch()) {graph.resetStyle();}
-  //graph.setSelectedNode(node);
-  graph.highlight(nodes);
-  MicroModal.close("searchresults");
-  graph.cy.center(node);
-}
-
 let resultNodes = [];
 
 /** Presents all search results from the previous search.
@@ -52,15 +19,12 @@ let resultNodes = [];
 */
 function presentAll()
 {
-  MicroModal.close("searchresults");
   if(resultNodes.length<1)
   {
     log.warn("All search results are only available on the SPARQL endpoint but not in the graph.");
     return false;
   }
-  if(!menu.cumulativeSearch()) {graph.resetStyle();}
-  graph.highlight(resultNodes);
-  graph.cy.fit(graph.cy.elements(".highlighted"));
+
   return true;
 }
 
@@ -73,30 +37,29 @@ export function showSearchResults(query, uris)
 {
   resultNodes = [];
   /** @type{HTMLTableElement} */
-  const table = util.getElementById("tab:searchresults");
+  const table = util.getElementById("tab:search-results");
 
   // clear leftovers from last time
-  for(let i = 0; i < table.rows.length;)
-  {
-    table.deleteRow(i);
-  }
+  for(let i = 0; i < table.rows.length; i++) {table.deleteRow(i);}
+
   if(uris.length===0)
   {
-    util.getElementById("h2:searchresults").innerHTML=`No Search Results for "${query}"`;
+    util.getElementById("h2:search-results").innerHTML=`No Search Results for "${query}"`;
     return false;
   }
   if(uris.length===1)
   {
-    presentUri(uris[0]);
+    MicroModal.close("search-results");
+    graph.presentUri(uris[0]);
     return true;
   }
   if(uris.length===sparql.SPARQL_LIMIT)
   {
-    util.getElementById("h2:searchresults").innerHTML=`First ${sparql.SPARQL_LIMIT} Search Results for "${query}"`;
+    util.getElementById("h2:search-results").innerHTML=`First ${sparql.SPARQL_LIMIT} Search Results for "${query}"`;
   }
   else
   {
-    util.getElementById("h2:searchresults").innerHTML=`${uris.length} Search Results for "${query}"`;
+    util.getElementById("h2:search-results").innerHTML=`${uris.length} Search Results for "${query}"`;
   }
   // Preprocessing: Classify URIs as (0) in graph and visible, (1) in graph and invisible and (2) not in the graph.
   const uriType = {};
@@ -118,23 +81,18 @@ export function showSearchResults(query, uris)
     const locateCell = row.insertCell();
     const lodLiveCell = row.insertCell();
     // @ts-ignore
-    window.presentUri=presentUri;
-    locateCell.innerHTML = `<a class="search-class${uriType[uri]}"" href="javascript:window.presentUri('${uri}');void(0)">
+    window.presentUri=graph.presentUri;
+    locateCell.innerHTML = `<a class="search-class${uriType[uri]}" href="javascript:MicroModal.close('search-results');window.presentUri('${uri}');void(0)">
 		${uri.replace(sparql.SPARQL_PREFIX,"")}</a>`;
     lodLiveCell.innerHTML = `<a class="search-class0"" href="${uri}" target="_blank">Description</a>`;
   });
 
   const row = table.insertRow(0);
   const cell = row.insertCell();
-  // @ts-ignore
-  window.presentAll=presentAll;
-  cell.innerHTML = `<a href="javascript:window.presentAll();void(0)">Highlight All</a>`;
 
-  const suris = new Set(uris);
-  resultNodes = graph.cy.elements().nodes().filter((node)=>
-  {
-    return suris.has(node.data(NODE.ID));
-  });
+  cell.innerHTML = "Highlight All";
+  cell.addEventListener("click",()=>{MicroModal.close("search-results");graph.presentUris(uris);});
+
   return true;
 }
 
@@ -171,7 +129,7 @@ export async function search(userQuery)
 * @return {Promise<false>} false to prevent page reload triggered by submit.*/
 async function showSearch(userQuery)
 {
-  MicroModal.show("searchresults");
+  MicroModal.show("search-results");
   const uris = await fuse.search(userQuery);
   showSearchResults(userQuery,uris);
   return false; // prevent page reload triggered by submit

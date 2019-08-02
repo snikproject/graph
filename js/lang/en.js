@@ -33,6 +33,7 @@ export default
     "tight-layout": "tight layout",
     //"custom-layout": "custom layout",
     "compound-layout": "compound layout",
+    "chapter-search": "chapter search",
     "reset-view": "reset view",
     // services ******************************************
     "services": "Services",

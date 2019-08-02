@@ -19,6 +19,9 @@ let pathSource = null;
 let pathTarget = null;
 let starMode = false;
 
+/** @returns whether cumulative search is activated. */
+export function cumulativeSearch() {return util.getElementById('cumulative-search-checkbox').checked;}
+
 /** Set whether star mode is active, where further stars will not hide other nodes but unhide instead.
 @param {boolean} mode whether star mode is active
 */
@@ -346,6 +349,49 @@ function initGraph()
   initTimer.stop();
   return cy;
 }
+
+/**Centered and highlighted the given URI.
+* @param {String} uri The URI of a class in the graph. */
+export function presentUri(uri)
+{
+  cy.zoom(0.6);
+  const nodes = cy.elements().nodes().filter(`node[id= "${uri}"]`);
+  if(nodes.length<1)
+  {
+    log.warn(`Class not in graph. ${uri} may be available on the SPARQL endpoint but not in the graph.`);
+    return false;
+  }
+  const node = nodes[0];
+  if(!nodes.visible())
+  {
+    log.warn(`Class not visible. ${uri} is not visible. Please adjust filters. `);
+    return false;
+  }
+  if(!cumulativeSearch()) {resetStyle();}
+
+  highlight(nodes);
+  cy.center(node);
+}
+
+/** @return {array} Classes to show. */
+export function presentUris(classes)
+{
+  if(classes.length<1)
+  {
+    log.warn("All search results are only available on the SPARQL endpoint but not in the graph.");
+    return;
+  }
+  if(!cumulativeSearch()) {resetStyle();}
+
+  const classSet = new Set(classes);
+  const resultNodes = cy.elements().nodes().filter((node)=>
+  {
+    return classSet.has(node.data(NODE.ID));
+  });
+  highlight(resultNodes);
+  cy.fit(cy.elements(".highlighted"));
+}
+
 
 /** Selects a node.
 @param {cytoscape.NodeSingular} node the node to select

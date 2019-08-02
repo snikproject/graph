@@ -11,6 +11,7 @@ import * as util from "./util.js";
 import config from "../config.js";
 import progress from "./progress.js";
 import {registerContextMenu} from "./contextmenu.js";
+import {showChapterSearch} from "./chaptersearch.js";
 
 /** @returns whether subontologies are to be displayed separately. */
 export function separateSubs()
@@ -123,7 +124,6 @@ function showCloseMatches()
   //".unfiltered";
 }
 
-
 /**
 Creates and returns the menus for the top menu bar.
 The format is an array of menu elements.
@@ -183,7 +183,7 @@ function menuData()
             [()=>{layout.run(graph.cy,layout.eulerTight,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "tight layout","tight-layout","ctrl+alt+t"],
             //[()=>{layout.run(graph.cy,layout.eulerVariable(util.getElementById("layout-range").value),config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "custom layout","custom-layout"],
             [()=>{layout.run(graph.cy,layout.cose,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "compound layout","compound-layout","ctrl+alt+c"],
-
+            [()=>{showChapterSearch();},"chapter search","chapter-search"],
             [graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
           ],
     },
@@ -260,9 +260,6 @@ function addOptions()
     log.debug("Set combine match mode to "+combineMatchMode.checked);
   });
 }
-
-/** @returns whether cumulative search is activated. */
-export function cumulativeSearch() {return util.getElementById('cumulative-search-checkbox').checked;}
 
 /** Adds the menu to the DOM element with the "top" id and sets up the event listeners. */
 export function addMenu()
