@@ -40,7 +40,7 @@ export function showSearchResults(query, uris)
   const table = util.getElementById("tab:search-results");
 
   // clear leftovers from last time
-  for(let i = 0; i < table.rows.length; i++) {table.deleteRow(i);}
+  while(table.rows.length>0) {table.deleteRow(0);}
 
   if(uris.length===0)
   {

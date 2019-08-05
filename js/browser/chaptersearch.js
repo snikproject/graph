@@ -10,7 +10,7 @@ import * as util from "./util.js";
 async function showClasses(chapter)
 {
   const table = util.getElementById("tab:chapter-search-classes");
-  for(let i = 0; i < table.rows.length; i++) {table.deleteRow(i);} // clear leftovers from last time
+  while(table.rows.length>0) {table.deleteRow(0);} // clear leftovers from last time
 
   // fetch bb chapters and their class count
   const chapterClassQuery =
@@ -50,7 +50,7 @@ export async function showChapterSearch()
   MicroModal.show("chapter-search");
 
   const table = util.getElementById("tab:chapter-search-chapters");
-  for(let i = 0; i < table.rows.length; i++) {table.deleteRow(i);} // clear leftovers from last time
+  while(table.rows.length>0) {table.deleteRow(0);} // clear leftovers from last time
 
   // fetch bb chapters and their class count
   const chapterSizeQuery =
