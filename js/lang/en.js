@@ -48,7 +48,8 @@ export default
     // help **********************************************
     "help": "Help",
     // don't translate the help options yet because they are -english anyways
-    //buttons
+    // other *********************************************
+    "deselect-all": "deselect all",
   },
   messageStrings:
   {

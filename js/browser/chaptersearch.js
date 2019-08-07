@@ -4,6 +4,7 @@ Search classes by chapter.
 import * as graph from "./graph.js";
 import * as sparql from "../sparql.js";
 import * as util from "./util.js";
+import * as language from "../lang/language.js";
 
 /** @type {Map<Array<string>>} */
 const chapters = new Map();
@@ -40,28 +41,28 @@ async function getClasses(chapter)
   return new Set(classes);
 }
 
+
 /** Show the classes of a chapter in the class table
 @param {Set<string>} classes the classes to show. */
 async function showClasses(classes)
 {
   const table = util.getElementById("tab:chapter-search-classes");
+  while(table.rows.length>0) {table.deleteRow(0);} // clear leftovers from last time
 
   const addPresentUrisRow = (label,hideOthers) =>
   {
     const row = table.insertRow();
     const showClassesInGraphCell = row.insertCell();
-    const showClassesInGraphA = document.createElement("a");
-    showClassesInGraphCell.appendChild(showClassesInGraphA);
-    showClassesInGraphA.innerText=label;
-    showClassesInGraphA.addEventListener("click",()=>
+    const showClassesInGraphLink = document.createElement("a");
+    showClassesInGraphCell.appendChild(showClassesInGraphLink);
+    showClassesInGraphLink.innerText=label;
+    showClassesInGraphLink.addEventListener("click",()=>
     {
       MicroModal.close("chapter-search");
       graph.resetStyle();
       graph.presentUris(classes,hideOthers);
     });
   };
-
-  while(table.rows.length>0) {table.deleteRow(0);} // clear leftovers from last time
 
   // header *****************************************************+
   addPresentUrisRow("Show Only those in Graph",true);
@@ -75,10 +76,10 @@ async function showClasses(classes)
   {
     const row = table.insertRow();
     const labelCell = row.insertCell();
-    const labelA = document.createElement("a");
-    labelCell.appendChild(labelA);
-    labelA.innerText = labels.get(clazz);
-    labelA.addEventListener("click",()=>
+    const labelLink = document.createElement("a");
+    labelCell.appendChild(labelLink);
+    labelLink.innerText = labels.get(clazz);
+    labelLink.addEventListener("click",()=>
     {
       MicroModal.close("chapter-search");
       graph.presentUri(clazz);
@@ -87,15 +88,26 @@ async function showClasses(classes)
   // *************************************************************
 }
 
-/**
-*
-*/
+/** Populate and show the chapter search modal. */
 export async function showChapterSearch()
 {
   MicroModal.show("chapter-search");
 
   const table = util.getElementById("tab:chapter-search-chapters");
   while(table.rows.length>0) {table.deleteRow(0);} // clear leftovers from last time
+
+  const deselectCell = table.insertRow().insertCell();
+  const deselectLink = document.createElement("a");
+  deselectCell.appendChild(deselectLink);
+  deselectLink.setAttribute("data-i18n","deselect-all");
+  deselectLink.innerText=language.getString("deselect-all");
+  deselectLink.addEventListener("click",()=>
+  {
+    for(const box of document.getElementsByClassName("chaptersearch-checkbox"))
+    {
+      if(box.checked) {box.click();}
+    }
+  });
 
   // fetch bb chapters and their class count
   const chapterSizeQuery =
@@ -113,9 +125,13 @@ export async function showChapterSearch()
     const chapter = binding.ch.value;
 
     const row = table.insertRow();
+
     const chapterCell = row.insertCell();
     chapterCell.addEventListener("click",async ()=>showClasses(await getClasses(chapter)));
-    chapterCell.innerHTML = binding.ch.value;
+    const chapterLink = document.createElement("a");
+    chapterCell.appendChild(chapterLink);
+    chapterLink.innerText=binding.ch.value;
+
     const countCell = row.insertCell();
     countCell.innerHTML = binding.count.value;
 
@@ -123,6 +139,7 @@ export async function showChapterSearch()
     const checkBox = document.createElement("input");
     checkCell.appendChild(checkBox);
     checkBox.setAttribute("type","checkbox");
+    checkBox.classList.add("chaptersearch-checkbox");
     checkCell.addEventListener("input",async ()=>
     {
       if(checkBox.checked)
