@@ -267,9 +267,13 @@ export function addMenu()
   //const frag = new DocumentFragment();
   const ul = document.createElement("ul");
   ul.classList.add("dropdown-bar");
+  // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
+  ul.setAttribute("tabindex","0");
+
   for(const menuDatum of menuData())
   {
     const li = document.createElement("li");
+    li.setAttribute("tabindex","-1");
     ul.appendChild(li);
 
     const span = document.createElement("span");
@@ -277,10 +281,12 @@ export function addMenu()
     span.classList.add("dropdown-menu");
     span.innerText=menuDatum.label;
     span.setAttribute("data-i18n",menuDatum.i18n);
+    span.setAttribute("tabindex","-1");
 
     const div = document.createElement("div");
     li.appendChild(div);
     div.classList.add("dropdown-content");
+    div.setAttribute("tabindex","-1");
     if(menuDatum.id) {div.id=menuDatum.id+"-menu-content";}
 
     span.addEventListener("click",()=>
@@ -299,6 +305,7 @@ export function addMenu()
       const a = document.createElement("a");
       a.classList.add("dropdown-entry");
       a.setAttribute("data-i18n",entry[2]);
+      a.setAttribute("tabindex","-1");
       div.appendChild(a);
       a.innerHTML=entry[1];
       switch(typeof entry[0])
