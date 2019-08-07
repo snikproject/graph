@@ -374,7 +374,7 @@ export function presentUri(uri)
 }
 
 /** @return {array} Classes to show. */
-export function presentUris(classes)
+export function presentUris(classes, hideOthers)
 {
   if(classes.length<1)
   {
@@ -388,6 +388,11 @@ export function presentUris(classes)
   {
     return classSet.has(node.data(NODE.ID));
   });
+  if(hideOthers)
+  {
+    hide(cy.elements());
+    show(resultNodes.edgesWith(resultNodes));
+  }
   highlight(resultNodes);
   cy.fit(cy.elements(".highlighted"));
 }
