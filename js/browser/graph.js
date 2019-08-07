@@ -373,7 +373,7 @@ export function presentUri(uri)
   cy.center(node);
 }
 
-/** @return {array} Classes to show. */
+/** @return {Set<string>} Classes to show. */
 export function presentUris(classes, hideOthers)
 {
   if(classes.length<1)
@@ -383,10 +383,9 @@ export function presentUris(classes, hideOthers)
   }
   if(!cumulativeSearch()) {resetStyle();}
 
-  const classSet = new Set(classes);
   const resultNodes = cy.elements().nodes().filter((node)=>
   {
-    return classSet.has(node.data(NODE.ID));
+    return classes.has(node.data(NODE.ID));
   });
   if(hideOthers)
   {

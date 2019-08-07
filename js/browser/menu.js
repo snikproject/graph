@@ -13,7 +13,7 @@ import progress from "./progress.js";
 import {registerContextMenu} from "./contextmenu.js";
 import {showChapterSearch} from "./chaptersearch.js";
 
-/** @returns whether subontologies are to be displayed separately. */
+/** @return whether subontologies are to be displayed separately. */
 export function separateSubs()
 {
   return util.getElementById('separate-subs-checkbox').checked;
