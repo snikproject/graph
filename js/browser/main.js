@@ -90,6 +90,14 @@ function main()
       await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));
       graph.cy.elements().addClass("unfiltered");
       layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,menu.separateSubs());
+
+      const url = new URL(window.location.href);
+      const clazz = url.searchParams.get("class");
+      if(clazz)
+      {
+        log.info(`Parameter "class" detected. Centering on URI ${clazz}.`);
+        graph.presentUri(clazz);
+      }
     }
     catch(e)
     {
