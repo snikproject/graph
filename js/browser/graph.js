@@ -391,6 +391,7 @@ export function presentUris(classes, hideOthers)
   {
     hide(cy.elements());
     show(resultNodes.edgesWith(resultNodes));
+    setStarMode(true);
   }
   highlight(resultNodes);
   cy.fit(cy.elements(".highlighted"));
