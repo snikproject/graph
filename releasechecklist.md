@@ -37,7 +37,7 @@ besides the unit tests (mocha, chai) we need to test a few things before releasi
 * first do the GitHub release (close milestones and do the release procedure) and make sure that it runs locally
 * attach package-lock.json to the Assets
 * ssh bruchtal -A (snik@bruchtal.imise.uni-leipzig.de)
-* STRG + R (reverse search) graph
+* STRG + R (reverse search) graph (Pfad: /var/www/html/snik_prod/graph)
 * git pull
 * cp js/config.dist.js js/config.js
 * npm update
