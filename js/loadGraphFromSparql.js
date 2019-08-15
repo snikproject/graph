@@ -48,8 +48,9 @@ loadGraphFromSparql(cy,new Set(["meta","bb"]))
 */
 export default function loadGraphFromSparql(cy,subs)
 {
-  const rdfGraphs = [config.helperGraphs,...subs];
+  const rdfGraphs = [...config.helperGraphs,...subs];
   const froms = rdfGraphs.map(sub=>`FROM <http://www.snik.eu/ontology/${sub}>`).reduce((a,b)=>a+"\n"+b);
+  console.log(froms);
   const fromNamed = froms.replace(/FROM/g,"FROM NAMED");
   cy.elements().remove();
   // Optimization failed, was actually slower. Great example of premature optimization.
@@ -75,11 +76,7 @@ export default function loadGraphFromSparql(cy,subs)
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?inst a ?c.}
   }`;
-  //  this was actually slower, often by a whole second, probably due to compression and better caching or replace overhead
-  //  replace(str(?c),"http://www.snik.eu/ontology/","s:") as ?c
-  //  replace(str(?p),"http://www.snik.eu/ontology/","s:") as ?p
-  //  replace(str(?d),"http://www.snik.eu/ontology/","s:") as ?d
-  //  replace(str(?g),"http://www.snik.eu/ontology/","s:") as ?g
+
   const propertyQuery =
   `select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
   ${froms}
