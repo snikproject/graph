@@ -92,20 +92,37 @@ function combineMatch(enabled)
   {
     const comp = components[i];
     if(comp.length===1) {continue;}
+
     const id = 'parent'+i;
+    let labels = {};
+    const nodes = comp.nodes();
+
+    for(let j=0; j < nodes.length ;j++) {labels = {...labels,...nodes[j].data("l")};}
+
+    const priorities = {"jkbb":0, "ob": 1, "he": 2, "it4it": 3, "ciox": 4};
+    const priority = prefix =>
+    {
+      const p = priorities[prefix];
+      return p?p:99; // prevent null value on new prefix
+    };
+    nodes.sort((a,b)=>priority(a.data(NODE.PREFIX))-priority(b.data(NODE.PREFIX)));
+
     graph.cy.add({
       group: 'nodes',
-      data: { id: id },
-      position: { x: 0, y: 0 },
+      data: { id: id,   l: labels },
     });
     const parent = graph.cy.getElementById(id);
     parents.add(parent);
-    const nodes = comp.nodes();
-    for(let j=0; j < nodes.length ;j++)
-    {
-      nodes[j].move({parent:id});
-    }
+
+    for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
+
+    // nearby but not exactly the same spot
+    nodes.positions(nodes[0].position());
+    // position in a circle around the first node
+    for(let j=1; j < nodes.length ;j++) {nodes[j].shift({x: 100*Math.cos(2*Math.PI*j/(nodes.length-1)), y: 100*Math.sin(2*Math.PI*j/(nodes.length-1))});}
   }
+
+
   //const closeMatchNodes = closeMatchEdges.connectedNodes();
 }
 
@@ -131,8 +148,8 @@ Each menu element is an object with a "label", unique "id" and an "entries" arra
 entries is an array of arrays of size two.
 entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed.
 entries[i][1] is a label as a string.
- * @return {Object} the array of menu elements.
- */
+* @return {Object} the array of menu elements.
+*/
 function menuData()
 {
   return [
@@ -201,28 +218,28 @@ function menuData()
       "label": "Language",
       "i18n": "language",
       "entries":
-      [
-        [()=>setLanguage(NODE.LABEL_ENGLISH),"english","english"],
-        [()=>setLanguage(NODE.LABEL_GERMAN),"german","german"],
-        [()=>setLanguage(NODE.LABEL_PERSIAN),"persian","persian"],
-      ],
+          [
+            [()=>setLanguage(NODE.LABEL_ENGLISH),"english","english"],
+            [()=>setLanguage(NODE.LABEL_GERMAN),"german","german"],
+            [()=>setLanguage(NODE.LABEL_PERSIAN),"persian","persian"],
+          ],
     },
     {
       "label": "Help",
       "i18n": "help",
       "entries":
-      [
-        ["manual.html","Manual"],
-        ["http://www.snik.eu/de/snik-tutorial.pdf","Tutorial"],
-        ["layoutHelp.html","Layout Help"],
-        ["https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured","YouTube Channel"],
-        ["troubleshooting.html","Troubleshooting"],
-        ["contribute.html","Contribute"],
-        ["http://www.snik.eu/","Project Homepage"],
-        [about,"About SNIK Graph"],
-        ["https://github.com/IMISE/snik-ontology/issues","Submit Feedback about the Ontology"],
-        [visualizationFeedback,"Submit Feedback about the Visualization"],
-      ],
+          [
+            ["manual.html","Manual"],
+            ["http://www.snik.eu/de/snik-tutorial.pdf","Tutorial"],
+            ["layoutHelp.html","Layout Help"],
+            ["https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured","YouTube Channel"],
+            ["troubleshooting.html","Troubleshooting"],
+            ["contribute.html","Contribute"],
+            ["http://www.snik.eu/","Project Homepage"],
+            [about,"About SNIK Graph"],
+            ["https://github.com/IMISE/snik-ontology/issues","Submit Feedback about the Ontology"],
+            [visualizationFeedback,"Submit Feedback about the Visualization"],
+          ],
     },
   ];
 }
@@ -231,12 +248,12 @@ function menuData()
 function addOptions()
 {
   util.getElementById("options-menu-content").innerHTML =
-  `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span data-i18n="separate-subs">separate subontologies</span></span>
-  <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span data-i18n="cumulative-search">cumulative search</span></span>
-  <span class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="on"/><span data-i18n="day-mode">day mode</span></span>
-  <span class="dropdown-entry"><input type="checkbox" id="dev-mode-checkbox" autocomplete="off"/><span data-i18n="dev-mode">dev mode</span></span>
-  <span class="dropdown-entry"><input type="checkbox" id="ext-mode-checkbox" autocomplete="off"/><span data-i18n="ext-mode">extended mode</span></span>
-  <span class="dropdown-entry"><input type="checkbox" id="combine-match-checkbox" autocomplete="off"/><span data-i18n="combine-match">combine matches</span></span>`;
+      `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span data-i18n="separate-subs">separate subontologies</span></span>
+      <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span data-i18n="cumulative-search">cumulative search</span></span>
+      <span class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="on"/><span data-i18n="day-mode">day mode</span></span>
+      <span class="dropdown-entry"><input type="checkbox" id="dev-mode-checkbox" autocomplete="off"/><span data-i18n="dev-mode">dev mode</span></span>
+      <span class="dropdown-entry"><input type="checkbox" id="ext-mode-checkbox" autocomplete="off"/><span data-i18n="ext-mode">extended mode</span></span>
+      <span class="dropdown-entry"><input type="checkbox" id="combine-match-checkbox" autocomplete="off"/><span data-i18n="combine-match">combine matches</span></span>`;
   /** @type {HTMLInputElement} */
   const separateSubs = util.getElementById("separate-subs-checkbox");
   separateSubs.addEventListener("change",()=>{log.debug("Set separate Subontologies to "+separateSubs.checked);});
@@ -340,7 +357,7 @@ export function addMenu()
 window.onclick = function(e)
 {
   if (e&&e.target&&e.target.matches&&!e.target.matches('.dropdown-entry')&&!e.target.matches('.dropdown-menu')
-  &&!e.target.matches('input.filterbox')) // don't close while user edits the text field of the custom filter
+      &&!e.target.matches('input.filterbox')) // don't close while user edits the text field of the custom filter
   {
     const dropdowns = document.getElementsByClassName("dropdown-content");
     for (let d = 0; d < dropdowns.length; d++)

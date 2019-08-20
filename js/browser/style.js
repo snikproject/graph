@@ -117,6 +117,13 @@ const style =
       },
     },
     {
+      'selector': 'edge',
+      'css':
+      {
+        'z-compound-depth': 'bottom',
+      },
+    },
+    {
       'selector': 'edge:unselected',
       'css':
       {
@@ -174,9 +181,15 @@ const style =
     },
     {
       'selector': '$node > node', // compound nodes
-      'css': {
-        'background-color': '#ff0000',
+      'css':
+      {
         'shape': 'rectangle',
+        'border-width': 10.0,
+        'text-valign': 'top',
+        'text-margin-y': '-0.7em', // above border
+        'min-zoomed-font-size': 7.5,
+        'font-size': 16,
+        'background-opacity': '0', // colorless
       },
     },
 
