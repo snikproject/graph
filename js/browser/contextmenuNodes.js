@@ -13,8 +13,25 @@ import {logWrap,menuDefaults} from "./contextmenuUtil.js";
 const menu = Object.assign(menuDefaults(),
   {
     menuRadius: 220, // the radius of the circular menu in pixels
-    selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
+    selector: 'node:childless', // elements matching this Cytoscape.js selector will trigger cxtmenus
     commands: [],
+  });
+
+const compoundMenu = Object.assign(menuDefaults(),
+  {
+    menuRadius: 180, // the radius of the circular menu in pixels
+    selector: 'node:compound', // elements matching this Cytoscape.js selector will trigger cxtmenus
+    commands:
+  [
+    {
+      content: 'open',
+      select: node=>
+      {
+        node.children().move({parent:null});
+        graph.cy.remove(node);
+      },
+    },
+  ],
   });
 
 /** Default Entries that are always shown ***********************************************************************************/
@@ -108,32 +125,32 @@ const devCommands =
         .then(bindings=>
         {
           const body = `Please permanently delete the class ${clazzShort}:
-    \`\`\`
-    sparql
-    # WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} FROM THE GRAPH AS EITHER SUBJECT OR OBJECT
-    # ALWAYS CREATE A BACKUP BEFORE THIS OPERATION AS A MISTAKE MAY DELETE THE WHOLE GRAPH.
-    # THERE MAY BE DATA LEFT OVER IN OTHER GRAPHS, SUCH AS <http://www.snik.eu/ontology/limes-exact> or <http://www.snik.eu/ontology/match>.
-    # THERE MAY BE LEFTOVER DATA IN AXIOMS OR ANNOTATIONS, CHECK THE UNDO DATA FOR SUCH THINGS.
+          \`\`\`
+          sparql
+          # WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} FROM THE GRAPH AS EITHER SUBJECT OR OBJECT
+          # ALWAYS CREATE A BACKUP BEFORE THIS OPERATION AS A MISTAKE MAY DELETE THE WHOLE GRAPH.
+          # THERE MAY BE DATA LEFT OVER IN OTHER GRAPHS, SUCH AS <http://www.snik.eu/ontology/limes-exact> or <http://www.snik.eu/ontology/match>.
+          # THERE MAY BE LEFTOVER DATA IN AXIOMS OR ANNOTATIONS, CHECK THE UNDO DATA FOR SUCH THINGS.
 
-    DELETE DATA FROM <${rdf.longPrefix(node.data(NODE.ID))}>
-    {
-    {<${node.data(NODE.ID)}> ?p ?y.} UNION {?x ?p <${node.data(NODE.ID)}>.}
-    }
-    \`\`\`
-    **Warning: Restoring a class with the following triples is not guaranteed to work and may have unintended consequences if other edits occur between the deletion and restoration.
-    This only contains the triples from graph ${rdf.longPrefix(node.data(NODE.ID))}.**
+          DELETE DATA FROM <${rdf.longPrefix(node.data(NODE.ID))}>
+          {
+            {<${node.data(NODE.ID)}> ?p ?y.} UNION {?x ?p <${node.data(NODE.ID)}>.}
+          }
+          \`\`\`
+          **Warning: Restoring a class with the following triples is not guaranteed to work and may have unintended consequences if other edits occur between the deletion and restoration.
+          This only contains the triples from graph ${rdf.longPrefix(node.data(NODE.ID))}.**
 
-    Undo based on these triples:
-    \`\`\`
-    ${bindings}
-    \`\`\`
-    ${language.CONSTANTS.SPARUL_WARNING}`;
+          Undo based on these triples:
+          \`\`\`
+          ${bindings}
+          \`\`\`
+          ${language.CONSTANTS.SPARUL_WARNING}`;
           window.open
           (
             'https://github.com/IMISE/snik-ontology/issues/new?title='+
-          encodeURIComponent('Remove class '+clazzShort)+
-          '&body='+
-          encodeURIComponent(body)
+            encodeURIComponent('Remove class '+clazzShort)+
+            '&body='+
+            encodeURIComponent(body)
           );
         });
     },
@@ -156,43 +173,43 @@ const devCommands =
 
 /** Extended Base Entries that are used less often **********************************************************************************/
 const extCommands =
-[
-  {
-    content: 'doublestar',
-    select: node=>
+  [
     {
-      if(graph.getSource()&&graph.getSource()!==node)
+      content: 'doublestar',
+      select: node=>
       {
-        graph.showDoubleStar(graph.getSource(), node);
-      }
+        if(graph.getSource()&&graph.getSource()!==node)
+        {
+          graph.showDoubleStar(graph.getSource(), node);
+        }
+      },
     },
-  },
-  {
-    content: 'starpath',
-    select: node=>
     {
-      if(graph.getSource()&&graph.getSource()!==node)
+      content: 'starpath',
+      select: node=>
       {
-        graph.showPath(graph.getSource(), node,true);
-      }
+        if(graph.getSource()&&graph.getSource()!==node)
+        {
+          graph.showPath(graph.getSource(), node,true);
+        }
+      },
     },
-  },
-  {
-    content: 'circle star',
-    select: node=> {graph.showStar(node,true);},
-  },
-  {
-    content: 'LodLive',
-    select: node=> {window.open('http://en.lodlive.it/?'+node.data(NODE.ID));},
-  },
-];
+    {
+      content: 'circle star',
+      select: node=> {graph.showStar(node,true);},
+    },
+    {
+      content: 'LodLive',
+      select: node=> {window.open('http://en.lodlive.it/?'+node.data(NODE.ID));},
+    },
+  ];
 
 /** Register modular node context menu. */
 export default function nodeMenus(dev,ext)
 {
   menu.commands = [...baseCommands,...dev?devCommands:[],...ext?extCommands:[]];
   menu.menuRadius = 220 + (dev?15:0) + (ext?25:0);
-  return [menu];
+  return [menu,compoundMenu];
 }
 
 
