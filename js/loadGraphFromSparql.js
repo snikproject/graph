@@ -184,6 +184,7 @@ export default function loadGraphFromSparql(cy,subs)
   return Promise.all([nodePromise,edgePromise]).then(()=>
   {
     cy.add(edges);
+    cy.elements().addClass("unfiltered");
   }
   );
 }

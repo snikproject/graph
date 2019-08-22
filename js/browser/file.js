@@ -26,6 +26,7 @@ export function loadGraph(event)
   {
     graph.cy.elements().remove();
     graph.cy.add(json);
+    graph.cy.elements().addClass("unfiltered");
   });
 }
 

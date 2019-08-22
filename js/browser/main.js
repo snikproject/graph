@@ -87,8 +87,7 @@ function main()
 
     try
     {
-      await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));
-      graph.cy.elements().addClass("unfiltered");
+      await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));      
       layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,menu.separateSubs());
 
       const url = new URL(window.location.href);
