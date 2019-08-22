@@ -59,9 +59,9 @@ function main()
   progress(async ()=>
   {
     console.groupCollapsed("Initializing");
-    menu.addMenu();
     log.debug('Menu added');
     graph.initGraph();
+    menu.addMenu();
     registerContextMenu(util.getElementById("dev-mode-checkbox").checked,util.getElementById("ext-mode-checkbox").checked);
 
     window.addEventListener('keydown', e=>

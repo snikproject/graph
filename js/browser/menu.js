@@ -250,7 +250,7 @@ function addOptions()
   util.getElementById("options-menu-content").innerHTML =
       `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span data-i18n="separate-subs">separate subontologies</span></span>
       <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span data-i18n="cumulative-search">cumulative search</span></span>
-      <span class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="on"/><span data-i18n="day-mode">day mode</span></span>
+      <span class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="off"/><span data-i18n="day-mode">day mode</span></span>
       <span class="dropdown-entry"><input type="checkbox" id="dev-mode-checkbox" autocomplete="off"/><span data-i18n="dev-mode">dev mode</span></span>
       <span class="dropdown-entry"><input type="checkbox" id="ext-mode-checkbox" autocomplete="off"/><span data-i18n="ext-mode">extended mode</span></span>
       <span class="dropdown-entry"><input type="checkbox" id="combine-match-checkbox" autocomplete="off"/><span data-i18n="combine-match">combine matches</span></span>`;
@@ -260,12 +260,15 @@ function addOptions()
   /** @type {HTMLInputElement} */
   const dayMode = util.getElementById("day-mode-checkbox");
   dayMode.addEventListener("change",()=>{graph.invert(dayMode.checked);log.debug("Set dayMode to "+dayMode.checked);});
+  if(config.activeOptions.includes("day")) {dayMode.click();}
   /** @type {HTMLInputElement} */
   const devMode = util.getElementById("dev-mode-checkbox");
   /** @type {HTMLInputElement} */
   const extMode = util.getElementById("ext-mode-checkbox");
   devMode.addEventListener("change",()=>{log.debug("Set devMode to "+devMode.checked);registerContextMenu(devMode.checked,extMode.checked);});
   extMode.addEventListener("change",()=>{log.debug("Set extMode to "+extMode.checked);registerContextMenu(devMode.checked,extMode.checked);});
+  if(config.activeOptions.includes("ext")) {extMode.click();}
+  if(config.activeOptions.includes("dev")) {devMode.click();}
   /** @type {HTMLInputElement} */
   const cumuSearch = util.getElementById("cumulative-search-checkbox");
   cumuSearch.addEventListener("change",()=>{log.debug("Set cumulative search to "+cumuSearch.checked);});
