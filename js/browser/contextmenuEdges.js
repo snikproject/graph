@@ -38,17 +38,17 @@ const devCommands = [
     {
       graph.cy.remove(edge);
       const body = `Please permanently delete the edge ${edgeLabel(edge)}:
-\`\`\`
+\`\`\`\n
 sparql
 DELETE DATA FROM <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-\`\`\`
+\n\`\`\`
 Undo with
-\`\`\`
+\`\`\`\n
 sparql
 INSERT DATA INTO <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-\`\`\`
+\n\`\`\`
 ${language.CONSTANTS.SPARUL_WARNING}`;
       util.createGitHubIssue(util.REPO_ONTOLOGY,edgeLabel(edge),body);
     },
@@ -78,21 +78,21 @@ const limesCommands =
     {
       edge.data(EDGE.GRAPH,"http://www.snik.eu/ontology/match");
       const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
-\`\`\`
+\`\`\`\n
 sparql
 DELETE DATA FROM <http://www.snik.eu/ontology/limes-exact>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
 INSERT DATA INTO <http://www.snik.eu/ontology/match>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-\`\`\`
+\n\`\`\`
 Undo with
-\`\`\`
+\`\`\`\n
 sparql
 DELETE DATA FROM <http://www.snik.eu/ontology/match>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
 INSERT DATA INTO <http://www.snik.eu/ontology/limes-exact>
 {<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-\`\`\`
+\n\`\`\`
 ${language.CONSTANTS.SPARUL_WARNING}`;
       util.createGitHubIssue(util.REPO_ONTOLOGY,edgeLabel(edge),body);
     },

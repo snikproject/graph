@@ -37,7 +37,7 @@ function main()
   );
 
   log.setLevel(config.logLevelConsole);
-  const funcs = ["error","warn","info","debug"]; // keep trace out of the persistant log as it is too verbose
+  const funcs = ["error","warn","info"]; // keep trace and debug out of the persistant log as they are too verbose
   for(const f of funcs)
   {
     const tmp = log[f];
@@ -87,7 +87,7 @@ function main()
 
     try
     {
-      await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));      
+      await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));
       layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,menu.separateSubs());
 
       const url = new URL(window.location.href);

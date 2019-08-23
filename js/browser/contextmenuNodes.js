@@ -125,7 +125,7 @@ const devCommands =
         .then(bindings=>
         {
           const body = `Please permanently delete the class ${clazzShort}:
-          \`\`\`
+          \`\`\`\n
           sparql
           # WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} FROM THE GRAPH AS EITHER SUBJECT OR OBJECT
           # ALWAYS CREATE A BACKUP BEFORE THIS OPERATION AS A MISTAKE MAY DELETE THE WHOLE GRAPH.
@@ -136,14 +136,14 @@ const devCommands =
           {
             {<${node.data(NODE.ID)}> ?p ?y.} UNION {?x ?p <${node.data(NODE.ID)}>.}
           }
-          \`\`\`
+          \n\`\`\`
           **Warning: Restoring a class with the following triples is not guaranteed to work and may have unintended consequences if other edits occur between the deletion and restoration.
           This only contains the triples from graph ${rdf.longPrefix(node.data(NODE.ID))}.**
 
           Undo based on these triples:
-          \`\`\`
+          \`\`\`\n
           ${bindings}
-          \`\`\`
+          \n\`\`\`
           ${language.CONSTANTS.SPARUL_WARNING}`;
           window.open
           (

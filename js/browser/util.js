@@ -3,7 +3,7 @@ Various utility methods.s
 @module */
 
 
-const LOG_LIMIT = 6000;
+const LOG_LIMIT = 500;
 
 /** getElementById with exception handling. */
 export function getElementById(id)
@@ -42,7 +42,7 @@ export function createGitHubIssue(repo,title,body,logs)
       encodedLogs.shift();
       encodedLog = encodedLogs.reduce((a,b)=>a+"%0A"+b);
     }
-    encodedBody+="%0A%60%60%60"+encodedLog+"%60%60%60";
+    encodedBody+="%0A%60%60%60%0A"+encodedLog+"%0A%60%60%60";
   }
   window.open(`${repo}/issues/new?title=${encodeURIComponent(title)}&body=${encodedBody}`);
 }
