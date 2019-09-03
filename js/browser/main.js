@@ -87,11 +87,30 @@ function main()
 
     try
     {
+      const url = new URL(window.location.href);
+      const empty = url.searchParams.get("empty");
+      const clazz = url.searchParams.get("class");
+
+      if(empty)
+      {
+        log.info(`Parameter "empty" detected. Skip SPARQL loading and display file load prompt.`);
+        const loadArea = document.getElementById("loadarea");
+        loadArea.innerHTML +=
+        `
+        <center id="load-area">
+          <button id="load-button" style="font-size:10vh;margin-top:20vh">Datei Laden
+            <input id="load-input" type="file" style="display:none"></input>
+          </button>
+        </center>`;
+        const loadInput = document.getElementById("load-input");
+        document.getElementById("load-button").onclick=()=>{loadInput.click();};
+        loadInput.addEventListener("change",(event)=>{loadArea.innerHTML="";file.loadGraph(event);});
+        return;
+      }
+
       await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));
       layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,menu.separateSubs());
 
-      const url = new URL(window.location.href);
-      const clazz = url.searchParams.get("class");
       if(clazz)
       {
         log.info(`Parameter "class" detected. Centering on URI ${clazz}.`);
