@@ -90,6 +90,7 @@ function main()
       const url = new URL(window.location.href);
       const empty = url.searchParams.get("empty");
       const clazz = url.searchParams.get("class");
+      const load = url.searchParams.get("load");
 
       if(empty)
       {
@@ -107,8 +108,16 @@ function main()
         loadInput.addEventListener("change",(event)=>{loadArea.innerHTML="";file.loadGraph(event);});
         return;
       }
+      if(load)
+      {
+        const json = await (await fetch(load)).json();
+        console.log(json);
+        graph.cy.add(json);
+        layout.run(graph.cy,layout.euler);
+        return;
+      }
 
-      await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));
+      {await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));}
       layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,menu.separateSubs());
 
       if(clazz)
