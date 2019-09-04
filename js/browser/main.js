@@ -111,7 +111,6 @@ function main()
       if(load)
       {
         const json = await (await fetch(load)).json();
-        console.log(json);
         graph.cy.add(json);
         layout.run(graph.cy,layout.euler);
         return;
