@@ -7,6 +7,7 @@ See http://js.cytoscape.org/#style/visibility.
 @module
 */
 import * as NODE from "../node.js";
+import {checkboxKeydownListener} from "./util.js";
 
 const filterData = [
   [`node[${NODE.PREFIX}='meta']`,`meta`],
@@ -56,6 +57,9 @@ class Filter
     this.a.classList.add("dropdown-entry");
     this.a.appendChild(input);
     this.a.appendChild(document.createTextNode(label));
+    this.a.setAttribute("tabindex",-1);
+    this.a.addEventListener("keydown",checkboxKeydownListener(input));
+
     this.cssClass = `filter-${label}`;
     this.visible = true;
     // Does not apply to elements that get added later, so only use if you don't add elements to the graph. Alternative if you want to use this update this after adding something.
@@ -110,13 +114,15 @@ class Filter
 Add filter entries to the filter menu.
 @param {cytoscape.Core} cy the cytoscape graph
 @param {HTMLElement} parent the parent element to attach the entries to
+@param {array} as an empty array of anchors to be filled
 */
-function addFilterEntries(cy, parent)
+function addFilterEntries(cy, parent,as)
 {
   for(const datum of filterData)
   {
     const filter = new Filter(cy,datum[0],datum[1]);
     parent.appendChild(filter.a);
+    as.push(filter.a);
   }
 }
 

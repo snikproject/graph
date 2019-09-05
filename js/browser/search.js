@@ -144,4 +144,5 @@ export function addSearch()
     // @ts-ignore
     showSearch(event.target.children.query.value);
   });
+  log.debug('search initialized');
 }

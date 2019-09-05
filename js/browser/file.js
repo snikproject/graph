@@ -46,21 +46,23 @@ Add an upload entry to the file menu.
 @param {string} description the text of the menu item
 @param {function} func the function to be executed when the user clicks on the menu entry
 */
-function addLoadEntry(parent,i18n,description,func)
+function addLoadEntry(parent,i18n,description,func,as)
 {
-  const span = document.createElement("span");
-  span.classList.add("dropdown-entry");
-  parent.prepend(span);
+  const a = document.createElement("a");
+  as.push(a);
+  a.classList.add("dropdown-entry");
+  a.setAttribute("tabindex",-1);
+  parent.appendChild(a);
   const input = document.createElement("input");
   input.type="file";
   input.style.display="none";
-  span.appendChild(input);
+  a.appendChild(input);
   const inner = document.createElement("span");
   inner.innerText=description;
   inner.setAttribute("data-i18n",i18n);
-  span.appendChild(inner);
+  a.appendChild(inner);
   // click event needs to trigger at the hidden input element so that it opens the file chooser dialog
-  span.addEventListener("click",()=>input.click());
+  a.addEventListener("click",()=>input.click());
   // completed file chooser dialog triggers change event
   input.addEventListener("change",func);
 }
@@ -71,8 +73,8 @@ Add upload entries to the file menu.
 Cannot use the simpler default menu creation method because file upload only works with an input.
 @param {Element} parent the parent element of the menu
 */
-export function addFileLoadEntries(parent)
+export function addFileLoadEntries(parent,as)
 {
-  addLoadEntry(parent,"load-layout","Load Layout",loadLayout);
-  addLoadEntry(parent,"load-graph-with-layout","Load Graph File with Layout",loadGraph);
+  addLoadEntry(parent,"load-layout","Load Layout",loadLayout,as);
+  addLoadEntry(parent,"load-graph-with-layout","Load Graph File with Layout",loadGraph,as);
 }

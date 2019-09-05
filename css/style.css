@@ -62,7 +62,7 @@ li a
     padding: 5px 16px;
 }
 
-.dropdown-menu:hover, .dropdown-entry:hover {
+.dropdown-menu:hover, .dropdown-entry:hover, .dropdown-entry:focus {
     background-color: #550000;
 }
 

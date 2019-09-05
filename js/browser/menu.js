@@ -12,6 +12,9 @@ import config from "../config.js";
 import progress from "./progress.js";
 import {registerContextMenu} from "./contextmenu.js";
 import {showChapterSearch} from "./chaptersearch.js";
+import addFilterEntries from "./filter.js";
+import * as file from "./file.js";
+
 
 /** @return whether subontologies are to be displayed separately. */
 export function separateSubs()
@@ -133,7 +136,6 @@ function showCloseMatches()
   const visible = graph.cy.elements('.unfiltered').not('.hidden');
   //const closeMatchEdges = graph.cy.edges('[pl="closeMatch"]');
   const newEdges = visible.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
-  console.log(newEdges);
   graph.show(newEdges);
   graph.show(newEdges.connectedNodes(".unfiltered"));
   log.debug("show close matches end");
@@ -244,16 +246,43 @@ function menuData()
   ];
 }
 
-/** Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.*/
-function addOptions()
+/** @param as an empty array that will be filled with the anchor elements
+    Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.*/
+function addOptions(as)
 {
-  util.getElementById("options-menu-content").innerHTML =
-      `<span class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span data-i18n="separate-subs">separate subontologies</span></span>
-      <span class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span data-i18n="cumulative-search">cumulative search</span></span>
-      <span class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="off"/><span data-i18n="day-mode">day mode</span></span>
-      <span class="dropdown-entry"><input type="checkbox" id="dev-mode-checkbox" autocomplete="off"/><span data-i18n="dev-mode">dev mode</span></span>
-      <span class="dropdown-entry"><input type="checkbox" id="ext-mode-checkbox" autocomplete="off"/><span data-i18n="ext-mode">extended mode</span></span>
-      <span class="dropdown-entry"><input type="checkbox" id="combine-match-checkbox" autocomplete="off"/><span data-i18n="combine-match">combine matches</span></span>`;
+  const optionsContent = util.getElementById("options-menu-content");
+  const names = ["separate-subs","cumulative-search","day-mode","dev-mode","ext-mode","combine-match"];
+  for(const name of names)
+  {
+    const a = document.createElement("a");
+    as.push(a);
+    optionsContent.appendChild(a);
+    a.setAttribute("tabindex",-1);
+    a.classList.add("dropdown-entry");
+
+    const box = document.createElement("input");
+    a.appendChild(box);
+    box.type="checkbox";
+    box.autocomplete="off";
+    box.id=name+"-checkbox";
+
+    a.addEventListener("keydown",util.checkboxKeydownListener(box));
+
+    const span = document.createElement("span");
+    a.appendChild(span);
+    span.setAttribute("data-i18n",name);
+    span.innerText=language.getString(name);
+  }
+  /*
+      "options-menu-content").innerHTML =
+      `<a class="dropdown-entry"><input type="checkbox" id="separate-subs-checkbox" autocomplete="off"/><span data-i18n="separate-subs">separate subontologies</span></a>
+      <a class="dropdown-entry"> <input type="checkbox" id="cumulative-search-checkbox" autocomplete="off"/><span data-i18n="cumulative-search">cumulative search</span></a>
+      <a class="dropdown-entry"><input type="checkbox" id="day-mode-checkbox" autocomplete="off"/><span data-i18n="day-mode">day mode</span></a>
+      <a class="dropdown-entry"><input type="checkbox" id="dev-mode-checkbox" autocomplete="off"/><span data-i18n="dev-mode">dev mode</span></a>
+      <a class="dropdown-entry"><input type="checkbox" id="ext-mode-checkbox" autocomplete="off"/><span data-i18n="ext-mode">extended mode</span></a>
+      <a class="dropdown-entry"><input type="checkbox" id="combine-match-checkbox" autocomplete="off"/><span data-i18n="combine-match">combine matches</span></a>`;
+      */
+
   /** @type {HTMLInputElement} */
   const separateSubs = util.getElementById("separate-subs-checkbox");
   separateSubs.addEventListener("change",()=>{log.debug("Set separate Subontologies to "+separateSubs.checked);});
@@ -284,19 +313,26 @@ function addOptions()
 /** Adds the menu to the DOM element with the "top" id and sets up the event listeners. */
 export function addMenu()
 {
+  console.groupCollapsed("Add menu");
   //const frag = new DocumentFragment();
   const ul = document.createElement("ul");
   ul.classList.add("dropdown-bar");
   // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
   ul.setAttribute("tabindex","0");
 
-  for(const menuDatum of menuData())
+  const data = menuData();
+  const spans = [];
+  const aas = []; // 2-dimensional array of anchors
+
+  for(let i=0; i<data.length; i++)
   {
+    const menuDatum = data[i];
     const li = document.createElement("li");
     li.setAttribute("tabindex","-1");
     ul.appendChild(li);
 
     const span = document.createElement("span");
+    spans.push(span);
     li.appendChild(span);
     span.classList.add("dropdown-menu");
     span.innerText=menuDatum.label;
@@ -318,11 +354,13 @@ export function addMenu()
       div.classList.toggle("show");
     });
 
-    //li.addEventListener("click",()=>div.style.display=(div.style.display==="block"?"none":"block"));
+    const as = [];
+    aas.push(as);
 
     for(const entry of menuDatum.entries)
     {
       const a = document.createElement("a");
+      as.push(a);
       a.classList.add("dropdown-entry");
       a.setAttribute("data-i18n",entry[2]);
       a.setAttribute("tabindex","-1");
@@ -351,25 +389,75 @@ export function addMenu()
         default: log.error("unknown menu entry action type: "+typeof entry[0]);
       }
     }
+    span.addEventListener("keydown",(event)=>
+    {
+      switch(event.key)
+      {
+        case "ArrowLeft":
+          spans[(i-1+spans.length)%spans.length].focus(); // positive modulo
+          spans[(i-1+spans.length)%spans.length].click();
+          break;
+        case "ArrowRight":
+          spans[(i+1)%spans.length].focus();
+          spans[(i+1)%spans.length].click();
+          break;
+        case "ArrowDown":
+          as[0].focus();
+          break;
+      }
+    });
   }
   util.getElementById("top").prepend(ul);
-  addOptions();
+
+  file.addFileLoadEntries(util.getElementById("file-menu-content"),aas[0]); // update index when "File" position changes in the menu
+  log.debug('fileLoadEntries added');
+
+  addFilterEntries(graph.cy,util.getElementById("filter-menu-content"),aas[1]);  // update index when "Filter" position changes in the menu
+  log.debug('filter entries added');
+
+  addOptions(aas[2]); // update index when "Options" position changes in the menu
+
+
+  for(let i=0; i<aas.length; i++)
+  {
+    const as = aas[i];
+    for(let j=0; j<as.length; j++)
+    {
+      as[j].addEventListener("keydown",(event)=>
+      {
+        switch(event.key)
+        {
+          case "ArrowLeft":
+            spans[(i-1+spans.length)%spans.length].focus(); // positive modulo
+            spans[(i-1+spans.length)%spans.length].click();
+            break;
+          case "ArrowRight":
+            spans[(i+1)%spans.length].focus();
+            spans[(i+1)%spans.length].click();
+            break;
+          case "ArrowUp":
+            as[(j-1+as.length)%as.length].focus();
+            break;
+          case "ArrowDown":
+            as[(j+1)%as.length].focus();
+            break;
+        }
+      });
+    }
+  }
+
+  log.debug('Menu added');
+  console.groupEnd();
 }
 
-// Close the dropdown if the user clicks outside of the menu
-window.onclick = function(e)
+/** Close the dropdown if the user clicks outside of the menu */
+function closeListener(e)
 {
   if (e&&e.target&&e.target.matches&&!e.target.matches('.dropdown-entry')&&!e.target.matches('.dropdown-menu')
       &&!e.target.matches('input.filterbox')) // don't close while user edits the text field of the custom filter
   {
     const dropdowns = document.getElementsByClassName("dropdown-content");
-    for (let d = 0; d < dropdowns.length; d++)
-    {
-      const openDropdown = dropdowns[d];
-      if (openDropdown.classList.contains('show'))
-      {
-        openDropdown.classList.remove('show');
-      }
-    }
+    Array.from(dropdowns).forEach(d=>d.classList.remove('show'));
   }
-};
+}
+window.addEventListener("click",closeListener);

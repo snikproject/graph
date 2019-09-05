@@ -66,4 +66,5 @@ export default function addButtons()
     button.setAttribute("data-i18n",buttonConfig[1]);
     button.addEventListener("click",buttonConfig[2]);
   }
+  log.debug('buttons added');
 }

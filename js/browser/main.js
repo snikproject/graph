@@ -2,12 +2,12 @@
 Entry point.
 @module */
 import loadGraphFromSparql from "../loadGraphFromSparql.js";
-import addFilterEntries from "./filter.js";
 import * as menu from "./menu.js";
 import * as search from "./search.js";
 import addButtons from "./button.js";
+import {loadGraph} from "./file.js";
+
 import * as graph from "./graph.js";
-import * as file from "./file.js";
 import * as layout from "../layout.js";
 import progress from "./progress.js";
 import config from "../config.js";
@@ -59,31 +59,16 @@ function main()
   progress(async ()=>
   {
     console.groupCollapsed("Initializing");
-    log.debug('Menu added');
+
     graph.initGraph();
+
     menu.addMenu();
+
     registerContextMenu(util.getElementById("dev-mode-checkbox").checked,util.getElementById("ext-mode-checkbox").checked);
 
-    window.addEventListener('keydown', e=>
-    {
-      if((e.key==='Escape'||e.key==='Esc'||e.keyCode===27))// && (e.target.nodeName==='BODY'))
-      {
-        e.preventDefault();
-        return false;
-      }
-    }, true);
-
-    console.groupCollapsed("Add menu");
-
-    addFilterEntries(graph.cy,util.getElementById("filter-menu-content"));
-    log.debug('filter entries added');
-    file.addFileLoadEntries(util.getElementById("file-menu-content"));
-    log.debug('fileLoadEntries added');
-    search.addSearch();
-    log.debug('search field added');
     addButtons();
-    log.debug('buttons added');
-    console.groupEnd();
+
+    search.addSearch();
 
     try
     {
@@ -105,7 +90,7 @@ function main()
         </center>`;
         const loadInput = document.getElementById("load-input");
         document.getElementById("load-button").onclick=()=>{loadInput.click();};
-        loadInput.addEventListener("change",(event)=>{loadArea.innerHTML="";file.loadGraph(event);});
+        loadInput.addEventListener("change",(event)=>{loadArea.innerHTML="";loadGraph(event);});
         return;
       }
       if(load)

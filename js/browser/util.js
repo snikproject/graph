@@ -46,3 +46,14 @@ export function createGitHubIssue(repo,title,body,logs)
   }
   window.open(`${repo}/issues/new?title=${encodeURIComponent(title)}&body=${encodedBody}`);
 }
+
+export const checkboxKeydownListener = (box) => (e)=>
+{
+  switch(e.key)
+  {
+    case " ":
+    case "Enter":
+      box.click();
+//      box.checked = !box.checked;
+  }
+};
