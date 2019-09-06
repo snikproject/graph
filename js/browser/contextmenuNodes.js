@@ -54,7 +54,7 @@ const baseCommands =
   },
   {
     content: 'hide',
-    select: node=> {graph.hide(node);},
+    select: node=> {graph.hide(node);graph.hide(node.connectedEdges());},
   },
   {
     content: 'set as path source',
