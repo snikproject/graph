@@ -42,15 +42,14 @@ function emptyPromise()
 
 /** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
 @param{cytoscape.Core} cy the cytoscape graph to load the data into
-@param{string[]} subs subontologies to load.
+@param{string[]} graphs subontologies to load.
 @example
 loadGraphFromSparql(cy,new Set(["meta","bb"]))
 */
-export default function loadGraphFromSparql(cy,subs)
+export default function loadGraphFromSparql(cy,graphs,endpoint)
 {
-  const rdfGraphs = [...config.helperGraphs,...subs];
-  const froms = rdfGraphs.map(sub=>`FROM <http://www.snik.eu/ontology/${sub}>`).reduce((a,b)=>a+"\n"+b);
-  console.log(froms);
+  log.info(`Loading graph from endpoint ${endpoint} with graphs ${graphs}.`);
+  const froms = graphs.map(graph=>`FROM <${graph}>`).reduce((a,b)=>a+"\n"+b,"");
   const fromNamed = froms.replace(/FROM/g,"FROM NAMED");
   cy.elements().remove();
   // Optimization failed, was actually slower. Great example of premature optimization.
@@ -61,8 +60,20 @@ export default function loadGraphFromSparql(cy,subs)
   // only show classes with labels
   // too slow, remove isolated nodes in post processing
   // #{?c ?p ?o.} UNION {?o ?p ?c}.
-  const classQuery =
+  const classQuerySimple =
   `select ?c
+  group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
+  ${froms}
+  {
+    ?c a owl:Class.
+    OPTIONAL {?c rdfs:label ?l.}
+  }
+  `;
+  const classQuerySnik =
+  `
+  PREFIX ov: <http://open.vocab.org/terms/>
+  PREFIX meta: <http://www.snik.eu/ontology/meta/>
+  select ?c
   group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
   sample(?st) as ?st
   ?src
@@ -76,29 +87,40 @@ export default function loadGraphFromSparql(cy,subs)
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?inst a ?c.}
   }`;
+  const classQuery = endpoint?classQuerySimple:classQuerySnik;
 
-  const propertyQuery =
+  const propertyQuerySimple =
+  `
+  select  ?c ?p ?d
+  ${froms}
+  {
+    ?c ?p ?d.
+    owl:Class ^a ?c,?d.
+  }`;
+  const propertyQuerySnik =
   `select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
   ${froms}
   ${fromNamed}
   {
-   graph ?g {?c ?p ?d.}
-   owl:Class ^a ?c,?d.
-   filter(?p!=meta:subTopClass)
-   OPTIONAL
-   {
-    ?ax a owl:Axiom;
-        owl:annotatedSource ?c;
-        owl:annotatedProperty ?p;
-        owl:annotatedTarget ?d.
-   }
+    graph ?g {?c ?p ?d.}
+    owl:Class ^a ?c,?d.
+    filter(?p!=meta:subTopClass)
+    OPTIONAL
+    {
+      ?ax a owl:Axiom;
+      owl:annotatedSource ?c;
+      owl:annotatedProperty ?p;
+      owl:annotatedTarget ?d.
+    }
   }`;
+  const propertyQuery = endpoint?propertyQuerySimple:propertyQuerySnik;
+
   const sparqlClassesTimer = timer("sparql-classes");
   const classes = undefined;//localStorage.getItem('classes');
   // if not in cache, load
   const classPromise = (classes===undefined)?
-    sparql.select(classQuery):Promise.resolve(classes);
-  const propertyPromise = sparql.select(propertyQuery);
+    sparql.select(classQuery,null,endpoint):Promise.resolve(classes);
+  const propertyPromise = sparql.select(propertyQuery,null,endpoint);
   const nodePromise = emptyPromise();
   const edgePromise = emptyPromise();
 
@@ -162,7 +184,7 @@ export default function loadGraphFromSparql(cy,subs)
             id: i,
             p: json[i].p.value,//Labels_DE: [json[i].l.value]
             pl: json[i].p.value.replace(/.*[#/]/,""),
-            g: json[i].g.value,
+            g: json[i].g===undefined?null:json[i].g.value,
             ax: json[i].ax===undefined?null:json[i].ax.value,
           },
           //position: { x: 200, y: 200 }

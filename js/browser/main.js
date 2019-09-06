@@ -76,6 +76,8 @@ function main()
       const empty = url.searchParams.get("empty");
       const clazz = url.searchParams.get("class");
       const jsonUrl = url.searchParams.get("json");
+      const endpoint = url.searchParams.get("sparql");
+      const rdfGraph = url.searchParams.get("graph");
 
       if(empty)
       {
@@ -100,8 +102,18 @@ function main()
         layout.run(graph.cy,layout.euler);
         return;
       }
+      if(endpoint)
+      {
+        log.info("Loading from SPARQL Endpoint "+endpoint);
+        const graphs = [];
+        if(rdfGraph) {graphs.push(rdfGraph);}
+        {await loadGraphFromSparql(graph.cy,graphs,endpoint);}
+        layout.run(graph.cy,layout.euler);
+        return;
+      }
 
-      {await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));}
+      const graphs = [...config.helperGraphs,...config.defaultSubOntologies].map(g=>"http://www.snik.eu/ontology/"+g);
+      await loadGraphFromSparql(graph.cy,graphs);
       layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,menu.separateSubs());
 
       if(clazz)
