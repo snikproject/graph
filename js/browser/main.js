@@ -75,11 +75,11 @@ function main()
       const url = new URL(window.location.href);
       const empty = url.searchParams.get("empty");
       const clazz = url.searchParams.get("class");
-      const load = url.searchParams.get("load");
+      const jsonUrl = url.searchParams.get("json");
 
       if(empty)
       {
-        log.info(`Parameter "empty" detected. Skip SPARQL loading and display file load prompt.`);
+        log.info(`Parameter "empty" detected. Skip loading and display file load prompt.`);
         const loadArea = document.getElementById("loadarea");
         loadArea.innerHTML +=
         `
@@ -93,9 +93,9 @@ function main()
         loadInput.addEventListener("change",(event)=>{loadArea.innerHTML="";loadGraph(event);});
         return;
       }
-      if(load)
+      if(jsonUrl)
       {
-        const json = await (await fetch(load)).json();
+        const json = await (await fetch(jsonUrl)).json();
         graph.cy.add(json);
         layout.run(graph.cy,layout.euler);
         return;
