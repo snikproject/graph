@@ -73,7 +73,7 @@ function main()
     try
     {
       const url = new URL(window.location.href);
-      const empty = url.searchParams.get("empty");
+      const empty = (url.searchParams.get("empty")!==null);
       const clazz = url.searchParams.get("class");
       const jsonUrl = url.searchParams.get("json");
       const endpoint = url.searchParams.get("sparql");
