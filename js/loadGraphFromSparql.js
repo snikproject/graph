@@ -2,7 +2,6 @@
 Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.
 @module */
 import * as sparql from "./sparql.js";
-import config from "./config.js";
 import timer from "./timer.js";
 
 /** https://github.com/binded/empty-promise/blob/master/src/index.js, is there a shorter or build in option?
@@ -37,33 +36,14 @@ function emptyPromise()
   return p;
 }
 
-// /**expands the snik pseudo prefix*/ optimization removed due to it being slower
-// function expand(short) {return short.replace("s:","http://www.snik.eu/ontology/");}
-
-/** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
-@param{cytoscape.Core} cy the cytoscape graph to load the data into
-@param{string[]} graphs subontologies to load.
-@example
-loadGraphFromSparql(cy,new Set(["meta","bb"]))
-*/
-export default function loadGraphFromSparql(cy,graphs,endpoint)
+/** Query for classes from the endpoint */
+async function selectClasses(endpoint, from)
 {
-  log.info(`Loading graph from endpoint ${endpoint} with graphs ${graphs}.`);
-  const froms = graphs.map(graph=>`FROM <${graph}>`).reduce((a,b)=>a+"\n"+b,"");
-  const fromNamed = froms.replace(/FROM/g,"FROM NAMED");
-  cy.elements().remove();
-  // Optimization failed, was actually slower. Great example of premature optimization.
-  // Idea was to keep bindings short to minimize data sent over network but failed probably due to caching, compression and function overhead.
-  //replace(str(?c),"http://www.snik.eu/ontology/","s:") as ?c
-  //group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
-  //substr(replace(str(sample(?st)),".*[#/]",""),1,1) as ?st replace(str(?src),".*[#/]","") as ?src sample(?inst) as ?inst
-  // only show classes with labels
-  // too slow, remove isolated nodes in post processing
-  // #{?c ?p ?o.} UNION {?o ?p ?c}.
+  const sparqlClassesTimer = timer("sparql-classes");
   const classQuerySimple =
   `select ?c
   group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
-  ${froms}
+  ${from}
   {
     ?c a owl:Class.
     OPTIONAL {?c rdfs:label ?l.}
@@ -78,7 +58,7 @@ export default function loadGraphFromSparql(cy,graphs,endpoint)
   sample(?st) as ?st
   ?src
   sample(?inst) as ?inst
-  ${froms}
+  ${from}
   {
     ?c a owl:Class.
 
@@ -88,18 +68,26 @@ export default function loadGraphFromSparql(cy,graphs,endpoint)
     OPTIONAL {?inst a ?c.}
   }`;
   const classQuery = endpoint?classQuerySimple:classQuerySnik;
+  const json = await sparql.select(classQuery,null,endpoint);
+  sparqlClassesTimer.stop(json.length+" classes");
+  return json;
+}
 
+/** Query for triples between classes from the endpoint */
+async function selectProperties(endpoint, from, fromNamed)
+{
+  const sparqlPropertiesTimer = timer("sparql-properties");
   const propertyQuerySimple =
   `
   select  ?c ?p ?d
-  ${froms}
+  ${from}
   {
     ?c ?p ?d.
     owl:Class ^a ?c,?d.
   }`;
   const propertyQuerySnik =
   `select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
-  ${froms}
+  ${from}
   ${fromNamed}
   {
     graph ?g {?c ?p ?d.}
@@ -114,19 +102,29 @@ export default function loadGraphFromSparql(cy,graphs,endpoint)
     }
   }`;
   const propertyQuery = endpoint?propertyQuerySimple:propertyQuerySnik;
+  const json = await sparql.select(propertyQuery,null,endpoint);
+  sparqlPropertiesTimer.stop(json.length+" properties");
+  return json;
+}
 
-  const sparqlClassesTimer = timer("sparql-classes");
-  const classes = undefined;//localStorage.getItem('classes');
-  // if not in cache, load
-  const classPromise = (classes===undefined)?
-    sparql.select(classQuery,null,endpoint):Promise.resolve(classes);
-  const propertyPromise = sparql.select(propertyQuery,null,endpoint);
+/** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
+@param{cytoscape.Core} cy the cytoscape graph to load the data into
+@param{string[]} graphs subontologies to load.
+@example
+loadGraphFromSparql(cy,new Set(["meta","bb"]))
+*/
+export default function loadGraphFromSparql(cy,graphs,endpoint)
+{
+  log.info(`Loading graph from endpoint ${endpoint} with graphs ${graphs}.`);
+  const from = graphs.map(graph=>`FROM <${graph}>`).reduce((a,b)=>a+"\n"+b,"");
+  const fromNamed = from.replace(/FROM/g,"FROM NAMED");
+  cy.elements().remove();
+
   const nodePromise = emptyPromise();
   const edgePromise = emptyPromise();
 
-  classPromise.then((json)=>
+  selectClasses(endpoint,from).then((json)=>
   {
-    sparqlClassesTimer.stop(json.length+" classes");
     /** @type{cytoscape.ElementDefinition[]} */
     const nodes = [];
     for(let i=0;i<json.length;i++)
@@ -161,18 +159,13 @@ export default function loadGraphFromSparql(cy,graphs,endpoint)
     nodePromise.resolve();
   }).catch(e=>
   {
-    log.error(classQuery,e);
     nodePromise.reject();
     return;
   });
 
-  const sparqlPropertiesTimer = timer("sparql-properties");
   const edges = [];
-  propertyPromise.then(json=>
-  //return Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
+  selectProperties(endpoint,from,fromNamed).then(json=>
   {
-    sparqlPropertiesTimer.stop(json.length+" properties");
-
     for(let i=0;i<json.length;i++)
     {
       edges.push(
