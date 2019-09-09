@@ -182,10 +182,10 @@ export default function loadGraphFromSparql(cy,graphs,endpoint)
             source: json[i].c.value,
             target: json[i].d.value,
             id: i,
-            p: json[i].p.value,//Labels_DE: [json[i].l.value]
+            p: json[i].p.value,
             pl: json[i].p.value.replace(/.*[#/]/,""),
-            g: json[i].g===undefined?null:json[i].g.value,
-            ax: json[i].ax===undefined?null:json[i].ax.value,
+            ...(json[i].g && {g: json[i].g.value}), // see https://stackoverflow.com/a/40560953/398963
+            ...(json[i].ax && {ax: json[i].ax.value}),
           },
           //position: { x: 200, y: 200 }
         });
