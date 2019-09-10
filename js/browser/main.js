@@ -77,6 +77,7 @@ function main()
       const clazz = url.searchParams.get("class");
       const jsonUrl = url.searchParams.get("json");
       const endpoint = url.searchParams.get("sparql");
+      const instances = (url.searchParams.get("instances")!==null); // load and show instances when loading from endpoint, not only classes
       const rdfGraph = url.searchParams.get("graph");
 
       if(empty)
@@ -107,7 +108,7 @@ function main()
         log.info("Loading from SPARQL Endpoint "+endpoint);
         const graphs = [];
         if(rdfGraph) {graphs.push(rdfGraph);}
-        {await loadGraphFromSparql(graph.cy,graphs,endpoint);}
+        {await loadGraphFromSparql(graph.cy,graphs,endpoint,instances);}
         layout.run(graph.cy,layout.euler);
         return;
       }
