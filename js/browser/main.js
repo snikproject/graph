@@ -78,6 +78,7 @@ function main()
       const jsonUrl = url.searchParams.get("json");
       const endpoint = url.searchParams.get("sparql");
       const instances = (url.searchParams.get("instances")!==null); // load and show instances when loading from endpoint, not only classes
+      const virtual = (url.searchParams.get("virtual")!==null); // create "virtual triples" to visualize connections like domain-range
       const rdfGraph = url.searchParams.get("graph");
 
       if(empty)
@@ -108,7 +109,7 @@ function main()
         log.info("Loading from SPARQL Endpoint "+endpoint);
         const graphs = [];
         if(rdfGraph) {graphs.push(rdfGraph);}
-        {await loadGraphFromSparql(graph.cy,graphs,endpoint,instances);}
+        {await loadGraphFromSparql(graph.cy,graphs,endpoint,instances,virtual);}
         layout.run(graph.cy,layout.euler);
         return;
       }

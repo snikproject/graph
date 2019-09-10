@@ -192,7 +192,13 @@ const style =
         'background-opacity': '0', // colorless
       },
     },
-
+    {
+      "selector": "node[i]",
+      "css":
+      {
+        'shape': "star",
+      },
+    },
   ],
 };
 export {style};

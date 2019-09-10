@@ -43,11 +43,13 @@ async function selectClasses(endpoint, from, instances)
   const classQuerySimple =
   `select ?c
   group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
+  ?instance
   ${from}
   {
     ${instances?"{?c a [a owl:Class]} UNION":""}
     {?c a owl:Class.}
     OPTIONAL {?c rdfs:label ?l.}
+    OPTIONAL {?c a ?type. FILTER (?type!=owl:Class). bind(true as ?instance) }
   }
   `;
   const classQuerySnik =
@@ -99,9 +101,10 @@ async function classNodes(endpoint, instances, from)
         data: {
           id: json[i].c.value,
           l: l,
-          st: (json[i].st===undefined)?null:json[i].st.value.replace("http://www.snik.eu/ontology/meta/","").substring(0,1),
-          prefix: (json[i].src===undefined)?null:json[i].src.value.replace("http://www.snik.eu/ontology/",""),
-          inst: json[i].inst!==undefined,
+          ...(json[i].st && {st: json[i].st.value}.replace("http://www.snik.eu/ontology/meta/","").substring(0,1)),
+          ...(json[i].prefix && {prefix: json[i].prefix.value}.json[i].src.value.replace("http://www.snik.eu/ontology/","")),
+          inst: json[i].inst!==undefined, // has at least one instance
+          ...(json[i].instance && {i: true}),// is an instance
         },
         //position: { x: 200, y: 200 }
       });
@@ -111,7 +114,7 @@ async function classNodes(endpoint, instances, from)
 }
 
 /** Query for triples between classes from the endpoint */
-async function selectTriples(endpoint, from, fromNamed, instances)
+async function selectTriples(endpoint, from, fromNamed, instances, virtual)
 {
   const sparqlPropertiesTimer = timer("sparql-properties");
   const tripleQuerySimple =
@@ -119,7 +122,7 @@ async function selectTriples(endpoint, from, fromNamed, instances)
     select  ?c ?p ?d
     ${from}
     {
-      ?c ?p ?d.
+      {?c ?p ?d.} ${virtual?" UNION {?p rdfs:domain ?c; rdfs:range ?d.}":""}
       {?c a owl:Class.} ${instances?" UNION {?c a [a owl:Class]}":""}
       {?d a owl:Class.} ${instances?" UNION {?d a [a owl:Class]}":""}
     }`;
@@ -146,9 +149,9 @@ async function selectTriples(endpoint, from, fromNamed, instances)
 }
 
 /**  Creates cytoscape nodes for the classes */
-async function tripleEdges(endpoint, from, fromNamed, instances)
+async function tripleEdges(endpoint, from, fromNamed, instances, virtual)
 {
-  const json = await selectTriples(endpoint, from, fromNamed, instances);
+  const json = await selectTriples(endpoint, from, fromNamed, instances, virtual);
   const edges = [];
   for(let i=0;i<json.length;i++)
   {
@@ -177,13 +180,13 @@ async function tripleEdges(endpoint, from, fromNamed, instances)
   @example
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
-export default async function loadGraphFromSparql(cy,graphs,endpoint, instances)
+export default async function loadGraphFromSparql(cy,graphs,endpoint, instances, virtual)
 {
   log.info(`Loading graph from endpoint ${endpoint} with graphs ${graphs}.`);
   const from = graphs.map(graph=>`FROM <${graph}>`).reduce((a,b)=>a+"\n"+b,"");
   const fromNamed = from.replace(/FROM/g,"FROM NAMED");
 
-  const [nodes,edges] = await Promise.all([classNodes(endpoint, from, instances),tripleEdges(endpoint, from, fromNamed, instances)]);
+  const [nodes,edges] = await Promise.all([classNodes(endpoint, from, instances),tripleEdges(endpoint, from, fromNamed, instances, virtual)]);
   cy.elements().remove();
   cy.add(nodes);
   cy.add(edges);
