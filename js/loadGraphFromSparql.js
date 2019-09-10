@@ -101,8 +101,8 @@ async function classNodes(endpoint, instances, from)
         data: {
           id: json[i].c.value,
           l: l,
-          ...(json[i].st && {st: json[i].st.value}.replace("http://www.snik.eu/ontology/meta/","").substring(0,1)),
-          ...(json[i].prefix && {prefix: json[i].prefix.value}.json[i].src.value.replace("http://www.snik.eu/ontology/","")),
+          ...(json[i].st && {st: json[i].st.value.replace("http://www.snik.eu/ontology/meta/","").substring(0,1)}),
+          ...(json[i].src && {prefix: json[i].src.value.replace("http://www.snik.eu/ontology/","")}),
           inst: json[i].inst!==undefined, // has at least one instance
           ...(json[i].instance && {i: true}),// is an instance
         },
