@@ -8,7 +8,7 @@ export default
     "load-graph-with-layout": "Load Graph File with Layout",
     "load-layout": "Load Layout",
     "load-sparql": "Load from SPARQL endpoint",
-    "save-cytoscape-full": "Save Full Graph with Layout as Cytoscape File",
+    "save-cytoscape-full": "Save Session",
     "save-cytoscape-visible": "Save Visible Graph with Layout as Cytoscape File",
     "save-layout": "Save Layout only",
     "recalculate-layout-replace":"Recalculate Layout and Replace in Browser Cache",

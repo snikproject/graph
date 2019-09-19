@@ -160,7 +160,7 @@ function menuData()
           progress(()=>layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,separateSubs()));
         },
         "Load from SPARQL Endpoint","load-sparql"],
-        [download.downloadGraph,"Save Full Graph with Layout as Cytoscape File","save-cytoscape-full"],
+        [download.downloadGraph,"Save Session","save-cytoscape-full"],
         [download.downloadVisibleGraph,"Save Visible Graph with Layout as Cytoscape File","save-cytoscape-visible"],
         [download.downloadLayout,"Save Layout only","save-layout"],
         [()=>
