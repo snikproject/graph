@@ -30,6 +30,7 @@ export function loadGraph(event)
     const visibleFraction = 1.0*graph.cy.elements(":visible").size()/graph.cy.elements().size();
     const starMode = visibleFraction<0.8;
     log.info("Load Graph from File: Visible fraction: "+visibleFraction+" set star mode to "+starMode);
+    if(graph.cy.nodes(":child").size()>0) {document.getElementById("combine-match-checkbox").checked=true;}
     graph.setStarMode(starMode);
     graph.cy.center(":visible");
     graph.cy.fit(":visible");

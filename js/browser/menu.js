@@ -69,21 +69,16 @@ function visualizationFeedback()
   "!!Please do not delete the following text, because its the log for developers!!\n\n", log.logs);
 }
 
-let parents = null;
-
 /** Sets whether close matches are grouped in compound nodes. */
 function combineMatch(enabled)
 {
   if(!enabled)
   {
-    if(parents)
-    {
-      parents.remove();
-      graph.cy.nodes().move({parent:null});
-    }
+    graph.cy.nodes(":child").move({parent:null});
+    graph.cy.nodes("[id ^= 'parent']").remove();
     return;
   }
-  parents = graph.cy.collection();
+
   // Can be calculated only once per session but then it needs to be synchronized with in-visualization ontology edits.
   const matchEdges = graph.cy.edges('[pl="closeMatch"]').filter('.unfiltered').not('.hidden');
   const matchGraph = graph.cy.nodes('.unfiltered').not('.hidden').union(matchEdges);
@@ -114,8 +109,6 @@ function combineMatch(enabled)
       group: 'nodes',
       data: { id: id,   l: labels },
     });
-    const parent = graph.cy.getElementById(id);
-    parents.add(parent);
 
     for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
 
