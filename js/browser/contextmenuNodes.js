@@ -206,6 +206,13 @@ const extCommands =
       content: 'LodLive',
       select: node=> {window.open('http://en.lodlive.it/?'+node.data(NODE.ID));},
     },
+    {
+      content: 'move all selected here',
+      select: node=>
+      {
+        graph.cy.nodes(":selected").positions(()=>node.position());
+      },
+    },
   ];
 
 /** Register modular node context menu. */
