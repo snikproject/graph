@@ -127,13 +127,19 @@ function showPath(from, to, starPath)
   return true;
 }
 
+export const Direction = Object.freeze({
+  IN:   Symbol("in"),
+  OUT:  Symbol("out"),
+  BOTH: Symbol("both"),
+});
+
 /** Highlight the give node and all its directly connected nodes (in both directions).
 Hide all other nodes except when in star mode.
 @param {cytoscape.NodeSingular} node center of the star
 @param {Boolean} [changeLayout=false] arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
 @param {Boolean} [directed=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.
 */
-function showStar(node, changeLayout, directed)
+function showStar(node, changeLayout, direction)
 {
   cy.startBatch();
 
@@ -146,10 +152,19 @@ function showStar(node, changeLayout, directed)
     closeMatchEdges = inner.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
     inner = inner.union(closeMatchEdges.connectedNodes(".unfiltered")); // in case there is no close match edge
   }
+  let edges;
+  switch(direction)
+  {
+    case Direction.IN:
+      edges = cy.elements(".unfiltered").edgesTo(inner);
+      break;
+    case Direction.OUT:
+      edges = inner.edgesTo('.unfiltered');
+      break;
+    default:
+      edges = inner.connectedEdges(".unfiltered");
+  }
 
-  const edges = directed?
-    inner.edgesTo('.unfiltered')
-    :inner.connectedEdges(".unfiltered");
   const nodes  = edges.connectedNodes(".unfiltered");
   const star = inner.union(nodes).union(edges);
   // show edges between outer nodes to visible nodes

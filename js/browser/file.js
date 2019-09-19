@@ -31,6 +31,8 @@ export function loadGraph(event)
     const starMode = visibleFraction<0.8;
     log.info("Load Graph from File: Visible fraction: "+visibleFraction+" set star mode to "+starMode);
     graph.setStarMode(starMode);
+    graph.cy.center(":visible");
+    graph.cy.fit(":visible");
   });
 }
 

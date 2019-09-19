@@ -69,8 +69,12 @@ const baseCommands =
     select: node=> {graph.showStar(node,false);},
   },
   {
-    content: 'directed star',
-    select: node=> {graph.showStar(node,false,true);},
+    content: 'incoming star',
+    select: node=> {graph.showStar(node,false,graph.Direction.IN);},
+  },
+  {
+    content: 'outgoing star',
+    select: node=> {graph.showStar(node,false,graph.Direction.OUT);},
   },
   {
     content: 'path',
