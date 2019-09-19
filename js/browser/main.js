@@ -85,16 +85,20 @@ function main()
       {
         log.info(`Parameter "empty" detected. Skip loading and display file load prompt.`);
         const loadArea = document.getElementById("loadarea");
-        loadArea.innerHTML +=
-        `
-        <center id="load-area">
-          <button id="load-button" style="font-size:10vh;margin-top:20vh">Datei Laden
+        const center = document.createElement("center");
+        loadArea.appendChild(center);
+        center.innerHTML +=
+        `<button id="load-button" style="font-size:10vh;margin-top:20vh">Datei Laden
             <input id="load-input" type="file" style="display:none"></input>
-          </button>
-        </center>`;
+          </button>`;
         const loadInput = document.getElementById("load-input");
         document.getElementById("load-button").onclick=()=>{loadInput.click();};
-        loadInput.addEventListener("change",(event)=>{loadArea.innerHTML="";loadGraph(event);});
+        loadInput.addEventListener("change",(event)=>
+        {
+          loadArea.removeChild(center);
+          graph.cy.resize(); // fix mouse cursor position, see https://stackoverflow.com/questions/23461322/cytoscape-js-wrong-mouse-pointer-position-after-container-change
+          loadGraph(event);
+        });
         return;
       }
       if(jsonUrl)
