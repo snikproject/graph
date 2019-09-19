@@ -73,7 +73,7 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
 const limesCommands =
 [
   {
-    content: 'confirm limes link',
+    content: 'confirm link',
     select: function(edge)
     {
       edge.data(EDGE.GRAPH,"http://www.snik.eu/ontology/match");
