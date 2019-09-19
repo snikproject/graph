@@ -146,7 +146,7 @@ function showStar(node, changeLayout, direction)
   // open 2 levels deep on closeMatch
   let inner = node; // if you don't want to include close match, define inner like this
   let closeMatchEdges;
-  for(let innerSize = 0; innerSize<inner.size();)
+  for(let innerSize = 0; innerSize<inner.size();) // repeat until the close match chain ends
   {
     innerSize=inner.size();
     closeMatchEdges = inner.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
