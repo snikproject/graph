@@ -27,6 +27,10 @@ export function loadGraph(event)
     graph.cy.elements().remove();
     graph.cy.add(json);
     graph.cy.elements().addClass("unfiltered");
+    const visibleFraction = 1.0*graph.cy.elements(":visible").size()/graph.cy.elements().size();
+    const starMode = visibleFraction<0.8;
+    log.info("Load Graph from File: Visible fraction: "+visibleFraction+" set star mode to "+starMode);
+    graph.setStarMode(starMode);
   });
 }
 
