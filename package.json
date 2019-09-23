@@ -18,7 +18,8 @@
     "notyf": "^3.0.4",
     "pastebin-js": "^1.0.2",
     "regenerator-runtime": "^0.13.3",
-    "spin.js": "^4.0.0"
+    "spin.js": "^4.0.0",
+    "stats.js": "^0.17.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",

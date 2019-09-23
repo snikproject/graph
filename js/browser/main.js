@@ -6,7 +6,6 @@ import * as menu from "./menu.js";
 import * as search from "./search.js";
 import addButtons from "./button.js";
 import {loadGraph} from "./file.js";
-
 import * as graph from "./graph.js";
 import * as layout from "../layout.js";
 import progress from "./progress.js";
@@ -54,11 +53,29 @@ function main()
     };
   }
 
-
   //logs.length = 0;
   progress(async ()=>
   {
     console.groupCollapsed("Initializing");
+    const url = new URL(window.location.href);
+    const benchmark = (url.searchParams.get("benchmark")!==null);
+    if(benchmark)
+    {
+      const statss = [];
+      for(let i=0;i<3;i++) // mem panel only works in chrome
+      {
+        const stats = new Stats();
+        stats.domElement.style.cssText = `position:absolute;top:0px;right:${100*i}px;`;
+        document.body.appendChild(stats.dom);
+        statss.push(stats);
+        stats.showPanel(i); // 0: fps, 1: ms, 2: mb, 3+: custom
+      }
+      requestAnimationFrame(function loop()
+      {
+        for(const stats of statss) {stats.update();}
+        requestAnimationFrame(loop);
+      });
+    }
 
     graph.initGraph();
 
@@ -72,7 +89,6 @@ function main()
 
     try
     {
-      const url = new URL(window.location.href);
       const empty = (url.searchParams.get("empty")!==null);
       const clazz = url.searchParams.get("class");
       const jsonUrl = url.searchParams.get("json");
@@ -117,7 +133,6 @@ function main()
         layout.run(graph.cy,layout.euler);
         return;
       }
-
       const graphs = [...config.helperGraphs,...config.defaultSubOntologies].map(g=>"http://www.snik.eu/ontology/"+g);
       await loadGraphFromSparql(graph.cy,graphs);
       layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,menu.separateSubs());
