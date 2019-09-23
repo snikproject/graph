@@ -12,6 +12,8 @@ import progress from "./progress.js";
 import config from "../config.js";
 import * as util from "./util.js";
 import {registerContextMenu} from "./contextmenu.js";
+import {addOverlay} from "./benchmark.js";
+
 
 /** Entry point. Is run when DOM is loaded. **/
 function main()
@@ -57,25 +59,6 @@ function main()
   progress(async ()=>
   {
     console.groupCollapsed("Initializing");
-    const url = new URL(window.location.href);
-    const benchmark = (url.searchParams.get("benchmark")!==null);
-    if(benchmark)
-    {
-      const statss = [];
-      for(let i=0;i<3;i++) // mem panel only works in chrome
-      {
-        const stats = new Stats();
-        stats.domElement.style.cssText = `position:absolute;top:0px;right:${100*i}px;`;
-        document.body.appendChild(stats.dom);
-        statss.push(stats);
-        stats.showPanel(i); // 0: fps, 1: ms, 2: mb, 3+: custom
-      }
-      requestAnimationFrame(function loop()
-      {
-        for(const stats of statss) {stats.update();}
-        requestAnimationFrame(loop);
-      });
-    }
 
     graph.initGraph();
 
@@ -89,6 +72,7 @@ function main()
 
     try
     {
+      const url = new URL(window.location.href);
       const empty = (url.searchParams.get("empty")!==null);
       const clazz = url.searchParams.get("class");
       const jsonUrl = url.searchParams.get("json");
@@ -96,6 +80,9 @@ function main()
       const instances = (url.searchParams.get("instances")!==null); // load and show instances when loading from endpoint, not only classes
       const virtual = (url.searchParams.get("virtual")!==null); // create "virtual triples" to visualize connections like domain-range
       const rdfGraph = url.searchParams.get("graph");
+      const benchmark = (url.searchParams.get("benchmark")!==null);
+
+      if(benchmark) {addOverlay(graph.cy);}
 
       if(empty)
       {
