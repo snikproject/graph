@@ -156,7 +156,7 @@ function menuData()
       [
         [async ()=>
         {
-          await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));
+          await loadGraphFromSparql(graph.cy,[]);
           progress(()=>layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,separateSubs()));
         },
         "Load from SPARQL Endpoint","load-sparql"],
