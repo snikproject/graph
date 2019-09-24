@@ -346,6 +346,7 @@ function initGraph()
       style: style.style.concat(colorschemenight),
       wheelSensitivity: 0.3,
       minZoom: 0.02,
+      textureOnViewport: true,
       maxZoom: 7,
     });
   cy.panzoom(); // Google Maps like zoom UI element
