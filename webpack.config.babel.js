@@ -20,7 +20,7 @@ export default {
   stats: {
     colors: true,
   },
-  mode: 'development',
+  mode: 'production',
   devtool: 'source-map',
   plugins: [new WebpackAutoInject(),  new CircularDependencyPlugin({exclude: /a\.js|node_modules/,failOnError: true,cwd: process.cwd()})],
 };
