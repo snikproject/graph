@@ -80,6 +80,7 @@ function main()
       const instances = (url.searchParams.get("instances")!==null); // load and show instances when loading from endpoint, not only classes
       const virtual = (url.searchParams.get("virtual")!==null); // create "virtual triples" to visualize connections like domain-range
       const rdfGraph = url.searchParams.get("graph");
+      const sub = url.searchParams.get("sub");
       const benchmark = (url.searchParams.get("benchmark")!==null);
 
       if(benchmark) {addOverlay(graph.cy);}
@@ -120,7 +121,13 @@ function main()
         layout.run(graph.cy,layout.euler);
         return;
       }
-      const graphs = [...config.helperGraphs,...config.defaultSubOntologies].map(g=>"http://www.snik.eu/ontology/"+g);
+      let subs = [];
+      if(sub)
+      {
+        subs = sub.split(",");
+      }
+      if(subs===[]) {subs = [...config.helperGraphs,...config.defaultSubOntologies];}
+      const graphs = subs.map(g=>"http://www.snik.eu/ontology/"+g);
       await loadGraphFromSparql(graph.cy,graphs);
       layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,menu.separateSubs());
 
