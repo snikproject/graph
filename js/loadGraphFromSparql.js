@@ -132,6 +132,7 @@ async function selectTriples(endpoint, from, fromNamed, instances, virtual)
     ${fromNamed}
     {
       graph ?g {?c ?p ?d.}
+      filter(?g!=sniko:)
       owl:Class ^a ?c,?d.
       filter(?p!=meta:subTopClass)
       OPTIONAL
@@ -165,7 +166,7 @@ async function tripleEdges(endpoint, from, fromNamed, instances, virtual)
           p: json[i].p.value,
           pl: json[i].p.value.replace(/.*[#/]/,""),
           ...(json[i].g && {g: json[i].g.value}), // don't add null/undefined values, see https://stackoverflow.com/a/40560953/398963
-          ...(json[i].ax && {ax: json[i].ax.value}),
+          ...(json[i].ax && {ax: json[i].ax.value}), // in case of virtual triples: the URI of the axiom
         },
         //position: { x: 200, y: 200 }
       });

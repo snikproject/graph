@@ -41,6 +41,7 @@ const style =
         {
           switch(node.data(NODE.SUBTOP))
           {
+            // shapes don't seem to have any difference in performance
             case NODE.SUBTOP_ENTITY_TYPE: {return 'rectangle';}//EntityType
             case NODE.SUBTOP_ROLE: {return 'ellipse';}//Role
             case NODE.SUBTOP_FUNCTION: {return 'triangle';}//Function

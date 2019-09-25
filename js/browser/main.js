@@ -126,7 +126,7 @@ function main()
       {
         subs = sub.split(",");
       }
-      if(subs===[]) {subs = [...config.helperGraphs,...config.defaultSubOntologies];}
+      if(subs.length===0) {subs = [...config.helperGraphs,...config.defaultSubOntologies];}
       const graphs = subs.map(g=>"http://www.snik.eu/ontology/"+g);
       await loadGraphFromSparql(graph.cy,graphs);
       layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,menu.separateSubs());
