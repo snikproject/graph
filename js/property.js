@@ -60,7 +60,7 @@ export function possible(subjectNode,objectNode)
   {
     return ((!element.domain)||element.domain===subjectNode.data(NODE.SUBTOP)) // domain
   &&((!element.range)||element.range===objectNode.data(NODE.SUBTOP)) // range
-  &&((subjectNode.data(NODE.PREFIX)===objectNode.data(NODE.PREFIX))!==(element.interontology)) // interontology
+  &&((subjectNode.data(NODE.SOURCE)===objectNode.data(NODE.SOURCE))!==(element.interontology)) // interontology
     &&((element.uri!=="http://www.w3.org/2000/01/rdf-schema#subClassOf")||(subjectNode.data(NODE.SUBTOP)===objectNode.data(NODE.SUBTOP))); // rdfs:subClassOf only with the same subtop
   }
   );

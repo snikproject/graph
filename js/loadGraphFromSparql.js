@@ -3,38 +3,7 @@ Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.
 @module */
 import * as sparql from "./sparql.js";
 import timer from "./timer.js";
-
-/** https://github.com/binded/empty-promise/blob/master/src/index.js, is there a shorter or build in option?
-@returns {object} an empty promise that can be resolved or rejected from the outside.
-*/
-function emptyPromise()
-{
-  let callbacks;
-  let done = false;
-
-  const p = new Promise((resolve, reject) =>
-  {
-    callbacks = { resolve, reject };
-  });
-  // @ts-ignore
-  p.done = () => done;
-  // @ts-ignore
-  p.resolve = (val) =>
-  {
-    callbacks.resolve(val);
-    done = true;
-    return p;
-  };
-  // @ts-ignore
-  p.reject = (val) =>
-  {
-    callbacks.reject(val);
-    done = true;
-    return p;
-  };
-
-  return p;
-}
+import config from "./config.js";
 
 /** Query for classes from the endpoint */
 async function selectClasses(endpoint, from, instances)
@@ -103,6 +72,7 @@ async function classNodes(endpoint, instances, from)
     if (json[i].src)
     {
       source = json[i].src.value;
+      if(source.includes("http://www.snik.eu/ontology/")) {source=source.replace("http://www.snik.eu/ontology/","");} // abbreviate snik
       sources.add(source);
     }
     nodes.push(
@@ -112,12 +82,21 @@ async function classNodes(endpoint, instances, from)
           id: json[i].c.value,
           l: l,
           ...(json[i].st && {st: json[i].st.value.replace("http://www.snik.eu/ontology/meta/","").substring(0,1)}),
-          ...(source && {prefix: source.replace("http://www.snik.eu/ontology/","")}),
+          ...(source && {source: source}),
           inst: json[i].inst!==undefined, // has at least one instance
-          ...(json[i].instance && {i: true}),// is an instance
+          ...(json[i].instance && {i: true}), // is an instance
         },
-        //position: { x: 200, y: 200 }
       });
+  }
+  const colors = ["rgb(30,152,255)","rgb(255,173,30)","rgb(80,255,250)","rgb(150,255,120)","rgb(204, 0, 204)","rgb(255, 255, 0)"];
+  let count = 0;
+  for(const source of sources)
+  {
+    if(!config.color.has(source))
+    {
+      config.color.set(source,colors[count]);
+      count = (count+1) % colors.length;
+    }
   }
   log.info(json.length+" Nodes loaded from SPARQL");
   return nodes;

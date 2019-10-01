@@ -6,6 +6,7 @@ Cytoscape style file, excluding color information, which is contained in the col
 import * as NODE from "../node.js";
 import * as EDGE from "../edge.js";
 import * as language from "../lang/language.js";
+import config from "../config.js";
 // see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing
 const nodeSize = node => Math.log(node.degree()+3)*25;
 
@@ -198,6 +199,20 @@ const style =
       "css":
       {
         'shape': "star",
+      },
+    },
+    {
+      "selector": "node",
+      "css":
+      {
+        "border-color": "rgb(255,255,255)",
+        "background-color": (node)=>
+        {
+          let color = config.color.get(node.data(NODE.SOURCE));
+          if(!color) {color="rgb(254,196,79)";}
+          return color;
+        },
+        'color': 'white',
       },
     },
   ],

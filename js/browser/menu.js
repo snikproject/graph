@@ -93,18 +93,19 @@ function combineMatch(enabled)
 
     const id = 'parent'+i;
     let labels = {};
-    const nodes = comp.nodes();
+    let nodes = comp.nodes();
+
 
     for(let j=0; j < nodes.length ;j++) {labels = {...labels,...nodes[j].data("l")};}
 
-    const priorities = {"jkbb":0, "ob": 1, "he": 2, "it4it": 3, "ciox": 4};
-    const priority = prefix =>
+    const priorities = ["bb","ob","he","it4it","ciox"];
+    const priority = source =>
     {
-      const p = priorities[prefix];
-      return p?p:99; // prevent null value on new prefix
+      let p = priorities.indexOf(source);
+      if(p===-1) {p=99;}
+      return p; // prevent null value on prefix that is new or outside of SNIK
     };
-    nodes.sort((a,b)=>priority(a.data(NODE.PREFIX))-priority(b.data(NODE.PREFIX)));
-
+    nodes = nodes.sort((a,b)=>priority(a.data(NODE.SOURCE))-priority(b.data(NODE.SOURCE))); // cytoscape collection sort is not in place
     graph.cy.add({
       group: 'nodes',
       data: { id: id,   l: labels },

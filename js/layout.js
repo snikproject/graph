@@ -57,7 +57,7 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
   if(separateSubs)
   {
     /** @type{cytoscape.ElementDefinition[]} */
-    const prefixes = new Set();
+    const sources = new Set();
     /** @type{cytoscape.ElementDefinition[]} */
     const virtualEdges = [];
 
@@ -65,15 +65,15 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
     for(let i=0;i<nodes.length;i++)
     {
       const node = nodes[i];
-      const prefix = node.data(NODE.PREFIX);
-      if(prefix)
+      const source = node.data(NODE.SOURCE);
+      if(source)
       {
-        if(!prefixes.has(prefix))
+        if(!sources.has(source))
         {
-          cy.add({group: "nodes", data: { id: prefix, mass: 400, type: "virtual"}});
-          prefixes.add(prefix);
+          cy.add({group: "nodes", data: { id: source, mass: 400, type: "virtual"}});
+          sources.add(source);
         }
-        virtualEdges.push({group: "edges", data: { source: node.data(NODE.ID), target: prefix, springLength: 180 }});
+        virtualEdges.push({group: "edges", data: { source: node.data(NODE.ID), target: source, springLength: 180 }});
       }
     }
     log.info("Separate subontologies checked");

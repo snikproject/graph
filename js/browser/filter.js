@@ -10,13 +10,13 @@ import * as NODE from "../node.js";
 import {checkboxKeydownListener} from "./util.js";
 
 const filterData = [
-  [`node[${NODE.PREFIX}='meta']`,`meta`],
-  [`node[${NODE.PREFIX}='bb']`,`BB`],
-  [`node[${NODE.PREFIX}='ob']`,`OB`],
-  [`node[${NODE.PREFIX}='ciox']`,`CioX`],
-  [`node[${NODE.PREFIX}='he']`,`HE`],
-  [`node[${NODE.PREFIX}='it']`,`IT`],
-  [`node[${NODE.PREFIX}='it4it']`,`IT4IT`],
+  [`node[${NODE.SOURCE}='meta']`,`meta`],
+  [`node[${NODE.SOURCE}='bb']`,`BB`],
+  [`node[${NODE.SOURCE}='ob']`,`OB`],
+  [`node[${NODE.SOURCE}='ciox']`,`CioX`],
+  [`node[${NODE.SOURCE}='he']`,`HE`],
+  [`node[${NODE.SOURCE}='it']`,`IT`],
+  [`node[${NODE.SOURCE}='it4it']`,`IT4IT`],
   [`node[${NODE.SUBTOP}='${NODE.SUBTOP_ENTITY_TYPE}']`,`EntityType`],
   [`node[${NODE.SUBTOP}='${NODE.SUBTOP_ROLE}']`,`Role`],
   [`node[${NODE.SUBTOP}='${NODE.SUBTOP_FUNCTION}']`,`Function`],

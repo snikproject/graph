@@ -4,6 +4,15 @@ export default
 {
   "defaultSubOntologies": ["meta","bb","ob","ciox","he","it4it"],
   "allSubOntologies": ["meta","bb","ob","ciox","he","he-unconsolidated","it4it"],
+  "color": new Map([
+    ["ciox","rgb(80,255,250)"],
+    ["meta","rgb(255,80,80)"],
+    ["ob","rgb(255,173,30)"],
+    ["bb","rgb(30,152,255)"],
+    ["he","rgb(150,255,120)"],
+    ["it","rgb(204, 0, 204)"],
+    ["it4it","rgb(255, 255, 0)"],
+  ]),
   "helperGraphs": ["limes-exact","match"],
   "activeOptions": [], // initially active options, choose a subset of: ["dev", "ext","day"]
   "searchCloseMatch": true,

@@ -9,38 +9,8 @@ const colorschemeday =
       "selector": "node",
       "css":
       {
-        "border-color": "rgb(0,0,0)",
-        "background-color": "rgb(254,196,79)",
         'color': 'black',
       },
-    },
-    {
-      "selector": "node[prefix='ciox']",
-      "css": {"background-color": "rgb(80,255,250)"},
-    },
-    {
-      "selector": "node[prefix='meta']",
-      "css": {"background-color": "rgb(255,80,80)"},
-    },
-    {
-      "selector": "node[prefix='ob']",
-      "css": {"background-color": "rgb(255,173,30)"},
-    },
-    {
-      "selector": "node[prefix = 'bb']",
-      "css": {"background-color": "rgb(30,152,255)"},
-    },
-    {
-      "selector": "node[prefix='he']",
-      "css": {"background-color": "rgb(150,255,120)"},
-    },
-    {
-      "selector": "node[prefix='it']",
-      "css": {"background-color": "rgb(204, 0, 204)"},
-    },
-    {
-      "selector": "node[prefix='it4it']",
-      "css": {"background-color": "rgb(255, 255, 0)"},
     },
     {
       "selector": "node:selected",
