@@ -54,15 +54,10 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
     return false;
   }
   const layoutTimer = timer("layout");
-  if(subs&&separateSubs)
+  if(separateSubs)
   {
     /** @type{cytoscape.ElementDefinition[]} */
-    const virtualNodes = [];
-    for(const sub of subs)
-    {
-      virtualNodes.push({group: "nodes", data: { id: sub, mass: 400, type: "virtual"}});
-    }
-    cy.add(virtualNodes);
+    const prefixes = new Set();
     /** @type{cytoscape.ElementDefinition[]} */
     const virtualEdges = [];
 
@@ -73,6 +68,11 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
       const prefix = node.data(NODE.PREFIX);
       if(prefix)
       {
+        if(!prefixes.has(prefix))
+        {
+          cy.add({group: "nodes", data: { id: prefix, mass: 400, type: "virtual"}});
+          prefixes.add(prefix);
+        }
         virtualEdges.push({group: "edges", data: { source: node.data(NODE.ID), target: prefix, springLength: 180 }});
       }
     }

@@ -41,15 +41,19 @@ async function selectClasses(endpoint, from, instances)
 {
   const sparqlClassesTimer = timer("sparql-classes");
   const classQuerySimple =
-  `select ?c
+  `
+  PREFIX ov: <http://open.vocab.org/terms/>
+  select ?c
   group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
   ?instance
+  ?src
   ${from}
   {
     ${instances?"{?c a [a owl:Class]} UNION":""}
     {?c a owl:Class.}
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?c a ?type. FILTER (?type!=owl:Class). bind(true as ?instance) }
+    OPTIONAL {?src ov:defines ?c.}
   }
   `;
   const classQuerySnik =
@@ -83,6 +87,7 @@ async function classNodes(endpoint, instances, from)
 
   /** @type{cytoscape.ElementDefinition[]} */
   const nodes = [];
+  const sources = new Set();
   for(let i=0;i<json.length;i++)
   {
     const labels = json[i].l.value.split("|");
@@ -94,7 +99,12 @@ async function classNodes(endpoint, instances, from)
       if(!l[tag]) {l[tag]=[];}
       l[tag].push(stringAndTag[0]);
     }
-
+    let source;
+    if (json[i].src)
+    {
+      source = json[i].src.value;
+      sources.add(source);
+    }
     nodes.push(
       {
         group: "nodes",
@@ -102,7 +112,7 @@ async function classNodes(endpoint, instances, from)
           id: json[i].c.value,
           l: l,
           ...(json[i].st && {st: json[i].st.value.replace("http://www.snik.eu/ontology/meta/","").substring(0,1)}),
-          ...(json[i].src && {prefix: json[i].src.value.replace("http://www.snik.eu/ontology/","")}),
+          ...(source && {prefix: source.replace("http://www.snik.eu/ontology/","")}),
           inst: json[i].inst!==undefined, // has at least one instance
           ...(json[i].instance && {i: true}),// is an instance
         },
