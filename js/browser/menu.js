@@ -196,7 +196,7 @@ function menuData()
             [()=>{layout.run(graph.cy,layout.eulerTight,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "tight layout","tight-layout","ctrl+alt+t"],
             //[()=>{layout.run(graph.cy,layout.eulerVariable(util.getElementById("layout-range").value),config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "custom layout","custom-layout"],
             [()=>{layout.run(graph.cy,layout.cose,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "compound layout","compound-layout","ctrl+alt+c"],
-            [()=>{showChapterSearch();},"chapter search","chapter-search"],
+            [()=>{showChapterSearch();},"BB chapter search","chapter-search"],
             [graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
           ],
     },

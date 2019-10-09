@@ -27,7 +27,7 @@ async function getClasses(chapter)
     ?class  ?p ?o;
             a owl:Class;
             rdfs:label ?label;
-            bb:Chapter "${chapter}"^^xsd:string.
+            meta:chapter/meta:subChapterOf* <${chapter}>.
 
     FILTER(LANGMATCHES(LANG(?label),"en"))
   }
@@ -115,8 +115,7 @@ export async function showChapterSearch()
   FROM <http://www.snik.eu/ontology/bb>
   {
     ?c ?p ?o; a owl:Class.
-    ?c bb:Chapter ?ch.
-    filter(str(?ch)!="")
+    ?c meta:chapter/meta:subChapterOf* ?ch.
   } ORDER BY ASC(?ch)`;
 
   const bindings = await sparql.select(chapterSizeQuery,sparql.SPARQL_GRAPH_BB);
