@@ -16,24 +16,30 @@ const selectedChapters = new Set();
 @return {Set<string>} classes the set of classes in that chapter
 @param {string} chapter the chapter string value exactly as in the SPARQL triples, such as "5.3".
 */
-async function getClasses(chapter)
+async function getClasses(sub,chapter)
 {
-  //if(chapters.has(chapter)) {return chapters.get(chapter);}
-
+// Using .../meta:subChapterOf* does not work for unknown reasons, maybe because of the old Virtuoso version we need for the OntoWiki.
+// See https://stackoverflow.com/questions/58322216/sparql-property-paths-x-y-yields-different-result-than-x-union-x-y
   const query =
   `SELECT DISTINCT(?class) ?label
-  FROM <http://www.snik.eu/ontology/bb>
+  FROM <http://www.snik.eu/ontology/${sub}>
   {
     ?class  ?p ?o;
             a owl:Class;
-            rdfs:label ?label;
-            meta:chapter/meta:subChapterOf* <${chapter}>.
+            rdfs:label ?label.
+    {?class meta:chapter <${chapter}>.}
+    UNION
+    {?class meta:chapter/meta:subChapterOf <${chapter}>.}
+    UNION
+    {?class meta:chapter/meta:subChapterOf/meta:subChapterOf <${chapter}>.}
+    UNION
+    {?class meta:chapter/meta:subChapterOf/meta:subChapterOf/meta:subChapterOf <${chapter}>.}
 
     FILTER(LANGMATCHES(LANG(?label),"en"))
   }
   ORDER BY ASC(?class)`;
 
-  const bindings = await sparql.select(query,sparql.SPARQL_GRAPH_BB);
+  const bindings = await sparql.select(query);
   bindings.forEach(b=>{labels.set(b.class.value,b.label.value);});
 
   const classes = bindings.map(b=>b.class.value);
@@ -89,12 +95,17 @@ async function showClasses(classes)
 }
 
 /** Populate and show the chapter search modal. */
-export async function showChapterSearch()
+export async function showChapterSearch(sub)
 {
   MicroModal.show("chapter-search");
 
   const table = util.getElementById("tab:chapter-search-chapters");
   while(table.rows.length>0) {table.deleteRow(0);} // clear leftovers from last time
+  {
+    const classTable = util.getElementById("tab:chapter-search-classes");
+    while(classTable.rows.length>0) {classTable.deleteRow(0);} // clear leftovers from last time
+  }
+  selectedChapters.clear();
 
   const deselectCell = table.insertRow().insertCell();
   const deselectLink = document.createElement("a");
@@ -109,16 +120,16 @@ export async function showChapterSearch()
     }
   });
 
-  // fetch bb chapters and their class count
+  // fetch chapters and their class count
   const chapterSizeQuery =
   `SELECT COUNT(DISTINCT(?c)) AS ?count ?ch
-  FROM <http://www.snik.eu/ontology/bb>
+  FROM <http://www.snik.eu/ontology/${sub}>
   {
     ?c ?p ?o; a owl:Class.
     ?c meta:chapter/meta:subChapterOf* ?ch.
   } ORDER BY ASC(?ch)`;
 
-  const bindings = await sparql.select(chapterSizeQuery,sparql.SPARQL_GRAPH_BB);
+  const bindings = await sparql.select(chapterSizeQuery);
   for(const binding of bindings)
   {
     const chapter = binding.ch.value;
@@ -126,7 +137,7 @@ export async function showChapterSearch()
     const row = table.insertRow();
 
     const chapterCell = row.insertCell();
-    chapterCell.addEventListener("click",async ()=>showClasses(await getClasses(chapter)));
+    chapterCell.addEventListener("click",async ()=>showClasses(await getClasses(sub,chapter)));
     const chapterLink = document.createElement("a");
     chapterCell.appendChild(chapterLink);
     chapterLink.innerText=binding.ch.value;
@@ -143,7 +154,7 @@ export async function showChapterSearch()
     {
       if(checkBox.checked)
       {
-        await getClasses(chapter);
+        await getClasses(sub,chapter);
         selectedChapters.add(chapter);
       }
       else

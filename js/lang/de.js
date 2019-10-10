@@ -33,7 +33,8 @@ export default
     "tight-layout": "Dichtes Layout",
     //"custom-layout": "Benutzerdefiniertes Layout",
     "compound-layout": "verbundenes Layout",
-    "chapter-search": "Kapitelsuche",
+    "bb-chapter-search": "BB Kapitelsuche",
+    "ob-chapter-search": "OB Kapitelsuche",
     "reset-view": "Ansicht zurücksetzen",
     // services ******************************************
     "services": "Services",

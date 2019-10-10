@@ -33,7 +33,8 @@ export default
     "tight-layout": "tight layout",
     //"custom-layout": "custom layout",
     "compound-layout": "compound layout",
-    "chapter-search": "BB chapter search",
+    "bb-chapter-search": "BB chapter search",
+    "ob-chapter-search": "OB chapter search",
     "reset-view": "reset view",
     // services ******************************************
     "services": "Services",
