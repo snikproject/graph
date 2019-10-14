@@ -13,6 +13,7 @@ export default
     ["it","rgb(204, 0, 204)"],
     ["it4it","rgb(255, 255, 0)"],
   ]),
+  "nodeSize" : 39,
   "helperGraphs": ["limes-exact","match"],
   "activeOptions": [], // initially active options, choose a subset of: ["dev", "ext","day"]
   "searchCloseMatch": true,

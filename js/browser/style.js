@@ -8,7 +8,6 @@ import * as EDGE from "../edge.js";
 import * as language from "../lang/language.js";
 import config from "../config.js";
 // see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing
-const nodeSize = node => Math.log(node.degree()+3)*25;
 
 /** @type{object} */
 const style =
@@ -24,8 +23,8 @@ const style =
       'css':
       {
         'min-zoomed-font-size': 5,
-        'width':    nodeSize,
-        'height':   nodeSize,
+        'width':    config.nodeSize,
+        'height':   config.nodeSize,
         'font-size': 11,
         'text-valign': 'center',
         'text-halign': 'center',
