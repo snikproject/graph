@@ -82,7 +82,8 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
   }
   else{log.info("Separate subontologies unchecked");}
   if(activeLayout) {activeLayout.stop();}
-  activeLayout = cy.elements(":visible").layout(layoutConfig);
+  const elements = cy.nodes(":selected").size()>1?cy.elements(":selected"):cy.elements(":visible");
+  activeLayout = elements.layout(layoutConfig);
   activeLayout.on("layoutstop",()=>
   {
     layoutTimer.stop();
