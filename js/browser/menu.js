@@ -69,6 +69,17 @@ function visualizationFeedback()
   "!!Please do not delete the following text, because its the log for developers!!\n\n", log.logs);
 }
 
+/** Move matching nodes together. */
+function moveMatch()
+{
+  const nodes = graph.cy.nodes(":child");
+  // nearby but not exactly the same spot
+  nodes.positions(nodes[0].position());
+  // position in a circle around the first node
+  for(let j=1; j < nodes.length ;j++) {nodes[j].shift({x: 100*Math.cos(2*Math.PI*j/(nodes.length-1)), y: 100*Math.sin(2*Math.PI*j/(nodes.length-1))});}
+  return;
+}
+
 /** Sets whether close matches are grouped in compound nodes. */
 function combineMatch(enabled)
 {
@@ -112,11 +123,6 @@ function combineMatch(enabled)
     });
 
     for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
-
-    // nearby but not exactly the same spot
-    nodes.positions(nodes[0].position());
-    // position in a circle around the first node
-    for(let j=1; j < nodes.length ;j++) {nodes[j].shift({x: 100*Math.cos(2*Math.PI*j/(nodes.length-1)), y: 100*Math.sin(2*Math.PI*j/(nodes.length-1))});}
   }
 
 
@@ -196,6 +202,7 @@ function menuData()
             [()=>{layout.run(graph.cy,layout.eulerTight,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "tight layout","tight-layout","ctrl+alt+t"],
             //[()=>{layout.run(graph.cy,layout.eulerVariable(util.getElementById("layout-range").value),config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "custom layout","custom-layout"],
             [()=>{layout.run(graph.cy,layout.cose,config.defaultSubOntologies,separateSubs()&&!graph.getStarMode(),false);}, "compound layout","compound-layout","ctrl+alt+c"],
+            [moveMatch, "move matches together","move-match"],
             [()=>{showChapterSearch("bb");},"BB chapter search","bb-chapter-search"],
             [()=>{showChapterSearch("ob");},"OB chapter search","ob-chapter-search"],
             [graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
