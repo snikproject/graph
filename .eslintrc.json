@@ -23,6 +23,7 @@
 		"hotkeys": true,
 		"Notyf": true,
 		"Stats": true,
+		"tippy": true,
 		"MicroModal": true
 	},
 	"extends":

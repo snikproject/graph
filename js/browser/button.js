@@ -64,6 +64,7 @@ export default function addButtons()
     util.getElementById("buttons").appendChild(button);
     button.innerText = buttonConfig[0];
     button.setAttribute("data-i18n",buttonConfig[1]);
+    button.id="button-"+buttonConfig[1];
     button.addEventListener("click",buttonConfig[2]);
   }
   log.debug('buttons added');

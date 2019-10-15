@@ -9,4 +9,5 @@ declare global
   function cytoscape() : cytoscape.Core;
   const Notyf: object;
   const hotkeys: function;
+  const tippy: function;
 }

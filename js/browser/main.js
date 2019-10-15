@@ -13,7 +13,7 @@ import config from "../config.js";
 import * as util from "./util.js";
 import {registerContextMenu} from "./contextmenu.js";
 import {addOverlay} from "./benchmark.js";
-
+import * as help from "./help.js";
 
 /** Entry point. Is run when DOM is loaded. **/
 function main()
@@ -69,7 +69,7 @@ function main()
     addButtons();
 
     search.addSearch();
-
+    help.init();
     try
     {
       const url = new URL(window.location.href);
