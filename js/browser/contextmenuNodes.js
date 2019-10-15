@@ -25,6 +25,7 @@ const compoundMenu = Object.assign(menuDefaults(),
   [
     {
       content: 'open',
+      id: 'open',
       select: node=>
       {
         node.children().move({parent:null});
@@ -39,6 +40,7 @@ const baseCommands =
 [
   {
     content: 'edit/report',
+    id: "edit",
     select: node=>
     {
       if(confirm(language.getString("ontology-issue-warning")))
@@ -50,34 +52,42 @@ const baseCommands =
   },
   {
     content: 'class use',
+    id: "class-use",
     select: node=> {classUse(node.data(NODE.ID),node.data(NODE.SUBTOP));},
   },
   {
     content: 'hide',
+    id: 'hide',
     select: node=> {graph.hide(node);graph.hide(node.connectedEdges());},
   },
   {
     content: 'set as path source',
+    id: 'set-path-source',
     select: node=> {graph.setSource(node);},
   },
   {
     content: 'description',
+    id: 'description',
     select: node=>  {window.open(node.data(NODE.ID));},
   },
   {
     content: 'star',
+    id: 'star',
     select: node=> {graph.showStar(node,false);},
   },
   {
     content: 'incoming star',
+    id: 'incoming-star',
     select: node=> {graph.showStar(node,false,graph.Direction.IN);},
   },
   {
     content: 'outgoing star',
+    id: 'outgoing-star',
     select: node=> {graph.showStar(node,false,graph.Direction.OUT);},
   },
   {
     content: 'path',
+    id: 'path',
     select: node=>
     {
       if(node&&graph.getSource()&&graph.getSource()!==node)
@@ -92,6 +102,7 @@ const baseCommands =
   },
   {
     content: 'spiderworm',
+    id: 'spiderworm',
     select: node=>
     {
       if(graph.getSource()&&graph.getSource()!==node)
@@ -102,6 +113,7 @@ const baseCommands =
   },
   // {
   //   content: 'find neighbours',
+  //   id: 'find-neighbours',
   //   select: node=>
   //   {
   //     log.warn("'find neighbours' not implemented yet!", node);
@@ -109,6 +121,7 @@ const baseCommands =
   // },
   // {
   //   content: 'combine close matches',
+  //   id: 'combine-close-matches',
   //   select: node=>
   //   {
   //     log.warn("'combine close matches' not implemented yet!", node);
@@ -116,11 +129,12 @@ const baseCommands =
   // },
 ];
 
-/** Developer Commands that are not useful for non-dev users  ***********************************************************************************/
+/** Commands that are only useful for Developers ***********************************************************************************/
 const devCommands =
 [
   {
     content: 'remove permanently',
+    id: 'remove-permanently',
     select: node=>
     {
       graph.cy.remove(node);
@@ -161,6 +175,7 @@ const devCommands =
   },
   {
     content: 'OntoWiki',
+    id: 'ontowiki',
     select: node=>
     {
       window.open('https://www.snik.eu/ontowiki/view/?r='+node.data(NODE.ID)+"&m="+rdf.sub(node.data(NODE.ID)));
@@ -168,6 +183,7 @@ const devCommands =
   },
   {
     content: 'debug',
+    id: 'debug',
     select: function(node)
     {
       alert(JSON.stringify(node.data(),null,2));
@@ -180,6 +196,7 @@ const extCommands =
   [
     {
       content: 'doublestar',
+      id: 'doublestar',
       select: node=>
       {
         if(graph.getSource()&&graph.getSource()!==node)
@@ -190,6 +207,7 @@ const extCommands =
     },
     {
       content: 'starpath',
+      id: 'starpath',
       select: node=>
       {
         if(graph.getSource()&&graph.getSource()!==node)
@@ -200,14 +218,17 @@ const extCommands =
     },
     {
       content: 'circle star',
+      id: 'circlestar',
       select: node=> {graph.showStar(node,true);},
     },
     {
       content: 'LodLive',
+      id: 'lodlive',
       select: node=> {window.open('http://en.lodlive.it/?'+node.data(NODE.ID));},
     },
     {
       content: 'move all selected here',
+      id: 'move-selected',
       select: node=>
       {
         graph.cy.nodes(":selected").positions(()=>node.position());

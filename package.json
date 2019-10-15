@@ -19,7 +19,8 @@
     "pastebin-js": "^1.0.2",
     "regenerator-runtime": "^0.13.3",
     "spin.js": "^4.0.0",
-    "stats.js": "^0.17.0"
+    "stats.js": "^0.17.0",
+    "tippy.js": "^5.0.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.2",
