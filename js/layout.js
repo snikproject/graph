@@ -36,6 +36,23 @@ export function positions(nodes)
   return pos;
 }
 
+/** @param {cytoscape.NodeCollection} nodes the nodes whose center is returned
+@returns {object} the center point of the nodes */
+function center(nodes)
+{
+  const center = {x:0.0 , y:0.0};
+  for(let i=0; i<nodes.length; i++)
+  {
+    const pos = nodes[i].position();
+    center.x+=pos.x;
+    center.y+=pos.y;
+  }
+  center.x/=(nodes.length);
+  center.y/=(nodes.length);
+  return center;
+}
+
+
 /** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it (use {@link module:layout.runCached} for that).
 @param {cytoscape.Core} cy the Cytoscape.js graph to run the layout on
 @param {object} layoutConfig the layout configuration, which includes the layout name and options
@@ -82,10 +99,29 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
   }
   else{log.info("Separate subontologies unchecked");}
   if(activeLayout) {activeLayout.stop();}
-  const elements = cy.nodes(":selected").size()>1?cy.elements(":selected"):cy.elements(":visible");
+
+  let elements;
+  let partLayout;
+  if(cy.nodes(":selected").size()>1)
+  {
+    elements = cy.elements(":selected");
+    partLayout = true;
+  }
+  else
+  {
+    elements = cy.elements(":visible");
+    partLayout = false;
+  }
+  let oldCenter;
+  if(partLayout) {oldCenter = center(elements.nodes());}
   activeLayout = elements.layout(layoutConfig);
   activeLayout.on("layoutstop",()=>
   {
+    if(partLayout)
+    {
+      const newCenter = center(elements.nodes());
+      elements.nodes().shift({x: oldCenter.x-newCenter.x,y: oldCenter.y-newCenter.y});
+    }
     layoutTimer.stop();
     if(subs&&separateSubs)
     {
@@ -106,7 +142,8 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
       log.info("Replaced layout cache.");
     }
   });
-  activeLayout.run();
+  {activeLayout.run();}
+
   return true;
 }
 
@@ -228,7 +265,7 @@ export const euler =
   timeStep: 80,
   randomize: true,
   movementThreshold: 1,
-  fit:true,
+  fit:false,
   mass: node => node.data("mass")?node.data("mass"):40,
 };
 
@@ -245,11 +282,12 @@ export const eulerTight =
   refresh: 50,
   randomize: false,
   movementThreshold: 1,
-  fit:true,
+  fit:false,
   mass: 40,
 };
 
 /** Creates a euler layout with custom spring length. */
+/*
 export function eulerVariable(len)
 {
   const layout =
@@ -265,6 +303,7 @@ export function eulerVariable(len)
   };
   return layout;
 }
+*/
 
 /** Layout for compound graphs */
 export const cose =

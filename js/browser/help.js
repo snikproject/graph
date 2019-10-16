@@ -95,7 +95,7 @@ export function init(o = help)
       const selector = `[data-i18n="${key}"]`;
       const eles = document.querySelectorAll(selector);
       if(eles.length>0) {tippy(selector, {content: value});}
-      else {log.info(`tooltip init: found none of #${key} and [data-i18n="${key}"]`);}
+      else {log.trace(`tooltip init: found none of #${key} and [data-i18n="${key}"]`);}
     }
   }
 }
