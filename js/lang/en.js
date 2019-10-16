@@ -36,6 +36,8 @@ export default
     "bb-chapter-search": "BB chapter search",
     "ob-chapter-search": "OB chapter search",
     "reset-view": "reset view",
+    "move-match-on-top": "move matches on top of each other",
+    "move-match-nearby": "move matches nearby",
     // services ******************************************
     "services": "Services",
     "sparql-endpoint": "SPARQL Endpoint",
