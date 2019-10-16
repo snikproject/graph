@@ -39,6 +39,7 @@ const compoundMenu = Object.assign(menuDefaults(),
 const baseCommands =
 [
   {
+    //content: '<img src onerror="tippy(\'span\')"><span data-tippy-content="Tooltip">edit/report</span>',
     content: 'edit/report',
     id: "edit",
     select: node=>
@@ -240,7 +241,7 @@ const extCommands =
 export default function nodeMenus(dev,ext)
 {
   menu.commands = [...baseCommands,...dev?devCommands:[],...ext?extCommands:[]];
-  menu.menuRadius = 220 + (dev?15:0) + (ext?25:0);
+  menu.menuRadius = 240 + (dev?15:0) + (ext?25:0);
   return [menu,compoundMenu];
 }
 

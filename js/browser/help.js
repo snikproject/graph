@@ -15,6 +15,7 @@ export const help =
       "class-use":"Visualize the interplay of role, function and entity type (related to the Meta model).",
       hide:"Hide the selected item until the view is resetted.",
       "set-path-source":"Set the starting point for path operations.",
+      "confirm-link": "Confirm that the automatically generated interlink is correct.",
     },
     devMode:
     {
@@ -70,6 +71,8 @@ export const help =
   },
   "search-field":"Search for classes by entering a full or partial name.",
 };
+
+export const flatHelp = {...help.contextMenu.baseMode, ...help.contextMenu.devMode, ...help.contextMenu.extMode, ...help.menu, ...help["search-field"]}; // TODO: dynamically generate
 
 /** Add event listenerers for popups.*/
 export function init(o = help)

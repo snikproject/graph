@@ -15,14 +15,17 @@ function edgeLabel(edge) {return rdf.short(edge.data(EDGE.SOURCE)) +" "+ rdf.sho
 const baseCommands = [
   {
     content: 'edit / report',
+    id: "edit",
     select: (edge)=>util.createGitHubIssue(util.REPO_ONTOLOGY,edgeLabel(edge),'The edge "'+edgeLabel(edge)+'" is incorrect.\n\n**Details**\n'),
   },
   {
     content: 'hide',
+    id: "hide",
     select: (edge)=>graph.hide(edge),
   },
   {
     content: 'description (if it exists)',
+    id: "description",
     select: node=>
     {
       if(node.data(EDGE.AXIOM)) {window.open(node.data(EDGE.AXIOM));}
@@ -34,6 +37,7 @@ const baseCommands = [
 const devCommands = [
   {
     content: 'remove permanently',
+    id: "remove-permanently",
     select: function(edge)
     {
       graph.cy.remove(edge);
@@ -56,6 +60,7 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
   {
     // Open the source class of the triple in OntoWiki because you can edit the triple there.
     content: 'OntoWiki',
+    id: "ontowiki",
     select: function(edge)
     {
       window.open('https://www.snik.eu/ontowiki/view/?r='+edge.data(EDGE.SOURCE)+"&m="+rdf.sub(edge.data(EDGE.SOURCE)));
@@ -63,6 +68,7 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
   },
   {
     content: 'debug',
+    id: "debug",
     select: function(edge)
     {
       alert(JSON.stringify(edge.data(),null,2));
@@ -74,6 +80,7 @@ const limesCommands =
 [
   {
     content: 'confirm link',
+    id: "confirm-link",
     select: function(edge)
     {
       edge.data(EDGE.GRAPH,"http://www.snik.eu/ontology/match");
@@ -103,7 +110,7 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
 Offers base commands.*/
 const baseMenu = Object.assign(menuDefaults(),
   {
-    menuRadius: 100, // the radius of the circular menu in pixels
+    menuRadius: 120, // the radius of the circular menu in pixels
     selector: `edge[${EDGE.GRAPH} != "http://www.snik.eu/ontology/limes-exact"]`, // elements matching this Cytoscape.js selector will trigger cxtmenus
     commands: baseCommands,
   });
@@ -112,7 +119,7 @@ const baseMenu = Object.assign(menuDefaults(),
 Offers base and confirm commands.*/
 const baseLimesMenu = Object.assign(menuDefaults(),
   {
-    menuRadius: 150,
+    menuRadius: 170,
     selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`,
     commands: baseCommands.concat(limesCommands),
   });
@@ -121,7 +128,7 @@ const baseLimesMenu = Object.assign(menuDefaults(),
     Offers base and development commands.*/
 const devMenu = Object.assign(menuDefaults(),
   {
-    menuRadius: 150,
+    menuRadius: 170,
     selector: `edge[${EDGE.GRAPH} != "http://www.snik.eu/ontology/limes-exact"]`,
     commands: baseCommands.concat(devCommands),
   });
@@ -130,7 +137,7 @@ const devMenu = Object.assign(menuDefaults(),
   Offers base, development and confirm commands.*/
 const devLimesMenu = Object.assign(menuDefaults(),
   {
-    menuRadius: 150,
+    menuRadius: 170,
     selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`,
     commands: baseCommands.concat(devCommands,limesCommands),
   });
