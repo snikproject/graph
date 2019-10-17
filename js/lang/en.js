@@ -53,6 +53,13 @@ export default
     // don't translate the help options yet because they are -english anyways
     // other *********************************************
     "deselect-all": "deselect all",
+    "search-field": "search field",
+    "base-mode": "basic menu items",
+    "context-menu": "context menu",
+    "incoming-star":"incoming star",
+    "outgoing-star":"outgoing star",
+    "combine-close-matches":"combine close matches",
+    "class-use":"class use",
   },
   messageStrings:
   {

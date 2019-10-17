@@ -10,20 +10,20 @@ import * as NODE from "../node.js";
 import {checkboxKeydownListener} from "./util.js";
 
 const filterData = [
-  [`node[${NODE.SOURCE}='meta']`,`meta`],
-  [`node[${NODE.SOURCE}='bb']`,`BB`],
-  [`node[${NODE.SOURCE}='ob']`,`OB`],
-  [`node[${NODE.SOURCE}='ciox']`,`CioX`],
-  [`node[${NODE.SOURCE}='he']`,`HE`],
-  [`node[${NODE.SOURCE}='it']`,`IT`],
-  [`node[${NODE.SOURCE}='it4it']`,`IT4IT`],
-  [`node[${NODE.SUBTOP}='${NODE.SUBTOP_ENTITY_TYPE}']`,`EntityType`],
-  [`node[${NODE.SUBTOP}='${NODE.SUBTOP_ROLE}']`,`Role`],
-  [`node[${NODE.SUBTOP}='${NODE.SUBTOP_FUNCTION}']`,`Function`],
-  [`edge[p='http://www.w3.org/2000/01/rdf-schema#subClassOf']`,`subClassOf`],
-  [`edge[p!='http://www.w3.org/2000/01/rdf-schema#subClassOf']`,`non-subClassOf`],
-  [`edge[p^='http://www.w3.org/2004/02/skos/core#']`,`inter-ontology-relations`],
-  [`edge[p!^='http://www.w3.org/2004/02/skos/core#']`,`non-inter-ontology-relations`],
+  [`node[${NODE.SOURCE}='meta']`,`meta`,"meta"],
+  [`node[${NODE.SOURCE}='bb']`,`BB`,"bb"],
+  [`node[${NODE.SOURCE}='ob']`,`OB`,"ob"],
+  [`node[${NODE.SOURCE}='ciox']`,`CioX`,"ciox"],
+  [`node[${NODE.SOURCE}='he']`,`HE`,"he"],
+  [`node[${NODE.SOURCE}='it']`,`IT`,"it"],
+  [`node[${NODE.SOURCE}='it4it']`,`IT4IT`,"it4it"],
+  [`node[${NODE.SUBTOP}='${NODE.SUBTOP_ROLE}']`,`Role`,"role"],
+  [`node[${NODE.SUBTOP}='${NODE.SUBTOP_FUNCTION}']`,`Function`,"function"],
+  [`node[${NODE.SUBTOP}='${NODE.SUBTOP_ENTITY_TYPE}']`,`EntityType`,"entitytype"],
+  [`edge[p='http://www.w3.org/2000/01/rdf-schema#subClassOf']`,`subClassOf`, "subclassof"],
+  [`edge[p!='http://www.w3.org/2000/01/rdf-schema#subClassOf']`,`non-subClassOf`, "non-subclassof"],
+  [`edge[p^='http://www.w3.org/2004/02/skos/core#']`,`inter-ontology-relations`, "inter-ontology-relations"],
+  [`edge[p!^='http://www.w3.org/2004/02/skos/core#']`,`non-inter-ontology-relations`, "non-inter-ontology-relations"],
   //["edge[p='http://www.snik.eu/ontology/meta/subTopClass']","subTopClass"],
   //["node[consolidated<=0]","unverified"]
 ];
@@ -42,7 +42,7 @@ class Filter
   @param {string} selector a Cytoscape.js selector, see {@link http://js.cytoscape.org/#selectors}
   @param {string} label the menu entry label
   */
-  constructor(cy,selector,label)
+  constructor(cy,selector,label,i18n)
   {
     this.cy=cy;
     this.selector=selector;
@@ -59,6 +59,7 @@ class Filter
     this.a.appendChild(document.createTextNode(label));
     this.a.setAttribute("tabindex",-1);
     this.a.addEventListener("keydown",checkboxKeydownListener(input));
+    if(i18n) {this.a.setAttribute("data-i18n",i18n);}
 
     this.cssClass = `filter-${label}`;
     this.visible = true;
@@ -120,7 +121,7 @@ function addFilterEntries(cy, parent,as)
 {
   for(const datum of filterData)
   {
-    const filter = new Filter(cy,datum[0],datum[1]);
+    const filter = new Filter(cy,datum[0],datum[1],datum[2]);
     parent.appendChild(filter.a);
     as.push(filter.a);
   }
