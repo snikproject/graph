@@ -1,115 +1,151 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>SNIK Graph Manual</title>
-		<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
-	</head>
-	<body>
+<head>
+<meta charset="utf-8">
+<title>SNIK Graph Manual</title>
+<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+</head>
+<body>
 <h1>SNIK Graph Manual</h1>
-<img src="img/graph.png" style="width:100%"/>
-<h2>What is SNIK Graph?</h2>
-<p>
-SNIK Graph is the research prototype of a graph visualization of the Hospital Information Management ontology created by the SNIK research project of the IMISE research group of the medical faculty of the University of Leipzig.
-</p>
-The graph consists of nodes, which are concepts from the ontology, and edges between nodes, which are relationships (properties) between concepts. Select an edge to see the edge label (relationship type) and direction.
-
+<img src="img/graph.png" style="max-width:100vw;">
 <h2>Context Menu</h2>
-Right click on a node/edge to open the context menu and choose among:
-<h3>Description</h3>
+Right click on a node/edge to open the context menu and choose among:Right click on a node/edge to open the context menu and choose among:
+<h3>Basic Menu Items</h3>
+<h4>Description</h4>
 Opens the node in an RDF browser, which shows all its properties and values.
-<h3>Star</h3>
-Highlights the node and all it's directly connected nodes.
-<figure>
-<img src="img/star.png">
-<figcaption><i>Star</i></figcaption>
-</figure>
-<h3>Directed Star</h3>
-Shows only target neighbours (outgoing edges).
-<figure>
-<img src="img/directedStar.png">
-<figcaption><i>Directed Star</i></figcaption>
-</figure>
-<h3>Path</h3>
-Shortest Path between source and target nodes (has to be set before).
-<figure>
-<img src="img/path.png">
-<figcaption><i>Path</i></figcaption>
-</figure>
-<h3>Spiderworm</h3>
-Is only shown when source and target nodes are set.
-The <i>Spider Worm</i> consists of the shortest path between a selected source and target node plus all edges of the target node and the other node of each of those edges.
-Displaying a spiderworm hides all other nodes and edges.
-<figure>
-<img src="img/spiderworm.png">
-<figcaption><i>Spiderworm</i></figcaption>
-</figure>
-<!--<h3>Find neighbours</h3>
-under construction-->
-<h3>Combine close Matches</h3>
+<h4>Star</h4>
+Highlights the node and all its directly connected nodes.Highlights the node and all its directly connected nodes.
+<img src="img/star.png" style="max-width:100vw;">
+<h4>Incoming Star</h4>
+Highlights the node and all neighbours directly connected via incoming edges.
+<h4>Outgoing Star</h4>
+Highlights the node and all neighbours directly connected via outgoing edges.
+<h4>Path</h4>
+Shortest Path between a selected source and this node.Shortest Path between a selected source and this node.
+<img src="img/star.png" style="max-width:100vw;">
+<h4>Spiderworm</h4>
+The Spider Worm consists of the shortest path between a selected source and this node plus all direct neighbours. Displaying a spiderworm hides all other nodes and edges.The Spider Worm consists of the shortest path between a selected source and this node plus all direct neighbours. Displaying a spiderworm hides all other nodes and edges.
+<img src="img/spiderworm.png" style="max-width:100vw;">
+<h4>Edit</h4>
+If you are a domain expert and notice incorrectly modelled facts or connections of a node, feel free to send us an issue.
+<h4>Combine Close Matches</h4>
 Merge equivalent classes from different subontologies.
-<h3>Edit/report</h3>
-If you are a domain expert and notice incorrectly modelled facts or connections of a node feel free to send us an issue.
-<h3>Class use</h3>
-Visualizes the interplay of role, function and entity type (related to the Meta model).
-<h3>Remove</h3>
-Removes the selected item from the view (until the graph is reloaded).
-<h3>Set path as source</h3>
-Sets the starting point for path operations.
-<h3>Doublestar (extended mode)</h3>
-Is only shown when source and target nodes are set.
-The double star is like the spiderworm but shows connected nodes for both source and target, not just the target.
-<figure>
-<img src="img/doublestar.png">
-<figcaption><i>Double Star</i></figcaption>
-</figure>
-<h3>Starpath (extended mode)</h3>
-Creates a path and star every node along it.
-<figure>
-<img src="img/starpath.png">
-<figcaption><i>Star Path</i></figcaption>
-</figure>
-<h3>Circle star (extended mode)</h3>
-A star using a circular layout.
-<figure>
-<img src="img/circlestar.png">
-<figcaption><i>Circle Star</i></figcaption>
-</figure>
-<h3>LodLive (extended mode)</h3>
-Third party data visualization exploration tool.
-<h3>Remove permanently (dev mode)</h3>
+<h4>Class Use</h4>
+Visualize the interplay of role, function and entity type (related to the Meta model).
+<h4>Hide</h4>
+Hide the selected item until the view is resetted.
+<h4>Set Path-source</h4>
+Set the starting point for path operations.
+<h4>Confirm Link</h4>
+Confirm that the automatically generated interlink is correct.
+<h3>Developer Mode</h3>
+Additional context menu entries for developers.<h4>Remove Permanently</h4>
 Send us an issue to delete the selected item permanently. Also removes it until graph is reloaded.
-<h3>Onto Wiki (dev mode)</h3>
+<h4>Ontowiki</h4>
 Access restricted ontology editing tool.
-<h3>Debug (dev mode)</h3>
+<h4>Debug</h4>
 Get debug information to the edge/node from the JSON File
-
+<h3>Extended Mode</h3>
+Additional context menu entries for power users.<h4>Doublestar</h4>
+The double star is like the spiderworm but shows connected nodes for both source and target, not just the target.The double star is like the spiderworm but shows connected nodes for both source and target, not just the target.
+<img src="img/doublestar.png" style="max-width:100vw;">
+<h4>Starpath</h4>
+Creates a path and star every node along it.Creates a path and star every node along it.
+<img src="img/starpath.png" style="max-width:100vw;">
+<h4>Circlestar</h4>
+A star using a circular layout.A star using a circular layout.
+<img src="img/circlestar.png" style="max-width:100vw;">
+<h4>Lodlive</h4>
+Third party data visualization exploration tool.
 <h2>Menu</h2>
 <h3>File</h3>
-Holds different File Options like loading and saving the graph in different ways.
+Holds different file options like loading and saving the graph in different ways.Holds different file options like loading and saving the graph in different ways.
+<h4>Load Graph File With Layout</h4>
+Discard the currently loaded graph and load a new one from a Cytoscape file.
+<h4>Load Layout</h4>
+Keep the currently loaded graph but load the position from those nodes from a layout file. Only works for nodes whose identifiers are contained in the file.
+<h4>Load From SPARQL Endpoint</h4>
+Discard the currently loaded graph and load all ontologies of SNIK.
+<h4>Save Session</h4>
+Save the complete graph (visible and hidden) to a Cytoscape file.
+<h4>Save Visible Graph With Layout As Cytoscape File</h4>
+Save the currently visible subgraph to a Cytoscape file.
+<h4>Save Layout Only</h4>
+Save the positions all nodes in the graph to a layout file.
+<h4>Recalculate Layout And Replace In Browser Cache</h4>
+Recalculate the position of all visible nodes. May take a while when a large number of nodes are visible.
+<h4>Save Image Of Current View</h4>
+Save a screenshot of the current view.
+<h4>Save Image Of Whole Graph</h4>
+Save an image of the whole graph with the same pixel density as the current view.
+<h4>Save Image Of Current View (high Res)</h4>
+Save an image of the current view with a high resolution, for example for printing.
+<h4>Save Image Of Whole Graph (high Res)</h4>
+Save an image of the whole graph with a high resolution, for example for printing.
 <h3>Filter</h3>
-A collection of filters to display relevant subgraphs.
+A collection of filters to display relevant subgraphs.A collection of filters to display relevant subgraphs.
+<h4>Meta</h4>
+The Meta Ontology provides common superclasses and relations for the subontologies of SNIK.
+<h4>Bb</h4>
+Based on the book "Health Information Systems Ontology–Architectures and Strategies".
+<h4>Ob</h4>
+Based on the book"IT-Projektmanagement im Gesundheitswesen - Lehrbuch und Projektleitfaden.
+<h4>He</h4>
+Based on the book "Informationsmanagement: Grundlagen, Aufgaben, Methoden".
+<h4>Ciox</h4>
+Based on interviews about the Health Information System with Department B1, the Department for Information Management, of the Uniklinikum Leipzig.
+<h4>Role</h4>
+Who...
+<h4>Function</h4>
+...does what...
+<h4>Entitytype</h4>
+...and which information is therefore needed.
 <h3>Options</h3>
-Here you can find different checkboxes for the scope of the context menu, for day mode, cumulative Search and the 'Seperate Subontologies' function, which spreads the SNIK Graph into subgraphs of the subontologies.
+Here you can find different checkboxes that toggle the behaviour of SNIK GraphHere you can find different checkboxes that toggle the behaviour of SNIK Graph
+<h4>Separate Subontologies</h4>
+Spread the SNIK Graph into subgraphs of the subontologies.
+<h4>Cumulative Search</h4>
+Keep previous search results visible when searching again.
+<h4>Day Mode</h4>
+White background. Saves ink when printing.
+<h4>Developer Mode</h4>
+Additional context menu entries for developers.
+<h4>Extended Mode</h4>
+Additional context menu entries for power users.
+<h4>Combine Matches</h4>
+Highlights groups of classes representing the same concept from different subontologies (matches) by placing them in boxes. Use "move matches on top of each other" or  "move matches nearby" to shrink those boxes.
 <h3>Layout</h3>
-This part of the menu holds the layout features. See <a href="layoutHelp.html">here</a> for more Information.
+This part of the menu holds the layout features.This part of the menu holds the layout features.
+<h4>Show Close Matches</h4>
+Shows (unhides) all nodes that are connected via close matches to visible nodes.
+<h4>Recalculate Layout</h4>
+Hotkey: Ctrl+Alt+L. Recalculates the position of all selected nodes, or all visible nodes if there are not at least two selected nodes. Can take a while if there are many visible nodes.
+<h4>Tight Layout</h4>
+Hotkey: Ctrl+Alt+T. You can use this for a more narrow view.
+<h4>Compound Layout</h4>
+Hotkey: Ctrl+Alt+C. Layout that tries to places combined matches next to each other.
+<h4>Reset View</h4>
+Resets all the layout operations to get you back to the starting point of the visualization.
+<h4>Move Matches On Top Of Each Other</h4>
+Requires enabled "Combine Matching" option. Places all matching nodes in the center of their group.
+<h4>Move Matches Nearby</h4>
+Requires enabled "Combine Matching" option. Places all matching nodes in a small circle in their group.
+<h4>BB Chapter Search</h4>
+Presents you all chapters of the "blue book" and lets you build a subgraph out of selected chapters .
+<h4>OB Chapter Search</h4>
+Presents you all chapters of the "orange book" and lets you build a subgraph out of selected chapters .
 <h3>Services</h3>
-
+Other ways to access SNIK.Other ways to access SNIK.
+<h4>SPARQL Endpoint</h4>
+Expert interface for the SPARQL Protocol and RDF Query Language endpoint.
+<h4>RDF Browser</h4>
+Browse complete descriptions of classes in the RDF browser.
 <h3>Language</h3>
-Language switch, you can choose between English, German and Persian
+Language switch, you can choose between English, German and Persian. Ontologies may not or not fully support all available languages.
 <h3>Help</h3>
 Common Help Menu, holds e.g. this manual
-</br>
-</br>
 <h2>Search Field</h2>
-Full text search with a fuzzy approach for best results.
-<h2>Layout Buttons</h2>
-Shortcut Buttons for most often used layout operations. Described in Operations
-<h2>Zoom Element (down right postion)</h2>
-A google-maps-like pan and zoom element for the navigation in the graph
+Search for classes by entering a full or partial name.
 
-<h2>Requirements and Technical Problems</h2>
-SNIK Graph runs in your browser using JavaScript, so any modern browser with activated JavaScript should work. Obviously this includes deactivating noScript and similar extensions.
-If you encounter technical problems, please <a href="https://bitbucket.org/imise/snik-cytoscape.js/issues/new">submit a bug report ticket</a>.
 </body>
 </html>
