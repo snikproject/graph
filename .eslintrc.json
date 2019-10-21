@@ -62,11 +62,12 @@
 		"comma-dangle": ["error","always-multiline"],
 		"semi": ["error"],
 		"comma-style": ["error","last"],
-		"require-jsdoc": ["error", {
+		"class-methods-use-this": ["off"],
+		"require-jsdoc": ["warn", {
 			"require": {
 				"FunctionDeclaration": true,
 				"MethodDefinition": true,
-				"ClassDeclaration": true,
+				"ClassDeclaration": false,
 				"ArrowFunctionExpression": false
 			}
 			}]

@@ -2,16 +2,16 @@
 Entry point.
 @module */
 import loadGraphFromSparql from "../loadGraphFromSparql.js";
-import * as menu from "./menu.js";
-import * as search from "./search.js";
+import Menu from "./menu.js";
+import Search from "./search.js";
 import addButtons from "./button.js";
 import {loadGraph} from "./file.js";
-import * as graph from "./graph.js";
+import {Graph} from "./graph.js";
 import * as layout from "../layout.js";
 import progress from "./progress.js";
 import config from "../config.js";
 import * as util from "./util.js";
-import {registerContextMenu} from "./contextmenu.js";
+import ContextMenu from "./contextmenu.js";
 import {addOverlay} from "./benchmark.js";
 import * as help from "./help.js";
 
@@ -60,17 +60,16 @@ function main()
   {
     console.groupCollapsed("Initializing");
 
-    graph.initGraph();
-
-    menu.addMenu();
-
-    registerContextMenu(util.getElementById("dev-mode-checkbox").checked,util.getElementById("ext-mode-checkbox").checked);
+    const graph = new Graph(document.getElementById("cy"));
+    const cxtMenu = new ContextMenu(graph, util.getElementById("dev-mode-checkbox").checked,util.getElementById("ext-mode-checkbox").checked);
+    const menu = new Menu(graph,cxtMenu);
+    const search = new Search(graph,util.getElementById("search"));
 
     addButtons();
 
-    search.addSearch();
     help.init();
     try
+
     {
       const url = new URL(window.location.href);
       const empty = (url.searchParams.get("empty")!==null);

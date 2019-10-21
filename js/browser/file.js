@@ -1,6 +1,5 @@
 /** Module for loading files both locally from the server and via upload from the client.
 @module */
-import * as graph from "./graph.js";
 import * as layout from "../layout.js";
 
 /**
@@ -20,7 +19,7 @@ function uploadJson(event,callback)
 Load a layouted graph from the JSON file specified by the given file input change event.
 @param {Event} event a file input change event
 */
-export function loadGraph(event)
+export function loadGraph(graph,event)
 {
   uploadJson(event,json=>
   {
@@ -41,7 +40,7 @@ export function loadGraph(event)
 Load a layout from the JSON file specified by the given file input change event.
 @param {Event} event a file input change event
 */
-export function loadLayout(event)
+export function loadLayout(graph, event)
 {
   uploadJson(event,json=>{layout.presetLayout(graph.cy,json);});
 }

@@ -59,3 +59,28 @@ export const CONSTANTS =
 {
   SPARUL_WARNING: 'Please be careful with all SPARUL operations and always create a <a href="https://wiki.imise.uni-leipzig.de/Projekte/SNIK/ontologie/sparql">SPARQL dump</a> as a backup beforehand.',
 };
+
+/** Update all HTML elements with data-i18n tags. */
+export function updateHtml()
+{
+  for(const key of Object.keys(strings[language]))
+  {
+    const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
+    if(elements.length===0)
+    {
+      log.warn(`i18n key ${key} not used`);
+      continue;
+    }
+    for(const element of elements)
+    {
+      const s = strings[language][key];
+      switch(element.tagName)
+      {
+        case "A":
+        case "BUTTON":
+        case "SPAN": element.textContent = s; break;
+        default: log.warn(`Cannot assign text "${s}" to element with i18n key ${key} because its tag type ${element.tagName} is unsupported.`);
+      }
+    }
+  }
+}

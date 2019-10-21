@@ -3,7 +3,6 @@ Creates the circular context menu that can be opened on top of a node.
 @module */
 import * as language from "../lang/language.js";
 import classUse from "./classuse.js";
-import * as graph from "./graph.js";
 import * as rdf from "../rdf.js";
 import * as NODE from "../node.js";
 import * as sparql from "../sparql.js";
@@ -17,7 +16,7 @@ const menu = Object.assign(menuDefaults(),
     commands: [],
   });
 
-const compoundMenu = Object.assign(menuDefaults(),
+const compoundMenu = graph => Object.assign(menuDefaults(),
   {
     menuRadius: 180, // the radius of the circular menu in pixels
     selector: 'node:compound', // elements matching this Cytoscape.js selector will trigger cxtmenus
@@ -36,82 +35,82 @@ const compoundMenu = Object.assign(menuDefaults(),
   });
 
 /** Default Entries that are always shown ***********************************************************************************/
-const baseCommands =
-[
-  {
+const baseCommands = graph =>
+  [
+    {
     //content: '<img src onerror="tippy(\'span\')"><span data-tippy-content="Tooltip">edit/report</span>',
-    content: 'edit/report',
-    id: "edit",
-    select: node=>
-    {
-      if(confirm(language.getString("ontology-issue-warning")))
+      content: 'edit/report',
+      id: "edit",
+      select: node=>
       {
-        const body = `The class ${node.data(NODE.ID)} has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n`;
-        util.createGitHubIssue(util.REPO_ONTOLOGY,node.data(NODE.ID),body);
-      }
+        if(confirm(language.getString("ontology-issue-warning")))
+        {
+          const body = `The class ${node.data(NODE.ID)} has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n`;
+          util.createGitHubIssue(util.REPO_ONTOLOGY,node.data(NODE.ID),body);
+        }
+      },
     },
-  },
-  {
-    content: 'class use',
-    id: "class-use",
-    select: node=> {classUse(node.data(NODE.ID),node.data(NODE.SUBTOP));},
-  },
-  {
-    content: 'hide',
-    id: 'hide',
-    select: node=> {graph.hide(node);graph.hide(node.connectedEdges());},
-  },
-  {
-    content: 'set as path source',
-    id: 'set-path-source',
-    select: node=> {graph.setSource(node);},
-  },
-  {
-    content: 'description',
-    id: 'description',
-    select: node=>  {window.open(node.data(NODE.ID));},
-  },
-  {
-    content: 'star',
-    id: 'star',
-    select: node=> {graph.showStar(node,false);},
-  },
-  {
-    content: 'incoming star',
-    id: 'incoming-star',
-    select: node=> {graph.showStar(node,false,graph.Direction.IN);},
-  },
-  {
-    content: 'outgoing star',
-    id: 'outgoing-star',
-    select: node=> {graph.showStar(node,false,graph.Direction.OUT);},
-  },
-  {
-    content: 'path',
-    id: 'path',
-    select: node=>
     {
-      if(node&&graph.getSource()&&graph.getSource()!==node)
-      {
-        graph.showPath(graph.getSource(), node);
-      }
-      else
-      {
-        log.warn("Path not possible.");
-      }
+      content: 'class use',
+      id: "class-use",
+      select: node=> {classUse(graph,node.data(NODE.ID),node.data(NODE.SUBTOP));},
     },
-  },
-  {
-    content: 'spiderworm',
-    id: 'spiderworm',
-    select: node=>
     {
-      if(graph.getSource()&&graph.getSource()!==node)
-      {
-        graph.showWorm(graph.getSource(), node);
-      }
+      content: 'hide',
+      id: 'hide',
+      select: node=> {graph.hide(node);graph.hide(node.connectedEdges());},
     },
-  },
+    {
+      content: 'set as path source',
+      id: 'set-path-source',
+      select: node=> {graph.setSource(node);},
+    },
+    {
+      content: 'description',
+      id: 'description',
+      select: node=>  {window.open(node.data(NODE.ID));},
+    },
+    {
+      content: 'star',
+      id: 'star',
+      select: node=> {graph.showStar(node,false);},
+    },
+    {
+      content: 'incoming star',
+      id: 'incoming-star',
+      select: node=> {graph.showStar(node,false,graph.Direction.IN);},
+    },
+    {
+      content: 'outgoing star',
+      id: 'outgoing-star',
+      select: node=> {graph.showStar(node,false,graph.Direction.OUT);},
+    },
+    {
+      content: 'path',
+      id: 'path',
+      select: node=>
+      {
+        if(node&&graph.getSource()&&graph.getSource()!==node)
+        {
+          graph.showPath(graph.getSource(), node);
+        }
+        else
+        {
+          log.warn("Path not possible.");
+        }
+      },
+    },
+    {
+      content: 'spiderworm',
+      id: 'spiderworm',
+      select: node=>
+      {
+        if(graph.getSource()&&graph.getSource()!==node)
+        {
+          graph.showWorm(graph.getSource(), node);
+        }
+      },
+    },
   // {
   //   content: 'find neighbours',
   //   id: 'find-neighbours',
@@ -128,22 +127,22 @@ const baseCommands =
   //     log.warn("'combine close matches' not implemented yet!", node);
   //   },
   // },
-];
+  ];
 
 /** Commands that are only useful for Developers ***********************************************************************************/
-const devCommands =
-[
-  {
-    content: 'remove permanently',
-    id: 'remove-permanently',
-    select: node=>
+const devCommands = graph =>
+  [
     {
-      graph.cy.remove(node);
-      const clazzShort  = rdf.short(node.data(NODE.ID));
-      sparql.describe(node.data(NODE.ID))
-        .then(bindings=>
-        {
-          const body = `Please permanently delete the class ${clazzShort}:
+      content: 'remove permanently',
+      id: 'remove-permanently',
+      select: node=>
+      {
+        graph.cy.remove(node);
+        const clazzShort  = rdf.short(node.data(NODE.ID));
+        sparql.describe(node.data(NODE.ID))
+          .then(bindings=>
+          {
+            const body = `Please permanently delete the class ${clazzShort}:
           \`\`\`\n
           sparql
           # WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} FROM THE GRAPH AS EITHER SUBJECT OR OBJECT
@@ -164,36 +163,36 @@ const devCommands =
           ${bindings}
           \n\`\`\`
           ${language.CONSTANTS.SPARUL_WARNING}`;
-          window.open
-          (
-            'https://github.com/IMISE/snik-ontology/issues/new?title='+
+            window.open
+            (
+              'https://github.com/IMISE/snik-ontology/issues/new?title='+
             encodeURIComponent('Remove class '+clazzShort)+
             '&body='+
             encodeURIComponent(body)
-          );
-        });
+            );
+          });
+      },
     },
-  },
-  {
-    content: 'OntoWiki',
-    id: 'ontowiki',
-    select: node=>
     {
-      window.open('https://www.snik.eu/ontowiki/view/?r='+node.data(NODE.ID)+"&m="+rdf.sub(node.data(NODE.ID)));
+      content: 'OntoWiki',
+      id: 'ontowiki',
+      select: node=>
+      {
+        window.open('https://www.snik.eu/ontowiki/view/?r='+node.data(NODE.ID)+"&m="+rdf.sub(node.data(NODE.ID)));
+      },
     },
-  },
-  {
-    content: 'debug',
-    id: 'debug',
-    select: function(node)
     {
-      alert(JSON.stringify(node.data(),null,2));
+      content: 'debug',
+      id: 'debug',
+      select: function(node)
+      {
+        alert(JSON.stringify(node.data(),null,2));
+      },
     },
-  },
-];
+  ];
 
 /** Extended Base Entries that are used less often **********************************************************************************/
-const extCommands =
+const extCommands = graph =>
   [
     {
       content: 'doublestar',
@@ -238,12 +237,12 @@ const extCommands =
   ];
 
 /** Register modular node context menu. */
-export default function nodeMenus(dev,ext)
+export default function nodeMenus(graph,dev,ext)
 {
-  menu.commands = [...baseCommands,...dev?devCommands:[],...ext?extCommands:[]];
+  menu.commands = [...baseCommands(graph),...dev?devCommands(graph):[],...ext?extCommands(graph):[]];
   menu.menuRadius = 240 + (dev?15:0) + (ext?25:0);
-  return [menu,compoundMenu];
+  return [menu,compoundMenu(graph)];
 }
 
 
-[...baseCommands,...devCommands].forEach((cmd)=>logWrap(cmd,(node)=>`node ${node.data(NODE.ID)}`));
+//[...baseCommands,...devCommands].forEach((cmd)=>logWrap(cmd,(node)=>`node ${node.data(NODE.ID)}`));

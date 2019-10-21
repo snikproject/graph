@@ -2,7 +2,6 @@
 Show the environment of a single node using a special layout.
 @module */
 import * as sparql from "../sparql.js";
-import * as graph from "./graph.js";
 import * as NODE from "../node.js";
 
 /** Centers a class and shows directly and indirectly connected roles, functions and entity types in a concentric layout.
@@ -11,7 +10,7 @@ Recalculate the layout to place those nodes in relation to the whole graph again
 @param {string} clazz The URI of the class.
 @param {string} subTop The sub top letter of the class (R,F or E)
  */
-export default function classUse(clazz,subTop)
+export default function classUse(graph,clazz,subTop)
 {
   graph.cy.startBatch();
   let innerType = "meta:Role";

@@ -1,7 +1,6 @@
 /**
 Search classes by chapter.
 @module */
-import * as graph from "./graph.js";
 import * as sparql from "../sparql.js";
 import * as util from "./util.js";
 import * as language from "../lang/language.js";
@@ -50,7 +49,7 @@ async function getClasses(sub,chapter)
 
 /** Show the classes of a chapter in the class table
 @param {Set<string>} classes the classes to show. */
-async function showClasses(classes)
+async function showClasses(graph,classes)
 {
   const table = util.getElementById("tab:chapter-search-classes");
   while(table.rows.length>0) {table.deleteRow(0);} // clear leftovers from last time
@@ -95,7 +94,7 @@ async function showClasses(classes)
 }
 
 /** Populate and show the chapter search modal. */
-export async function showChapterSearch(sub)
+export async function showChapterSearch(graph, sub)
 {
   MicroModal.show("chapter-search");
 
@@ -137,7 +136,7 @@ export async function showChapterSearch(sub)
     const row = table.insertRow();
 
     const chapterCell = row.insertCell();
-    chapterCell.addEventListener("click",async ()=>showClasses(await getClasses(sub,chapter)));
+    chapterCell.addEventListener("click",async ()=>showClasses(graph, await getClasses(sub,chapter)));
     const chapterLink = document.createElement("a");
     chapterCell.appendChild(chapterLink);
     chapterLink.innerText=binding.ch.value;
@@ -163,7 +162,7 @@ export async function showChapterSearch(sub)
       }
       // union of all classes in selected chapters
       // JavaScript doesn't have a set union operator yet and the spreadi
-      showClasses(new Set(
+      showClasses(graph, new Set(
         [...selectedChapters].map(ch=>chapters.get(ch)).flat().sort()
       ));
     });

@@ -6,126 +6,9 @@ Provides graph operations such as initialization, wayfinding and highlighting.
 import {style} from "./style.js";
 import {colorschemenight} from "./colorschemenight.js";
 import {colorschemeday} from "./colorschemeday.js";
-import * as sparql from "../sparql.js";
 import timer from "../timer.js";
 import * as NODE from "../node.js";
 import * as util from "./util.js";
-
-// Handles the cytoscape.js canvas. Call initGraph(container) to start.
-let cy = null;
-let selectedNode = null;
-let path = null;
-let pathSource = null;
-let pathTarget = null;
-let starMode = false;
-
-/** @returns whether cumulative search is activated. */
-export function cumulativeSearch() {return util.getElementById('cumulative-search-checkbox').checked;}
-
-/** Set whether star mode is active, where further stars will not hide other nodes but unhide instead.
-@param {boolean} mode whether star mode is active
-*/
-function setStarMode(mode) {starMode=mode;}
-
-/** @return whether star mode is active */
-function getStarMode() {return starMode;}
-
-/** Hides elements using visibility: hidden.
-Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
-@param {cytoscape.Collection} eles the elements to hide
-*/
-function hide(eles)
-{
-  eles.addClass('hidden');
-  eles.removeClass('highlighted');
-}
-
-/** Show (unhide) the given elements.
-Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
-@param {cytoscape.Collection} eles the elements to show
-*/
-function show(eles)
-{
-  eles.removeClass('hidden');
-}
-
-/** Highlight the given elements using the 'highlighted' css class from the color scheme stylesheet and show them.
-@param {cytoscape.Collection} eles the elements to highlight
-*/
-function highlight(eles)
-{
-  eles.removeClass('hidden');
-  eles.addClass('highlighted');
-}
-
-/**
-@param {cytoscape.Collection} eles the elements to assign the star mode css class to
-*/
-function starStyle(eles)
-{
-  eles.removeClass('hidden');
-  eles.addClass('starmode');
-}
-
-
-/** Removes all highlighting (except selection) and shows all hidden nodes. */
-function resetStyle()
-{
-  starMode=false;
-  //setFirstCumulativeSearch(true);
-  //selectedNode = undefined;
-  cy.startBatch();
-  cy.elements().removeClass("highlighted");
-  cy.elements().removeClass("starmode");
-  cy.elements().removeClass("hidden");
-  if(pathSource!==null) {pathSource.removeClass('source');}
-  cy.endBatch();
-}
-
-/** Highlight all nodes and edges on a shortest path between "from" and "to".
-Hide all other nodes except when in star mode.
-
-@param {cytoscape.NodeSingular} from path start node
-@param {cytoscape.NodeSingular} to path target node
-@param {Boolean} [starPath] whether to show the star around all nodes on the path
-@returns whether a path could be found
-*/
-function showPath(from, to, starPath)
-{
-  const elements = cy.elements(".unfiltered");
-
-  const aStar = elements.aStar(
-    {
-      root: from,
-      goal: to,
-    });
-  path = aStar.path;
-  if (path)
-  {
-    cy.startBatch();
-    cy.add(path);
-    if(starPath)
-    {
-      const edges = path.connectedEdges(".unfiltered");
-      path.merge(edges);
-      path.merge(edges.connectedNodes(".unfiltered"));
-    }
-    starStyle(path);
-    if(!starMode)
-    {
-      starMode=true;
-      hide(elements.not(path));
-    }
-    cy.endBatch();
-  }
-  else
-  {
-    if(!starMode) {resetStyle();} // keep it as it was before the path operation
-    log.warn("No path found!");
-    return false;
-  }
-  return true;
-}
 
 export const Direction = Object.freeze({
   IN:   Symbol("in"),
@@ -133,290 +16,337 @@ export const Direction = Object.freeze({
   BOTH: Symbol("both"),
 });
 
-/** Highlight the give node and all its directly connected nodes (in both directions).
-Hide all other nodes except when in star mode.
-@param {cytoscape.NodeSingular} node center of the star
-@param {Boolean} [changeLayout=false] arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
-@param {Boolean} [directed=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.
-*/
-function showStar(node, changeLayout, direction)
+/** Cytoscape.js Graph Class with path operations and styling. */
+export class Graph
 {
-  cy.startBatch();
-
-  // open 2 levels deep on closeMatch
-  let inner = node; // if you don't want to include close match, define inner like this
-  let closeMatchEdges;
-  for(let innerSize = 0; innerSize<inner.size();) // repeat until the close match chain ends
+  /** Creates a new cytoscape graph, assigns it to the #cy container and sets up basic event listeners. */
+  constructor(container)
   {
-    innerSize=inner.size();
-    closeMatchEdges = inner.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
-    inner = inner.union(closeMatchEdges.connectedNodes(".unfiltered")); // in case there is no close match edge
-  }
-  let edges;
-  switch(direction)
-  {
-    case Direction.IN:
-      edges = cy.elements(".unfiltered").edgesTo(inner);
-      break;
-    case Direction.OUT:
-      edges = inner.edgesTo('.unfiltered');
-      break;
-    default:
-      edges = inner.connectedEdges(".unfiltered");
-  }
+    // Handles the cytoscape.js canvas. Call initGraph(container) to start.
+    /*this.path = null;
+    this.pathSource = null;
+    this.pathTarget = null;
+    this.starMode = false;*/
 
-  const nodes  = edges.connectedNodes(".unfiltered");
-  const star = inner.union(nodes).union(edges);
-  // show edges between outer nodes to visible nodes
-  const outerNodes = nodes.difference(inner);
-  // connect new nodes with all existing unfiltered visible ones
-  //show(outerNodes.edgesWith(cy.nodes(".unfiltered").not(".hidden")));
+    const initTimer = timer("graph-init");
 
-  if(!starMode)
-  {
-    starMode=true;
-    hide(cy.elements().not(star));
-  }
-
-  starStyle(star);
-  const visible = cy.nodes(".unfiltered").not(".hidden");
-  starStyle(visible.edgesWith(visible));
-
-  if(changeLayout)
-  {
-    const sorted = nodes
-      .sort((a,b)=>
+    // remove nodes or edges from the graph (not the SPARQL endpoint) with the delete key
+    container.addEventListener('keydown',function(e)
+    {
+      if(e.keyCode === 8 || e.keyCode === 46) // backspace (for mac) or delete key
       {
-        const pa = Math.min(a.edgesTo(inner).map(n=>n.data("pl").split('').reduce((na,nb)=>na+nb.charCodeAt(0),0)));
-        const pb = Math.min(b.edgesTo(inner).map(n=>n.data("pl").split('').reduce((na,nb)=>na+nb.charCodeAt(0),0)));
-        return pa-pb;
-      });
-
-    sorted.layout(
-      {
-        name: 'concentric',
-        fit: true,
-        levelWidth: function() {return 1;},
-        minNodeSpacing: 175,
-        concentric: function(layoutNode)
-        {
-          if(inner.contains(layoutNode)) {return 2;}
-          if(outerNodes.contains(layoutNode)) {return 1;}
-          throw new Error("unexpected node in star");
-        },
+        this.cy.remove(':selected');
       }
-    ).run();
-  }
-
-  cy.endBatch();
-}
-
-/** Show a "spider worm" between two nodes, which combines a star around "from" with a shortest path to "to".
-Hide all other nodes except when in star mode.
-@param {cytoscape.NodeSingular} from path start node
-@param {cytoscape.NodeSingular} to path target node, gets a "star" around it as well
-@returns whether a path could be found
-*/
-function showWorm(from, to)
-{
-  if(showPath(from, to))
-  {
-    showStar(to);
-    return true;
-  }
-  return false;
-}
-
-/** Highlight the given two nodes, directly connected nodes (in both directions) of both of them and a shortest path between the two.
-Hide all other nodes except when in star mode.
-@param {cytoscape.NodeSingular} from path start node
-@param {cytoscape.NodeSingular} to path target node
-@returns whether a path could be found
-*/
-function showDoubleStar(from, to)
-{
-  if(showPath(from, to))
-  {
-    showStar(to);
-    showStar(from);
-    return true;
-  }
-  return false;
-}
-
-/** Returns the start node for all path operations
-@returns the start node for all path operations, or null if none exists. */
-function getSource()
-{
-  if(pathSource) {return pathSource;}
-  if(selectedNode) {return selectedNode;}
-  return null;
-}
-
-/** Set the given node as source for all path operations.
-@param {cytoscape.NodeSingular} node the new source
-@returns whether node is not null
-*/
-function setSource(node)
-{
-  if(!node) {return false;}
-  //util.getElementById('centersource').hidden=false;
-  if(pathTarget !== null)
-  {
-    /*
-        util.getElementById('shortestpath').hidden=false;
-        util.getElementById('spiderworm').hidden=false;
-        util.getElementById('doublestar').hidden=false;
-        util.getElementById('starpath').hidden=false;
-        */
-    cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
-  }
-  if(pathSource!==null) {pathSource.removeClass('source');}
-  pathSource = node;
-  pathSource.addClass('source');
-  /*
-      util.getElementById('sourcelabel').innerHTML=
-      pathSource.data(NODE.ID).replace(sparql.SPARQL_PREFIX,'');
-      */
-  return true;
-}
-
-/** Set the given node as target for all path operations.
-@param {cytoscape.NodeSingular} node the new source
-@returns whether node is not null
-*/
-function setTarget(node)
-{
-  if(!node) {return false;}
-  util.getElementById('centertarget').hidden=false;
-  if(pathSource !== null)
-  {
-    util.getElementById('shortestpath').hidden=false;
-    util.getElementById('spiderworm').hidden=false;
-    util.getElementById('doublestar').hidden=false;
-    util.getElementById('starpath').hidden=false;
-    cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
-  }
-  if(pathTarget!==null)
-  {
-    pathTarget.removeClass('target');
-  }
-  pathTarget = node;
-  pathTarget.addClass('target');
-  util.getElementById('targetlabel').innerHTML=
-      pathTarget.data(NODE.ID).replace(sparql.SPARQL_PREFIX,'');
-}
-
-/** Inverts the screen colors in the canvas for day mode. Uses an inverted node js style file to keep node colors.
-@param {boolean} enabled whether the canvas colors should be inverted
-*/
-function invert(enabled)
-{
-  if (enabled)
-  {
-    util.getElementById("cy").style.backgroundColor = "white";
-    cy.style().fromJson(style.style.concat(colorschemeday)).update();
-  }
-  else
-  {
-    util.getElementById("cy").style.backgroundColor = "black";
-    cy.style().fromJson(style.style.concat(colorschemenight)).update();
-  }
-}
-
-/** Creates a new cytoscape graph, assigns it to the #cy container and sets up basic event listeners.
-@returns a cytoscape graph
-*/
-function initGraph()
-{
-  const initTimer = timer("graph-init");
-
-  // remove nodes or edges from the graph (not the SPARQL endpoint) with the delete key
-  document.addEventListener('keydown',function(e)
-  {
-    if(e.keyCode === 8 || e.keyCode === 46) // backspace (for mac) or delete key
-    {
-      cy.remove(':selected');
-    }
-  });
-
-  cy = cytoscape(
-    {
-      container: util.getElementById('cy'),
-      style: style.style.concat(colorschemenight),
-      wheelSensitivity: 0.3,
-      minZoom: 0.02,
-      maxZoom: 7,
     });
-  cy.panzoom(); // Google Maps like zoom UI element
-  selectedNode = null;
-  /*
-  cy.on('select', 'edge', function(event)
-  {
-    highlight(event.target);
-  });
-*/
-  cy.on('select', 'node', function(event)
-  {
-    selectedNode = event.target;
-  });
 
-  initTimer.stop();
-  return cy;
-}
+    this.cy = cytoscape(
+      {
+        container: container,
+        style: style.style.concat(colorschemenight),
+        wheelSensitivity: 0.3,
+        minZoom: 0.02,
+        maxZoom: 7,
+      });
+    this.cy.panzoom(); // Google Maps like zoom UI element
+    this.selectedNode = null;
+    this.cy.on('select', 'node', function(event)
+    {
+      this.selectedNode = event.target;
+    });
 
-/**Centered and highlighted the given URI.
-* @param {String} uri The URI of a class in the graph. */
-export function presentUri(uri)
-{
-  cy.zoom(0.6);
-  const nodes = cy.elements().nodes().filter(`node[id= "${uri}"]`);
-  if(nodes.length<1)
+    initTimer.stop();
+  }
+
+  /** @returns whether cumulative search is activated. */
+  static cumulativeSearch() {return util.getElementById('cumulative-search-checkbox').checked;}
+
+  /** Hides elements using visibility: hidden.
+    Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
+    @param {cytoscape.Collection} eles the elements to hide */
+  static hide(eles)
   {
-    log.warn(`Class not in graph. ${uri} may be available on the SPARQL endpoint but not in the graph.`);
+    eles.addClass('hidden');
+    eles.removeClass('highlighted');
+  }
+
+  /** Show (unhide) the given elements.
+    Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
+    @param {cytoscape.Collection} eles the elements to show  */
+  static show(eles)
+  {
+    eles.removeClass('hidden');
+  }
+
+  /** Highlight the given elements using the 'highlighted' css class from the color scheme stylesheet and show them.
+    @param {cytoscape.Collection} eles the elements to highlight
+    */
+  static highlight(eles)
+  {
+    eles.removeClass('hidden');
+    eles.addClass('highlighted');
+  }
+
+  /**
+    @param {cytoscape.Collection} eles the elements to assign the star mode css class to
+    */
+  static starStyle(eles)
+  {
+    eles.removeClass('hidden');
+    eles.addClass('starmode');
+  }
+
+  /** Removes all highlighting (except selection) and shows all hidden nodes. */
+  resetStyle()
+  {
+    this.starMode=false;
+    this.cy.startBatch();
+    this.cy.elements().removeClass("highlighted");
+    this.cy.elements().removeClass("starmode");
+    this.cy.elements().removeClass("hidden");
+    if(this.pathSource) {this.pathSource.removeClass('source');}
+    this.cy.endBatch();
+  }
+
+  /** Highlight all nodes and edges on a shortest path between "from" and "to".
+    Hide all other nodes except when in star mode.
+    @param {cytoscape.NodeSingular} from path start node
+    @param {cytoscape.NodeSingular} to path target node
+    @param {Boolean} [starPath] whether to show the star around all nodes on the path
+    @returns whether a path could be found
+    */
+  showPath(from, to, starPath)
+  {
+    const elements = this.cy.elements(".unfiltered");
+
+    const aStar = elements.aStar(
+      {
+        root: from,
+        goal: to,
+      });
+    const path = aStar.path;
+    if (path)
+    {
+      this.cy.startBatch();
+      this.cy.add(path);
+      if(starPath)
+      {
+        const edges = path.connectedEdges(".unfiltered");
+        path.merge(edges);
+        path.merge(edges.connectedNodes(".unfiltered"));
+      }
+      Graph.starStyle(path);
+      if(!this.starMode)
+      {
+        this.starMode=true;
+        Graph.hide(elements.not(path));
+      }
+      this.cy.endBatch();
+    }
+    else
+    {
+      if(!this.starMode) {this.resetStyle();} // keep it as it was before the path operation
+      log.warn("No path found!");
+      return false;
+    }
+    return true;
+  }
+
+  /** Highlight the give node and all its directly connected nodes (in both directions).
+      Hide all other nodes except when in star mode.
+      @param {cytoscape.NodeSingular} node center of the star
+      @param {Boolean} [changeLayout=false] arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
+      @param {Boolean} [directed=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.  */
+  showStar(node, changeLayout, direction)
+  {
+    this.cy.startBatch();
+    // open 2 levels deep on closeMatch
+    let inner = node; // if you don't want to include close match, define inner like this
+    let closeMatchEdges;
+    for(let innerSize = 0; innerSize<inner.size();) // repeat until the close match chain ends
+    {
+      innerSize=inner.size();
+      closeMatchEdges = inner.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
+      inner = inner.union(closeMatchEdges.connectedNodes(".unfiltered")); // in case there is no close match edge
+    }
+    let edges;
+    switch(direction)
+    {
+      case Direction.IN:
+        edges = this.cy.elements(".unfiltered").edgesTo(inner);
+        break;
+      case Direction.OUT:
+        edges = inner.edgesTo('.unfiltered');
+        break;
+      default:
+        edges = inner.connectedEdges(".unfiltered");
+    }
+
+    const nodes  = edges.connectedNodes(".unfiltered");
+    const star = inner.union(nodes).union(edges);
+    // show edges between outer nodes to visible nodes
+    const outerNodes = nodes.difference(inner);
+    // connect new nodes with all existing unfiltered visible ones
+    //show(outerNodes.edgesWith(cy.nodes(".unfiltered").not(".hidden")));
+
+    if(!this.starMode)
+    {
+      this.starMode=true;
+      Graph.hide(this.cy.elements().not(star));
+    }
+
+    Graph.starStyle(star);
+    const visible = this.cy.nodes(".unfiltered").not(".hidden");
+    Graph.starStyle(visible.edgesWith(visible));
+
+    if(changeLayout)
+    {
+      const sorted = nodes
+        .sort((a,b)=>
+        {
+          const pa = Math.min(a.edgesTo(inner).map(n=>n.data("pl").split('').reduce((na,nb)=>na+nb.charCodeAt(0),0)));
+          const pb = Math.min(b.edgesTo(inner).map(n=>n.data("pl").split('').reduce((na,nb)=>na+nb.charCodeAt(0),0)));
+          return pa-pb;
+        });
+
+      sorted.layout(
+        {
+          name: 'concentric',
+          fit: true,
+          levelWidth: function() {return 1;},
+          minNodeSpacing: 175,
+          concentric: function(layoutNode)
+          {
+            if(inner.contains(layoutNode)) {return 2;}
+            if(outerNodes.contains(layoutNode)) {return 1;}
+            throw new Error("unexpected node in star");
+          },
+        }
+      ).run();
+    }
+
+    this.cy.endBatch();
+  }
+
+  /** Show a "spider worm" between two nodes, which combines a star around "from" with a shortest path to "to".
+      Hide all other nodes except when in star mode.
+      @param {cytoscape.NodeSingular} from path start node
+      @param {cytoscape.NodeSingular} to path target node, gets a "star" around it as well
+      @returns whether a path could be found
+      */
+  showWorm(from, to)
+  {
+    if(this.showPath(from, to))
+    {
+      this.showStar(to);
+      return true;
+    }
     return false;
   }
-  const node = nodes[0];
-  if(!nodes.visible())
+
+  /** Highlight the given two nodes, directly connected nodes (in both directions) of both of them and a shortest path between the two.
+      Hide all other nodes except when in star mode.
+      @param {cytoscape.NodeSingular} from path start node
+      @param {cytoscape.NodeSingular} to path target node
+      @returns whether a path could be found
+      */
+  showDoubleStar(from, to)
   {
-    log.warn(`Class not visible. ${uri} is not visible. Please adjust filters. `);
+    if(this.showPath(from, to))
+    {
+      this.showStar(to);
+      this.showStar(from);
+      return true;
+    }
     return false;
   }
-  if(!cumulativeSearch()) {resetStyle();}
 
-  highlight(nodes);
-  cy.center(node);
-}
-
-/** @return {Set<string>} Classes to show. */
-export function presentUris(classes, hideOthers)
-{
-  if(classes.length<1)
+  /** Returns the start node for all path operations
+      @returns the start node for all path operations, or null if none exists. */
+  getSource()
   {
-    log.warn("All search results are only available on the SPARQL endpoint but not in the graph.");
-    return;
+    if(this.pathSource) {return this.pathSource;}
+    if(this.selectedNode) {return this.selectedNode;}
+    return null;
   }
-  if(!cumulativeSearch()) {resetStyle();}
 
-  const resultNodes = cy.elements().nodes().filter((node)=>
+  /** Set the given node as source for all path operations.
+      @param {cytoscape.NodeSingular} node the new source
+      @returns whether node is not null
+      */
+  setSource(node)
   {
-    return classes.has(node.data(NODE.ID));
-  });
-  if(hideOthers)
-  {
-    hide(cy.elements());
-    show(resultNodes.edgesWith(resultNodes));
-    setStarMode(true);
+    if(!node) {return false;}
+    if(this.pathTarget)
+    {
+      this.cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
+    }
+    if(this.pathSource) {this.pathSource.removeClass('source');}
+    this.pathSource = node;
+    this.pathSource.addClass('source');
+    return true;
   }
-  highlight(resultNodes);
-  cy.fit(cy.elements(".highlighted"));
+
+  /** Inverts the screen colors in the canvas for day mode. Uses an inverted node js style file to keep node colors.
+      @param {boolean} enabled whether the canvas colors should be inverted
+      */
+  invert(enabled)
+  {
+    if (enabled)
+    {
+      this.cy.style.backgroundColor = "white";
+      this.cy.style().fromJson(style.style.concat(colorschemeday)).update();
+    }
+    else
+    {
+      this.cy.style.backgroundColor = "black";
+      this.cy.style().fromJson(style.style.concat(colorschemenight)).update();
+    }
+  }
+
+  /**Centered and highlighted the given URI.
+      * @param {String} uri The URI of a class in the graph. */
+  presentUri(uri)
+  {
+    this.cy.zoom(0.6);
+    const nodes = this.cy.elements().nodes().filter(`node[id= "${uri}"]`);
+    if(nodes.length<1)
+    {
+      log.warn(`Class not in graph. ${uri} may be available on the SPARQL endpoint but not in the graph.`);
+      return false;
+    }
+    const node = nodes[0];
+    if(!nodes.visible())
+    {
+      log.warn(`Class not visible. ${uri} is not visible. Please adjust filters. `);
+      return false;
+    }
+    if(!this.cumulativeSearch()) {this.resetStyle();}
+
+    Graph.highlight(nodes);
+    this.cy.center(node);
+  }
+
+  /** @return {Set<string>} Classes to show. */
+  presentUris(classes, hideOthers)
+  {
+    if(classes.length<1)
+    {
+      log.warn("All search results are only available on the SPARQL endpoint but not in the graph.");
+      return;
+    }
+    if(!this.cumulativeSearch()) {this.resetStyle();}
+
+    const resultNodes = this.cy.elements().nodes().filter((node)=>
+    {
+      return classes.has(node.data(NODE.ID));
+    });
+    if(hideOthers)
+    {
+      Graph.hide(this.cy.elements());
+      Graph.show(resultNodes.edgesWith(resultNodes));
+      this.setStarMode(true);
+    }
+    Graph.highlight(resultNodes);
+    this.cy.fit(this.cy.elements(".highlighted"));
+  }
 }
-
-
-/** Selects a node.
-@param {cytoscape.NodeSingular} node the node to select
-*/
-function setSelectedNode(node) {selectedNode=node;}
-
-export {invert,resetStyle,showDoubleStar,showWorm,showPath,initGraph,cy,
-  getSource,pathTarget,highlight,setSelectedNode,setSource,setTarget,showStar,setStarMode,getStarMode,show,hide};

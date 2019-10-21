@@ -1,7 +1,6 @@
 /**
 Lets the user download files generated from the loaded graph.
 @module */
-import * as graph from "./graph.js";
 import * as layout from "../layout.js";
 import config from "../config.js";
 import * as util from "./util.js";
@@ -54,20 +53,20 @@ export function downloadUrl(url, fileName)
 }
 
 /** Downloads the whole layouted graph as a Cytoscape JSON file. */
-export function downloadGraph()
+export function downloadGraph(graph)
 {
   return downloadJson(graph.cy.elements().jsons(),"snik.json");
 }
 
 /** Downloads the visible layouted graph as a Cytoscape JSON file.
 Visible means not explicitly hidden, but includes elements that are off screen. */
-export function downloadVisibleGraph()
+export function downloadVisibleGraph(graph)
 {
   return downloadJson(graph.cy.elements("*:visible").jsons(),"snikpart.json");
 }
 
 /** Downloads all node positions. Can only be applied later with a compatible graph already loaded.*/
-export function downloadLayout() {return downloadJson(layout.positions(graph.cy.nodes()),"layout.json");}
+export function downloadLayout(graph) {return downloadJson(layout.positions(graph.cy.nodes()),"layout.json");}
 
 /**
 Download the graph as a PNG (lossless compression).
@@ -75,7 +74,7 @@ Download the graph as a PNG (lossless compression).
 @param {boolean} highRes Iff true, generate a high resolution picture using the maximum width and height from config.js.
 Otherwise, either use the native resolution of the canvas (full=false) or the standard resolution (full=true) from config.js.
 */
-export function downloadPng(full,highRes)
+export function downloadPng(graph,full,highRes)
 {
   const options =
   {
