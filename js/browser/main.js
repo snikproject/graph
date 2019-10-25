@@ -4,7 +4,7 @@ Entry point.
 import loadGraphFromSparql from "../loadGraphFromSparql.js";
 import Menu from "./menu.js";
 import Search from "./search.js";
-import addButtons from "./button.js";
+import ButtonBar from "./button.js";
 import {loadGraph} from "./file.js";
 import {Graph} from "./graph.js";
 import * as layout from "../layout.js";
@@ -61,11 +61,11 @@ function main()
     console.groupCollapsed("Initializing");
 
     const graph = new Graph(document.getElementById("cy"));
-    const cxtMenu = new ContextMenu(graph, util.getElementById("dev-mode-checkbox").checked,util.getElementById("ext-mode-checkbox").checked);
-    const menu = new Menu(graph,cxtMenu);
+    const menu = new Menu(graph);
+    const cxtMenu = new ContextMenu(graph, menu);
     const search = new Search(graph,util.getElementById("search"));
 
-    addButtons();
+    util.getElementById("top").appendChild(new ButtonBar(graph, menu).container);
 
     help.init();
     try
@@ -100,7 +100,7 @@ function main()
         {
           loadArea.removeChild(center);
           graph.cy.resize(); // fix mouse cursor position, see https://stackoverflow.com/questions/23461322/cytoscape-js-wrong-mouse-pointer-position-after-container-change
-          loadGraph(event);
+          loadGraph(graph,event);
         });
         return;
       }

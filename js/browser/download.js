@@ -74,11 +74,11 @@ Download the graph as a PNG (lossless compression).
 @param {boolean} highRes Iff true, generate a high resolution picture using the maximum width and height from config.js.
 Otherwise, either use the native resolution of the canvas (full=false) or the standard resolution (full=true) from config.js.
 */
-export function downloadPng(graph,full,highRes)
+export function downloadPng(graph,menu,full,highRes)
 {
   const options =
   {
-    "bg": util.getElementById("day-mode-checkbox").checked?"white":"black", // background according to color mode
+    "bg": menu.dayModeBox.checked?"white":"black", // background according to color mode
     "full": full,
   };
   if(highRes)

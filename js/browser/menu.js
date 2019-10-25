@@ -17,18 +17,20 @@ import * as file from "./file.js";
 export default class Menu
 {
   /** construct the main menu bar for the given graph */
-  constructor(graph, contextMenu)
+  constructor(graph)
   {
     this.graph = graph;
-    this.contextMenu = contextMenu;
     this.graph.container.addEventListener("click",Menu.closeListener);
+    // bind this to the class instance instead of the event source
+    this.showCloseMatches = this.showCloseMatches.bind(this);
     this.matchComponents = [];
+    this.addMenu();
   }
 
   /** @return whether subontologies are to be displayed separately. */
   separateSubs()
   {
-    return this.separateSubsCheckbox.checked;
+    return this.separateSubsBox.checked;
   }
 
   /** Sets the preferred node label language attribute. Use the values from node.js. */
@@ -113,9 +115,6 @@ export default class Menu
 
       for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
     }
-
-
-    //const closeMatchNodes = closeMatchEdges.connectedNodes();
   }
 
   /** Show all nodes that are connected via close matches to visible nodes. */
@@ -163,10 +162,10 @@ export default class Menu
           {
             progress(()=>layout.run(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs(),true));
           },"Recalculate Layout and Replace in Browser Cache","recalculate-layout-replace"],
-          [()=>download.downloadPng(this.graph,false,false),"Save Image of Current View","save-image-current-view"],
-          [()=>download.downloadPng(this.graph,true,false),"Save Image of Whole Graph","save-image-whole-graph"],
-          [()=>download.downloadPng(this.graph,false,true),"Save Image of Current View (high res)","save-image-current-view-high-res"],
-          [()=>download.downloadPng(this.graph,true,true),"Save Image of Whole Graph (high res)","save-image-whole-graph-high-res"],
+          [()=>download.downloadPng(this.graph,this,false,false),"Save Image of Current View","save-image-current-view"],
+          [()=>download.downloadPng(this.graph,this,true,false),"Save Image of Whole Graph","save-image-whole-graph"],
+          [()=>download.downloadPng(this.graph,this,false,true),"Save Image of Current View (high res)","save-image-current-view-high-res"],
+          [()=>download.downloadPng(this.graph,this,true,true),"Save Image of Whole Graph (high res)","save-image-whole-graph-high-res"],
         ],
       },
       {
@@ -242,9 +241,10 @@ export default class Menu
   addOptions(as)
   {
     const optionsContent = util.getElementById("options-menu-content");
-    const names = ["separateSubs","cumulativeSearch","dayMode","devMode","extMode","combineMatch"];
+    const names = ["separateSubs","cumulativeSearch","dayMode","devMode","extMode","combineMatchMode"];
     for(const name of names)
     {
+      console.warn(name);
       const a = document.createElement("a");
       as.push(a);
       optionsContent.appendChild(a);
@@ -256,7 +256,6 @@ export default class Menu
       box.type="checkbox";
       box.autocomplete="off";
       this[name+"Box"] = box;
-      //box.id=name+"-checkbox";
 
       a.addEventListener("keydown",util.checkboxKeydownListener(box));
 
@@ -269,19 +268,15 @@ export default class Menu
     this.separateSubsBox.addEventListener("change",()=>{log.debug("Set separate Subontologies to "+this.separateSubsBox.checked);});
     this.dayModeBox.addEventListener("change",()=>{this.graph.invert(this.dayModeBox.checked);log.debug("Set dayMode to "+this.dayModeBox.checked);});
     if(config.activeOptions.includes("day")) {this.dayModeBox.click();}
-    this.devModeBox.addEventListener("change",()=>{log.debug("Set devMode to "+this.devModeBox.checked);this.contextMenu.populate(this.devModeBox.checked,this.extModeBox.checked);});
-    this.extModeBox.addEventListener("change",()=>{log.debug("Set extMode to "+this.extModeBox.checked);this.contextMenu.populate(this.devModeBox.checked,this.extModeBox.checked);});
     if(config.activeOptions.includes("ext")) {this.extModeBox.click();}
     if(config.activeOptions.includes("dev")) {this.devModeBox.click();}
     /** @type {HTMLInputElement} */
-    const cumuSearch = util.getElementById("cumulative-search-checkbox");
-    cumuSearch.addEventListener("change",()=>{log.debug("Set cumulative search to "+cumuSearch.checked);});
+    this.cumulativeSearchBox.addEventListener("change",()=>{log.debug("Set cumulative search to "+this.cumulativeSearchBox.checked);});
     /** @type {HTMLInputElement} */
-    const combineMatchMode  = util.getElementById("combine-match-checkbox");
-    combineMatchMode.addEventListener("change",()=>
+    this.combineMatchModeBox.addEventListener("change",()=>
     {
-      this.combineMatch(combineMatchMode.checked);
-      log.debug("Set combine match mode to "+combineMatchMode.checked);
+      this.combineMatch(this.combineMatchModeBox.checked);
+      log.debug("Set combine match mode to "+this.combineMatchModeBox.checked);
     });
   }
 
@@ -384,7 +379,7 @@ export default class Menu
     }
     util.getElementById("top").prepend(ul);
 
-    file.addFileLoadEntries(util.getElementById("file-menu-content"),aas[0]); // update index when "File" position changes in the menu
+    file.addFileLoadEntries(this.graph,util.getElementById("file-menu-content"),aas[0]); // update index when "File" position changes in the menu
     log.debug('fileLoadEntries added');
 
     addFilterEntries(this.graph.cy,util.getElementById("filter-menu-content"),aas[1]);  // update index when "Filter" position changes in the menu

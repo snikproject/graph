@@ -20,12 +20,12 @@ export default
     "filter": "Filter",
     // options********************************************
     "options": "Options",
-    "separate-subs": "separate subontologies",
-    "cumulative-search": "cumulative search",
-    "day-mode": "day mode",
-    "dev-mode": "developer mode",
-    "ext-mode": "extended mode",
-    "combine-match": "Combine Matches",
+    "separateSubs": "separate subontologies",
+    "cumulativeSearch": "cumulative search",
+    "dayMode": "day mode",
+    "devMode": "developer mode",
+    "extMode": "extended mode",
+    "combineMatchMode": "Combine Matches",
     // layout*********************************************
     "layout": "Layout",
     "show-close-matches": "show close matches",

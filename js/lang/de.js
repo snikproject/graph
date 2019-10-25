@@ -20,12 +20,12 @@ export default
     "filter": "Filter",
     // options********************************************
     "options": "Optionen",
-    "separate-subs": "nach Subontologien aufspalten",
-    "cumulative-search": "Kumulative Suche",
-    "day-mode": "Tag-Modus",
-    "dev-mode": "Entwickler-Modus",
-    "ext-mode": "Erweiterter Modus",
-    "combine-match": "Übereinstimmungen zusammenfassen",
+    "separateSubs": "nach Subontologien aufspalten",
+    "cumulativeSearch": "Kumulative Suche",
+    "dayMode": "Tag-Modus",
+    "devMode": "Entwickler-Modus",
+    "extMode": "Erweiterter Modus",
+    "combineMatch": "Übereinstimmungen zusammenfassen",
     // layout*********************************************
     "layout": "Layout",
     "show-close-matches": "Zeige close matches",

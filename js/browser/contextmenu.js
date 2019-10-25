@@ -3,7 +3,7 @@ Creates the circular context menu that can be opened on top of a node/edge.
 Needs to be initialized before it can be used via the default export function.
 @module */
 import nodeMenus from "./contextmenuNodes.js";
-import edgeMenus from "./contextmenuEdges.js";
+import ContextMenuEdges from "./contextmenuEdges.js";
 import {flatHelp} from "./help.js";
 
 /** context menu for nodes and edges */
@@ -15,30 +15,28 @@ export default class ContextMenu
   @param {boolean} dev whether developer mode menu entries are shown
   @param {boolean} ext whether extended mode menu entries are shown
   */
-  constructor(graph,dev, ext)
+  constructor(graph,menu)
   {
-    log.debug(`Register Context Menu. Developer Entries: ${dev}, Extended Entries: ${ext}`);
-    this.populate(dev,ext);
-  }
-
-  /** Unregister and destroy all created menus of this context menu. */
-  clear()
-  {
-    this.cxtmenus.forEach(menu=>menu.destroy());
+    this.graph = graph;
+    log.debug(`Register Context Menu. Developer Entries: ${menu.devModeBox.checked}, Extended Entries: ${menu.extModeBox.checked}`);
     this.cxtmenus = [];
+    this.populate(menu.devModeBox.checked, menu.extModeBox.checked);
+    menu.devModeBox.addEventListener("change",()=>{log.debug("Set devMode to "+menu.devModeBox.checked);this.populate(menu.devModeBox.checked,menu.extModeBox.checked);});
+    menu.extModeBox.addEventListener("change",()=>{log.debug("Set extMode to "+menu.extModeBox.checked);this.populate(menu.devModeBox.checked,menu.extModeBox.checked);});
   }
 
   /** Clears existing context menus of this menu and create anew the different context menus depending on whether dev and ext mode are active. */
   populate(dev,ext)
   {
-    this.destroy();
-    [...nodeMenus(this.graph,dev,ext),...edgeMenus(dev)].forEach(menu=>{this.cxtmenus.push(this.graph.cy.cxtmenu(ContextMenu.addTippy(menu)));});
+    /** Unregister and destroy all created menus of this context menu. */
+    this.cxtmenus.forEach(c=>c.destroy());
+    this.cxtmenus = [];
+    [...nodeMenus(this.graph,dev,ext),...new ContextMenuEdges(this.graph,dev).menus].forEach(menu=>{this.cxtmenus.push(this.graph.cy.cxtmenu(ContextMenu.addTippy(menu)));});
   }
 
   /** Add tooltips to all menu entries.*/
   static addTippy(menu)
   {
-    console.log("Adding tippy to menu "+menu);
     menu.commands.forEach(c=>
     {
       if(c.tippy) {return;}

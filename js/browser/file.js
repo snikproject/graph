@@ -19,7 +19,7 @@ function uploadJson(event,callback)
 Load a layouted graph from the JSON file specified by the given file input change event.
 @param {Event} event a file input change event
 */
-export function loadGraph(graph,event)
+export const loadGraph = graph => event =>
 {
   uploadJson(event,json=>
   {
@@ -30,20 +30,20 @@ export function loadGraph(graph,event)
     const starMode = visibleFraction<0.8;
     log.info("Load Graph from File: Visible fraction: "+visibleFraction+" set star mode to "+starMode);
     if(graph.cy.nodes(":child").size()>0) {document.getElementById("combine-match-checkbox").checked=true;}
-    graph.setStarMode(starMode);
+    graph.starMode = starMode;
     graph.cy.center(":visible");
     graph.cy.fit(":visible");
   });
-}
+};
 
 /**
 Load a layout from the JSON file specified by the given file input change event.
 @param {Event} event a file input change event
 */
-export function loadLayout(graph, event)
+export const loadLayout = graph => event =>
 {
   uploadJson(event,json=>{layout.presetLayout(graph.cy,json);});
-}
+};
 
 /**
 Add an upload entry to the file menu.
@@ -79,8 +79,8 @@ Add upload entries to the file menu.
 Cannot use the simpler default menu creation method because file upload only works with an input.
 @param {Element} parent the parent element of the menu
 */
-export function addFileLoadEntries(parent,as)
+export function addFileLoadEntries(graph,parent,as)
 {
-  addLoadEntry(parent,"load-layout","Load Layout",loadLayout,as);
-  addLoadEntry(parent,"load-graph-with-layout","Load Graph File with Layout",loadGraph,as);
+  addLoadEntry(parent,"load-layout","Load Layout",loadLayout(graph),as);
+  addLoadEntry(parent,"load-graph-with-layout","Load Graph File with Layout",loadGraph(graph),as);
 }

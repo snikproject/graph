@@ -7,6 +7,7 @@ import * as rdf from "../rdf.js";
 import * as NODE from "../node.js";
 import * as sparql from "../sparql.js";
 import * as util from "./util.js";
+import {Direction} from "./graph.js";
 import {logWrap,menuDefaults} from "./contextmenuUtil.js";
 
 const menu = Object.assign(menuDefaults(),
@@ -78,38 +79,22 @@ const baseCommands = graph =>
     {
       content: 'incoming star',
       id: 'incoming-star',
-      select: node=> {graph.showStar(node,false,graph.Direction.IN);},
+      select: node=> {graph.showStar(node,false,Direction.IN);},
     },
     {
       content: 'outgoing star',
       id: 'outgoing-star',
-      select: node=> {graph.showStar(node,false,graph.Direction.OUT);},
+      select: node=> {graph.showStar(node,false,Direction.OUT);},
     },
     {
       content: 'path',
       id: 'path',
-      select: node=>
-      {
-        if(node&&graph.getSource()&&graph.getSource()!==node)
-        {
-          graph.showPath(graph.getSource(), node);
-        }
-        else
-        {
-          log.warn("Path not possible.");
-        }
-      },
+      select: node=> {graph.showPath(graph.getSource(), node);},
     },
     {
       content: 'spiderworm',
       id: 'spiderworm',
-      select: node=>
-      {
-        if(graph.getSource()&&graph.getSource()!==node)
-        {
-          graph.showWorm(graph.getSource(), node);
-        }
-      },
+      select: node=> {graph.showWorm(graph.getSource(), node);},
     },
   // {
   //   content: 'find neighbours',
@@ -197,24 +182,12 @@ const extCommands = graph =>
     {
       content: 'doublestar',
       id: 'doublestar',
-      select: node=>
-      {
-        if(graph.getSource()&&graph.getSource()!==node)
-        {
-          graph.showDoubleStar(graph.getSource(), node);
-        }
-      },
+      select: node=> {graph.showDoubleStar(graph.getSource(), node);},
     },
     {
       content: 'starpath',
       id: 'starpath',
-      select: node=>
-      {
-        if(graph.getSource()&&graph.getSource()!==node)
-        {
-          graph.showPath(graph.getSource(), node,true);
-        }
-      },
+      select: node=> {graph.showPath(graph.getSource(), node,true);},
     },
     {
       content: 'circle star',
@@ -243,6 +216,3 @@ export default function nodeMenus(graph,dev,ext)
   menu.menuRadius = 240 + (dev?15:0) + (ext?25:0);
   return [menu,compoundMenu(graph)];
 }
-
-
-//[...baseCommands,...devCommands].forEach((cmd)=>logWrap(cmd,(node)=>`node ${node.data(NODE.ID)}`));

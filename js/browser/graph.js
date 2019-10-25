@@ -22,14 +22,8 @@ export class Graph
   /** Creates a new cytoscape graph, assigns it to the #cy container and sets up basic event listeners. */
   constructor(container)
   {
-    // Handles the cytoscape.js canvas. Call initGraph(container) to start.
-    /*this.path = null;
-    this.pathSource = null;
-    this.pathTarget = null;
-    this.starMode = false;*/
-
     const initTimer = timer("graph-init");
-
+    this.container = container;
     // remove nodes or edges from the graph (not the SPARQL endpoint) with the delete key
     container.addEventListener('keydown',function(e)
     {
@@ -49,11 +43,10 @@ export class Graph
       });
     this.cy.panzoom(); // Google Maps like zoom UI element
     this.selectedNode = null;
-    this.cy.on('select', 'node', function(event)
-    {
-      this.selectedNode = event.target;
-    });
-
+    this.cy.on('select', 'node', event => {this.selectedNode = event.target;});
+    // bind this to the class instance instead of the event source
+    this.resetStyle = this.resetStyle.bind(this);
+    this.presentUri = this.presentUri.bind(this);
     initTimer.stop();
   }
 
@@ -63,7 +56,7 @@ export class Graph
   /** Hides elements using visibility: hidden.
     Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
     @param {cytoscape.Collection} eles the elements to hide */
-  static hide(eles)
+  hide(eles)
   {
     eles.addClass('hidden');
     eles.removeClass('highlighted');
@@ -72,7 +65,7 @@ export class Graph
   /** Show (unhide) the given elements.
     Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
     @param {cytoscape.Collection} eles the elements to show  */
-  static show(eles)
+  show(eles)
   {
     eles.removeClass('hidden');
   }
@@ -80,7 +73,7 @@ export class Graph
   /** Highlight the given elements using the 'highlighted' css class from the color scheme stylesheet and show them.
     @param {cytoscape.Collection} eles the elements to highlight
     */
-  static highlight(eles)
+  highlight(eles)
   {
     eles.removeClass('hidden');
     eles.addClass('highlighted');
@@ -89,7 +82,7 @@ export class Graph
   /**
     @param {cytoscape.Collection} eles the elements to assign the star mode css class to
     */
-  static starStyle(eles)
+  starStyle(eles)
   {
     eles.removeClass('hidden');
     eles.addClass('starmode');
@@ -116,6 +109,9 @@ export class Graph
     */
   showPath(from, to, starPath)
   {
+    if(!from) {log.warn("No path source."); return false;}
+    if(from===to) {log.warn("Path source equals target."); return false;}
+
     const elements = this.cy.elements(".unfiltered");
 
     const aStar = elements.aStar(
@@ -134,11 +130,11 @@ export class Graph
         path.merge(edges);
         path.merge(edges.connectedNodes(".unfiltered"));
       }
-      Graph.starStyle(path);
+      this.starStyle(path);
       if(!this.starMode)
       {
         this.starMode=true;
-        Graph.hide(elements.not(path));
+        this.hide(elements.not(path));
       }
       this.cy.endBatch();
     }
@@ -191,12 +187,12 @@ export class Graph
     if(!this.starMode)
     {
       this.starMode=true;
-      Graph.hide(this.cy.elements().not(star));
+      this.hide(this.cy.elements().not(star));
     }
 
-    Graph.starStyle(star);
+    this.starStyle(star);
     const visible = this.cy.nodes(".unfiltered").not(".hidden");
-    Graph.starStyle(visible.edgesWith(visible));
+    this.starStyle(visible.edgesWith(visible));
 
     if(changeLayout)
     {
@@ -304,7 +300,7 @@ export class Graph
   }
 
   /**Centered and highlighted the given URI.
-      * @param {String} uri The URI of a class in the graph. */
+  * @param {String} uri The URI of a class in the graph. */
   presentUri(uri)
   {
     this.cy.zoom(0.6);
@@ -322,7 +318,7 @@ export class Graph
     }
     if(!this.cumulativeSearch()) {this.resetStyle();}
 
-    Graph.highlight(nodes);
+    this.highlight(nodes);
     this.cy.center(node);
   }
 
@@ -342,11 +338,11 @@ export class Graph
     });
     if(hideOthers)
     {
-      Graph.hide(this.cy.elements());
-      Graph.show(resultNodes.edgesWith(resultNodes));
-      this.setStarMode(true);
+      this.hide(this.cy.elements());
+      this.show(resultNodes.edgesWith(resultNodes));
+      this.starMode = true;
     }
-    Graph.highlight(resultNodes);
+    this.highlight(resultNodes);
     this.cy.fit(this.cy.elements(".highlighted"));
   }
 }

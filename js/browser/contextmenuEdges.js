@@ -20,19 +20,19 @@ export default class ContextMenuEdges
     Object.values(commands).flat().forEach((cmd)=>
       logWrap(cmd,(edge)=>`edge with property ${edge.data(EDGE.PROPERTY)} between ${edge.data(EDGE.SOURCE)} ${edge.data(EDGE.TARGET)}`));
 
-    if(dev) {this.menus = [this.devMenu(),this.devLimesMenu()];}
-    else {this.menus= [this.baseMenu(),this.baseLimesMenu()];}
+    if(dev) {this.menus = [ContextMenuEdges.devMenu(commands),ContextMenuEdges.devLimesMenu(commands)];}
+    else {this.menus= [ContextMenuEdges.baseMenu(commands),ContextMenuEdges.baseLimesMenu(commands)];}
   }
 
   /** Context menu for edges in base mode that are either confirmed interlinks (skos:closeMatch and friends in the match graph) or meta relations, such as meta:updates.
   Offers base commands.*/
-  static baseMenu()
+  static baseMenu(commands)
   {
     return Object.assign(menuDefaults(),
       {
         menuRadius: 120, // the radius of the circular menu in pixels
         selector: `edge[${EDGE.GRAPH} != "http://www.snik.eu/ontology/limes-exact"]`, // elements matching this Cytoscape.js selector will trigger cxtmenus
-        commands: this.baseCommands,
+        commands: commands.baseCommands,
       });
   }
 
