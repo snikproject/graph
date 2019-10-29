@@ -23,7 +23,6 @@ export default class Menu
     this.graph.container.addEventListener("click",Menu.closeListener);
     // bind this to the class instance instead of the event source
     this.showCloseMatches = this.showCloseMatches.bind(this);
-    this.matchComponents = [];
     this.addMenu();
   }
 
@@ -54,67 +53,6 @@ export default class Menu
   {
     util.createGitHubIssue(util.REPO_APPLICATION,"","Please type your issue here:\n\n\n\n"+
     "!!Please do not delete the following text, because its the log for developers!!\n\n", log.logs);
-  }
-
-  /** Move matching nodes together. */
-  moveMatch(distance)
-  {
-    for(let i=0; i < this.matchComponents.length; i++)
-    {
-      const comp = this.matchComponents[i];
-      if(comp.length===1) {continue;}
-      const nodes = comp.nodes();
-      nodes.positions(nodes[0].position());
-      // position in a circle around the first node
-      for(let j=1; j < nodes.length ;j++) {nodes[j].shift({x: distance*Math.cos(2*Math.PI*j/(nodes.length-1)), y: distance*Math.sin(2*Math.PI*j/(nodes.length-1))});}
-    }
-  }
-
-  /** Sets whether close matches are grouped in compound nodes. */
-  combineMatch(enabled)
-  {
-    if(!enabled)
-    {
-      this.graph.cy.nodes(":child").move({parent:null});
-      this.graph.cy.nodes("[id ^= 'parent']").remove();
-      this.matchComponents.length=0;
-      return;
-    }
-
-    // Can be calculated only once per session but then it needs to be synchronized with in-visualization ontology edits.
-    const matchEdges = this.graph.cy.edges('[pl="closeMatch"]').filter('.unfiltered').not('.hidden');
-    const matchGraph = this.graph.cy.nodes('.unfiltered').not('.hidden').union(matchEdges);
-    //graph.hide(graph.cy.elements());
-    //graph.show(matchGraph);
-
-    this.matchComponents.length=0;
-    this.matchComponents.push(...matchGraph.components());
-    for(let i=0; i < this.matchComponents.length; i++)
-    {
-      const comp = this.matchComponents[i];
-      if(comp.length===1) {continue;}
-
-      const id = 'parent'+i;
-      let labels = {};
-      let nodes = comp.nodes();
-
-      for(let j=0; j < nodes.length ;j++) {labels = {...labels,...nodes[j].data("l")};}
-
-      const priorities = ["bb","ob","he","it4it","ciox"];
-      const priority = source =>
-      {
-        let p = priorities.indexOf(source);
-        if(p===-1) {p=99;}
-        return p; // prevent null value on prefix that is new or outside of SNIK
-      };
-      nodes = nodes.sort((a,b)=>priority(a.data(NODE.SOURCE))-priority(b.data(NODE.SOURCE))); // cytoscape collection sort is not in place
-      this.graph.cy.add({
-        group: 'nodes',
-        data: { id: id,   l: labels },
-      });
-
-      for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
-    }
   }
 
   /** Show all nodes that are connected via close matches to visible nodes. */
@@ -189,8 +127,8 @@ export default class Menu
               [()=>{layout.run(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs()&&!this.graph.getStarMode(),true);}, "recalculate layout", "recalculate-layout","ctrl+alt+l"],
               [()=>{layout.run(this.graph.cy,layout.eulerTight,config.defaultSubOntologies,this.separateSubs()&&!this.graph.getStarMode(),false);}, "tight layout","tight-layout","ctrl+alt+t"],
               [()=>{layout.run(this.graph.cy,layout.cose,config.defaultSubOntologies,this.separateSubs()&&!this.graph.getStarMode(),false);}, "compound layout","compound-layout","ctrl+alt+c"],
-              [()=>this.moveMatch(0), "move matches on top of each other","move-match-on-top"],
-              [()=>this.moveMatch(100), "move matches nearby","move-match-nearby"],
+              [()=>this.graph.moveAllMatches(0), "move matches on top of each other","move-match-on-top"],
+              [()=>this.graph.moveAllMatches(100), "move matches nearby","move-match-nearby"],
               [()=>{showChapterSearch("bb");},"BB chapter search","bb-chapter-search"],
               [()=>{showChapterSearch("ob");},"OB chapter search","ob-chapter-search"],
               [this.graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
@@ -275,7 +213,7 @@ export default class Menu
     /** @type {HTMLInputElement} */
     this.combineMatchModeBox.addEventListener("change",()=>
     {
-      this.combineMatch(this.combineMatchModeBox.checked);
+      this.graph.combineMatch(this.combineMatchModeBox.checked);
       log.debug("Set combine match mode to "+this.combineMatchModeBox.checked);
     });
   }

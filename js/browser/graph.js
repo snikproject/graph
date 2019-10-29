@@ -9,6 +9,9 @@ import {colorschemeday} from "./colorschemeday.js";
 import timer from "../timer.js";
 import * as NODE from "../node.js";
 import * as util from "./util.js";
+import * as sparql from "../sparql.js";
+import * as rdf from "../rdf.js";
+import * as language from "../lang/language.js";
 
 export const Direction = Object.freeze({
   IN:   Symbol("in"),
@@ -24,6 +27,7 @@ export class Graph
   {
     const initTimer = timer("graph-init");
     this.container = container;
+    this.matchComponents = [];
     // remove nodes or edges from the graph (not the SPARQL endpoint) with the delete key
     container.addEventListener('keydown',function(e)
     {
@@ -45,8 +49,8 @@ export class Graph
     this.selectedNode = null;
     this.cy.on('select', 'node', event => {this.selectedNode = event.target;});
     // bind this to the class instance instead of the event source
-    this.resetStyle = this.resetStyle.bind(this);
-    this.presentUri = this.presentUri.bind(this);
+    const binds = ["resetStyle", "presentUri", "showPath", "showStar", "showWorm", "showDoubleStar", "combineMatch"];
+    for(const bind of binds) {this[bind] = this[bind].bind(this);}
     initTimer.stop();
   }
 
@@ -60,6 +64,9 @@ export class Graph
   {
     eles.addClass('hidden');
     eles.removeClass('highlighted');
+    const edges = eles.connectedEdges();
+    edges.addClass('hidden');
+    edges.removeClass('highlighted');
   }
 
   /** Show (unhide) the given elements.
@@ -96,7 +103,11 @@ export class Graph
     this.cy.elements().removeClass("highlighted");
     this.cy.elements().removeClass("starmode");
     this.cy.elements().removeClass("hidden");
-    if(this.pathSource) {this.pathSource.removeClass('source');}
+    if(this.pathSource)
+    {
+      this.pathSource.removeClass('source');
+      this.pathSource = null;
+    }
     this.cy.endBatch();
   }
 
@@ -107,8 +118,9 @@ export class Graph
     @param {Boolean} [starPath] whether to show the star around all nodes on the path
     @returns whether a path could be found
     */
-  showPath(from, to, starPath)
+  showPath(to, starPath)
   {
+    const from = this.getSource();
     if(!from) {log.warn("No path source."); return false;}
     if(from===to) {log.warn("Path source equals target."); return false;}
 
@@ -146,6 +158,9 @@ export class Graph
     }
     return true;
   }
+
+  /** Multiplex star operations.*/
+  showStarMultiplexed(changeLayout, direction) {return this.multiplex((x)=>this.showStar(x,changeLayout,direction));}
 
   /** Highlight the give node and all its directly connected nodes (in both directions).
       Hide all other nodes except when in star mode.
@@ -229,9 +244,9 @@ export class Graph
       @param {cytoscape.NodeSingular} to path target node, gets a "star" around it as well
       @returns whether a path could be found
       */
-  showWorm(from, to)
+  showWorm(to)
   {
-    if(this.showPath(from, to))
+    if(this.showPath(to))
     {
       this.showStar(to);
       return true;
@@ -245,9 +260,10 @@ export class Graph
       @param {cytoscape.NodeSingular} to path target node
       @returns whether a path could be found
       */
-  showDoubleStar(from, to)
+  showDoubleStar(to)
   {
-    if(this.showPath(from, to))
+    const from = this.getSource();
+    if(this.showPath(to))
     {
       this.showStar(to);
       this.showStar(from);
@@ -300,7 +316,7 @@ export class Graph
   }
 
   /**Centered and highlighted the given URI.
-  * @param {String} uri The URI of a class in the graph. */
+      * @param {String} uri The URI of a class in the graph. */
   presentUri(uri)
   {
     this.cy.zoom(0.6);
@@ -344,5 +360,126 @@ export class Graph
     }
     this.highlight(resultNodes);
     this.cy.fit(this.cy.elements(".highlighted"));
+  }
+
+  /** Applies the function to multiple nodes if given or if not given then if selected. */
+  multiplex(f, nodes)
+  {
+    return ele =>
+    {
+      const selected = this.cy.nodes(":selected");
+      // nodes are preferred
+      if(!nodes&&selected.size()>1) {nodes = selected;}
+      if(nodes)
+      {
+        console.log(nodes);
+        for(let i=0; i<nodes.length;i++) {f(nodes[i]);}
+      }
+      else {f(ele);}
+    };
+  }
+
+  /** Open an issue on GitHub to remove the given node.*/
+  createRemoveIssue(node)
+  {
+    this.cy.remove(node);
+    const clazzShort  = rdf.short(node.data(NODE.ID));
+    sparql.describe(node.data(NODE.ID))
+      .then(bindings=>
+      {
+        const body = `Please permanently delete the class ${clazzShort}:
+            \`\`\`\n
+            sparql
+            # WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} FROM THE GRAPH AS EITHER SUBJECT OR OBJECT
+            # ALWAYS CREATE A BACKUP BEFORE THIS OPERATION AS A MISTAKE MAY DELETE THE WHOLE GRAPH.
+            # THERE MAY BE DATA LEFT OVER IN OTHER GRAPHS, SUCH AS <http://www.snik.eu/ontology/limes-exact> or <http://www.snik.eu/ontology/match>.
+            # THERE MAY BE LEFTOVER DATA IN AXIOMS OR ANNOTATIONS, CHECK THE UNDO DATA FOR SUCH THINGS.
+
+            DELETE DATA FROM <${rdf.longPrefix(node.data(NODE.ID))}>
+            {
+              {<${node.data(NODE.ID)}> ?p ?y.} UNION {?x ?p <${node.data(NODE.ID)}>.}
+            }
+            \n\`\`\`
+            **Warning: Restoring a class with the following triples is not guaranteed to work and may have unintended consequences if other edits occur between the deletion and restoration.
+            This only contains the triples from graph ${rdf.longPrefix(node.data(NODE.ID))}.**
+
+            Undo based on these triples:
+            \`\`\`\n
+            ${bindings}
+            \n\`\`\`
+            ${language.CONSTANTS.SPARUL_WARNING}`;
+        window.open
+        (
+          'https://github.com/IMISE/snik-ontology/issues/new?title='+
+              encodeURIComponent('Remove class '+clazzShort)+
+              '&body='+
+              encodeURIComponent(body)
+        );
+      });
+  }
+
+  /** Move all matching nodes together. */
+  moveAllMatches(distance)
+  {
+    for(let i=0; i < this.matchComponents.length; i++)
+    {
+      const comp = this.matchComponents[i];
+      if(comp.length===1) {continue;}
+      this.moveNodes(comp.nodes(),distance);
+    }
+  }
+
+  /** position in a circle around the first node*/
+  moveNodes(nodes,distance)
+  {
+    nodes.positions(nodes[0].position());
+    for(let j=1; j < nodes.length ;j++) {nodes[j].shift({x: distance*Math.cos(2*Math.PI*j/(nodes.length-1)), y: distance*Math.sin(2*Math.PI*j/(nodes.length-1))});}
+  }
+
+  /** Sets whether close matches are grouped in compound nodes. */
+  combineMatch(enabled)
+  {
+    if(!enabled)
+    {
+      this.cy.nodes(":child").move({parent:null});
+      this.cy.nodes("[id ^= 'parent']").remove();
+      this.matchComponents.length=0;
+      return;
+    }
+
+    // Can be calculated only once per session but then it needs to be synchronized with in-visualization ontology edits.
+    const matchEdges = this.cy.edges('[pl="closeMatch"]').filter('.unfiltered').not('.hidden');
+    const matchGraph = this.cy.nodes('.unfiltered').not('.hidden').union(matchEdges);
+    //graph.hide(graph.cy.elements());
+    //graph.show(matchGraph);
+
+    this.matchComponents.length=0;
+    this.matchComponents.push(...matchGraph.components());
+    for(let i=0; i < this.matchComponents.length; i++)
+    {
+      const comp = this.matchComponents[i];
+      if(comp.length===1) {continue;}
+
+      const id = 'parent'+i;
+      let labels = {};
+      let nodes = comp.nodes();
+
+      for(let j=0; j < nodes.length ;j++) {labels = {...labels,...nodes[j].data("l")};}
+
+      const priorities = ["bb","ob","he","it4it","ciox"];
+      const priority = source =>
+      {
+        let p = priorities.indexOf(source);
+        if(p===-1) {p=99;}
+        return p; // prevent null value on prefix that is new or outside of SNIK
+      };
+      nodes = nodes.sort((a,b)=>priority(a.data(NODE.SOURCE))-priority(b.data(NODE.SOURCE))); // cytoscape collection sort is not in place
+      this.cy.add({
+        group: 'nodes',
+        data: { id: id,   l: labels },
+      });
+
+      for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
+    }
   }
 }

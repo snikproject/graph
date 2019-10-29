@@ -5,10 +5,9 @@ import * as language from "../lang/language.js";
 import classUse from "./classuse.js";
 import * as rdf from "../rdf.js";
 import * as NODE from "../node.js";
-import * as sparql from "../sparql.js";
 import * as util from "./util.js";
 import {Direction} from "./graph.js";
-import {logWrap,menuDefaults} from "./contextmenuUtil.js";
+import {menuDefaults} from "./contextmenuUtil.js";
 
 const menu = Object.assign(menuDefaults(),
   {
@@ -31,6 +30,21 @@ const compoundMenu = graph => Object.assign(menuDefaults(),
         node.children().move({parent:null});
         graph.cy.remove(node);
       },
+    },
+    {
+      content: 'move matches on top of each other',
+      id: 'move-match-on-top',
+      select: parent => graph.moveNodes(parent.children(),0),
+    },
+    {
+      content: 'move matches nearby',
+      id: 'move-match-nearby',
+      select: parent => graph.moveNodes(parent.children(),100),
+    },
+    {
+      content: 'star',
+      id: 'compound-star',
+      select: parent => graph.multiplex(graph.showStar,parent.children())(),
     },
   ],
   });
@@ -59,7 +73,7 @@ const baseCommands = graph =>
     {
       content: 'hide',
       id: 'hide',
-      select: node=> {graph.hide(node);graph.hide(node.connectedEdges());},
+      select: graph.multiplex(graph.hide),
     },
     {
       content: 'set as path source',
@@ -69,32 +83,32 @@ const baseCommands = graph =>
     {
       content: 'description',
       id: 'description',
-      select: node=>  {window.open(node.data(NODE.ID));},
+      select: node=> {window.open(node.data(NODE.ID));},
     },
     {
       content: 'star',
       id: 'star',
-      select: node=> {graph.showStar(node,false);},
+      select: graph.showStarMultiplexed(false),
     },
     {
       content: 'incoming star',
       id: 'incoming-star',
-      select: node=> {graph.showStar(node,false,Direction.IN);},
+      select: graph.showStarMultiplexed(false,Direction.IN),
     },
     {
       content: 'outgoing star',
       id: 'outgoing-star',
-      select: node=> {graph.showStar(node,false,Direction.OUT);},
+      select: graph.showStarMultiplexed(false,Direction.OUT),
     },
     {
       content: 'path',
       id: 'path',
-      select: node=> {graph.showPath(graph.getSource(), node);},
+      select: graph.multiplex(graph.showPath),
     },
     {
       content: 'spiderworm',
       id: 'spiderworm',
-      select: node=> {graph.showWorm(graph.getSource(), node);},
+      select: graph.multiplex(graph.showWorm),
     },
   // {
   //   content: 'find neighbours',
@@ -120,43 +134,7 @@ const devCommands = graph =>
     {
       content: 'remove permanently',
       id: 'remove-permanently',
-      select: node=>
-      {
-        graph.cy.remove(node);
-        const clazzShort  = rdf.short(node.data(NODE.ID));
-        sparql.describe(node.data(NODE.ID))
-          .then(bindings=>
-          {
-            const body = `Please permanently delete the class ${clazzShort}:
-          \`\`\`\n
-          sparql
-          # WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} FROM THE GRAPH AS EITHER SUBJECT OR OBJECT
-          # ALWAYS CREATE A BACKUP BEFORE THIS OPERATION AS A MISTAKE MAY DELETE THE WHOLE GRAPH.
-          # THERE MAY BE DATA LEFT OVER IN OTHER GRAPHS, SUCH AS <http://www.snik.eu/ontology/limes-exact> or <http://www.snik.eu/ontology/match>.
-          # THERE MAY BE LEFTOVER DATA IN AXIOMS OR ANNOTATIONS, CHECK THE UNDO DATA FOR SUCH THINGS.
-
-          DELETE DATA FROM <${rdf.longPrefix(node.data(NODE.ID))}>
-          {
-            {<${node.data(NODE.ID)}> ?p ?y.} UNION {?x ?p <${node.data(NODE.ID)}>.}
-          }
-          \n\`\`\`
-          **Warning: Restoring a class with the following triples is not guaranteed to work and may have unintended consequences if other edits occur between the deletion and restoration.
-          This only contains the triples from graph ${rdf.longPrefix(node.data(NODE.ID))}.**
-
-          Undo based on these triples:
-          \`\`\`\n
-          ${bindings}
-          \n\`\`\`
-          ${language.CONSTANTS.SPARUL_WARNING}`;
-            window.open
-            (
-              'https://github.com/IMISE/snik-ontology/issues/new?title='+
-            encodeURIComponent('Remove class '+clazzShort)+
-            '&body='+
-            encodeURIComponent(body)
-            );
-          });
-      },
+      select: graph.createRemoveIssue,
     },
     {
       content: 'OntoWiki',
@@ -182,12 +160,12 @@ const extCommands = graph =>
     {
       content: 'doublestar',
       id: 'doublestar',
-      select: node=> {graph.showDoubleStar(graph.getSource(), node);},
+      select: graph.multiplex(graph.showDoubleStar),
     },
     {
       content: 'starpath',
       id: 'starpath',
-      select: node=> {graph.showPath(graph.getSource(), node,true);},
+      select: graph.multiplex(node=>graph.showPath(node,true)),
     },
     {
       content: 'circle star',
