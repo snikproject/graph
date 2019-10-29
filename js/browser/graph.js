@@ -55,7 +55,7 @@ export class Graph
   }
 
   /** @returns whether cumulative search is activated. */
-  static cumulativeSearch() {return util.getElementById('cumulative-search-checkbox').checked;}
+  cumulativeSearch() {return util.getElementById('cumulativeSearchBox').checked;}
 
   /** Hides elements using visibility: hidden.
     Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
@@ -194,6 +194,8 @@ export class Graph
 
     const nodes  = edges.connectedNodes(".unfiltered");
     const star = inner.union(nodes).union(edges);
+    star.merge(star.parent());
+    star.merge(star.children());
     // show edges between outer nodes to visible nodes
     const outerNodes = nodes.difference(inner);
     // connect new nodes with all existing unfiltered visible ones
@@ -327,14 +329,13 @@ export class Graph
       return false;
     }
     const node = nodes[0];
-    if(!nodes.visible())
+    if(!node.visible())
     {
       log.warn(`Class not visible. ${uri} is not visible. Please adjust filters. `);
       return false;
     }
     if(!this.cumulativeSearch()) {this.resetStyle();}
-
-    this.highlight(nodes);
+    this.highlight(node);
     this.cy.center(node);
   }
 
@@ -372,7 +373,6 @@ export class Graph
       if(!nodes&&selected.size()>1) {nodes = selected;}
       if(nodes)
       {
-        console.log(nodes);
         for(let i=0; i<nodes.length;i++) {f(nodes[i]);}
       }
       else {f(ele);}
