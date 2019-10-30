@@ -465,11 +465,22 @@ export class Graph
       if(comp.length===1) {continue;}
 
       const id = 'parent'+i;
-      let labels = {};
+      const labels = {};
       let nodes = comp.nodes();
 
-      for(let j=0; j < nodes.length ;j++) {labels = {...labels,...nodes[j].data("l")};}
-
+      for(let j=0; j < nodes.length ;j++)
+      {
+        const l = nodes[j].data("l");
+        for(const key in l)
+        {
+          if(!labels[key]) {labels[key] = new Set();}
+          l[key].forEach(ll=>labels[key].add(ll));
+        }
+      }
+      for(const key in labels)
+      {
+        labels[key] = [[...labels[key]].reduce((a,b)=>a+", "+b)];
+      }
       const priorities = ["bb","ob","he","it4it","ciox"];
       const priority = source =>
       {
