@@ -44,7 +44,22 @@ const compoundMenu = graph => Object.assign(menuDefaults(),
     {
       content: 'star',
       id: 'compound-star',
-      select: parent => graph.multiplex(graph.showStar,parent.children())(),
+      select: parent => graph.multiplex(graph.showStar,parent.children(),true)(),
+    },
+    {
+      content: 'incoming star',
+      id: 'compound-incoming-star',
+      select: parent => graph.multiplex(node=>graph.showStar(node,false,Direction.IN),parent.children(),true)(),
+    },
+    {
+      content: 'outgoing star',
+      id: 'compound-outgoing-star',
+      select: parent => graph.multiplex(node=>graph.showStar(node,false,Direction.OUT),parent.children(),true)(),
+    },
+    {
+      content: 'set as path source',
+      id: 'compound-path-source',
+      select: parent => {graph.setSource(parent.children()[0]);},
     },
   ],
   });
