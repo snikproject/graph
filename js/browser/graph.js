@@ -49,7 +49,7 @@ export class Graph
     this.selectedNode = null;
     this.cy.on('select', 'node', event => {this.selectedNode = event.target;});
     // bind this to the class instance instead of the event source
-    const binds = ["resetStyle", "presentUri", "showPath", "showStar", "showWorm", "showDoubleStar", "combineMatch"];
+    const binds = ["resetStyle", "presentUri", "showPath", "showStar", "showWorm", "showDoubleStar", "combineMatch", "showCloseMatch"];
     for(const bind of binds) {this[bind] = this[bind].bind(this);}
     initTimer.stop();
   }
@@ -160,18 +160,18 @@ export class Graph
   }
 
   /** Multiplex star operations.*/
-  showStarMultiplexed(changeLayout, direction) {return this.multiplex((x)=>this.showStar(x,changeLayout,direction));}
+  showStarMultiplexed(changeLayout, direction) {return this.multiplex((x)=>this.showStar(x,changeLayout,direction),null,true);}
 
   /** Highlight the give node and all its directly connected nodes (in both directions).
       Hide all other nodes except when in star mode.
-      @param {cytoscape.NodeSingular} node center of the star
+      @param {cytoscape.Collection} node node or collection of nodes. center of the star
       @param {Boolean} [changeLayout=false] arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
       @param {Boolean} [directed=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.  */
-  showStar(node, changeLayout, direction)
+  showStar(center, changeLayout, direction)
   {
     this.cy.startBatch();
     // open 2 levels deep on closeMatch
-    let inner = node; // if you don't want to include close match, define inner like this
+    let inner = center; // if you don't want to include close match, define inner like this
     let closeMatchEdges;
     for(let innerSize = 0; innerSize<inner.size();) // repeat until the close match chain ends
     {
@@ -363,17 +363,21 @@ export class Graph
     this.cy.fit(this.cy.elements(".highlighted"));
   }
 
-  /** Applies the function to multiple nodes if given or if not given then if selected. */
-  multiplex(f, nodes)
+  /** Applies the function to multiple nodes if given or if not given then if selected.
+   * @param {boolean} direct whether the input is a cytoscape collection that can be passed directly into the function without looping, which can be much faster if possible.*/
+  multiplex(f, nodes, direct)
   {
     return ele =>
     {
       const selected = this.cy.nodes(":selected");
-      // nodes are preferred
-      if(!nodes&&selected.size()>1) {nodes = selected;}
-      if(nodes)
+
+      let collection = nodes;
+      // nodes parameter is preferred
+      if(!nodes&&selected.size()>1) {collection = selected;}
+      if(collection)
       {
-        for(let i=0; i<nodes.length;i++) {f(nodes[i]);}
+        if(direct) {f(collection);}
+        else {for(let i=0; i<nodes.length;i++) {f(collection[i]);}}
       }
       else {f(ele);}
     };
@@ -481,5 +485,13 @@ export class Graph
 
       for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
     }
+  }
+
+  /**Show close matches of the given nodes. */
+  showCloseMatch(nodes)
+  {
+    const edges = nodes.connectedEdges(".unfiltered").filter('[pl="closeMatch"]'); // ,[pl="narrowMatch"],[pl="narrowMatch"]
+    const matches  = edges.connectedNodes(".unfiltered");
+    this.show(matches.union(edges));
   }
 }

@@ -185,6 +185,12 @@ const extCommands = graph =>
         graph.cy.nodes(":selected").positions(()=>node.position());
       },
     },
+    {
+      content: 'close matches',
+      id: 'close-match',
+      select: graph.multiplex(graph.showCloseMatch,null,true),
+    },
+
   ];
 
 /** Register modular node context menu. */
