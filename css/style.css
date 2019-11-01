@@ -90,3 +90,8 @@ figure {
     border-width: 1px;
     border-colour: white;
 }
+
+.__________cytoscape_container
+{
+  height: 100%;
+}
