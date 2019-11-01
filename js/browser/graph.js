@@ -377,7 +377,7 @@ export class Graph
       if(collection)
       {
         if(direct) {f(collection);}
-        else {for(let i=0; i<nodes.length;i++) {f(collection[i]);}}
+        else {for(let i=0; i<collection.length;i++) {f(collection[i]);}}
       }
       else {f(ele);}
     };
