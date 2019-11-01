@@ -145,19 +145,13 @@ function main()
   {
     console.groupCollapsed("Initializing");
 
-    const graph = new Graph(document.getElementById("graph1"));
-    const graph2 = new Graph(document.getElementById("graph2"));
+    const graph = new Graph(document.getElementById("graph"));
     const menu = new Menu(graph);
-    const menu2 = new Menu(graph2);
     parseParams(graph);
-    parseParams(graph2,menu2);
     const cxtMenu = new ContextMenu(graph, menu);
-    const cxtMenu2 = new ContextMenu(graph2, menu2);
-    //const search = new Search(graph,util.getElementById("search"));
-
-    //util.getElementById("top").appendChild(new ButtonBar(graph, menu).container);
-
-    //help.init();
+    const search = new Search(graph,util.getElementById("search"));
+    util.getElementById("top").appendChild(new ButtonBar(graph, menu).container);
+    help.init();
   });
 }
 

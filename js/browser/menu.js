@@ -225,7 +225,8 @@ export default class Menu
     console.groupCollapsed("Add menu");
     //const frag = new DocumentFragment();
     const ul = document.createElement("ul");
-    this.graph.parent.prepend(ul);
+    //this.graph.parent.prepend(ul); // for multiple graphs at the same time with a menu each
+    util.getElementById("top").prepend(ul); // a single menu for a single graph
     ul.classList.add("dropdown-bar");
     // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
     ul.setAttribute("tabindex","0");
