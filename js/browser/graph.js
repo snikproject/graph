@@ -12,6 +12,7 @@ import * as util from "./util.js";
 import * as sparql from "../sparql.js";
 import * as rdf from "../rdf.js";
 import * as language from "../lang/language.js";
+import progress from "./progress.js";
 
 export const Direction = Object.freeze({
   IN:   Symbol("in"),
@@ -443,59 +444,65 @@ export class Graph
   /** Sets whether close matches are grouped in compound nodes. */
   combineMatch(enabled)
   {
-    if(!enabled)
+    progress(()=>
     {
-      this.cy.nodes(":child").move({parent:null});
-      this.cy.nodes("[id ^= 'parent']").remove();
+      if(!enabled)
+      {
+        this.cy.startBatch();
+        this.cy.nodes(":child").move({parent:null});
+        this.cy.nodes("[id ^= 'parent']").remove();
+        this.matchComponents.length=0;
+        this.cy.endBatch();
+        return;
+      }
+      this.cy.startBatch();
+      // Can be calculated only once per session but then it needs to be synchronized with in-visualization ontology edits.
+      const matchEdges = this.cy.edges('[pl="closeMatch"]').filter('.unfiltered').not('.hidden');
+      const matchGraph = this.cy.nodes('.unfiltered').not('.hidden').union(matchEdges);
+      //graph.hide(graph.cy.elements());
+      //graph.show(matchGraph);
+
       this.matchComponents.length=0;
-      return;
-    }
-
-    // Can be calculated only once per session but then it needs to be synchronized with in-visualization ontology edits.
-    const matchEdges = this.cy.edges('[pl="closeMatch"]').filter('.unfiltered').not('.hidden');
-    const matchGraph = this.cy.nodes('.unfiltered').not('.hidden').union(matchEdges);
-    //graph.hide(graph.cy.elements());
-    //graph.show(matchGraph);
-
-    this.matchComponents.length=0;
-    this.matchComponents.push(...matchGraph.components());
-    for(let i=0; i < this.matchComponents.length; i++)
-    {
-      const comp = this.matchComponents[i];
-      if(comp.length===1) {continue;}
-
-      const id = 'parent'+i;
-      const labels = {};
-      let nodes = comp.nodes();
-
-      for(let j=0; j < nodes.length ;j++)
+      this.matchComponents.push(...matchGraph.components());
+      for(let i=0; i < this.matchComponents.length; i++)
       {
-        const l = nodes[j].data("l");
-        for(const key in l)
+        const comp = this.matchComponents[i];
+        if(comp.length===1) {continue;}
+
+        const id = 'parent'+i;
+        const labels = {};
+        let nodes = comp.nodes();
+
+        for(let j=0; j < nodes.length ;j++)
         {
-          if(!labels[key]) {labels[key] = new Set();}
-          l[key].forEach(ll=>labels[key].add(ll));
+          const l = nodes[j].data("l");
+          for(const key in l)
+          {
+            if(!labels[key]) {labels[key] = new Set();}
+            l[key].forEach(ll=>labels[key].add(ll));
+          }
         }
-      }
-      for(const key in labels)
-      {
-        labels[key] = [[...labels[key]].reduce((a,b)=>a+", "+b)];
-      }
-      const priorities = ["bb","ob","he","it4it","ciox"];
-      const priority = source =>
-      {
-        let p = priorities.indexOf(source);
-        if(p===-1) {p=99;}
-        return p; // prevent null value on prefix that is new or outside of SNIK
-      };
-      nodes = nodes.sort((a,b)=>priority(a.data(NODE.SOURCE))-priority(b.data(NODE.SOURCE))); // cytoscape collection sort is not in place
-      this.cy.add({
-        group: 'nodes',
-        data: { id: id,   l: labels },
-      });
+        for(const key in labels)
+        {
+          labels[key] = [[...labels[key]].reduce((a,b)=>a+", "+b)];
+        }
+        const priorities = ["bb","ob","he","it4it","ciox"];
+        const priority = source =>
+        {
+          let p = priorities.indexOf(source);
+          if(p===-1) {p=99;}
+          return p; // prevent null value on prefix that is new or outside of SNIK
+        };
+        nodes = nodes.sort((a,b)=>priority(a.data(NODE.SOURCE))-priority(b.data(NODE.SOURCE))); // cytoscape collection sort is not in place
+        this.cy.add({
+          group: 'nodes',
+          data: { id: id,   l: labels },
+        });
 
-      for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
-    }
+        for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
+      }
+      this.cy.endBatch();
+    });
   }
 
   /**Show close matches of the given nodes. */
