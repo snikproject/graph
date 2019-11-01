@@ -6,7 +6,7 @@ import classUse from "./classuse.js";
 import * as rdf from "../rdf.js";
 import * as NODE from "../node.js";
 import * as util from "./util.js";
-import {Direction} from "./graph.js";
+import {Graph,Direction} from "./graph.js";
 import {menuDefaults} from "./contextmenuUtil.js";
 
 const menu = Object.assign(menuDefaults(),
@@ -88,7 +88,7 @@ const baseCommands = graph =>
     {
       content: 'hide',
       id: 'hide',
-      select: graph.multiplex(graph.hide),
+      select: graph.multiplex(Graph.hide),
     },
     {
       content: 'set as path source',
