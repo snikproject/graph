@@ -122,22 +122,15 @@ const style =
       'css':
       {
         'z-compound-depth': 'bottom',
-      },
-    },
-    {
-      'selector': 'edge:unselected',
-      'css':
-      {
-        'opacity': 0.5,
         'width': 2.0,
+        'opacity': 0.5,
       },
     },
     {
       'selector': 'edge.highlighted,edge:selected,edge.starmode',
       'css':
       {
-        'opacity': 1.0,
-        'text-opacity': 1,
+        'text-opacity': 1.0,
         'mid-target-arrow-shape': function(edge)
         {
           // no arrow for properties edges
@@ -151,7 +144,6 @@ const style =
           }
           return "triangle";
         },
-        'width': 4.0,
         'edge-text-rotation': 'autorotate',
         'text-margin-y': '-1em',
         'min-zoomed-font-size': 5,
@@ -164,6 +156,14 @@ const style =
           {label+=" \u26A0";}
           return label;
         },
+      },
+    },
+    {
+      'selector': 'edge.highlighted,edge:selected',
+      'css':
+      {
+        'width': 4.0,
+        'opacity': 1.0,
       },
     },
     {
