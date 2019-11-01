@@ -53,7 +53,7 @@ export const help =
         },
         circlestar:
         {
-          "":"A star using a circular layout.",
+          "":"A star using a circular layout. Hides all other nodes.",
           "img": "circlestar.png",
         },
         lodlive:"Third party data visualization exploration tool.",

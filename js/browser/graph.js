@@ -201,7 +201,7 @@ export class Graph
     // connect new nodes with all existing unfiltered visible ones
     //show(outerNodes.edgesWith(cy.nodes(".unfiltered").not(".hidden")));
 
-    if(!this.starMode)
+    if(changeLayout||(!this.starMode))
     {
       this.starMode=true;
       this.hide(this.cy.elements().not(star));
