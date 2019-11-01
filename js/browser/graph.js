@@ -24,10 +24,13 @@ export const Direction = Object.freeze({
 export class Graph
 {
   /** Creates a new cytoscape graph, assigns it to the #cy container and sets up basic event listeners. */
-  constructor(container)
+  constructor(parent)
   {
     const initTimer = timer("graph-init");
-    this.container = container;
+    this.parent = parent;
+    const container = document.createElement("div");
+    container.id = parent.id+"-cy";
+    parent.append(container);
     this.matchComponents = [];
     // remove nodes or edges from the graph (not the SPARQL endpoint) with the delete key
     container.addEventListener('keydown',function(e)
@@ -46,7 +49,7 @@ export class Graph
         minZoom: 0.02,
         maxZoom: 7,
       });
-    this.cy.panzoom(); // Google Maps like zoom UI element
+    //this.cy.panzoom(); // Google Maps like zoom UI element
     this.selectedNode = null;
     this.cy.on('select', 'node', event => {this.selectedNode = event.target;});
     // bind this to the class instance instead of the event source

@@ -20,7 +20,7 @@ export default class Menu
   constructor(graph)
   {
     this.graph = graph;
-    this.graph.container.addEventListener("click",Menu.closeListener);
+    this.graph.parent.addEventListener("click",Menu.closeListener);
     // bind this to the class instance instead of the event source
     this.showCloseMatches = this.showCloseMatches.bind(this);
     this.addMenu();
@@ -219,12 +219,13 @@ export default class Menu
     });
   }
 
-  /** Adds the menu to the DOM element with the "top" id and sets up the event listeners. */
+  /** Adds the menu to the graph parent DOM element and sets up the event listeners. */
   addMenu()
   {
     console.groupCollapsed("Add menu");
     //const frag = new DocumentFragment();
     const ul = document.createElement("ul");
+    this.graph.parent.prepend(ul);
     ul.classList.add("dropdown-bar");
     // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
     ul.setAttribute("tabindex","0");
@@ -316,7 +317,6 @@ export default class Menu
         }
       });
     }
-    util.getElementById("top").prepend(ul);
 
     file.addFileLoadEntries(this.graph,util.getElementById("file-menu-content"),aas[0]); // update index when "File" position changes in the menu
     log.debug('fileLoadEntries added');
@@ -354,6 +354,8 @@ export default class Menu
       }
     }
 
+    // fix mouse position after container change, see https://stackoverflow.com/questions/23461322/cytoscape-js-wrong-mouse-pointer-position-after-container-change
+    //this.graph.cy.resize();
     log.debug('Menu added');
     console.groupEnd();
   }
