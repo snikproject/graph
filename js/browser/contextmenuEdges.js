@@ -6,7 +6,7 @@ import * as rdf from "../rdf.js";
 import * as util from "./util.js";
 import * as EDGE from "../edge.js";
 import * as language from "../lang/language.js";
-import {logWrap,menuDefaults} from "./contextmenuUtil.js";
+import {logWrap,menuDefaults,ontoWikiUrl} from "./contextmenuUtil.js";
 
 export default class ContextMenuEdges
 {
@@ -73,7 +73,7 @@ export default class ContextMenuEdges
   }
 
   /** Creates a human readable string of the triple an edge represents. */
-  static edgeLabel(edge) {return rdf.short(edge.data(EDGE.SOURCE)) +" "+ rdf.short(edge.data(EDGE.PROPERTY)) +" "+ rdf.short(edge.data(EDGE.TARGET));}
+  edgeLabel(edge) {return rdf.short(edge.data(EDGE.SOURCE)) +" "+ rdf.short(edge.data(EDGE.PROPERTY)) +" "+ rdf.short(edge.data(EDGE.TARGET));}
 
   /** collection of common edge commands to use in baseMenu and defaultsLimesRelations */
   baseCommands()
@@ -82,7 +82,11 @@ export default class ContextMenuEdges
       {
         content: 'edit / report',
         id: "edit",
-        select: (edge)=>util.createGitHubIssue(util.REPO_ONTOLOGY,this.edgeLabel(edge),'The edge "'+this.edgeLabel(edge)+'" is incorrect.\n\n**Details**\n'),
+        select: (edge)=>
+        {
+          const body = `Problem with the edge [${this.edgeLabel(edge)}](${edge.data(EDGE.SOURCE)}) ([OntoWiki URL](${ontoWikiUrl(edge.data(EDGE.SOURCE))})):\n\n`;
+          util.createGitHubIssue(util.REPO_ONTOLOGY,this.edgeLabel(edge),body);
+        },
       },
       {
         content: 'hide',
@@ -133,7 +137,7 @@ export default class ContextMenuEdges
         id: "ontowiki",
         select: function(edge)
         {
-          window.open('https://www.snik.eu/ontowiki/view/?r='+edge.data(EDGE.SOURCE)+"&m="+rdf.sub(edge.data(EDGE.SOURCE)));
+          window.open(ontoWikiUrl(edge.data(EDGE.SOURCE)));
         },
       },
       {

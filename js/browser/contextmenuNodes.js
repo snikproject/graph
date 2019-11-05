@@ -7,7 +7,7 @@ import * as rdf from "../rdf.js";
 import * as NODE from "../node.js";
 import * as util from "./util.js";
 import {Graph,Direction} from "./graph.js";
-import {menuDefaults} from "./contextmenuUtil.js";
+import {menuDefaults,ontoWikiUrl} from "./contextmenuUtil.js";
 
 const menu = Object.assign(menuDefaults(),
   {
@@ -15,8 +15,6 @@ const menu = Object.assign(menuDefaults(),
     selector: 'node:childless', // elements matching this Cytoscape.js selector will trigger cxtmenus
     commands: [],
   });
-
-const ontoWikiUrl = uri => 'https://www.snik.eu/ontowiki/view/?r='+uri+"&m="+rdf.sub(uri);
 
 const compoundMenu = graph => Object.assign(menuDefaults(),
   {
@@ -75,7 +73,7 @@ const baseCommands = graph =>
       id: "edit",
       select: node=>
       {
-        const body = `Problem with the class [${rdf.short(node.data(NODE.ID))}](${node.data(NODE.ID)}) ([OntoWiki URL](${ontoWikiUrl(node.data(NODE.ID))})):\n`;
+        const body = `Problem with the class [${rdf.short(node.data(NODE.ID))}](${node.data(NODE.ID)}) ([OntoWiki URL](${ontoWikiUrl(node.data(NODE.ID))})):\n\n`;
         util.createGitHubIssue(util.REPO_ONTOLOGY,node.data(NODE.ID),body);
       },
     },

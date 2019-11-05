@@ -1,4 +1,5 @@
 import config from "../config.js";
+import * as rdf from "../rdf.js";
 
 /** Add a logging wrapper to a context menu command. */
 export function logWrap(cmd,messageFunction)
@@ -12,6 +13,8 @@ export function logWrap(cmd,messageFunction)
   };
   cmd.select.wrapped = true;
 }
+
+export const ontoWikiUrl = uri => 'https://www.snik.eu/ontowiki/view/?r='+uri+"&m="+rdf.sub(uri);
 
 /** Define as a function to prevent circular dependency problems. */
 export function menuDefaults()
