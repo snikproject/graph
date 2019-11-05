@@ -16,6 +16,8 @@ const menu = Object.assign(menuDefaults(),
     commands: [],
   });
 
+const ontoWikiUrl = uri => 'https://www.snik.eu/ontowiki/view/?r='+uri+"&m="+rdf.sub(uri);
+
 const compoundMenu = graph => Object.assign(menuDefaults(),
   {
     menuRadius: 180, // the radius of the circular menu in pixels
@@ -73,11 +75,8 @@ const baseCommands = graph =>
       id: "edit",
       select: node=>
       {
-        if(confirm(language.getString("ontology-issue-warning")))
-        {
-          const body = `The class ${node.data(NODE.ID)} has [incorrect/missing attribute values | incorrect/missing relations to other classes, other (please specify and remove not applicable ones).]\n\n**Details**\n`;
-          util.createGitHubIssue(util.REPO_ONTOLOGY,node.data(NODE.ID),body);
-        }
+        const body = `Problem with the class [${rdf.short(node.data(NODE.ID))}](${node.data(NODE.ID)}) ([OntoWiki URL](${ontoWikiUrl(node.data(NODE.ID))})):\n`;
+        util.createGitHubIssue(util.REPO_ONTOLOGY,node.data(NODE.ID),body);
       },
     },
     {
@@ -156,7 +155,7 @@ const devCommands = graph =>
       id: 'ontowiki',
       select: node=>
       {
-        window.open('https://www.snik.eu/ontowiki/view/?r='+node.data(NODE.ID)+"&m="+rdf.sub(node.data(NODE.ID)));
+        window.open(ontoWikiUrl(node.data(NODE.ID)));
       },
     },
     {
