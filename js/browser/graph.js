@@ -64,7 +64,7 @@ export class Graph
   /** Hides elements using visibility: hidden.
     Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
     @param {cytoscape.Collection} eles the elements to hide */
-  static hide(eles)
+  hide(eles)
   {
     eles.addClass('hidden');
     eles.removeClass('highlighted');
@@ -150,7 +150,7 @@ export class Graph
       if(!this.starMode)
       {
         this.starMode=true;
-        Graph.hide(elements.not(path));
+        this.hide(elements.not(path));
       }
       this.cy.endBatch();
     }
@@ -208,7 +208,7 @@ export class Graph
     if(changeLayout||(!this.starMode))
     {
       this.starMode=true;
-      Graph.hide(this.cy.elements().not(star));
+      this.hide(this.cy.elements().not(star));
     }
 
     this.starStyle(star);
@@ -359,7 +359,7 @@ export class Graph
     });
     if(hideOthers)
     {
-      Graph.hide(this.cy.elements());
+      this.hide(this.cy.elements());
       this.show(resultNodes.edgesWith(resultNodes));
       this.starMode = true;
     }

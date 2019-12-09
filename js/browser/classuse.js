@@ -73,7 +73,7 @@ export default function classUse(graph,clazz,subTop)
       }
     }
   }`;
-  sparql.select(query,"http://www.snik.eu/ontology").then((json)=>
+  sparql.select(query).then((json)=>
   {
     const inner = new Set();
     const middle = new Set();
@@ -94,7 +94,7 @@ export default function classUse(graph,clazz,subTop)
     // now we know we can display something
     graph.resetStyle();
     graph.hide(graph.cy.elements());
-    graph.setStarMode(true);
+    graph.starMode = true;
 
     const classes = new Set([...inner, ...middle,...outer,...outerx]);
     const selectedNodes = graph.cy.collection(`node[id='${clazz}']`);

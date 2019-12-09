@@ -2,8 +2,6 @@
 Textual node search.
 @module */
 import * as sparql from "../sparql.js";
-import * as menu from "./menu.js";
-import * as NODE from "../node.js";
 import * as util from "./util.js";
 import * as fuse from "../fuse.js";
 
@@ -133,7 +131,7 @@ export default class Search
     const sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
         {?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l),"[ -]","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
     log.debug(sparqlQuery);
-    const bindings = await sparql.select(sparqlQuery,"http://www.snik.eu/ontology");
+    const bindings = await sparql.select(sparqlQuery);
     return bindings.map(b=>b.s.value);
     //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
     //filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}

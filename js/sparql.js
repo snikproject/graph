@@ -1,9 +1,8 @@
 /**
 Functions for querying the SNIK SPARQL endpoint.
 @module */
+import config from "./config.js";
 
-export const SPARQL_ENDPOINT = "https://www.snik.eu/sparql";
-export const SPARQL_GRAPH = "http://www.snik.eu/ontology";
 export const SPARQL_GRAPH_BB = "http://www.snik.eu/ontology/bb";
 export const SPARQL_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies
 export const SPARQL_LIMIT = 100;
@@ -14,7 +13,7 @@ ASK queries should also work but better use {@link ask} instead as it is more co
 {@param endpoint} An optional SPARQL endpoint. By default, SNIK is used.
 @return {Promise<object[]>} A promise of a set of SPARQL select result bindings.
 */
-export async function select(query,graph, endpoint=SPARQL_ENDPOINT)
+export async function select(query,graph=config.sparql.graph, endpoint=config.sparql.endpoint)
 {
   let url = endpoint + '?query=' + encodeURIComponent(query) + '&format=json';
   if(graph) {url+= '&default-graph-uri=' + encodeURIComponent(graph);}
@@ -52,7 +51,7 @@ export async function select(query,graph, endpoint=SPARQL_ENDPOINT)
 export function ask(query,graphOpt)
 {
   //if (!graphOpt){ graphOpt = SPARQL_GRAPH; }//to ensure that dbpedia matches are not shown
-  const url = SPARQL_ENDPOINT +
+  const url = config.sparql.endpoint +
   '?query=' + encodeURIComponent(query) +
   '&format=json'+
   (graphOpt?('&default-graph-uri=' + encodeURIComponent(graphOpt)):"");
@@ -69,7 +68,7 @@ export function ask(query,graphOpt)
 export function describe(uri,graphOpt)
 {
   const query = "describe <"+uri+">";
-  const url = SPARQL_ENDPOINT +
+  const url = config.sparql.endpoint +
   '?query=' + encodeURIComponent(query) +
   '&format=text'+
   (graphOpt?('&default-graph-uri=' + encodeURIComponent(graphOpt)):"");

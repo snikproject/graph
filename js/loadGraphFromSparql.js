@@ -6,7 +6,7 @@ import timer from "./timer.js";
 import config from "./config.js";
 
 /** Query for classes from the endpoint */
-async function selectClasses(endpoint, from, instances)
+async function selectClasses(from, instances)
 {
   const sparqlClassesTimer = timer("sparql-classes");
   const classQuerySimple =
@@ -43,16 +43,16 @@ async function selectClasses(endpoint, from, instances)
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?inst a ?c.}
   }`;
-  const classQuery = endpoint?classQuerySimple:classQuerySnik;
-  const json = await sparql.select(classQuery,null,endpoint);
+  const classQuery = config.sparql.endpoint?classQuerySimple:classQuerySnik;
+  const json = await sparql.select(classQuery);
   sparqlClassesTimer.stop(json.length+" classes");
   return json;
 }
 
 /**  Creates cytoscape nodes for the classes */
-async function classNodes(endpoint, instances, from)
+async function classNodes(instances, from)
 {
-  const json = await selectClasses(endpoint,instances, from);
+  const json = await selectClasses(instances, from);
 
   /** @type{cytoscape.ElementDefinition[]} */
   const nodes = [];
@@ -102,8 +102,8 @@ async function classNodes(endpoint, instances, from)
   return nodes;
 }
 
-/** Query for triples between classes from the endpoint */
-async function selectTriples(endpoint, from, fromNamed, instances, virtual)
+/** Query for triples between classes  */
+async function selectTriples(from, fromNamed, instances, virtual)
 {
   const sparqlPropertiesTimer = timer("sparql-properties");
   const tripleQuerySimple =
@@ -132,16 +132,16 @@ async function selectTriples(endpoint, from, fromNamed, instances, virtual)
         owl:annotatedTarget ?d.
       }
     }`;
-  const tripleQuery = endpoint?tripleQuerySimple:tripleQuerySnik;
-  const json = await sparql.select(tripleQuery,null,endpoint);
+  const tripleQuery = config.sparql.endpoint.includes("snik.eu/sparql")?tripleQuerySnik:tripleQuerySimple;
+  const json = await sparql.select(tripleQuery);
   sparqlPropertiesTimer.stop(json.length+" properties");
   return json;
 }
 
 /**  Creates cytoscape nodes for the classes */
-async function tripleEdges(endpoint, from, fromNamed, instances, virtual)
+async function tripleEdges(from, fromNamed, instances, virtual)
 {
-  const json = await selectTriples(endpoint, from, fromNamed, instances, virtual);
+  const json = await selectTriples(from, fromNamed, instances, virtual);
   const edges = [];
   for(let i=0;i<json.length;i++)
   {
@@ -170,13 +170,13 @@ async function tripleEdges(endpoint, from, fromNamed, instances, virtual)
   @example
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
-export default async function loadGraphFromSparql(cy,graphs,endpoint, instances, virtual)
+export default async function loadGraphFromSparql(cy,graphs,instances, virtual)
 {
-  log.info(`Loading graph from endpoint ${endpoint} with graphs ${graphs}.`);
+  log.info(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
   const from = graphs.map(graph=>`FROM <${graph}>`).reduce((a,b)=>a+"\n"+b,"");
   const fromNamed = from.replace(/FROM/g,"FROM NAMED");
 
-  const [nodes,edges] = await Promise.all([classNodes(endpoint, from, instances),tripleEdges(endpoint, from, fromNamed, instances, virtual)]);
+  const [nodes,edges] = await Promise.all([classNodes(from, instances),tripleEdges(from, fromNamed, instances, virtual)]);
   cy.elements().remove();
   cy.add(nodes);
   cy.add(edges);

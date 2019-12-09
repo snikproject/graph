@@ -33,4 +33,9 @@ export default
       "standard": {"width": 1920, "height": 1920},
     },
   },
+  "sparql":
+  {
+    "endpoint": "https://www.snik.eu/sparql",
+    "graph" :"http://www.snik.eu/ontology",
+  },
 };

@@ -63,9 +63,14 @@ async function parseParams(graph)
     if(endpoint)
     {
       log.info("Loading from SPARQL Endpoint "+endpoint);
+      config.sparql.endpoint = endpoint;
       const graphs = [];
-      if(rdfGraph) {graphs.push(rdfGraph);}
-      {await loadGraphFromSparql(graph.cy,graphs,endpoint,instances,virtual);}
+      if(rdfGraph)
+      {
+        graphs.push(rdfGraph);
+        config.sparql.graph = rdfGraph;
+      }
+      {await loadGraphFromSparql(graph.cy,graphs,instances,virtual);}
       layout.run(graph.cy,layout.euler);
       return;
     }
