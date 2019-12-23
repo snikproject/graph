@@ -43,7 +43,7 @@ async function selectClasses(from, instances)
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?inst a ?c.}
   }`;
-  const classQuery = config.sparql.endpoint?classQuerySimple:classQuerySnik;
+  const classQuery = (config.sparql.endpoint==="https://www.snik.eu/sparql")?classQuerySnik:classQuerySimple;
   const json = await sparql.select(classQuery);
   sparqlClassesTimer.stop(json.length+" classes");
   return json;
