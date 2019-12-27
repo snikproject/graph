@@ -40,7 +40,7 @@ If the website and the SPARQL endpoint are on different domains, you may need to
 These are only needed if you access index-dev.html locally over the file prototocol, that is without using a web server, for example as `file:///home/konrad/projekte/snik/cytoscape/index-dev.html`.
 
 * Firefox needs `security.fileuri.strict_origin_policy;false` in `about:config`
-* Chrome needs the "--allow-file-access-from-files" parameter to load modules locally but still fails to load them from files in version 69.0.3497.100, so for developing with Chrome you need a local web server.
+* Chrome needs the "--allow-file-access-from-files" parameter to load modules locally but still fails to load them from files in version 69.0.3497.100, so for developing with Chrome you need a local web server, for example via `python -m http.server`.
 
 ### Publish
 
