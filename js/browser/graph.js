@@ -311,12 +311,12 @@ export class Graph
   {
     if (enabled)
     {
-      this.cy.style.backgroundColor = "white";
+      this.parent.style.backgroundColor = "white";
       this.cy.style().fromJson(style.style.concat(colorschemeday)).update();
     }
     else
     {
-      this.cy.style.backgroundColor = "black";
+      this.parent.style.backgroundColor = "black";
       this.cy.style().fromJson(style.style.concat(colorschemenight)).update();
     }
   }
