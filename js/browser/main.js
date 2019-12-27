@@ -152,7 +152,7 @@ function main()
 
     const graph = new Graph(document.getElementById("graph"));
     const menu = new Menu(graph);
-    parseParams(graph);
+    await parseParams(graph);
     new ContextMenu(graph, menu);
     new Search(graph,util.getElementById("search"));
     util.getElementById("top").appendChild(new ButtonBar(graph, menu).container);
