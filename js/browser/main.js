@@ -153,8 +153,8 @@ function main()
     const graph = new Graph(document.getElementById("graph"));
     const menu = new Menu(graph);
     parseParams(graph);
-    const cxtMenu = new ContextMenu(graph, menu);
-    const search = new Search(graph,util.getElementById("search"));
+    new ContextMenu(graph, menu);
+    new Search(graph,util.getElementById("search"));
     util.getElementById("top").appendChild(new ButtonBar(graph, menu).container);
     help.init();
   });
