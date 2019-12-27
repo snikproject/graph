@@ -504,6 +504,7 @@ export class Graph
 
         for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
       }
+      this.moveAllMatches(100);
       this.cy.endBatch();
     });
   }
