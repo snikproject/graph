@@ -1,7 +1,6 @@
 /**
 Creates the circular context menu that can be opened on top of a node.
 @module */
-import * as language from "../lang/language.js";
 import classUse from "./classuse.js";
 import * as rdf from "../rdf.js";
 import * as NODE from "../node.js";

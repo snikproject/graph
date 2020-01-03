@@ -40,16 +40,16 @@ export function positions(nodes)
 @returns {object} the center point of the nodes */
 function center(nodes)
 {
-  const center = {x:0.0 , y:0.0};
+  const c = {x:0.0 , y:0.0};
   for(let i=0; i<nodes.length; i++)
   {
     const pos = nodes[i].position();
-    center.x+=pos.x;
-    center.y+=pos.y;
+    c.x+=pos.x;
+    c.y+=pos.y;
   }
-  center.x/=(nodes.length);
-  center.y/=(nodes.length);
-  return center;
+  c.x/=(nodes.length);
+  c.y/=(nodes.length);
+  return c;
 }
 
 

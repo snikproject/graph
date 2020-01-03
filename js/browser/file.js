@@ -84,5 +84,5 @@ Cannot use the simpler default menu creation method because file upload only wor
 export function addFileLoadEntries(graph,parent,as)
 {
   addLoadEntry(parent,"load-layout","Load Layout",loadLayout(graph),as);
-  addLoadEntry(parent,"load-graph-with-layout","Load Graph File with Layout",loadGraph(graph),as);
+  addLoadEntry(parent,"load-graph-with-layout","Load Graph File with Layout",loadGraphFromJsonFile(graph),as);
 }

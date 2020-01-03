@@ -1,7 +1,6 @@
 /**
 Creates the circular context menu that can be opened on top of an edge.
 @module */
-import {Graph} from "./graph.js";
 import * as rdf from "../rdf.js";
 import * as util from "./util.js";
 import * as EDGE from "../edge.js";

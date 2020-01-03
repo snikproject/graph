@@ -96,7 +96,8 @@ export const help =
         "day-mode":"White background. Saves ink when printing.",
         "dev-mode":"Additional context menu entries for developers.",
         "ext-mode":"Additional context menu entries for power users.",
-        "combine-match": "Highlights groups of classes representing the same concept from different subontologies (matches) by placing them in boxes. Use \"move matches on top of each other\" or  \"move matches nearby\" to shrink those boxes.",
+        "combine-match": `Highlights groups of classes representing the same concept from different subontologies (matches) by placing them in boxes.
+Use "move matches on top of each other" or "move matches nearby" to shrink those boxes.`,
       },
       layout:
       {

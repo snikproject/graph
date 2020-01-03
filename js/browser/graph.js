@@ -322,7 +322,7 @@ export class Graph
   }
 
   /**Centered and highlighted the given URI.
-      * @param {String} uri The URI of a class in the graph. */
+  * @param {String} uri The URI of a class in the graph. */
   presentUri(uri)
   {
     this.cy.zoom(0.6);

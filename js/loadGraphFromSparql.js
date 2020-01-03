@@ -181,6 +181,6 @@ export default async function loadGraphFromSparql(graph,graphs,instances, virtua
   graph.cy.add(nodes);
   graph.cy.add(edges);
   graph.cy.elements().addClass("unfiltered");
-  graph.instances = graph.cy.nodes().filter((ele,i,eles)=>ele.data().i);
+  graph.instances = graph.cy.nodes().filter((ele)=>ele.data().i);
   console.log(graph.instances);
 }
