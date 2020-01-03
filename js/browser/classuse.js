@@ -93,7 +93,7 @@ export default function classUse(graph,clazz,subTop)
     }
     // now we know we can display something
     graph.resetStyle();
-    graph.hide(graph.cy.elements());
+    graph.setVisible(graph.cy.elements(),false);
     graph.starMode = true;
 
     const classes = new Set([...inner, ...middle,...outer,...outerx]);
@@ -137,7 +137,7 @@ export default function classUse(graph,clazz,subTop)
       }
     ).run();
 
-    graph.show(selectedElements);
+    graph.setVisible(selectedElements,true);
 
     const centerNode = graph.cy.nodes(`node[id='${clazz}']`);
     graph.cy.center(centerNode);

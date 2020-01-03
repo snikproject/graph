@@ -91,7 +91,7 @@ export default class ContextMenuEdges
       {
         content: 'hide',
         id: "hide",
-        select: (edge)=>Graph.hide(edge),
+        select: (edge)=>this.graph.setVisible(edge,false),
       },
       {
         content: 'description (if it exists)',

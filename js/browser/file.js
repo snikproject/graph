@@ -16,10 +16,12 @@ function uploadJson(event,callback)
 }
 
 /**
+Curried function.
 Load a layouted graph from the JSON file specified by the given file input change event.
+@param {Graph} graph a
 @param {Event} event a file input change event
 */
-export const loadGraph = graph => event =>
+export const loadGraphFromJsonFile = graph => event =>
 {
   uploadJson(event,json=>
   {

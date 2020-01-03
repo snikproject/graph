@@ -61,24 +61,24 @@ export class Graph
   /** @returns whether cumulative search is activated. */
   cumulativeSearch() {return util.getElementById('cumulativeSearchBox').checked;}
 
-  /** Hides elements using visibility: hidden.
+  /** Show (unhide) the given elements or hide them using visibility: hidden.
     Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
+    Does not unhide filtered elements on its own.
     @param {cytoscape.Collection} eles the elements to hide */
-  hide(eles)
+  setVisible(eles,visible)
   {
-    eles.addClass('hidden');
-    eles.removeClass('highlighted');
-    const edges = eles.connectedEdges();
-    edges.addClass('hidden');
-    edges.removeClass('highlighted');
-  }
-
-  /** Show (unhide) the given elements.
-    Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
-    @param {cytoscape.Collection} eles the elements to show  */
-  show(eles)
-  {
-    eles.removeClass('hidden');
+    if(visible)
+    {
+      eles.removeClass('hidden');
+    }
+    else
+    {
+      eles.addClass('hidden');
+      eles.removeClass('highlighted');
+      const edges = eles.connectedEdges();
+      edges.addClass('hidden');
+      edges.removeClass('highlighted');
+    }
   }
 
   /** Highlight the given elements using the 'highlighted' css class from the color scheme stylesheet and show them.
@@ -150,7 +150,7 @@ export class Graph
       if(!this.starMode)
       {
         this.starMode=true;
-        this.hide(elements.not(path));
+        this.setVisible(elements.not(path),false);
       }
       this.cy.endBatch();
     }
@@ -359,8 +359,8 @@ export class Graph
     });
     if(hideOthers)
     {
-      this.hide(this.cy.elements());
-      this.show(resultNodes.edgesWith(resultNodes));
+      this.setVisible(this.cy.elements(),false);
+      this.setVisible(resultNodes.edgesWith(resultNodes),true);
       this.starMode = true;
     }
     this.highlight(resultNodes);
@@ -462,8 +462,6 @@ export class Graph
       // Can be calculated only once per session but then it needs to be synchronized with in-visualization ontology edits.
       const matchEdges = this.cy.edges('[pl="closeMatch"]').filter('.unfiltered').not('.hidden');
       const matchGraph = this.cy.nodes('.unfiltered').not('.hidden').union(matchEdges);
-      //graph.hide(graph.cy.elements());
-      //graph.show(matchGraph);
 
       this.matchComponents.length=0;
       this.matchComponents.push(...matchGraph.components());
@@ -514,6 +512,6 @@ export class Graph
   {
     const edges = nodes.connectedEdges(".unfiltered").filter('[pl="closeMatch"]'); // ,[pl="narrowMatch"],[pl="narrowMatch"]
     const matches  = edges.connectedNodes(".unfiltered");
-    this.show(matches.union(edges));
+    this.setVisible(matches.union(edges),true);
   }
 }

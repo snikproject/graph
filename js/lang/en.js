@@ -26,6 +26,7 @@ export default
     "devMode": "developer mode",
     "extMode": "extended mode",
     "combineMatchMode": "Combine Matches",
+    "showInstances": "Show Instances",
     // layout*********************************************
     "layout": "Layout",
     "show-close-matches": "show close matches",

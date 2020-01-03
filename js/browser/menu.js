@@ -62,8 +62,8 @@ export default class Menu
     const visible = this.graph.cy.elements('.unfiltered').not('.hidden');
     //const closeMatchEdges = this.graph.cy.edges('[pl="closeMatch"]');
     const newEdges = visible.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
-    this.graph.show(newEdges);
-    this.graph.show(newEdges.connectedNodes(".unfiltered"));
+    this.graph.setVisible(newEdges,true);
+    this.graph.setVisible(newEdges.connectedNodes(".unfiltered"),true);
     log.debug("show close matches end");
     //closeMatchEdges.connectedNodes();
     //".unfiltered";
@@ -89,7 +89,7 @@ export default class Menu
         [
           [async ()=>
           {
-            await loadGraphFromSparql(this.graph.cy,[]);
+            await loadGraphFromSparql(this.graph,[]);
             progress(()=>layout.runCached(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs()));
           },
           "Load from SPARQL Endpoint","load-sparql"],
@@ -179,7 +179,7 @@ export default class Menu
   addOptions(as)
   {
     const optionsContent = util.getElementById("options-menu-content");
-    const names = ["separateSubs","cumulativeSearch","dayMode","devMode","extMode","combineMatchMode"];
+    const names = ["separateSubs","cumulativeSearch","dayMode","devMode","extMode","combineMatchMode","showInstances"];
     for(const name of names)
     {
       console.warn(name);
@@ -216,6 +216,31 @@ export default class Menu
     {
       this.graph.combineMatch(this.combineMatchModeBox.checked);
       log.debug("Set combine match mode to "+this.combineMatchModeBox.checked);
+    });
+
+    // Initial state based on URL parameter. This checkbox is the only place where it is stored to prevent different values in different places.
+    this.showInstancesBox.checked = this.graph.params.instances;
+    this.showInstancesBox.addEventListener("change",()=>
+    {
+      if(this.graph.instancesLoaded)
+      {
+        this.graph.setVisible(this.graph.instances,this.showInstancesBox.checked);
+        this.graph.setVisible(this.graph.instances.connectedEdges(),this.showInstancesBox.checked);
+      }
+      else
+      {
+        if(this.showInstancesBox.checked)
+        {
+          log.info("Show instances: Not in memory. Reloading.");
+
+          this.graph.setVisible(this.graph.instances,this.showInstancesBox.checked);
+          this.graph.setVisible(this.graph.instances.connectedEdges(),this.showInstancesBox.checked);
+        }
+        else
+        {
+          log.warn("Cannot hide instances as they are not loaded.");
+        }
+      }
     });
   }
 

@@ -26,6 +26,7 @@ export default
     "devMode": "Entwickler-Modus",
     "extMode": "Erweiterter Modus",
     "combineMatch": "Übereinstimmungen zusammenfassen",
+    "showInstances": "Instanzen zeigen",
     // layout*********************************************
     "layout": "Layout",
     "show-close-matches": "Zeige close matches",

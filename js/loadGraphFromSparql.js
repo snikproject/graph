@@ -6,7 +6,7 @@ import timer from "./timer.js";
 import config from "./config.js";
 
 /** Query for classes from the endpoint */
-async function selectClasses(from, instances)
+async function selectNodes(from, instances)
 {
   const sparqlClassesTimer = timer("sparql-classes");
   const classQuerySimple =
@@ -50,9 +50,9 @@ async function selectClasses(from, instances)
 }
 
 /**  Creates cytoscape nodes for the classes */
-async function classNodes(instances, from)
+async function createNodes(instances, from)
 {
-  const json = await selectClasses(instances, from);
+  const json = await selectNodes(instances, from);
 
   /** @type{cytoscape.ElementDefinition[]} */
   const nodes = [];
@@ -164,21 +164,23 @@ async function tripleEdges(from, fromNamed, instances, virtual)
   return edges;
 }
 
-/** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
-  @param{cytoscape.Core} cy the cytoscape graph to load the data into
+/** Clears the given graph and loads a set of subontologies. Data from RDF helper graphs is loaded as well, such as virtual triples.
+  @param{cytoscape.Core} cy the cytoscape graph to clear and to load the data into
   @param{string[]} graphs subontologies to load.
   @example
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
-export default async function loadGraphFromSparql(cy,graphs,instances, virtual)
+export default async function loadGraphFromSparql(graph,graphs,instances, virtual)
 {
   log.info(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
-  const from = graphs.map(graph=>`FROM <${graph}>`).reduce((a,b)=>a+"\n"+b,"");
+  const from = graphs.map(g=>`FROM <${g}>`).reduce((a,b)=>a+"\n"+b,"");
   const fromNamed = from.replace(/FROM/g,"FROM NAMED");
 
-  const [nodes,edges] = await Promise.all([classNodes(from, instances),tripleEdges(from, fromNamed, instances, virtual)]);
-  cy.elements().remove();
-  cy.add(nodes);
-  cy.add(edges);
-  cy.elements().addClass("unfiltered");
+  const [nodes,edges] = await Promise.all([createNodes(from, instances),tripleEdges(from, fromNamed, instances, virtual)]);
+  graph.cy.elements().remove();
+  graph.cy.add(nodes);
+  graph.cy.add(edges);
+  graph.cy.elements().addClass("unfiltered");
+  graph.instances = graph.cy.nodes().filter((ele,i,eles)=>ele.data().i);
+  console.log(graph.instances);
 }

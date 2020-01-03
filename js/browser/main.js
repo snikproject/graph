@@ -5,35 +5,46 @@ import loadGraphFromSparql from "../loadGraphFromSparql.js";
 import Menu from "./menu.js";
 import Search from "./search.js";
 import ButtonBar from "./button.js";
-import {loadGraph} from "./file.js";
+import {loadGraphFromJsonFile} from "./file.js";
 import {Graph} from "./graph.js";
 import * as layout from "../layout.js";
 import progress from "./progress.js";
 import config from "../config.js";
+import initLog from "./log.js";
 import * as util from "./util.js";
 import ContextMenu from "./contextmenu.js";
 import {addOverlay} from "./benchmark.js";
 import * as help from "./help.js";
 
 /** Parse browser URL POST parameters. */
-async function parseParams(graph)
+function parseParams()
+{
+  const url = new URL(window.location.href);
+  const defaults =
+  {
+    endpoint: config.sparql.endpoint,
+  };
+  return Object.assign(defaults,{
+    empty: (url.searchParams.get("empty")!==null),
+    clazz: url.searchParams.get("class"),
+    jsonUrl: url.searchParams.get("json"),
+    endpoint: url.searchParams.get("sparql"),
+    instances: (url.searchParams.get("instances")!==null), // load and show instances when loading from endpoint, not only class
+    virtual: (url.searchParams.get("virtual")!==null), // create "virtual triples" to visualize connections like domain-rang
+    rdfGraph: url.searchParams.get("graph"),
+    sub: url.searchParams.get("sub"),
+    benchmark: (url.searchParams.get("benchmark")!==null),
+  });
+}
+
+/** Apply parameters. */
+async function applyParams(graph,params)
 {
   try
   {
-    const url = new URL(window.location.href);
-    const empty = (url.searchParams.get("empty")!==null);
-    const clazz = url.searchParams.get("class");
-    const jsonUrl = url.searchParams.get("json");
-    const endpoint = url.searchParams.get("sparql");
-    const instances = (url.searchParams.get("instances")!==null); // load and show instances when loading from endpoint, not only classes
-    const virtual = (url.searchParams.get("virtual")!==null); // create "virtual triples" to visualize connections like domain-range
-    const rdfGraph = url.searchParams.get("graph");
-    const sub = url.searchParams.get("sub");
-    const benchmark = (url.searchParams.get("benchmark")!==null);
+    if(params.benchmark) {addOverlay(graph.cy);}
 
-    if(benchmark) {addOverlay(graph.cy);}
-
-    if(empty)
+    if(params.empty)
     {
       log.info(`Parameter "empty" detected. Skip loading and display file load prompt.`);
       const loadArea = document.getElementById("loadarea");
@@ -49,45 +60,47 @@ async function parseParams(graph)
       {
         loadArea.removeChild(center);
         graph.cy.resize(); // fix mouse cursor position, see https://stackoverflow.com/questions/23461322/cytoscape-js-wrong-mouse-pointer-position-after-container-change
-        loadGraph(graph,event);
+        loadGraphFromJsonFile(graph,event);
       });
       return;
     }
-    if(jsonUrl)
+    if(params.jsonUrl)
     {
-      const json = await (await fetch(jsonUrl)).json();
+      const json = await (await fetch(params.jsonUrl)).json();
       graph.cy.add(json);
       layout.run(graph.cy,layout.euler);
       return;
     }
-    if(endpoint)
+    if(params.endpoint)
     {
-      log.info("Loading from SPARQL Endpoint "+endpoint);
-      config.sparql.endpoint = endpoint;
+      log.info("Loading from SPARQL Endpoint "+params.endpoint);
+      config.sparql.endpoint = params.endpoint;
       const graphs = [];
-      if(rdfGraph)
+      if(params.rdfGraph)
       {
-        graphs.push(rdfGraph);
-        config.sparql.graph = rdfGraph;
+        graphs.push(params.rdfGraph);
+        config.sparql.graph = params.rdfGraph;
       }
-      {await loadGraphFromSparql(graph.cy,graphs,instances,virtual);}
+      {await loadGraphFromSparql(graph,graphs,params.instances,params.virtual);}
+      graph.instancesLoaded = params.instances;
       layout.run(graph.cy,layout.euler);
       return;
     }
     let subs = [];
-    if(sub)
+    if(params.sub)
     {
-      subs = sub.split(",");
+      subs = params.sub.split(",");
     }
     if(subs.length===0) {subs = [...config.helperGraphs,...config.defaultSubOntologies];}
     const graphs = subs.map(g=>"http://www.snik.eu/ontology/"+g);
-    await loadGraphFromSparql(graph.cy,graphs);
+    await loadGraphFromSparql(graph,graphs,params.instances);
+    graph.instancesLoaded = params.instances;
     layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,false);
 
-    if(clazz)
+    if(params.clazz)
     {
-      log.info(`Parameter "class" detected. Centering on URI ${clazz}.`);
-      graph.presentUri(clazz);
+      log.info(`Parameter "class" detected. Centering on URI ${params.clazz}.`);
+      graph.presentUri(params.clazz);
     }
   }
   catch(e)
@@ -101,49 +114,10 @@ async function parseParams(graph)
   }
 }
 
-/** Record log statements and show some to the user via overlays.*/
-function setupLogging()
-{
-  const notyf = new Notyf(
-    {
-      duration: 10000,
-      types: [
-        {
-          type: 'warn',
-          backgroundColor: 'orange',
-          icon: {
-            className: 'material-icons',
-            tagName: 'i',
-            text: 'warning',
-          },
-        },
-      ],
-    }
-  );
-
-  log.setLevel(config.logLevelConsole);
-  const funcs = ["error","warn","info"]; // keep trace and debug out of the persistant log as they are too verbose
-  for(const f of funcs)
-  {
-    const tmp = log[f];
-    log[f] = message  =>
-    {
-      if(!log.logs) {log.logs=[];}
-      log.logs.push(message);
-      tmp(message);
-      switch(f)
-      {
-        case "error": notyf.error(message);break;
-        case "warn": notyf.open({type: 'warn',message: message});
-      }
-    };
-  }
-}
-
 /** Entry point. Is run when DOM is loaded. **/
 function main()
 {
-  setupLogging();
+  initLog();
   MicroModal.init({openTrigger: 'data-custom-open'});
 
   progress(async ()=>
@@ -151,8 +125,9 @@ function main()
     console.groupCollapsed("Initializing");
 
     const graph = new Graph(document.getElementById("graph"));
+    graph.params = parseParams();
+    await applyParams(graph,graph.params);
     const menu = new Menu(graph);
-    await parseParams(graph);
     new ContextMenu(graph, menu);
     new Search(graph,util.getElementById("search"));
     util.getElementById("top").appendChild(new ButtonBar(graph, menu).container);
