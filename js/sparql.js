@@ -3,8 +3,9 @@ Functions for querying the SNIK SPARQL endpoint.
 @module */
 import config from "./config.js";
 
-export const SPARQL_GRAPH_BB = "http://www.snik.eu/ontology/bb";
-export const SPARQL_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies
+export const SNIK_GRAPH_BB = "http://www.snik.eu/ontology/bb";
+export const SNIK_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies
+export const SNIK_ENDPOINT = "https://www.snik.eu/sparql";
 export const SPARQL_LIMIT = 100;
 /** Query public SNIK SPARQL endpoint with a SELECT query.
 ASK queries should also work but better use {@link ask} instead as it is more convenient.

@@ -8,6 +8,7 @@ import ButtonBar from "./button.js";
 import {loadGraphFromJsonFile} from "./file.js";
 import {Graph} from "./graph.js";
 import * as layout from "../layout.js";
+import * as sparql from "../sparql.js";
 import progress from "./progress.js";
 import config from "../config.js";
 import initLog from "./log.js";
@@ -28,7 +29,7 @@ function parseParams()
     empty: (url.searchParams.get("empty")!==null),
     clazz: url.searchParams.get("class"),
     jsonUrl: url.searchParams.get("json"),
-    endpoint: url.searchParams.get("sparql"),
+    ...(url.searchParams.get("sparql") && {endpoint: url.searchParams.get("sparql")}), // don't overwrite default with null
     instances: (url.searchParams.get("instances")!==null), // load and show instances when loading from endpoint, not only class
     virtual: (url.searchParams.get("virtual")!==null), // create "virtual triples" to visualize connections like domain-rang
     rdfGraph: url.searchParams.get("graph"),
@@ -71,31 +72,34 @@ async function applyParams(graph,params)
       layout.run(graph.cy,layout.euler);
       return;
     }
-    if(params.endpoint)
+    log.info("Loading from SPARQL Endpoint "+params.endpoint);
+    config.sparql.endpoint = params.endpoint;
+    const graphs = [];
+    if(params.endpoint===sparql.SNIK_ENDPOINT)
     {
-      log.info("Loading from SPARQL Endpoint "+params.endpoint);
-      config.sparql.endpoint = params.endpoint;
-      const graphs = [];
-      if(params.rdfGraph)
+      let subs = [];
+      if(params.sub) {subs = params.sub.split(",");}
+      if(subs.length===0) // either not present or empty value
       {
-        graphs.push(params.rdfGraph);
-        config.sparql.graph = params.rdfGraph;
+        subs = [...config.helperGraphs,...config.defaultSubOntologies];
       }
-      {await loadGraphFromSparql(graph,graphs,params.instances,params.virtual);}
-      graph.instancesLoaded = params.instances;
-      layout.run(graph.cy,layout.euler);
-      return;
+      graphs.push(...(subs.map(g=>sparql.SNIK_PREFIX+g)));
     }
-    let subs = [];
-    if(params.sub)
+    else if(params.rdfGraph)
     {
-      subs = params.sub.split(",");
+      graphs.push(params.rdfGraph);
+      config.sparql.graph = params.rdfGraph;
     }
-    if(subs.length===0) {subs = [...config.helperGraphs,...config.defaultSubOntologies];}
-    const graphs = subs.map(g=>"http://www.snik.eu/ontology/"+g);
-    await loadGraphFromSparql(graph,graphs,params.instances);
+    {await loadGraphFromSparql(graph,graphs,params.instances,params.virtual);}
     graph.instancesLoaded = params.instances;
-    layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,false);
+    if(params.endpoint===sparql.SNIK_ENDPOINT)
+    {
+      layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,false); // todo: use the correct subs
+    }
+    else
+    {
+      layout.run(graph.cy,layout.euler);
+    }
 
     if(params.clazz)
     {
