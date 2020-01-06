@@ -42,7 +42,7 @@ export default class Menu
     // the nuclear option works
     const elements = this.graph.cy.elements();
     this.graph.cy.remove(elements);
-    elements.restore();    
+    elements.restore();
   }
 
   /** Notifies the user of the program version so that errors can be properly reported. */
@@ -231,10 +231,10 @@ export default class Menu
       {
         if(this.showInstancesBox.checked)
         {
-          log.info("Show instances: Not in memory. Reloading.");
-
-          this.graph.setVisible(this.graph.instances,this.showInstancesBox.checked);
-          this.graph.setVisible(this.graph.instances.connectedEdges(),this.showInstancesBox.checked);
+          alert("Instances are not loaded. Please reload with the 'instances' URL parameter.");
+          //log.info("Show instances: Not in memory. Reloading.");
+          //this.graph.setVisible(this.graph.instances,this.showInstancesBox.checked);
+          //this.graph.setVisible(this.graph.instances.connectedEdges(),this.showInstancesBox.checked);
         }
         else
         {

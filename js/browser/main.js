@@ -24,13 +24,16 @@ function parseParams()
   const defaults =
   {
     endpoint: config.sparql.endpoint,
+    instances: true,
   };
   return Object.assign(defaults,{
     empty: (url.searchParams.get("empty")!==null),
     clazz: url.searchParams.get("class"),
     jsonUrl: url.searchParams.get("json"),
     ...(url.searchParams.get("sparql") && {endpoint: url.searchParams.get("sparql")}), // don't overwrite default with null
-    instances: (url.searchParams.get("instances")!==null), // load and show instances when loading from endpoint, not only class
+    // load and show instances when loading from endpoint, not only class
+    // specify either without value ...&instances or as ...&instances=true
+    ...(url.searchParams.get("instances") && {instances: url.searchParams.get("instances")==="" || url.searchParams.get("instances")===true}),
     virtual: (url.searchParams.get("virtual")!==null), // create "virtual triples" to visualize connections like domain-rang
     rdfGraph: url.searchParams.get("graph"),
     sub: url.searchParams.get("sub"),
@@ -90,6 +93,7 @@ async function applyParams(graph,params)
       graphs.push(params.rdfGraph);
       config.sparql.graph = params.rdfGraph;
     }
+    console.debug(`Loading graph with${params.instances?"":"out"} instances.`);
     {await loadGraphFromSparql(graph,graphs,params.instances,params.virtual);}
     graph.instancesLoaded = params.instances;
     if(params.endpoint===sparql.SNIK_ENDPOINT)
@@ -121,7 +125,7 @@ async function applyParams(graph,params)
 /** Entry point. Is run when DOM is loaded. **/
 function main()
 {
-  //initLog();
+  initLog();
   MicroModal.init({openTrigger: 'data-custom-open'});
 
   progress(async ()=>

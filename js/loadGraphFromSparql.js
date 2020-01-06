@@ -32,12 +32,14 @@ async function selectNodes(from, instances)
   select ?c
   group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
   sample(?st) as ?st
+  ?instance
   ?src
-  sample(?inst) as ?inst
+  ?inst
   ${from}
   {
-    ?c a owl:Class.
-
+    ${instances?"{?c a [a owl:Class]} UNION":""}
+    {?c a owl:Class.}
+    OPTIONAL {?c a ?type. FILTER (?type!=owl:Class). bind(true as ?instance) }
     OPTIONAL {?src ov:defines ?c.}
     OPTIONAL {?c meta:subTopClass ?st.}
     OPTIONAL {?c rdfs:label ?l.}
@@ -50,9 +52,9 @@ async function selectNodes(from, instances)
 }
 
 /**  Creates cytoscape nodes for the classes */
-async function createNodes(instances, from)
+async function createNodes(from, instances)
 {
-  const json = await selectNodes(instances, from);
+  const json = await selectNodes(from, instances);
 
   /** @type{cytoscape.ElementDefinition[]} */
   const nodes = [];
@@ -115,6 +117,7 @@ async function selectTriples(from, fromNamed, instances, virtual)
       {?c a owl:Class.} ${instances?" UNION {?c a [a owl:Class]}":""}
       {?d a owl:Class.} ${instances?" UNION {?d a [a owl:Class]}":""}
     }`;
+    // the optional part should be a union
   const tripleQuerySnik =
     `select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
     ${from}
@@ -122,7 +125,8 @@ async function selectTriples(from, fromNamed, instances, virtual)
     {
       graph ?g {?c ?p ?d.}
       filter(?g!=sniko:)
-      owl:Class ^a ?c,?d.
+      {?c a owl:Class.} ${instances?" UNION {?c a [a owl:Class]}":""}
+      {?d a owl:Class.} ${instances?" UNION {?d a [a owl:Class]}":""}
       filter(?p!=meta:subTopClass)
       OPTIONAL
       {
@@ -182,5 +186,5 @@ export default async function loadGraphFromSparql(graph,graphs,instances, virtua
   graph.cy.add(edges);
   graph.cy.elements().addClass("unfiltered");
   graph.instances = graph.cy.nodes().filter((ele)=>ele.data().i);
-  console.log(graph.instances);
+  //console.log(graph.instances);
 }
