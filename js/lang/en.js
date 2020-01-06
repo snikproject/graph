@@ -61,6 +61,7 @@ export default
     "outgoing-star":"outgoing star",
     "combine-close-matches":"combine close matches",
     "class-use":"class use",
+    "show-instances":"show instances",
   },
   messageStrings:
   {

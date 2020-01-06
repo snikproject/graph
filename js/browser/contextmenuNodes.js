@@ -7,6 +7,9 @@ import * as NODE from "../node.js";
 import * as util from "./util.js";
 import {Graph,Direction} from "./graph.js";
 import {menuDefaults,ontoWikiUrl} from "./contextmenuUtil.js";
+import * as sparql from "../sparql.js";
+import * as language from "../lang/language.js";
+
 
 const menu = Object.assign(menuDefaults(),
   {
@@ -201,7 +204,21 @@ const extCommands = graph =>
       id: 'close-match',
       select: graph.multiplex(graph.showCloseMatch,null,true),
     },
-
+    {
+      content: 'show instances',
+      id: 'show-instances',
+      select: async node=>
+      {
+        const uri = node.data(NODE.ID);
+        const query = `SELECT ?i STR(SAMPLE(?label)) AS ?l {
+        ?i a <${uri}>
+        OPTIONAL {?i rdfs:label ?label. FILTER(LANGMATCHES(LANG(?label),"${language.getLanguage()}"))}
+        }`;
+        const bindings = await sparql.select(query);
+        const message = bindings.map(b=>b.i.value+" "+(b.l?b.l.value:"")).reduce((a,b)=>a+"\n"+b);
+        alert(message);
+      },
+    },
   ];
 
 /** Register modular node context menu. */

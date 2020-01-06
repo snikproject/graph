@@ -52,6 +52,14 @@ export default
     // don't translate the help options yet because they are -english anyways
     // other *********************************************
     "deselect-all": "alle abwählen",
+    "search-field": "Suchfeld",
+    "base-mode": "Basismodus",
+    "context-menu": "Kontextmenü",
+    "incoming-star":"eingehener Stern",
+    "outgoing-star":"ausgehender Stern",
+    "combine-close-matches":"kombiniere close matches",
+    "class-use":"Klassenbenutzung",
+    "show-instances":"zeige Instanzen",
   },
   messageStrings:
   {
