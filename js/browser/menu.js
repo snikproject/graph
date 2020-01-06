@@ -42,7 +42,7 @@ export default class Menu
     // the nuclear option works
     const elements = this.graph.cy.elements();
     this.graph.cy.remove(elements);
-    elements.restore();
+    elements.restore();    
   }
 
   /** Notifies the user of the program version so that errors can be properly reported. */
@@ -182,7 +182,7 @@ export default class Menu
     const names = ["separateSubs","cumulativeSearch","dayMode","devMode","extMode","combineMatchMode","showInstances"];
     for(const name of names)
     {
-      console.warn(name);
+      log.trace("Add option "+name);
       const a = document.createElement("a");
       as.push(a);
       optionsContent.appendChild(a);

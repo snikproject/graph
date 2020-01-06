@@ -121,7 +121,7 @@ async function applyParams(graph,params)
 /** Entry point. Is run when DOM is loaded. **/
 function main()
 {
-  initLog();
+  //initLog();
   MicroModal.init({openTrigger: 'data-custom-open'});
 
   progress(async ()=>

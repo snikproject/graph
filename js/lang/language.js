@@ -63,17 +63,19 @@ export const CONSTANTS =
 /** Update all HTML elements with data-i18n tags. */
 export function updateHtml()
 {
-  for(const key of Object.keys(strings[language]))
+  const idstrings = getIdStrings();
+  const unused = [];
+  for(const key of Object.keys(idstrings))
   {
     const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
     if(elements.length===0)
     {
-      log.warn(`i18n key ${key} not used`);
+      unused.push(key);
       continue;
     }
     for(const element of elements)
     {
-      const s = strings[language][key];
+      const s = idstrings[key];
       switch(element.tagName)
       {
         case "A":
@@ -83,4 +85,5 @@ export function updateHtml()
       }
     }
   }
+  if(unused.length>0) {log.warn(`UpdateHtml: i18n keys ${unused.toString()} not used`);}
 }
