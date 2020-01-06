@@ -131,11 +131,11 @@ function flatten(o)
   const flat = {};
   for(const key in o)
   {
+    if(key==="") {continue;}
     if(key==="img") {continue;}
     const value = o[key];
     if(typeof value ==="string") {flat[key] = value;continue;}
     if(value[""]) {flat[key]=value[""];}
-    if(key==="") {continue;}
     Object.assign(flat,flatten(value));
   }
   return flat;
@@ -146,6 +146,7 @@ export const flatHelp = flatten(help);
 /** Add event listenerers for popups.*/
 export function init()
 {
+  console.log(JSON.stringify(flatHelp));
   for(const key in flatHelp)
   {
     const value = flatHelp[key];
