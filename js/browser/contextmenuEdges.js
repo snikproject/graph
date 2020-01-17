@@ -5,6 +5,7 @@ import * as rdf from "../rdf.js";
 import * as util from "./util.js";
 import * as EDGE from "../edge.js";
 import * as language from "../lang/language.js";
+import {Graph} from "./graph.js";
 import {logWrap,menuDefaults,ontoWikiUrl} from "./contextmenuUtil.js";
 
 export default class ContextMenuEdges
@@ -90,7 +91,7 @@ export default class ContextMenuEdges
       {
         content: 'hide',
         id: "hide",
-        select: (edge)=>this.graph.setVisible(edge,false),
+        select: (edge)=>Graph.setVisible(edge,false),
       },
       {
         content: 'description (if it exists)',

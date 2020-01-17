@@ -2,7 +2,7 @@
 
 export default
 {
-  "defaultSubOntologies": ["meta","bb","ob","ciox","he","it4it"],
+  "defaultSubOntologies": ["bb","ob","ciox","he","it4it"],
   "allSubOntologies": ["meta","bb","ob","ciox","he","he-unconsolidated","it4it"],
   "color": new Map([
     ["ciox","rgb(80,255,250)"],
@@ -37,5 +37,6 @@ export default
   {
     "endpoint": "https://www.snik.eu/sparql",
     "graph" :"http://www.snik.eu/ontology",
+    "instances": false,
   },
 };

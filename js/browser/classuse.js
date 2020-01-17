@@ -3,6 +3,7 @@ Show the environment of a single node using a special layout.
 @module */
 import * as sparql from "../sparql.js";
 import * as NODE from "../node.js";
+import {Graph} from "./graph.js";
 
 /** Centers a class and shows directly and indirectly connected roles, functions and entity types in a concentric layout.
 Hides all other nodes. Resetting the view unhides the other nodes but keeps the layout of those shown before.
@@ -93,7 +94,7 @@ export default function classUse(graph,clazz,subTop)
     }
     // now we know we can display something
     graph.resetStyle();
-    graph.setVisible(graph.cy.elements(),false);
+    Graph.setVisible(graph.cy.elements(),false);
     graph.starMode = true;
 
     const classes = new Set([...inner, ...middle,...outer,...outerx]);
@@ -137,7 +138,7 @@ export default function classUse(graph,clazz,subTop)
       }
     ).run();
 
-    graph.setVisible(selectedElements,true);
+    Graph.setVisible(selectedElements,true);
 
     const centerNode = graph.cy.nodes(`node[id='${clazz}']`);
     graph.cy.center(centerNode);

@@ -12,6 +12,7 @@ import progress from "./progress.js";
 import {showChapterSearch} from "./chaptersearch.js";
 import addFilterEntries from "./filter.js";
 import * as file from "./file.js";
+import {Graph} from "./graph.js";
 
 /** main menu bar */
 export default class Menu
@@ -62,8 +63,8 @@ export default class Menu
     const visible = this.graph.cy.elements('.unfiltered').not('.hidden');
     //const closeMatchEdges = this.graph.cy.edges('[pl="closeMatch"]');
     const newEdges = visible.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
-    this.graph.setVisible(newEdges,true);
-    this.graph.setVisible(newEdges.connectedNodes(".unfiltered"),true);
+    Graph.setVisible(newEdges,true);
+    Graph.setVisible(newEdges.connectedNodes(".unfiltered"),true);
     log.debug("show close matches end");
     //closeMatchEdges.connectedNodes();
     //".unfiltered";
@@ -224,8 +225,8 @@ export default class Menu
     {
       if(this.graph.instancesLoaded)
       {
-        this.graph.setVisible(this.graph.instances,this.showInstancesBox.checked);
-        this.graph.setVisible(this.graph.instances.connectedEdges(),this.showInstancesBox.checked);
+        Graph.setVisible(this.graph.instances,this.showInstancesBox.checked);
+        Graph.setVisible(this.graph.instances.connectedEdges(),this.showInstancesBox.checked);
       }
       else
       {
@@ -233,8 +234,8 @@ export default class Menu
         {
           alert("Instances are not loaded. Please reload with the 'instances' URL parameter.");
           //log.info("Show instances: Not in memory. Reloading.");
-          //this.graph.setVisible(this.graph.instances,this.showInstancesBox.checked);
-          //this.graph.setVisible(this.graph.instances.connectedEdges(),this.showInstancesBox.checked);
+          //Graph.setVisible(this.graph.instances,this.showInstancesBox.checked);
+          //Graph.setVisible(this.graph.instances.connectedEdges(),this.showInstancesBox.checked);
         }
         else
         {

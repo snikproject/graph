@@ -6,22 +6,19 @@ import timer from "./timer.js";
 import config from "./config.js";
 
 /** Query for classes from the endpoint */
-async function selectNodes(from, instances)
+async function selectClasses(from)
 {
   const sparqlClassesTimer = timer("sparql-classes");
   const classQuerySimple =
   `
   PREFIX ov: <http://open.vocab.org/terms/>
-  select ?c
-  group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
-  ?instance
+  SELECT ?c
+  GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") as ?l
   ?src
   ${from}
   {
-    ${instances?"{?c a [a owl:Class]} UNION":""}
-    {?c a owl:Class.}
+    ?c a owl:Class.
     OPTIONAL {?c rdfs:label ?l.}
-    OPTIONAL {?c a ?type. FILTER (?type!=owl:Class). bind(true as ?instance) }
     OPTIONAL {?src ov:defines ?c.}
   }
   `;
@@ -29,32 +26,50 @@ async function selectNodes(from, instances)
   `
   PREFIX ov: <http://open.vocab.org/terms/>
   PREFIX meta: <http://www.snik.eu/ontology/meta/>
-  select ?c
-  group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
-  sample(?st) as ?st
-  ?instance
+  SELECT ?c
+  GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
+  SAMPLE(?st) AS ?st
   ?src
-  ?inst
+  SAMPLE(?inst) AS ?inst
   ${from}
   {
-    ${instances?"{?c a [a owl:Class]} UNION":""}
-    {?c a owl:Class.}
-    OPTIONAL {?c a ?type. FILTER (?type!=owl:Class). bind(true as ?instance) }
+    ?c a owl:Class.
     OPTIONAL {?src ov:defines ?c.}
     OPTIONAL {?c meta:subTopClass ?st.}
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?inst a ?c.}
   }`;
+
   const classQuery = (config.sparql.endpoint==="https://www.snik.eu/sparql")?classQuerySnik:classQuerySimple;
   const json = await sparql.select(classQuery);
   sparqlClassesTimer.stop(json.length+" classes");
   return json;
 }
 
-/**  Creates cytoscape nodes for the classes */
+/** Query for instances from the endpoint */
+async function selectInstances(from)
+{
+  const sparqlInstancesTimer = timer("sparql-classes");
+  const instanceQuery =
+  `SELECT
+  DISTINCT(?i)
+  GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
+  ${from}
+  {
+    ?i a ?type.
+    FILTER (?type!=owl:Class).
+  }
+  `;
+  const json = await sparql.select(instanceQuery);
+  sparqlInstancesTimer.stop(json.length+" instances");
+  return json;
+}
+
+/**  Creates cytoscape nodes for the classes
+@param{boolean} instances load instances as well */
 async function createNodes(from, instances)
 {
-  const json = await selectNodes(from, instances);
+  const json = await selectClasses(from);
 
   /** @type{cytoscape.ElementDefinition[]} */
   const nodes = [];
@@ -90,6 +105,7 @@ async function createNodes(from, instances)
         },
       });
   }
+
   const colors = ["rgb(30,152,255)","rgb(255,173,30)","rgb(80,255,250)","rgb(150,255,120)","rgb(204, 0, 204)","rgb(255, 255, 0)"];
   let count = 0;
   for(const source of sources)
@@ -184,7 +200,8 @@ export default async function loadGraphFromSparql(graph,graphs,instances, virtua
   graph.cy.elements().remove();
   graph.cy.add(nodes);
   graph.cy.add(edges);
+  //log.info(graph.cy.edges().size()+" Edges could be applied to the graph.");
   graph.cy.elements().addClass("unfiltered");
-  graph.instances = graph.cy.nodes().filter((ele)=>ele.data().i);
+  //graph.instances = graph.cy.nodes().filter((ele)=>ele.data().i);
   //console.log(graph.instances);
 }

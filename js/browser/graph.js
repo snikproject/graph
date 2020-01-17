@@ -65,7 +65,7 @@ export class Graph
     Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
     Does not unhide filtered elements on its own.
     @param {cytoscape.Collection} eles the elements to hide */
-  setVisible(eles,visible)
+  static setVisible(eles,visible)
   {
     if(visible)
     {
@@ -150,7 +150,7 @@ export class Graph
       if(!this.starMode)
       {
         this.starMode=true;
-        this.setVisible(elements.not(path),false);
+        Graph.setVisible(elements.not(path),false);
       }
       this.cy.endBatch();
     }
@@ -208,7 +208,7 @@ export class Graph
     if(changeLayout||(!this.starMode))
     {
       this.starMode=true;
-      this.hide(this.cy.elements().not(star));
+      Graph.setVisible(this.cy.elements().not(star),false);
     }
 
     this.starStyle(star);
@@ -359,8 +359,8 @@ export class Graph
     });
     if(hideOthers)
     {
-      this.setVisible(this.cy.elements(),false);
-      this.setVisible(resultNodes.edgesWith(resultNodes),true);
+      Graph.setVisible(this.cy.elements(),false);
+      Graph.setVisible(resultNodes.edgesWith(resultNodes),true);
       this.starMode = true;
     }
     this.highlight(resultNodes);
@@ -512,6 +512,6 @@ export class Graph
   {
     const edges = nodes.connectedEdges(".unfiltered").filter('[pl="closeMatch"]'); // ,[pl="narrowMatch"],[pl="narrowMatch"]
     const matches  = edges.connectedNodes(".unfiltered");
-    this.setVisible(matches.union(edges),true);
+    Graph.setVisible(matches.union(edges),true);
   }
 }

@@ -87,7 +87,7 @@ const baseCommands = graph =>
     {
       content: 'hide',
       id: 'hide',
-      select: graph.multiplex(Graph.hide),
+      select: graph.multiplex((node)=>Graph.setVisible(node,false)),
     },
     {
       content: 'set as path source',

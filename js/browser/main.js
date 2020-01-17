@@ -24,7 +24,7 @@ function parseParams()
   const defaults =
   {
     endpoint: config.sparql.endpoint,
-    instances: true,
+    instances: config.sparql.instances,
   };
   return Object.assign(defaults,{
     empty: (url.searchParams.get("empty")!==null),
