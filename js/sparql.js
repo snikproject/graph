@@ -11,10 +11,10 @@ export const SPARQL_LIMIT = 100;
 ASK queries should also work but better use {@link ask} instead as it is more convenient.
 {@param query} A valid SPARQL query.
 {@param graph} An optional SPARQL graph.
-{@param endpoint} An optional SPARQL endpoint. By default, SNIK is used.
+{@param endpoint} An optional SPARQL endpoint. May override FROM statements.
 @return {Promise<object[]>} A promise of a set of SPARQL select result bindings.
 */
-export async function select(query,graph=config.sparql.graph, endpoint=config.sparql.endpoint)
+export async function select(query,graph, endpoint=config.sparql.endpoint)
 {
   let url = endpoint + '?query=' + encodeURIComponent(query) + '&format=json';
   if(graph) {url+= '&default-graph-uri=' + encodeURIComponent(graph);}
