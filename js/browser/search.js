@@ -94,7 +94,7 @@ export default class Search
       // @ts-ignore
       window.presentUri=this.graph.presentUri;
       locateCell.innerHTML = `<a class="search-class${uriType[uri]}" href="javascript:MicroModal.close('search-results');window.presentUri('${uri}');void(0)">
-          ${uri.replace(sparql.SPARQL_PREFIX,"")}</a>`;
+          ${uri.replace(sparql.SNIK_PREFIX,"")}</a>`;
       const html = `<a class="search-class0"" href="${uri}" target="_blank">Description</a>`;
       lodLiveCell.innerHTML = html;
     });
