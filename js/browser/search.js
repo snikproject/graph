@@ -4,6 +4,7 @@ Textual node search.
 import * as sparql from "../sparql.js";
 import * as util from "./util.js";
 import * as fuse from "../fuse.js";
+import progress from "./progress.js";
 
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
@@ -20,7 +21,7 @@ export default class Search
     {
       event.preventDefault();
       // @ts-ignore
-      this.showSearch(event.target.children.query.value);
+      progress(()=>this.showSearch(event.target.children.query.value));
     });
     log.debug('search initialized');
   }
@@ -110,6 +111,7 @@ export default class Search
 
   /** Searches the SPARQL endpoint for classes with the given label.
       Case and space insensitive when not using bif:contains. Can be used by node.js.
+      @deprecated Old search without fuse index. Not used anymore.
       @return {Promise<Array<String>>} A promise with an array of class URIs.
       */
   async search(userQuery)
