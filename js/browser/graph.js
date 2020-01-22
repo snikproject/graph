@@ -33,7 +33,7 @@ export class Graph
     parent.append(container);
     this.matchComponents = [];
     // remove nodes or edges from the graph (not the SPARQL endpoint) with the delete key
-    container.addEventListener('keydown',function(e)
+    document.documentElement.addEventListener('keydown',e =>
     {
       if(e.keyCode === 8 || e.keyCode === 46) // backspace (for mac) or delete key
       {
