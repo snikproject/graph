@@ -1,7 +1,9 @@
 import * as layout from "../js/layout.js";
 import loadGraphFromSparql from "../js/loadGraphFromSparql.js";
+import {SNIK_PREFIX} from "../js/sparql.js";
 import cytoscape from 'cytoscape';
 import euler from 'cytoscape-euler';
+import 'isomorphic-fetch';
 cytoscape.use(euler);
 //import {LocalStorage} from 'node-localstorage';
 //global.localStorage = new LocalStorage('./scratch');
@@ -13,7 +15,8 @@ const assert = chai.assert;
 describe('cytoscape', function()
 {
   let cy;
-  const subs = new Set(["meta","bb"]);
+  const subs = ["meta","bb"];
+  const graphs = subs.map(s=>SNIK_PREFIX+s);
   it('create empty graph', function()
   {
     cy = cytoscape({});
@@ -22,7 +25,7 @@ describe('cytoscape', function()
   });
   it('load graph from sparql', function()
   {
-    return loadGraphFromSparql(cy, subs).then(()=>
+    return loadGraphFromSparql(cy, graphs).then(()=>
       assert.closeTo(cy.nodes().size(),1134,100)
     );
   });
@@ -52,4 +55,3 @@ describe('cytoscape', function()
   {
   });
 });
-

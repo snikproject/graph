@@ -1,12 +1,12 @@
 //import * as search from '../js/search.js';
 import * as fuse from '../js/fuse.js';
-
 import chai from 'chai';
 const assert = chai.assert;
+import 'isomorphic-fetch';
 // the global "log" is normally registered in the index file, so we have to do that here
-import * as log from 'loglevel';
-import * as rdf from '../js/rdf.js';
+import log from 'loglevel';
 global.log = log;
+import * as rdf from '../js/rdf.js';
 // the global "Fuse" is normally registered in the index file, so we have to do that here
 import Fuse from 'fuse.js';
 global.Fuse = Fuse;
