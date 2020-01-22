@@ -94,7 +94,7 @@ async function applyParams(graph,params)
       config.sparql.graph = params.rdfGraph;
     }
     console.debug(`Loading graph with${params.instances?"":"out"} instances.`);
-    {await loadGraphFromSparql(graph,graphs,params.instances,params.virtual);}
+    {await loadGraphFromSparql(graph.cy,graphs,params.instances,params.virtual);}
     graph.instancesLoaded = params.instances;
     if(params.endpoint===sparql.SNIK_ENDPOINT)
     {

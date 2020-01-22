@@ -211,15 +211,15 @@ async function createNodes(from, instances)
   @example
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
-export default async function loadGraphFromSparql(graph,graphs,instances, virtual)
+export default async function loadGraphFromSparql(cy,graphs,instances, virtual)
 {
   log.info(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
   const from = graphs.map(g=>`FROM <${g}>`).reduce((a,b)=>a+"\n"+b,"");
   const fromNamed = from.replace(/FROM/g,"FROM NAMED");
 
   const [nodes,edges] = await Promise.all([createNodes(from,instances),createEdges(from, fromNamed, instances, virtual)]);
-  graph.cy.elements().remove();
-  graph.cy.add(nodes);
-  graph.cy.add(edges); // will throw an error if any edge refers to a node not contained in the nodes loaded before
-  graph.cy.elements().addClass("unfiltered");
+  cy.elements().remove();
+  cy.add(nodes);
+  cy.add(edges); // will throw an error if any edge refers to a node not contained in the nodes loaded before
+  cy.elements().addClass("unfiltered");
 }

@@ -90,7 +90,7 @@ export default class Menu
         [
           [async ()=>
           {
-            await loadGraphFromSparql(this.graph,[]);
+            await loadGraphFromSparql(this.graph.cy,[]);
             progress(()=>layout.runCached(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs()));
           },
           "Load from SPARQL Endpoint","load-sparql"],
