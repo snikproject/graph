@@ -3,17 +3,17 @@ import loadGraphFromSparql from "../js/loadGraphFromSparql.js";
 import cytoscape from 'cytoscape';
 import euler from 'cytoscape-euler';
 cytoscape.use(euler);
-const LocalStorage = require('node-localstorage').LocalStorage;
-global.localStorage = new LocalStorage('./scratch');
-const assert = require('chai').assert;
-import * as log from 'loglevel';
+//import {LocalStorage} from 'node-localstorage';
+//global.localStorage = new LocalStorage('./scratch');
+import chai from 'chai';
+import log from 'loglevel';
 global.log = log;
+const assert = chai.assert;
 
 describe('cytoscape', function()
 {
   let cy;
   const subs = new Set(["meta","bb"]);
-
   it('create empty graph', function()
   {
     cy = cytoscape({});
@@ -52,3 +52,4 @@ describe('cytoscape', function()
   {
   });
 });
+
