@@ -9,24 +9,11 @@ import config from "./config.js";
 async function selectClasses(from)
 {
   const sparqlClassesTimer = timer("sparql-classes");
-  const classQuerySimple =
-  `
-  PREFIX ov: <http://open.vocab.org/terms/>
-  SELECT ?c
-  GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") as ?l
-  ?src
-  ${from}
-  {
-    ?c a owl:Class.
-    OPTIONAL {?c rdfs:label ?l.}
-    OPTIONAL {?src ov:defines ?c.}
-  }
-  `;
-  const classQuerySnik =
+  const classQuery =
   `
   PREFIX ov: <http://open.vocab.org/terms/>
   PREFIX meta: <http://www.snik.eu/ontology/meta/>
-  SELECT ?c
+  SELECT DISTINCT(?c)
   GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
   SAMPLE(?st) AS ?st
   ?src
@@ -40,34 +27,28 @@ async function selectClasses(from)
     OPTIONAL {?inst a ?c.}
   }`;
 
-  const classQuery = (config.sparql.endpoint==="https://www.snik.eu/sparql")?classQuerySnik:classQuerySimple;
   const json = await sparql.select(classQuery);
   sparqlClassesTimer.stop(json.length+" classes");
   return json;
 }
 
-/** Query for instances from the endpoint */
-async function selectInstances(from)
+/** Parse "|"-separated labels with language tag into the SNIK graph label structure. */
+function parseLabels(s)
 {
-  const sparqlInstancesTimer = timer("sparql-classes");
-  const instanceQuery =
-  `SELECT
-  DISTINCT(?i)
-  GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
-  ${from}
+  const labels = s.split("|");
+  const l = {};
+  for(const label of labels)
   {
-    ?i a ?type.
-    FILTER (?type!=owl:Class).
+    const [lex,tag] = label.split("@");
+    if(!lex.trim()) {continue;}
+    {if(!l[tag]) {l[tag]=[];}}
+    l[tag].push(lex);
   }
-  `;
-  const json = await sparql.select(instanceQuery);
-  sparqlInstancesTimer.stop(json.length+" instances");
-  return json;
+  return l;
 }
 
-/**  Creates cytoscape nodes for the classes
-@param{boolean} instances load instances as well */
-async function createNodes(from, instances)
+/**  Creates cytoscape nodes for the classes */
+async function createClassNodes(from)
 {
   const json = await selectClasses(from);
 
@@ -76,15 +57,6 @@ async function createNodes(from, instances)
   const sources = new Set();
   for(let i=0;i<json.length;i++)
   {
-    const labels = json[i].l.value.split("|");
-    const l = {};
-    for(const label of labels)
-    {
-      const stringAndTag = label.split("@");
-      const tag = stringAndTag[1];
-      if(!l[tag]) {l[tag]=[];}
-      l[tag].push(stringAndTag[0]);
-    }
     let source;
     if (json[i].src)
     {
@@ -97,11 +69,10 @@ async function createNodes(from, instances)
         group: "nodes",
         data: {
           id: json[i].c.value,
-          l: l,
+          l: parseLabels(json[i].l.value),
           ...(json[i].st && {st: json[i].st.value.replace("http://www.snik.eu/ontology/meta/","").substring(0,1)}),
           ...(source && {source: source}),
-          inst: json[i].inst!==undefined, // has at least one instance
-          ...(json[i].instance && {i: true}), // is an instance
+          ...(json[i].inst && {inst: true}), // has at least one instance
         },
       });
   }
@@ -116,7 +87,49 @@ async function createNodes(from, instances)
       count = (count+1) % colors.length;
     }
   }
+
   log.info(json.length+" Nodes loaded from SPARQL");
+  return nodes;
+}
+
+/** Query for instances from the endpoint */
+async function selectInstances(from)
+{
+  const sparqlInstancesTimer = timer("sparql-classes");
+  const instanceQuery =
+  `SELECT
+  DISTINCT(?i)
+  GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
+  ${from}
+  {
+    ?i a [a owl:Class].
+    OPTIONAL {?i rdfs:label ?l.}
+  }
+  `;
+  const json = await sparql.select(instanceQuery);
+  sparqlInstancesTimer.stop(json.length+" instances");
+  return json;
+}
+
+/** Create cytoscape nodes for the instances. */
+async function createInstanceNodes(from)
+{
+  const json = await selectInstances(from);
+  /** @type{cytoscape.ElementDefinition[]} */
+  const nodes = [];
+  for(let i=0;i<json.length;i++)
+  {
+    nodes.push(
+      {
+        group: "nodes",
+        data:
+        {
+          id: json[i].i.value,
+          l: parseLabels(json[i].l.value),
+          instance: true,
+        },
+      });
+  }
   return nodes;
 }
 
@@ -159,7 +172,7 @@ async function selectTriples(from, fromNamed, instances, virtual)
 }
 
 /**  Creates cytoscape nodes for the classes */
-async function tripleEdges(from, fromNamed, instances, virtual)
+async function createEdges(from, fromNamed, instances, virtual)
 {
   const json = await selectTriples(from, fromNamed, instances, virtual);
   const edges = [];
@@ -184,6 +197,14 @@ async function tripleEdges(from, fromNamed, instances, virtual)
   return edges;
 }
 
+/** Create cytoscape nodes for classes and optionally also instances. */
+async function createNodes(from, instances)
+{
+  if(!instances) {return createClassNodes(from);}
+  const [classNodes,instanceNodes] = await Promise.all([createClassNodes(from),createInstanceNodes(from)]);
+  return classNodes.concat(instanceNodes);
+}
+
 /** Clears the given graph and loads a set of subontologies. Data from RDF helper graphs is loaded as well, such as virtual triples.
   @param{cytoscape.Core} cy the cytoscape graph to clear and to load the data into
   @param{string[]} graphs subontologies to load.
@@ -196,12 +217,9 @@ export default async function loadGraphFromSparql(graph,graphs,instances, virtua
   const from = graphs.map(g=>`FROM <${g}>`).reduce((a,b)=>a+"\n"+b,"");
   const fromNamed = from.replace(/FROM/g,"FROM NAMED");
 
-  const [nodes,edges] = await Promise.all([createNodes(from, instances),tripleEdges(from, fromNamed, instances, virtual)]);
+  const [nodes,edges] = await Promise.all([createNodes(from,instances),createEdges(from, fromNamed, instances, virtual)]);
   graph.cy.elements().remove();
   graph.cy.add(nodes);
-  graph.cy.add(edges);
-  //log.info(graph.cy.edges().size()+" Edges could be applied to the graph.");
+  graph.cy.add(edges); // will throw an error if any edge refers to a node not contained in the nodes loaded before
   graph.cy.elements().addClass("unfiltered");
-  //graph.instances = graph.cy.nodes().filter((ele)=>ele.data().i);
-  //console.log(graph.instances);
 }
