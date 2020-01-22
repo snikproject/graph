@@ -237,7 +237,7 @@ export class Graph
             if(outerNodes.contains(layoutNode)) {return 1;}
             throw new Error("unexpected node in star");
           },
-        }
+        },
       ).run();
     }
 
@@ -421,7 +421,7 @@ export class Graph
           'https://github.com/IMISE/snik-ontology/issues/new?title='+
               encodeURIComponent('Remove class '+clazzShort)+
               '&body='+
-              encodeURIComponent(body)
+              encodeURIComponent(body),
         );
       });
   }

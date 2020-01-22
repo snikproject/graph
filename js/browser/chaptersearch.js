@@ -163,7 +163,7 @@ export async function showChapterSearch(graph, sub)
       // union of all classes in selected chapters
       // JavaScript doesn't have a set union operator yet and the spreadi
       showClasses(graph, new Set(
-        [...selectedChapters].map(ch=>chapters.get(ch)).flat().sort()
+        [...selectedChapters].map(ch=>chapters.get(ch)).flat().sort(),
       ));
     });
   }

@@ -135,7 +135,7 @@ export default function classUse(graph,clazz,subTop)
           }
           */
         },
-      }
+      },
     ).run();
 
     Graph.setVisible(selectedElements,true);
@@ -143,7 +143,7 @@ export default function classUse(graph,clazz,subTop)
     const centerNode = graph.cy.nodes(`node[id='${clazz}']`);
     graph.cy.center(centerNode);
     graph.cy.fit(selectedNodes);
-  }
+  },
   );
   graph.cy.endBatch();
 }
