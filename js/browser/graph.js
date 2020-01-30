@@ -59,7 +59,10 @@ export class Graph
   }
 
   /** @returns whether cumulative search is activated. */
-  cumulativeSearch() {return util.getElementById('cumulativeSearchBox').checked;}
+  cumulativeSearch()
+  {
+    return (document.getElementById('cumulativeSearchBox') || {}).checked; // menu may not be initialized yet
+  }
 
   /** Show (unhide) the given elements or hide them using visibility: hidden.
     Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
