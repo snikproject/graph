@@ -1,6 +1,6 @@
 {
   "name": "snikgraph",
-  "version": "1.1.1",
+  "version": "1.6.0",
   "description": "SNIK Graph",
   "main": "js/main.js",
   "homepage": "https://github.com/IMISE/snik-cytoscape.js#readme",

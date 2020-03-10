@@ -7,6 +7,7 @@ besides the unit tests (mocha, chai) we need to test a few things before releasi
 * evtl 'npm install'
 * `npm update` bzw upgrade
 * `npm run build`
+* `npm run test`
 * make sure that both index-dev.html and index-prod.html work
 * match the version number in package.json to the new release
 * load the graph (maybe in different browsers)
