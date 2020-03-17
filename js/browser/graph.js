@@ -8,7 +8,6 @@ import {colorschemenight} from "./colorschemenight.js";
 import {colorschemeday} from "./colorschemeday.js";
 import timer from "../timer.js";
 import * as NODE from "../node.js";
-import * as util from "./util.js";
 import * as sparql from "../sparql.js";
 import * as rdf from "../rdf.js";
 import * as language from "../lang/language.js";
