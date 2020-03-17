@@ -3,6 +3,7 @@
   "version": "1.6.0",
   "description": "SNIK Graph",
   "main": "js/main.js",
+  "type": "module",
   "homepage": "https://github.com/IMISE/snik-cytoscape.js#readme",
   "dependencies": {
     "core-js-bundle": "^3.6.1",
