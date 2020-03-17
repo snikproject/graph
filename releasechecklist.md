@@ -1,16 +1,38 @@
 # Checklist before releasing a new version of SNIK Graph
+Our releases have a major and minor version x.y with a corresponding milestone and git tag.
 
-## ToDos before a new release on GitHub to test the functionality of the SNIK Graph
+## Preparations 
 
-besides the unit tests (mocha, chai) we need to test a few things before releasing:
+### Code
+* switch to master branch
+* git pull
+* `npm install && npm update`
+* `cp js/config.dist.js js/config.js`
+* change the version number in package.json to the new release
 
-* evtl 'npm install'
-* `npm update` bzw upgrade
-* `npm run build`
+### GitHub 
+* close all open issues in the milestone or move them to another one
+* close the milestone
+
+## Automated tests
+
+### Unit Tests
+There must be no errors.
+
 * `npm run test`
-* make sure that both index-dev.html and index-prod.html work
-* match the version number in package.json to the new release
-* load the graph (maybe in different browsers)
+
+### Linting
+There should be no errors and as few warnings as possible.
+Configured in `.eslintrc.json`.
+Can be integrated into IDEs and editors like Atom.
+
+* `npx eslint js`
+* Some errors can be fixed automatically via `npx eslint js --fix`.
+
+## Manual tests 
+All manual tests need to be successfull.
+
+* run index-dev.html in different browsers
 * clear the cache and try to load again (press F5)
 * test all the filters (by turning them on and off)
 * press reset view
@@ -33,16 +55,41 @@ besides the unit tests (mocha, chai) we need to test a few things before releasi
 * remove at least one node and one edge using the contextmenu and del-button
 * check if the description, LodLive and the other entries in the contextmenu are working
 
-## How publish a new GitHub release on the bruchtal server
+## Publish the release
+* add, commit and push the release commit  
+* create the release on GitHub, attach package-lock.json to the assets
+* ssh bruchtal
+* `cd /var/www/html/snik_prod/graph`
+* pgraph analogously with `/var/www/html/snik_prod/pgraph`
+* fulfill the code preparations 
+* perform the unit
 
-* first do the GitHub release (close milestones and do the release procedure) and make sure that it runs locally
-* attach package-lock.json to the Assets
-* ssh bruchtal -A (snik@bruchtal.imise.uni-leipzig.de)
-* STRG + R (reverse search) graph (Pfad: /var/www/html/snik_prod/graph)
-* git pull
-* cp js/config.dist.js js/config.js
-* npm update
-* npm run build
-* (first time) ln -s index-prod.html index.html
-* do the above mentioned tests in the browser
-* exit
+## Bruchtal configuration
+The server belongs to Sebastian Stäubert.
+If you are cleared for access, give him your public SSH key.
+Due to firewall changes, you can only access bruchtal through a proxy jump over star.
+To pull from GitHub over SSH, you need agent forwarding.
+All in all, you need the following .ssh/config entries:
+
+    Host bruchtal
+    Hostname bruchtal.imise.uni-leipzig.de
+    ProxyJump star
+    ForwardAgent yes
+    User snik
+
+    Host star
+    Hostname star.imise.uni-leipzig.de
+    User insertusernamehere
+
+Then you can simply connect via `ssh bruchtal`.
+Be careful and don't mess with the other services running on the server.
+
+## Babel procedure (not used anymore)
+
+* supports outdated browsers
+* should not be necessary anymore because since its inception in 2016, ES6 modules have become supported by all major browsers
+* if supporting 2016 browsers becomes necessary again or new bleeding edge features are used that are not yet widely supported, discuss using Babel again
+* state of early 2020: there is a conflict regarding `"type" : "module"` in `package.json`, which Mocha needs but Babel does not accept
+* `npm run build` (runs Webpack and Babel)
+* instead of index-dev.html, use index-prod.html
+
