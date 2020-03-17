@@ -31,8 +31,13 @@ There should be no errors and as few warnings as possible.
 Configured in `.eslintrc.json`.
 Can be integrated into IDEs and editors like Atom.
 
-* `npx eslint js`
+* `npm run eslint`
 * Some errors can be fixed automatically via `npx eslint js --fix`.
+
+### Typechecking
+Run `npm run typecheck`.
+Due to developer time constrains, we did not fully convert SNIK Graph to Typescript, but we provide some JSDoc type hints.
+Static code analysis can help uncover some otherwise hard to find bugs but may report a large amount of errors as we do not have the time nor the desire to put typescript ignore statements all over the code.
 
 ## Manual tests
 All manual tests need to be successfull.
