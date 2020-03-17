@@ -1,7 +1,7 @@
 # Checklist before releasing a new version of SNIK Graph
 Our releases have a major and minor version x.y with a corresponding milestone and git tag.
 
-## Preparations 
+## Preparations
 
 ### Code
 * switch to master branch
@@ -10,7 +10,12 @@ Our releases have a major and minor version x.y with a corresponding milestone a
 * `cp js/config.dist.js js/config.js`
 * change the version number in package.json to the new release
 
-### GitHub 
+### Upgrade major dependency versions
+Run `npx npm-upgrade` and upgrade all packages that don't break anything.
+If something breaks, try to fix it with reasonable effort.
+If that doesn't help, keep the old version
+
+### GitHub
 * close all open issues in the milestone or move them to another one
 * close the milestone
 
@@ -29,11 +34,15 @@ Can be integrated into IDEs and editors like Atom.
 * `npx eslint js`
 * Some errors can be fixed automatically via `npx eslint js --fix`.
 
-## Manual tests 
+## Manual tests
 All manual tests need to be successfull.
+Some browsers don't allow ES6 modules and throw a CORS error when run from the file system, for example Chromium.
+In this case, create a local web server and test it on localhost.
+For example, run `python -m http.server` and open it at `http://0.0.0.0:8000/index-dev.html`.
 
 * run index-dev.html in different browsers
-* clear the cache and try to load again (press F5)
+* the most important test: it needs to load without errors. Make sure to open the console groups.
+* clear the cache and local storage and try to load again (press F5)
 * test all the filters (by turning them on and off)
 * press reset view
 * hide inter-ontology relations
@@ -61,7 +70,7 @@ All manual tests need to be successfull.
 * ssh bruchtal
 * `cd /var/www/html/snik_prod/graph`
 * pgraph analogously with `/var/www/html/snik_prod/pgraph`
-* fulfill the code preparations 
+* fulfill the code preparations
 * perform the unit
 
 ## Bruchtal configuration
@@ -92,4 +101,3 @@ Be careful and don't mess with the other services running on the server.
 * state of early 2020: there is a conflict regarding `"type" : "module"` in `package.json`, which Mocha needs but Babel does not accept
 * `npm run build` (runs Webpack and Babel)
 * instead of index-dev.html, use index-prod.html
-
