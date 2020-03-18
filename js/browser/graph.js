@@ -345,7 +345,7 @@ export class Graph
     this.cy.center(node);
   }
 
-  /** @return {Set<string>} Classes to show. */
+  /** @return {Array<string>} Classes to show. */
   presentUris(classes, hideOthers)
   {
     if(classes.length<1)
@@ -357,7 +357,7 @@ export class Graph
 
     const resultNodes = this.cy.elements().nodes().filter((node)=>
     {
-      return classes.has(node.data(NODE.ID));
+      return classes.includes(node.data(NODE.ID));
     });
     if(hideOthers)
     {
