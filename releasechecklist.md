@@ -57,17 +57,20 @@ For example, run `python -m http.server` and open it at `http://0.0.0.0:8000/ind
 * test all links (under Services and Help)
 * test the zoom element (panzoom)
 * try if the language switches from english to german to farsi and back to english
-* search for something
-* highlight all entries
-* mark one of the entries (in the inner circle) and choose path
-* check if the path is displayed and the labels (on nodes and edges) are existing (scroll in)
+* search for "3lgm2 mentity type" 
+* click on "Highlight All"
+* there should now be several classes with thick white borders
+* select 3LGM² Entity Type from the blue book with the main mouse button. it should be highlighted with a yellow color now.
+* click and hold the secondary mouse button on "Logical Tool Layer" and choose path, release the mouse button
+* check if the path is displayed and the labels (on nodes and edges) are existing (scroll to zoom in)
 * reset view
-* mark one entry, display starpath, doublestar, circlestar, star in the same way
+* go to the options menu and enable "extended mode"
+* choose any two not directly connected classes and test spiderworm, doublestar and starpath in that order (see the manual for what they should do)
 * reset view
-* mark one entry, mark another, display the spiderworm and check for labels and agility
+* select any class and test star and circlestar
 * reset view
-* remove at least one node and one edge using the contextmenu and del-button
-* check if the description, LodLive and the other entries in the contextmenu are working
+* hide at least one node and one edge using the contextmenu and del-button
+* check if the description and the other entries in the contextmenu are working
 
 ## Publish the release
 * add, commit and push the release commit  
