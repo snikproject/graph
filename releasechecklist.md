@@ -13,7 +13,7 @@ Our releases have a major and minor version x.y with a corresponding milestone a
 ### Upgrade major dependency versions
 Run `npx npm-upgrade` and upgrade all packages that don't break anything.
 If something breaks, try to fix it with reasonable effort.
-If that doesn't help, keep the old version
+If that doesn't help, keep the old version.
 
 ### GitHub
 * close all open issues in the milestone or move them to another one
@@ -57,7 +57,7 @@ For example, run `python -m http.server` and open it at `http://0.0.0.0:8000/ind
 * test all links (under Services and Help)
 * test the zoom element (panzoom)
 * try if the language switches from english to german to farsi and back to english
-* search for "3lgm2 mentity type" 
+* search for "3lgm2 mentity type"
 * click on "Highlight All"
 * there should now be several classes with thick white borders
 * select 3LGM² Entity Type from the blue book with the main mouse button. it should be highlighted with a yellow color now.
@@ -79,7 +79,7 @@ For example, run `python -m http.server` and open it at `http://0.0.0.0:8000/ind
 * `cd /var/www/html/snik_prod/graph`
 * pgraph analogously with `/var/www/html/snik_prod/pgraph`
 * fulfill the code preparations
-* perform the unit
+* perform the unit tests
 
 ## Bruchtal configuration
 The server belongs to Sebastian Stäubert.

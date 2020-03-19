@@ -44,7 +44,7 @@
     "jsdoc": "^3.6.3",
     "jsdom": "^16.2.1",
     "jsdom-global": "^3.0.2",
-    "mocha": "7.1.1",
+    "mocha": "^7.1.1",
     "node-localstorage": "^2.1.5",
     "typescript": "^3.8.3",
     "webpack": "^4.42.0",
