@@ -7,7 +7,7 @@
   "homepage": "https://github.com/IMISE/snik-cytoscape.js#readme",
   "dependencies": {
     "core-js-bundle": "^3.6.4",
-    "cytoscape": "^3.14.0",
+    "cytoscape": "^3.14.1",
     "cytoscape-cxtmenu": "^3.1.1",
     "cytoscape-euler": "^1.2.2",
     "cytoscape-panzoom": "^2.5.3",
@@ -44,7 +44,7 @@
     "jsdoc": "^3.6.3",
     "jsdom": "^16.2.1",
     "jsdom-global": "^3.0.2",
-    "mocha": "7.1.0",
+    "mocha": "7.1.1",
     "node-localstorage": "^2.1.5",
     "typescript": "^3.8.3",
     "webpack": "^4.42.0",
