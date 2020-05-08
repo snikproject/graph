@@ -117,7 +117,7 @@ export class Graph
     this.cy.endBatch();
   }
 
-  /** Highlight all nodes and edges on a shortest path between "from" and "to".
+  /** Show all nodes and edges on a shortest path between "from" and "to".
     Hide all other nodes except when in star mode.
     @param {cytoscape.NodeSingular} from path start node
     @param {cytoscape.NodeSingular} to path target node
@@ -149,7 +149,13 @@ export class Graph
         path.merge(edges.connectedNodes(".unfiltered"));
       }
       this.starStyle(path);
-      if(!this.starMode)
+      if(this.starMode)
+      {
+        // otherwise path might not be seen if it lies fully in an existing star
+        this.cy.elements().unselect();
+        path.select();
+      }
+      else
       {
         this.starMode=true;
         Graph.setVisible(elements.not(path),false);
