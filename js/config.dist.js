@@ -17,6 +17,7 @@ export default
   "helperGraphs": ["limes-exact","match"],
   "activeOptions": [], // initially active options, choose a subset of: ["dev", "ext","day"]
   "searchCloseMatch": true,
+  // only used for mobile, desktop will always use cxttapstart
   'openMenuEvents': 'cxttapstart taphold', // space-separated cytoscape events that will open the menu; only `cxttapstart` and/or `taphold` work here, see https://github.com/cytoscape/cytoscape.js-cxtmenu
   /** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */
   "logLevelConsole": "debug",
