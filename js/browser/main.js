@@ -33,7 +33,7 @@ function parseParams()
     ...(url.searchParams.get("sparql") && {endpoint: url.searchParams.get("sparql")}), // don't overwrite default with null
     // load and show instances when loading from endpoint, not only class
     // specify either without value ...&instances or as ...&instances=true
-    ...(url.searchParams.get("instances") && {instances: url.searchParams.get("instances")==="" || url.searchParams.get("instances")===true}),
+    ...((url.searchParams.get("instances")!==null) && {instances: url.searchParams.get("instances")==="" || url.searchParams.get("instances")===true}),
     virtual: (url.searchParams.get("virtual")!==null), // create "virtual triples" to visualize connections like domain-rang
     rdfGraph: url.searchParams.get("graph"),
     sub: url.searchParams.get("sub"),
