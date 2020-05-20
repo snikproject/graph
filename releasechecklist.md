@@ -43,9 +43,9 @@ Static code analysis can help uncover some otherwise hard to find bugs but may r
 All manual tests need to be successfull.
 Some browsers don't allow ES6 modules and throw a CORS error when run from the file system, for example Chromium.
 In this case, create a local web server and test it on localhost.
-For example, run `python -m http.server` and open it at `http://0.0.0.0:8000/index-dev.html`.
+For example, run `python -m http.server` and open it at `http://0.0.0.0:8000/index.html`.
 
-* run index-dev.html in different browsers
+* run index.html in different browsers
 * the most important test: it needs to load without errors. Make sure to open the console groups.
 * clear the cache and local storage and try to load again (press F5)
 * test all the filters (by turning them on and off)
@@ -101,11 +101,3 @@ All in all, you need the following .ssh/config entries:
 Then you can simply connect via `ssh bruchtal`.
 Be careful and don't mess with the other services running on the server.
 
-## Babel procedure (not used anymore)
-
-* supports outdated browsers
-* should not be necessary anymore because since its inception in 2016, ES6 modules have become supported by all major browsers
-* if supporting 2016 browsers becomes necessary again or new bleeding edge features are used that are not yet widely supported, discuss using Babel again
-* state of early 2020: there is a conflict regarding `"type" : "module"` in `package.json`, which Mocha needs but Babel does not accept
-* `npm run build` (runs Webpack and Babel)
-* instead of index-dev.html, use index-prod.html

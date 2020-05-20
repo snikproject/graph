@@ -24,14 +24,8 @@
     "tippy.js": "^5.2.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.7",
-    "@babel/plugin-transform-modules-systemjs": "^7.8.3",
-    "@babel/preset-env": "^7.8.7",
-    "@babel/register": "^7.8.6",
     "@types/cytoscape": "^3.14.0",
     "@types/loglevel": "^1.6.3",
-    "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "circular-dependency-plugin": "^5.2.0",
     "docdash": "^1.2.0",
@@ -46,10 +40,7 @@
     "jsdom-global": "^3.0.2",
     "mocha": "^7.1.1",
     "node-localstorage": "^2.1.5",
-    "typescript": "^3.8.3",
-    "webpack": "^4.42.0",
-    "webpack-auto-inject-version": "^1.2.2",
-    "webpack-cli": "^3.3.11"
+    "typescript": "^3.8.3"
   },
   "mocha": {
     "timeout": 15000
@@ -70,7 +61,6 @@
     "test": "mocha",
     "eslint": "eslint js",
     "typecheck": "tsc --noEmit",
-    "build": "webpack",
     "jsdoc": "node_modules/.bin/jsdoc js -c jsdoc.json"
   },
   "repository": {
@@ -84,7 +74,7 @@
   "contributors": [
     {
       "name": "Thomas Pause",
-      "url": "https://github.com/T-P-1"
+      "url": "https://github.com/ThomasPause"
     }
   ],
   "license": "CC-BY-SA-4.0"
