@@ -8,28 +8,28 @@ export const help =
       "": "Right click on a node/edge to open the context menu and choose among:",
       "base-mode":
       {
-        description:"Opens the node in an RDF browser, which shows all its properties and values.",
-        star:
+        "description":"Opens the node in an RDF browser, which shows all its properties and values.",
+        "star":
         {
-          "":"Highlights the node and all its directly connected nodes.",
+          "":"Highlights and expands the node and all its directly connected nodes.",
           "img": "star.png",
         },
-        "incoming-star":"Highlights the node and all neighbours directly connected via incoming edges.",
-        "outgoing-star":"Highlights the node and all neighbours directly connected via outgoing edges.",
-        path:
+        "incoming-star":"Highlights and expands the node and all neighbours directly connected via incoming edges.",
+        "outgoing-star":"Highlights and expands the node and all neighbours directly connected via outgoing edges.",
+        "path":
         {
           "":"Shortest Path between a selected source and this node.",
           "img": "star.png",
         },
-        spiderworm:
+        "spiderworm":
         {
           "":"The Spider Worm consists of the shortest path between a selected source and this node plus all direct neighbours. Displaying a spiderworm hides all other nodes and edges.",
           "img": "spiderworm.png",
         },
-        edit:"If you are a domain expert and notice incorrectly modelled facts or connections of a node, feel free to send us an issue.",
+        "edit":"If you are a domain expert and notice incorrectly modelled facts or connections of a node, feel free to send us an issue.",
         "combine-close-matches":"Merge equivalent classes from different subontologies.",
         "class-use":"Visualize the interplay of role, function and entity type (related to the Meta model).",
-        hide:"Hide the selected item until the view is resetted.",
+        "hide":"Hide the selected item until the view is resetted.",
         "set-path-source":"Set the starting point for path operations.",
         "confirm-link": "Confirm that the automatically generated interlink is correct.",
       },
@@ -41,27 +41,27 @@ export const help =
       },
       "ext-mode":
       {
-        doublestar:
+        "doublestar":
         {
           "":"The double star is like the spiderworm but shows connected nodes for both source and target, not just the target.",
           "img": "doublestar.png",
         },
-        starpath:
+        "starpath":
         {
-          "":"Creates a path and star every node along it.",
+          "":"Creates a path and star (expand) every node along it.",
           "img": "starpath.png",
         },
-        circlestar:
+        "circlestar":
         {
-          "":"A star using a circular layout. Hides all other nodes.",
+          "":"A star (expansion of the node) using a circular layout. Hides all other nodes.",
           "img": "circlestar.png",
         },
-        lodlive:"Third party data visualization exploration tool.",
+        "lodlive":"Third party data visualization exploration tool.",
       },
     },
-    menu:
+    "menu":
     {
-      file:
+      "file":
       {
         "":"Holds different file options like loading and saving the graph in different ways.",
         "load-graph-with-layout": "Discard the currently loaded graph and load a new one from a Cytoscape file.",
@@ -76,7 +76,7 @@ export const help =
         "save-image-current-view-high-res": "Save an image of the current view with a high resolution, for example for printing.",
         "save-image-whole-graph-high-res": "Save an image of the whole graph with a high resolution, for example for printing.",
       },
-      filter:
+      "filter":
       {
         "":"A collection of filters to display relevant subgraphs.",
         "meta": "The Meta Ontology provides common superclasses and relations for the subontologies of SNIK.",
@@ -88,7 +88,7 @@ export const help =
         "function": "...does what...",
         "entitytype": "...and which information is therefore needed.",
       },
-      options:
+      "options":
       {
         "": "Here you can find different checkboxes that toggle the behaviour of SNIK Graph",
         "separate-subs":"Spread the SNIK Graph into subgraphs of the subontologies.",
@@ -99,7 +99,7 @@ export const help =
         "combine-match": `Highlights groups of classes representing the same concept from different subontologies (matches) by placing them in boxes.
 Use "move matches on top of each other" or "move matches nearby" to shrink those boxes.`,
       },
-      layout:
+      "layout":
       {
         "":"This part of the menu holds the layout features.",
         "show-close-matches":"Shows (unhides) all nodes that are connected via close matches to visible nodes.",
@@ -112,14 +112,14 @@ Use "move matches on top of each other" or "move matches nearby" to shrink those
         "bb-chapter-search":"Presents you all chapters of the \"blue book\" and lets you build a subgraph out of selected chapters .",
         "ob-chapter-search":"Presents you all chapters of the \"orange book\" and lets you build a subgraph out of selected chapters .",
       },
-      services:
+      "services":
       {
         "":"Other ways to access SNIK.",
         "sparql-endpoint": "Expert interface for the SPARQL Protocol and RDF Query Language endpoint.",
         "rdf-browser": "Browse complete descriptions of classes in the RDF browser.",
       },
-      language:"Language switch, you can choose between English, German and Persian. Ontologies may not or not fully support all available languages.",
-      help:"Common Help Menu, holds e.g. this manual",
+      "language":"Language switch, you can choose between English, German and Persian. Ontologies may not or not fully support all available languages.",
+      "help":"Common Help Menu, holds e.g. this manual",
     },
     "search-field":"Search for classes by entering a full or partial name.",
   },
