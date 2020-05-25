@@ -541,7 +541,20 @@ export class Graph
       const nodes = connections.connectedNodes();
       Graph.setVisible(this.cy.elements(),false);
       Graph.setVisible(nodes,true);
-      Graph.setVisible(nodes.connectedEdges(),true);
+      Graph.setVisible(nodes.edgesWith(nodes),true);
+      nodes.layout(
+        {
+          name: 'concentric',
+          fit: true,
+          levelWidth: function() {return 1;},
+          minNodeSpacing: 60,
+          concentric: function(layoutNode)
+          {
+            if(subGraphs[0].contains(layoutNode)) {return 2;}
+            return 1;
+          },
+        },
+      ).run();
     };
     form.addEventListener("submit",form.listener);
   }
