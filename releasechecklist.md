@@ -48,15 +48,18 @@ For example, run `python -m http.server` and open it at `http://0.0.0.0:8000/ind
 * run index.html in different browsers
 * the most important test: it needs to load without errors. Make sure to open the console groups.
 * clear the cache and local storage and try to load again (press F5)
-* test all the filters (by turning them on and off)
-* press reset view
+* test all the filters (by turning them on and off, some subontology filters like meta may have no effect if they aren't set to load in the config)
 * hide inter-ontology relations
 * press recalculate layout
+* all subontologies should be separate now if meta isn't loaded
 * show inter-ontology relations again and recalculate
 * test the day mode (options)
 * test all links (under Services and Help)
+* check if the mouseover tooltips are shown when hovering over menu entries (not all entries have tooltips)
+* "About SNIK Graph" should be correct if Babel and Webpack are used, else there will be just a placeholder
 * test the zoom element (panzoom)
-* try if the language switches from english to german to farsi and back to english
+* try if the language switches from English to German and back to English
+* the language switch should apply both to the menu and to many BB classes
 * search for "3lgm2 mentity type"
 * click on "Highlight All"
 * there should now be several classes with thick white borders
