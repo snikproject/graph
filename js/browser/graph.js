@@ -52,7 +52,7 @@ export class Graph
     this.selectedNode = null;
     this.cy.on('select', 'node', event => {this.selectedNode = event.target;});
     // bind this to the class instance instead of the event source
-    const binds = ["resetStyle", "presentUri", "showPath", "showStar", "showWorm", "showDoubleStar", "combineMatch", "showCloseMatch"];
+    const binds = ["resetStyle", "presentUri", "showPath", "showStar", "showWorm", "showDoubleStar", "combineMatch", "showCloseMatch","subOntologyConnectivity"];
     for(const bind of binds) {this[bind] = this[bind].bind(this);}
     initTimer.stop();
   }
@@ -518,8 +518,31 @@ export class Graph
   /**Show close matches of the given nodes. */
   showCloseMatch(nodes)
   {
+    MicroModal.show("search-results");
     const edges = nodes.connectedEdges(".unfiltered").filter('[pl="closeMatch"]'); // ,[pl="narrowMatch"],[pl="narrowMatch"]
     const matches  = edges.connectedNodes(".unfiltered");
     Graph.setVisible(matches.union(edges),true);
+  }
+
+  /** Shows how any two subontologies are interconnected. The user chooses two subontologies and gets shown all pairs between them. */
+  subOntologyConnectivity()
+  {
+    MicroModal.show("subontology-connectivity");
+    const form = document.getElementById("subontology-connectivity-form");
+    if(form.listener) {return;}
+    form.listener = (e) =>
+    {
+      e.preventDefault();
+      MicroModal.close("subontology-connectivity");
+      const subs = [form[0].value,form[1].value];
+      log.info(`Showing connectivity between the subontologies ${subs[0]} and ${subs[1]}.`);
+      const subGraphs = subs.map(s=>this.cy.nodes(`[source="${s}"]`));
+      const connections = subGraphs[0].edgesWith(subGraphs[1]);
+      const nodes = connections.connectedNodes();
+      Graph.setVisible(this.cy.elements(),false);
+      Graph.setVisible(nodes,true);
+      Graph.setVisible(nodes.connectedEdges(),true);
+    };
+    form.addEventListener("submit",form.listener);
   }
 }

@@ -60,9 +60,24 @@
 		<table id="tab:chapter-search-classes" style="float: left"></table>
 	</div>
 
+	<div id="subontology-connectivity" class="fullscreen modal" aria-hidden="true">
+		<header>
+			<h2>Choose two Subontologies to Connect</h2>
+			<a href="javascript:void(0)" class="closebtn" data-micromodal-close>&times;</a>
+		</header>
+		<form id="subontology-connectivity-form">
+			<select id="subontology-connectivity-select1" name="subontology-connectivity-select1">
+				<option value="bb">Blue Book</option>
+			</select>
+			<select id="subontology-connectivity-select2" name="subontology-connectivity-select2">
+				<option value="ob">Orange Book</option>
+			</select>
+			<input type="submit" value="Show Connectivity"/>
+		</form>
+	</div>
+
 	<div id="loadarea"></div>
 	<div id="graph" style="width:100%;height:100vh;background-color:black;"></div>
 
 </body>
 </html>
-

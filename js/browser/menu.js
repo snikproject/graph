@@ -132,6 +132,7 @@ export default class Menu
               [()=>this.graph.moveAllMatches(100), "move matches nearby","move-match-nearby"],
               [()=>{showChapterSearch("bb");},"BB chapter search","bb-chapter-search"],
               [()=>{showChapterSearch("ob");},"OB chapter search","ob-chapter-search"],
+              [this.graph.subOntologyConnectivity, "subontology connectivity","subontology-connectivity"],
               [this.graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
             ],
       },
