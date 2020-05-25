@@ -31,7 +31,7 @@ There should be no errors and as few warnings as possible.
 Configured in `.eslintrc.json`.
 Can be integrated into IDEs and editors like Atom.
 
-* `npm run eslint`
+* `npm run lint`
 * Some errors can be fixed automatically via `npx eslint js --fix`.
 
 ### Typechecking
@@ -43,8 +43,9 @@ Static code analysis can help uncover some otherwise hard to find bugs but may r
 All manual tests need to be successfull.
 Some browsers don't allow ES6 modules and throw a CORS error when run from the file system, for example Chromium.
 In this case, create a local web server and test it on localhost.
-For example, run `python -m http.server` and open it at `http://0.0.0.0:8000/index.html`.
+For example, run `python -m http.server` and open it at `http://0.0.0.0:8000`.
 
+* clone a fresh copy of SNIK Graph into a temporary folder, see code preparations above
 * run index.html in different browsers
 * the most important test: it needs to load without errors. Make sure to open the console groups.
 * clear the cache and local storage and try to load again (press F5)
