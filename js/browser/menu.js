@@ -21,7 +21,7 @@ export default class Menu
   constructor(graph)
   {
     this.graph = graph;
-    this.graph.parent.addEventListener("click",Menu.closeListener);
+    document.body.addEventListener("click",Menu.closeListener);
     // bind this to the class instance instead of the event source
     this.showCloseMatches = this.showCloseMatches.bind(this);
     this.addMenu();
