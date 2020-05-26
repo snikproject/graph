@@ -144,7 +144,8 @@ export default class Search
   async showSearch(userQuery)
   {
     MicroModal.show("search-results");
-    const uris = await fuse.search(userQuery);
+    const items = (await fuse.search(userQuery));
+    const uris = items.map(x=>x.item.uri);
     this.showSearchResults(userQuery,uris);
     return false; // prevent page reload triggered by submit
   }
