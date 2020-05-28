@@ -162,7 +162,7 @@ export default class Menu
         "entries":
             [
               ["manual.html","Manual"],
-              ["http://www.snik.eu/de/snik-tutorial.pdf","Tutorial"],
+              ["https://www.snik.eu/sites/www.snik.eu/files/files/uploads/Einfuehrung/snik-tutorial.pdf","Tutorial"],
               ["layoutHelp.html","Layout Help"],
               ["https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured","YouTube Channel"],
               ["troubleshooting.html","Troubleshooting"],
