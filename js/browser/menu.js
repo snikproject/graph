@@ -95,7 +95,6 @@ export default class Menu
           },
           "Load from SPARQL Endpoint","load-sparql"],
           [()=>download.downloadGraph(this.graph),"Save Session","save-cytoscape-full"],
-          [()=>download.downloadVisibleGraph(this.graph),"Save Visible Graph with Layout as Cytoscape File","save-cytoscape-visible"],
           [()=>download.downloadLayout(this.graph),"Save Layout only","save-layout"],
           [()=>
           {

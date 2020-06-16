@@ -64,7 +64,7 @@ async function applyParams(graph,params)
       {
         loadArea.removeChild(center);
         graph.cy.resize(); // fix mouse cursor position, see https://stackoverflow.com/questions/23461322/cytoscape-js-wrong-mouse-pointer-position-after-container-change
-        loadGraphFromJsonFile(graph,event);
+        loadGraphFromJsonFile(graph)(event);
       });
       return;
     }

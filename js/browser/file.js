@@ -26,7 +26,7 @@ export const loadGraphFromJsonFile = graph => event =>
   uploadJson(event,json=>
   {
     graph.cy.elements().remove();
-    graph.cy.add(json);
+    graph.cy.json(json);
     graph.cy.elements().addClass("unfiltered");
     const visibleFraction = 1.0*graph.cy.elements(":visible").size()/graph.cy.elements().size();
     const starMode = visibleFraction<0.8;
