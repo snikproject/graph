@@ -25,6 +25,7 @@
 		"Notyf": true,
 		"Stats": true,
 		"tippy": true,
+		"GoldenLayout": true,
 		"MicroModal": true
 	},
 	"extends":
