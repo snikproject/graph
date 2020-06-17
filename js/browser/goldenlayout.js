@@ -5,17 +5,17 @@ const config = {
     type: 'row',
     content:[{
       type: 'component',
-      componentName: 'testComponentA',
+      componentName: 'testComponent1',
       componentState: { label: 'A' },
     },{
       type: 'column',
       content:[{
         type: 'component',
-        componentName: 'testComponent',
+        componentName: 'testComponent2',
         componentState: { label: 'B' },
       },{
         type: 'component',
-        componentName: 'testComponent',
+        componentName: 'testComponent3',
         componentState: { label: 'C' },
       }],
     }],
@@ -26,14 +26,13 @@ const config = {
 export function init()
 {
   const layout = new GoldenLayout(config);
-  layout.registerComponent('testComponentA', function(container, componentState)
-  {
-    container.getElement().html('<div id="main"></div>'); // todo: get reference directly
-  });
-  layout.registerComponent('testComponent', function(container, componentState)
-  {
-    container.getElement().html('<h2>' + componentState.label + '</h2>');
-  });
 
+  for (let i=1; i<=3; i++)
+  {
+    layout.registerComponent('testComponent'+i, function(container, componentState)
+    {
+      container.getElement().html('<div id="main'+i+'"></div>'); // todo: get reference directly
+    });
+  }
   layout.init();
 }

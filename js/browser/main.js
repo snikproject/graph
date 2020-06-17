@@ -124,22 +124,15 @@ async function applyParams(graph,params)
   }
 }
 
-/** Entry point. Is run when DOM is loaded. **/
-function main()
+/** Create a new Graph*/
+function addGraph(container)
 {
-  goldenlayout.init();
-  const graphDiv = document.createElement("div");
-  util.getElementById("main").parentNode.appendChild(graphDiv);
-
-  initLog();
-  MicroModal.init({openTrigger: 'data-custom-open'});
-
   progress(async ()=>
   {
     console.groupCollapsed("Initializing");
     console.time("Initializing");
 
-    const graph = new Graph(graphDiv);
+    const graph = new Graph(container);
     graph.params = parseParams();
     await applyParams(graph,graph.params);
     const menu = new Menu(graph);
@@ -149,6 +142,21 @@ function main()
     help.init();
     console.timeEnd("Initializing");
   });
+}
+
+/** Entry point. Is run when DOM is loaded. **/
+function main()
+{
+  goldenlayout.init();
+  initLog();
+  MicroModal.init({openTrigger: 'data-custom-open'});
+
+  for (let i = 1; i<=3;i++)
+  {
+    const graphDiv = document.createElement("div");
+    util.getElementById("main"+i).parentNode.appendChild(graphDiv);
+    addGraph(graphDiv);
+  }
 }
 
 document.addEventListener("DOMContentLoaded",main);
