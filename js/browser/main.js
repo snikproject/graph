@@ -16,6 +16,7 @@ import * as util from "./util.js";
 import ContextMenu from "./contextmenu.js";
 import {addOverlay} from "./benchmark.js";
 import * as help from "../help.js";
+import * as goldenlayout from "./goldenlayout.js";
 
 /** Parse browser URL POST parameters. */
 function parseParams()
@@ -126,6 +127,10 @@ async function applyParams(graph,params)
 /** Entry point. Is run when DOM is loaded. **/
 function main()
 {
+  goldenlayout.init();
+  const graphDiv = document.createElement("div");
+  util.getElementById("main").parentNode.appendChild(graphDiv);
+
   initLog();
   MicroModal.init({openTrigger: 'data-custom-open'});
 
@@ -133,7 +138,8 @@ function main()
   {
     console.groupCollapsed("Initializing");
     console.time("Initializing");
-    const graph = new Graph(document.getElementById("graph"));
+
+    const graph = new Graph(graphDiv);
     graph.params = parseParams();
     await applyParams(graph,graph.params);
     const menu = new Menu(graph);

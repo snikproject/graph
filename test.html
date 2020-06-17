@@ -2,50 +2,22 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <script src="node_modules/micromodal/dist/micromodal.js"></script>
-  <style>
-  .modal {
-  display: none;
-}
-
-.modal.is-open {
-  display: block;
-}
-
-  </style>
+  <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+  <script src="node_modules/golden-layout/dist/goldenlayout.js"></script>
+  <link rel="stylesheet" type="text/css" href="node_modules/golden-layout/src/css/goldenlayout-base.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/golden-layout/src/css/goldenlayout-dark-theme.css">
 </head>
-<body>
-  <button data-custom-open="modal-1" role="button" >Demo Modal</button>
-
-<div id="modal-1" class="modal" aria-hidden="true" >
-
-  <!-- [2] -->
-  <div tabindex="-1" data-micromodal-close>
-
-    <!-- [3] -->
-    <div role="dialog" aria-modal="true" aria-labelledby="modal-1-title" >
-
-
-      <header>
-        <h2 id="modal-1-title">
-          Modal Title
-        </h2>
-
-        <!-- [4] -->
-        <button aria-label="Close modal" data-micromodal-close></button>
-      </header>
-
-      <div id="modal-1-content">
-        Modal Content
-      </div>
-
-    </div>
-  </div>
+<body style="height:100vh;">
+  <div>
+  Smörebröd<br>
+  Smarebrad<br>
+  Smarebrads
 </div>
-<script>
- MicroModal.init({openTrigger: 'data-custom-open',});
- MicroModal.show("modal-1");
+  <div style="background-color:green;min-height:100%;height:auto !important; height: 100%; width:100%;"></div>
+  dfdfadf
+<script type="module">
+//import {init} from "./js/browser/goldenlayout.js";
+//init();
 </script>
-
 </body>
 </html>
