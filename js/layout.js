@@ -7,6 +7,8 @@ import timer from "./timer.js";
 import * as NODE from "./node.js";
 import config from "./config.js";
 
+const ANIMATE_THRESHOLD = 500;
+
 let activeLayout = undefined;
 
 /**
@@ -101,7 +103,7 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
   if(activeLayout) {activeLayout.stop();}
 
   let elements;
-  let partLayout;
+  let partLayout; // only change the positions of the selected nodes, keep the other ones in place
   if(cy.nodes(":selected").size()>1)
   {
     elements = cy.elements(":selected");
@@ -113,13 +115,17 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
     partLayout = false;
   }
   let oldCenter;
+  // Because it is a partial graph, the relation to the whole graph should still be discernable. That is why we preserve the center position of that partial graph and restore it later.
   if(partLayout) {oldCenter = center(elements.nodes());}
-  activeLayout = elements.layout(layoutConfig);
+  const configCopy = { ...layoutConfig };
+  configCopy.animate = elements.size()>ANIMATE_THRESHOLD;
+  {activeLayout = elements.layout(configCopy);}
   activeLayout.on("layoutstop",()=>
   {
     if(partLayout)
     {
       const newCenter = center(elements.nodes());
+      // move the nodes so that the center is at the same spot as before
       elements.nodes().shift({x: oldCenter.x-newCenter.x,y: oldCenter.y-newCenter.y});
     }
     layoutTimer.stop();
@@ -142,8 +148,8 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
       log.info("Replaced layout cache.");
     }
   });
-  {activeLayout.run();}
-
+  activeLayout.run();
+  cy.fit(cy.nodes(":visible"));
   return true;
 }
 
@@ -265,7 +271,7 @@ export const euler =
   timeStep: 80,
   randomize: true,
   movementThreshold: 1,
-  fit:false,
+  fit:true, // center and zoom after so that it fits in the view
   mass: node => node.data("mass")?node.data("mass"):40,
 };
 
@@ -282,7 +288,7 @@ export const eulerTight =
   refresh: 50,
   randomize: false,
   movementThreshold: 1,
-  fit:false,
+  fit:true,
   mass: 40,
 };
 
@@ -315,4 +321,5 @@ export const cose =
   initialTemp: 1000,
   nestingFactor: 1.01,
   randomize: false,
+  fit: true,
 };
