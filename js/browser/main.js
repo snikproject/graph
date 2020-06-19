@@ -124,6 +124,8 @@ async function applyParams(graph,params)
   }
 }
 
+let menu = null;
+
 /** Create a new Graph*/
 function addGraph(view)
 {
@@ -137,10 +139,13 @@ function addGraph(view)
     view.state.cy = graph.cy;
     graph.params = parseParams();
     await applyParams(graph,graph.params);
-    const menu = new Menu(graph);
-    new ContextMenu(graph, menu);
-    new Search(graph,util.getElementById("search"));
-    util.getElementById("top").appendChild(new ButtonBar(graph, menu).container);
+    if(!menu)
+    {
+      menu = new Menu(graph);
+      new ContextMenu(graph, menu);
+      new Search(graph,util.getElementById("search"));
+      util.getElementById("top").appendChild(new ButtonBar(graph, menu).container);
+    }
     help.init();
     console.timeEnd("Initializing");
   });
