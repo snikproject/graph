@@ -58,7 +58,7 @@ For example, run `python -m http.server` and open it at `http://0.0.0.0:8000`.
 * test all links (under Services and Help)
 * check if the mouseover tooltips are shown when hovering over menu entries (not all entries have tooltips)
 * "About SNIK Graph" should be correct if Babel and Webpack are used, else there will be just a placeholder
-* test the zoom element (panzoom)
+* test the zoom elements
 * try if the language switches from English to German and back to English
 * the language switch should apply both to the menu and to many BB classes
 * search for "3lgm2 mentity type"
