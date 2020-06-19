@@ -35,7 +35,6 @@ export class Graph
         this.cy.remove(':selected');
       }
     });
-
     this.cy = cytoscape(
       {
         container: container,
