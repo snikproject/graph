@@ -44,7 +44,6 @@ export class Graph
         minZoom: 0.02,
         maxZoom: 7,
       });
-    this.cy.panzoom(); // Google Maps like zoom UI element
     this.selectedNode = null;
     this.cy.on('select', 'node', event => {this.selectedNode = event.target;});
     // bind this to the class instance instead of the event source
