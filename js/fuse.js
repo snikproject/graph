@@ -39,7 +39,7 @@ export async function createIndex()
   ${froms}
   {
     ?c a owl:Class.
-    OPTIONAL {?c rdfs:label ?l.}
+    ?c rdfs:label ?l.
     OPTIONAL {?c skos:altLabel ?al.}
     OPTIONAL {?c skos:definition ?def.}
     ${config.searchCloseMatch?"OPTIONAL {?c skos:closeMatch|^skos:closeMatch ?cm. ?cm rdfs:label|skos:altLabel ?cml.}":""}
