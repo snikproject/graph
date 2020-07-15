@@ -120,14 +120,18 @@ async function applyParams(graph,params)
   }
   finally
   {
+    // Opened at the beginning of main. Closed at this point because it's asynchronous.
     console.groupEnd();
   }
 }
 
 let menu = null;
 
-/** Create a new Graph*/
-function addGraph(view)
+
+
+
+/** Create an initial Graph*/
+function addInitialGraph(view)
 {
   progress(async ()=>
   {
@@ -141,26 +145,26 @@ function addGraph(view)
     await applyParams(graph,graph.params);
     if(!menu)
     {
-      menu = new Menu(graph);
-      new ContextMenu(graph, menu);
-      new Search(graph,util.getElementById("search"));
-      util.getElementById("top").appendChild(new ButtonBar(graph, menu).container);
+      menu = new Menu(view.graph);
+      new ContextMenu(view.graph, menu);
+      new Search(view.graph,util.getElementById("search"));
+      util.getElementById("top").appendChild(new ButtonBar(view.graph, menu).container);
     }
     help.init();
     console.timeEnd("Initializing");
   });
 }
-
 /** Entry point. Is run when DOM is loaded. **/
 function main()
 {
+  console.groupCollapsed("Initializing");
   initLog();
   MicroModal.init({openTrigger: 'data-custom-open'});
 
-  for (let i = 1; i<=2;i++)
+  for (let i = 1; i<=1;i++)
   {
     const view = new View();
-    addGraph(view);
+    addInitialGraph(view);
   }
 }
 
