@@ -1,9 +1,9 @@
 /** @module */
 import * as util from "./util.js";
-
+import {Graph} from "./graph.js";
 const config = {
   content: [{
-    type: 'row',
+    type: 'stack',
     content: [],
   }],
 };
@@ -32,12 +32,45 @@ layout.on('stackCreated', function(stack)
     const state = item.config.componentState;
     if(state.cy) {state.cy.zoom(state.cy.zoom()/1.2);}
   });
+  controls.querySelector('.addsign').addEventListener("click",function()
+  {
+    new View();
+  });
 });
 layout.init();
+
+// const addMenuItem = function(title, text)
+// {
+//   const element = document.createElement('div');
+//   $('#menuContainer').append(element);
+//
+//   const newItemConfig = {
+//     title: title,
+//     type: 'component',
+//     componentName: 'example',
+//     componentState: { text: text },
+//   };
+//
+//   element.click(function()
+//   {
+//     myLayout.root.contentItems[ 0 ].addChild(newItemConfig);
+//   });
+// };
+
+//addMenuItem('Add me!', 'You\'ve added me!');
+//addMenuItem('Me too!', 'You\'ve added me too!');
+
 
 export default class View
 {
   /** Initialize the layout. */
+  addEmptyGraph()
+  {
+    this.graph = new Graph(this.cyContainer);
+    console.log(this.state);
+    this.state.cy = this.graph.cy;
+  }
+  /***/
   constructor()
   {
     const name = 'Gesamtmodell'+Math.random();
@@ -56,5 +89,6 @@ export default class View
     });
 
     layout.root.contentItems[0].addChild(itemConfig);
+    this.addEmptyGraph();
   }
 }
