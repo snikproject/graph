@@ -39,7 +39,7 @@ export class Graph
       {
         container: container,
         style: style.style.concat(colorschemenight),
-        wheelSensitivity: 0.3,
+        //wheelSensitivity: 0.3,
         minZoom: 0.02,
         maxZoom: 7,
       });
