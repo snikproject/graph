@@ -128,9 +128,9 @@ async function applyParams(graph,params)
 let menu = null;
 
 /** Create an initial Graph*/
-function addInitialGraph(view)
+async function addInitialGraph(view)
 {
-  progress(async ()=>
+  await progress(async ()=>
   {
     console.groupCollapsed("Initializing");
     console.time("Initializing");
@@ -143,7 +143,6 @@ function addInitialGraph(view)
     if(!menu)
     {
       menu = new Menu(view.graph);
-      new ContextMenu(view.graph, menu);
       new Search(view.graph,util.getElementById("search"));
       util.getElementById("top").appendChild(new ButtonBar(view.graph, menu).container);
     }
@@ -170,7 +169,6 @@ function initKeyListener()
       const selected = graph.cy.elements(':selected');
       clipboard.length = 0;
       clipboard.push(...selected.map(node => node.id()));
-      console.log(clipboard);
     }
 
     if(e.code === "KeyP" || e.code === "KeyV")
@@ -186,17 +184,27 @@ function initKeyListener()
 }
 
 /** Entry point. Is run when DOM is loaded. **/
-function main()
+async function main()
 {
   console.groupCollapsed("Initializing");
   initLog();
   initKeyListener();
   MicroModal.init({openTrigger: 'data-custom-open'});
 
-  for (let i = 1; i<=2;i++)
+  const views = [];
+  for (let i = 0; i<5;i++)
   {
     const view = new View();
-    addInitialGraph(view);
+    views.push(view);
+    if(i===0) {await addInitialGraph(view);}
+    else
+    {
+      view.graph.cy.add(views[0].graph.cy.elements());
+      const elements = view.graph.cy.elements();
+      Graph.setVisible(elements,false);
+      Graph.setVisible(elements.edgesWith(elements),false);
+    }
+    new ContextMenu(view.graph, menu);
   }
 }
 
