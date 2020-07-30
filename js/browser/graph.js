@@ -27,14 +27,7 @@ export class Graph
   {
     const initTimer = timer("graph-init");
     this.matchComponents = [];
-    // remove nodes or edges from the graph (not the SPARQL endpoint) with the delete key
-    document.documentElement.addEventListener('keydown',e =>
-    {
-      if(e.keyCode === 8 || e.keyCode === 46) // backspace (for mac) or delete key
-      {
-        this.cy.remove(':selected');
-      }
-    });
+
     this.cy = cytoscape(
       {
         container: container,

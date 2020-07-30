@@ -9,32 +9,36 @@ const config = {
 };
 
 const layout = new GoldenLayout(config);
-layout.on('stackCreated', function(stack)
+export let stack = null;
+
+layout.on('stackCreated', function(newStack)
 {
+  stack = newStack;
   const template = util.getElementById('goldenlayout-header');
   const zoomButtons = document.importNode(template.content, true);
 
   // Add the zoomButtons to the header
-  stack.header.controlsContainer.prepend(zoomButtons);
-
-  const controls = stack.header.controlsContainer[0];
+  newStack.header.controlsContainer.prepend(zoomButtons);
+  const controls = newStack.header.controlsContainer[0];
 
   controls.querySelector('.plussign').addEventListener("click",function()
   {
-    const item = stack.getActiveContentItem();
+    const item = newStack.getActiveContentItem();
     const state = item.config.componentState;
     if(state.cy) {state.cy.zoom(state.cy.zoom()*1.2);}
   });
 
   controls.querySelector('.minussign').addEventListener("click",function()
   {
-    const item = stack.getActiveContentItem();
+    const item = newStack.getActiveContentItem();
     const state = item.config.componentState;
     if(state.cy) {state.cy.zoom(state.cy.zoom()/1.2);}
   });
   controls.querySelector('.addsign').addEventListener("click",function()
   {
+    /* eslint-disable no-use-before-define*/
     new View();
+    /* eslint-enable no-use-before-define*/
   });
 });
 layout.init();
@@ -61,7 +65,7 @@ layout.init();
 //addMenuItem('Me too!', 'You\'ve added me too!');
 
 
-export default class View
+export class View
 {
   /** Initialize the layout. */
   addEmptyGraph()
@@ -87,7 +91,6 @@ export default class View
       thisView.cyContainer = document.createElement("div");
       container.getElement()[0].appendChild(thisView.cyContainer);
     });
-
     layout.root.contentItems[0].addChild(itemConfig);
     this.addEmptyGraph();
   }
