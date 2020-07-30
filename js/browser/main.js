@@ -16,7 +16,7 @@ import * as util from "./util.js";
 import ContextMenu from "./contextmenu.js";
 import {addOverlay} from "./benchmark.js";
 import * as help from "../help.js";
-import View from "./view.js";
+import {View,stack} from "./view.js";
 
 /** Parse browser URL POST parameters. */
 function parseParams()
@@ -127,9 +127,6 @@ async function applyParams(graph,params)
 
 let menu = null;
 
-
-
-
 /** Create an initial Graph*/
 function addInitialGraph(view)
 {
@@ -154,14 +151,37 @@ function addInitialGraph(view)
     console.timeEnd("Initializing");
   });
 }
+
+/** Relegate keypresses to the active view.  */
+function initKeyListener()
+{
+  document.documentElement.addEventListener('keydown',e =>
+  {
+    if(e.code === "Delete" || e.code === "Backspace") // backspace (for mac) or delete key
+    {
+      console.log(stack);
+      stack.getActiveContentItem().state.cy.remove(':selected');
+    }
+  });
+  document.documentElement.addEventListener('keydown',e =>
+  {
+    if(e.code === "KeyS")
+    {
+      console.log("saved");
+      //stack.getActiveContentItem().state.cy.remove(':selected');
+    }
+  });
+}
+
 /** Entry point. Is run when DOM is loaded. **/
 function main()
 {
   console.groupCollapsed("Initializing");
   initLog();
+  initKeyListener();
   MicroModal.init({openTrigger: 'data-custom-open'});
 
-  for (let i = 1; i<=1;i++)
+  for (let i = 1; i<=2;i++)
   {
     const view = new View();
     addInitialGraph(view);

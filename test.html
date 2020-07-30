@@ -8,16 +8,42 @@
   <link rel="stylesheet" type="text/css" href="node_modules/golden-layout/src/css/goldenlayout-dark-theme.css">
 </head>
 <body style="height:100vh;">
-  <div>
-  Smörebröd<br>
-  Smarebrad<br>
-  Smarebrads
-</div>
-  <div style="background-color:green;min-height:100%;height:auto !important; height: 100%; width:100%;"></div>
-  dfdfadf
 <script type="module">
-//import {init} from "./js/browser/goldenlayout.js";
-//init();
+var config = {
+    content: [{
+        type: 'row',
+        content:[{
+            type: 'component',
+            componentName: 'testComponent',
+            componentState: { label: 'A' }
+        },{
+            type: 'column',
+            content:[{
+                type: 'component',
+                componentName: 'testComponent',
+                componentState: { label: 'B' }
+            },{
+                type: 'component',
+                componentName: 'testComponent',
+                componentState: { label: 'C' }
+            }]
+        }]
+    }]
+};
+
+var myLayout = new GoldenLayout( config );
+
+myLayout.registerComponent( 'testComponent', function( container, componentState ){
+    container.getElement().html( '<h2>' + componentState.label + '</h2>' );
+});
+
+myLayout.init();
+let saved;
+document.getElementsByClassName("lm_goldenlayout")[0].id = 123;
+document.('123').on('keydown', e =>
+{
+    alert("Hello code");
+});
 </script>
 </body>
 </html>
