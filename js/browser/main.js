@@ -152,23 +152,35 @@ function addInitialGraph(view)
   });
 }
 
+const clipboard = [];
+
 /** Relegate keypresses to the active view.  */
 function initKeyListener()
 {
   document.documentElement.addEventListener('keydown',e =>
   {
+    const graph =  stack.getActiveContentItem().config.componentState.graph;
     if(e.code === "Delete" || e.code === "Backspace") // backspace (for mac) or delete key
     {
-      console.log(stack);
-      stack.getActiveContentItem().state.cy.remove(':selected');
+      graph.cy.remove(':selected');
     }
-  });
-  document.documentElement.addEventListener('keydown',e =>
-  {
-    if(e.code === "KeyS")
+
+    if(e.code === "KeyS" || e.code === "KeyC")
     {
-      console.log("saved");
-      //stack.getActiveContentItem().state.cy.remove(':selected');
+      const selected = graph.cy.elements(':selected');
+      clipboard.length = 0;
+      clipboard.push(...selected.map(node => node.id()));
+      console.log(clipboard);
+    }
+
+    if(e.code === "KeyP" || e.code === "KeyV")
+    {
+      graph.cy.startBatch();
+      for(const id of clipboard)
+      {
+        Graph.setVisible(graph.cy.getElementById(id),true);
+      }
+      graph.cy.endBatch();
     }
   });
 }

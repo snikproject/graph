@@ -72,6 +72,7 @@ export class View
   {
     this.graph = new Graph(this.cyContainer);
     console.log(this.state);
+    this.state.graph = this.graph;
     this.state.cy = this.graph.cy;
   }
   /***/
