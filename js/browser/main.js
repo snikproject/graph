@@ -169,6 +169,7 @@ function initKeyListener()
       const selected = graph.cy.elements(':selected');
       clipboard.length = 0;
       clipboard.push(...selected.map(node => node.id()));
+      log.trace('Partial graph copied!')
     }
 
     if(e.code === "KeyP" || e.code === "KeyV")
@@ -179,6 +180,7 @@ function initKeyListener()
         Graph.setVisible(graph.cy.getElementById(id),true);
       }
       graph.cy.endBatch();
+      log.trace('Partial graph pasted!')
     }
   });
 }
@@ -192,7 +194,7 @@ async function main()
   MicroModal.init({openTrigger: 'data-custom-open'});
 
   const views = [];
-  for (let i = 0; i<5;i++)
+  for (let i = 0; i<2;i++)
   {
     const view = new View();
     views.push(view);
