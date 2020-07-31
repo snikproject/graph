@@ -88,7 +88,7 @@ async function createClassNodes(from)
     }
   }
 
-  log.info(json.length+" Nodes loaded from SPARQL");
+  log.debug(json.length+" Nodes loaded from SPARQL");
   return nodes;
 }
 
@@ -193,7 +193,7 @@ async function createEdges(from, fromNamed, instances, virtual)
         //position: { x: 200, y: 200 }
       });
   }
-  log.info(json.length+" Edges loaded from SPARQL");
+  log.debug(json.length+" Edges loaded from SPARQL");
   return edges;
 }
 
@@ -213,7 +213,7 @@ async function createNodes(from, instances)
   */
 export default async function loadGraphFromSparql(cy,graphs,instances, virtual)
 {
-  log.info(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
+  log.debug(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
   const from = graphs.map(g=>`FROM <${g}>`).reduce((a,b)=>a+"\n"+b,"");
   const fromNamed = from.replace(/FROM/g,"FROM NAMED");
 

@@ -535,7 +535,7 @@ export class Graph
       e.preventDefault();
       MicroModal.close("subontology-connectivity");
       const subs = [form[0].value,form[1].value];
-      log.info(`Showing connectivity between the subontologies ${subs[0]} and ${subs[1]}.`);
+      log.debug(`Showing connectivity between the subontologies ${subs[0]} and ${subs[1]}.`);
       const subGraphs = subs.map(s=>this.cy.nodes(`[source="${s}"]`));
       const connections = subGraphs[0].edgesWith(subGraphs[1]);
       const nodes = connections.connectedNodes();

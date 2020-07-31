@@ -27,7 +27,7 @@ const options =
 /** Create fulltext index from SPARQL endpoint. */
 export async function createIndex()
 {
-  log.info("Create Fuse Search Index with searchCloseMatch = "+config.searchCloseMatch);
+  log.debug("Create Fuse Search Index with searchCloseMatch = "+config.searchCloseMatch);
   const graphs = [...config.allSubOntologies,...config.helperGraphs];
   const froms = graphs.map(sub=>`from <http://www.snik.eu/ontology/${sub}>`).reduce((a,b)=>a+"\n"+b);
   const sparqlQuery = `select

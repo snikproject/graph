@@ -64,6 +64,6 @@ export function possible(subjectNode,objectNode)
     &&((element.uri!=="http://www.w3.org/2000/01/rdf-schema#subClassOf")||(subjectNode.data(NODE.SUBTOP)===objectNode.data(NODE.SUBTOP))); // rdfs:subClassOf only with the same subtop
   },
   );
-  log.info(`possible properties between ${subjectNode.data(NODE.ID)} and ${objectNode.data(NODE.ID)}:`, possibleProperties);
+  log.debug(`possible properties between ${subjectNode.data(NODE.ID)} and ${objectNode.data(NODE.ID)}:`, possibleProperties);
   return possibleProperties;
 }

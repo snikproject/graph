@@ -94,7 +94,7 @@ class Filter
       // cytoscape.js does not have a class negation selector so we need to add a negation class ourselves
       // see https://stackoverflow.com/questions/54108410/how-to-negate-class-selector-in-cytoscape-js
       this.cy.elements().addClass("unfiltered");
-      log.info("All filters checked");
+      log.debug("All filters checked");
     }
     else
     {
@@ -105,7 +105,7 @@ class Filter
       const unfiltered = this.cy.elements().not(filtered);
       unfiltered.removeClass("filtered");
       unfiltered.addClass("unfiltered");
-      log.info("filter "+hiddenSelector+" triggered");
+      log.debug("filter "+hiddenSelector+" triggered");
     }
     this.cy.endBatch();
   }

@@ -30,7 +30,7 @@ export async function select(query,graph, endpoint=config.sparql.endpoint)
     {
       console.table(bindings.map(b=>Object.keys(b).reduce((result,key)=>{result[key]=b[key].value;return result;},{})));
     }
-    log.info(query);
+    log.debug(query);
     log.debug(url);
     console.groupEnd();
 

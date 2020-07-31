@@ -233,7 +233,7 @@ export default class Menu
         if(this.showInstancesBox.checked)
         {
           alert("Instances are not loaded. Please reload with the 'instances' URL parameter.");
-          //log.info("Show instances: Not in memory. Reloading.");
+          //log.debug("Show instances: Not in memory. Reloading.");
           //Graph.setVisible(this.graph.instances,this.showInstancesBox.checked);
           //Graph.setVisible(this.graph.instances.connectedEdges(),this.showInstancesBox.checked);
         }

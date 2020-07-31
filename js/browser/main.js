@@ -75,7 +75,7 @@ async function applyParams(graph,params)
       layout.run(graph.cy,layout.euler);
       return;
     }
-    log.info("Loading from SPARQL Endpoint "+params.endpoint);
+    log.debug("Loading from SPARQL Endpoint "+params.endpoint);
     config.sparql.endpoint = params.endpoint;
     const graphs = [];
     if(params.endpoint===sparql.SNIK_ENDPOINT)

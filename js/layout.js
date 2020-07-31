@@ -95,11 +95,11 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
         virtualEdges.push({group: "edges", data: { source: node.data(NODE.ID), target: source, springLength: 180 }});
       }
     }
-    log.info("Separate subontologies checked");
+    log.debug("Separate subontologies checked");
     log.debug(`Adding ${virtualEdges.length} virtual edges.`);
     cy.add(virtualEdges);
   }
-  else{log.info("Separate subontologies unchecked");}
+  else{log.debug("Separate subontologies unchecked");}
   if(activeLayout) {activeLayout.stop();}
 
   let elements;
@@ -185,7 +185,7 @@ export function presetLayout(cy,pos)
   const status = run(cy,layoutConfig);
   if(misses>0||hits<positions.length)
   {
-    log.info(`...${hits}/${cy.nodes().size()} node positions set. ${pos.length-hits} superfluous layout positions .`);
+    log.debug(`...${hits}/${cy.nodes().size()} node positions set. ${pos.length-hits} superfluous layout positions .`);
     const precision = hits/pos.length;
     const recall = hits/cy.nodes().size();
     if(precision<config.layoutCacheMinPrecision)
@@ -230,7 +230,7 @@ export function runCached(cy,layoutConfig,subs,separateSubs)
     try
     {
       const pos=JSON.parse(cacheItem);
-      log.info(`Loaded layout from cache, applying ${pos.length} positions...`);
+      log.debug(`Loaded layout from cache, applying ${pos.length} positions...`);
       const status = presetLayout(cy,pos);
       if(status) {return true;}
       log.warn("Could not apply layout to active graph, recalculating layout...");
