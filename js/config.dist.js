@@ -22,7 +22,9 @@ export default
   /** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */
   "logLevelConsole": "debug",
   /** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */
-  "logLevelDisplay": "warn",
+  "logLevelDisplay": "info",
+  /** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */
+  "logLevelMemory": "debug",
   "layoutCacheMinRecall": 0.95,
   "layoutCacheMinPrecision": 0.5,
   "language": "en",
