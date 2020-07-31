@@ -169,7 +169,7 @@ function initKeyListener()
       const selected = graph.cy.elements(':selected');
       clipboard.length = 0;
       clipboard.push(...selected.map(node => node.id()));
-      log.trace('Partial graph copied!')
+      log.trace('Partial graph copied!');
     }
 
     if(e.code === "KeyP" || e.code === "KeyV")
@@ -180,7 +180,7 @@ function initKeyListener()
         Graph.setVisible(graph.cy.getElementById(id),true);
       }
       graph.cy.endBatch();
-      log.trace('Partial graph pasted!')
+      log.trace('Partial graph pasted!');
     }
   });
 }
