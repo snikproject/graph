@@ -40,6 +40,11 @@ layout.on('stackCreated', function(newStack)
     new View();
     /* eslint-enable no-use-before-define*/
   });
+  controls.querySelector('.recalculatesign').addEventListener("click",function()
+  {
+    //layout.run(state.cy,layout.euler,config.defaultSubOntologies,this.menu.separateSubs()&&!state.graph.starMode,true);
+    layout.run(activeState().cy,layout.euler,config.defaultSubOntologies,false,true); // todo: put menu back in
+  });
 });
 layout.init();
 
