@@ -5,6 +5,7 @@ import * as sparql from "../sparql.js";
 import * as util from "./util.js";
 import * as fuse from "../fuse.js";
 import progress from "./progress.js";
+import {activeState} from "./view.js";
 
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
@@ -13,10 +14,9 @@ import progress from "./progress.js";
 export default class Search
 {
   /** Add search functionality to the text field. */
-  constructor(graph, textField)
+  constructor(textField)
   {
     this.resultNodes = [];
-    this.graph = graph;
     textField.addEventListener("submit",(event)=>
     {
       event.preventDefault();
@@ -48,7 +48,7 @@ export default class Search
     if(uris.length===1)
     {
       MicroModal.close("search-results");
-      this.graph.presentUri(uris[0]);
+      activeState().graph.presentUri(uris[0]);
       return true;
     }
     if(uris.length===sparql.SPARQL_LIMIT)
@@ -64,7 +64,7 @@ export default class Search
 
     uris.forEach(uri=>
     {
-      const node = this.graph.cy.getElementById(uri)[0];
+      const node = activeState().cy.getElementById(uri)[0];
       if(node)
       {
         uriType[uri]=0;
@@ -81,7 +81,7 @@ export default class Search
       const locateCell = row.insertCell();
       const lodLiveCell = row.insertCell();
       // @ts-ignore
-      window.presentUri=this.graph.presentUri;
+      window.presentUri=activeState().graph.presentUri;
       locateCell.innerHTML = `<a class="search-class${uriType[uri]}" href="javascript:MicroModal.close('search-results');window.presentUri('${uri}');void(0)">
           ${uri.replace(sparql.SNIK_PREFIX,"")}</a>`;
       const html = `<a class="search-class${uriType[uri]}" href="${uri}" target="_blank">Description</a>`;
@@ -92,7 +92,7 @@ export default class Search
     const cell = row.insertCell();
 
     cell.innerHTML = "Highlight All";
-    cell.addEventListener("click",()=>{MicroModal.close("search-results");this.graph.presentUris(uris);});
+    cell.addEventListener("click",()=>{MicroModal.close("search-results");activeState().graph.presentUris(uris);});
 
     return true;
   }
