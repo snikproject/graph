@@ -1,17 +1,25 @@
 /** @module */
 import * as util from "./util.js";
 import {Graph} from "./graph.js";
-const config = {
+import config from "../config.js";
+import * as layout from "../layout.js";
+
+const goldenLayoutConfig = {
   content: [{
     type: 'stack',
     content: [],
   }],
 };
 
-const layout = new GoldenLayout(config);
+const goldenLayout = new GoldenLayout(goldenLayoutConfig);
 export let stack = null;
 
-layout.on('stackCreated', function(newStack)
+export function activeState()
+{
+  return stack.getActiveContentItem().config.componentState;
+}
+
+goldenLayout.on('stackCreated', function(newStack)
 {
   stack = newStack;
   const template = util.getElementById('goldenlayout-header');
@@ -23,16 +31,14 @@ layout.on('stackCreated', function(newStack)
 
   controls.querySelector('.plussign').addEventListener("click",function()
   {
-    const item = newStack.getActiveContentItem();
-    const state = item.config.componentState;
-    if(state.cy) {state.cy.zoom(state.cy.zoom()*1.2);}
+    const cy = activeState().cy;
+    cy.zoom(cy.zoom()*1.2);
   });
 
   controls.querySelector('.minussign').addEventListener("click",function()
   {
-    const item = newStack.getActiveContentItem();
-    const state = item.config.componentState;
-    if(state.cy) {state.cy.zoom(state.cy.zoom()/1.2);}
+    const cy = activeState().cy;
+    cy.zoom(cy.zoom()/1.2);
   });
   controls.querySelector('.addsign').addEventListener("click",function()
   {
@@ -46,29 +52,9 @@ layout.on('stackCreated', function(newStack)
     layout.run(activeState().cy,layout.euler,config.defaultSubOntologies,false,true); // todo: put menu back in
   });
 });
-layout.init();
+goldenLayout.init();
 
-// const addMenuItem = function(title, text)
-// {
-//   const element = document.createElement('div');
-//   $('#menuContainer').append(element);
-//
-//   const newItemConfig = {
-//     title: title,
-//     type: 'component',
-//     componentName: 'example',
-//     componentState: { text: text },
-//   };
-//
-//   element.click(function()
-//   {
-//     myLayout.root.contentItems[ 0 ].addChild(newItemConfig);
-//   });
-// };
-
-//addMenuItem('Add me!', 'You\'ve added me!');
-//addMenuItem('Me too!', 'You\'ve added me too!');
-
+let viewCount = 0;
 
 export class View
 {
@@ -83,7 +69,7 @@ export class View
   /***/
   constructor()
   {
-    const name = 'Gesamtmodell'+Math.random();
+    const name = viewCount++===0?"Gesamtmodell":"Teilmodell "+(viewCount-1);
     this.state = {};
     const itemConfig = {
       title:name,
@@ -92,12 +78,12 @@ export class View
       componentState: this.state,
     };
     const thisView = this; // supply this to callback
-    layout.registerComponent(name, function(container, state)
+    goldenLayout.registerComponent(name, function(container, state)
     {
       thisView.cyContainer = document.createElement("div");
       container.getElement()[0].appendChild(thisView.cyContainer);
     });
-    layout.root.contentItems[0].addChild(itemConfig);
+    goldenLayout.root.contentItems[0].addChild(itemConfig);
     this.addEmptyGraph();
   }
 }
