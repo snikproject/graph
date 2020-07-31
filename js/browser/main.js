@@ -4,7 +4,6 @@ Entry point.
 import loadGraphFromSparql from "../loadGraphFromSparql.js";
 import Menu from "./menu.js";
 import Search from "./search.js";
-import ButtonBar from "./button.js";
 import {loadGraphFromJsonFile} from "./file.js";
 import {Graph} from "./graph.js";
 import * as layout from "../layout.js";
@@ -143,8 +142,8 @@ async function addInitialGraph(view)
     if(!menu)
     {
       menu = new Menu(view.graph);
-      new Search(view.graph,util.getElementById("search"));
-      util.getElementById("top").appendChild(new ButtonBar(view.graph, menu).container);
+      new Search(util.getElementById("search"));
+      //util.getElementById("top").appendChild(new ButtonBar(view.graph, menu).container);
     }
     help.init();
     console.timeEnd("Initializing");
@@ -169,7 +168,7 @@ function initKeyListener()
       const selected = graph.cy.elements(':selected');
       clipboard.length = 0;
       clipboard.push(...selected.map(node => node.id()));
-      log.trace('Partial graph copied!');
+      log.info('Partial graph copied!');
     }
 
     if(e.code === "KeyP" || e.code === "KeyV")
@@ -180,7 +179,7 @@ function initKeyListener()
         Graph.setVisible(graph.cy.getElementById(id),true);
       }
       graph.cy.endBatch();
-      log.trace('Partial graph pasted!');
+      log.info('Partial graph pasted!');
     }
   });
 }
