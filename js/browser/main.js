@@ -131,7 +131,7 @@ function main()
   progress(async ()=>
   {
     console.groupCollapsed("Initializing");
-
+    console.time("Initializing");
     const graph = new Graph(document.getElementById("graph"));
     graph.params = parseParams();
     await applyParams(graph,graph.params);
@@ -140,6 +140,7 @@ function main()
     new Search(graph,util.getElementById("search"));
     util.getElementById("top").appendChild(new ButtonBar(graph, menu).container);
     help.init();
+    console.timeEnd("Initializing");
   });
 }
 
