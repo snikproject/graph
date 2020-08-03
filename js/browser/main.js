@@ -12,10 +12,9 @@ import progress from "./progress.js";
 import config from "../config.js";
 import initLog from "./log.js";
 import * as util from "./util.js";
-import ContextMenu from "./contextmenu.js";
 import {addOverlay} from "./benchmark.js";
 import * as help from "../help.js";
-import {View,stack} from "./view.js";
+import {View,activeState} from "./view.js";
 
 /** Parse browser URL POST parameters. */
 function parseParams()
@@ -124,10 +123,8 @@ async function applyParams(graph,params)
   }
 }
 
-let menu = null;
-
-/** Create an initial Graph*/
-async function addInitialGraph(view)
+/** Fill the initial Graph based on the URL GET parameters.*/
+export async function fillInitialGraph(graph)
 {
   await progress(async ()=>
   {
@@ -137,17 +134,17 @@ async function addInitialGraph(view)
     const graph = new Graph(view.cyContainer);
     console.log(view.state);
     view.state.cy = graph.cy;
-    graph.params = parseParams();
-    await applyParams(graph,graph.params);
+    const params = parseParams();
+    await applyParams(graph,params);
     if(!menu)
     {
-      menu = new Menu(view.graph);
+      graph.menu = new Menu(graph,params.instances);
       new Search(util.getElementById("search"));
-      //util.getElementById("top").appendChild(new ButtonBar(view.graph, menu).container);
     }
     help.init();
     console.timeEnd("Initializing");
   });
+  help.init();
 }
 
 const clipboard = [];
@@ -157,29 +154,29 @@ function initKeyListener()
 {
   document.documentElement.addEventListener('keydown',e =>
   {
-    const graph =  stack.getActiveContentItem().config.componentState.graph;
+    const state = activeState();
     if(e.code === "Delete" || e.code === "Backspace") // backspace (for mac) or delete key
     {
-      graph.cy.remove(':selected');
+      state.cy.remove(':selected');
     }
-
     if(e.code === "KeyS" || e.code === "KeyC")
     {
-      const selected = graph.cy.elements(':selected');
+      const selected = state.cy.elements(':selected');
       clipboard.length = 0;
       clipboard.push(...selected.map(node => node.id()));
-      log.info('Partial graph copied!');
+      log.debug(`Copied ${clipboard.length} elements from ${state.name}.`);
     }
 
     if(e.code === "KeyP" || e.code === "KeyV")
     {
-      graph.cy.startBatch();
+      state.cy.startBatch();
       for(const id of clipboard)
       {
-        Graph.setVisible(graph.cy.getElementById(id),true);
+        Graph.setVisible(state.cy.getElementById(id),true);
       }
-      graph.cy.endBatch();
-      log.info('Partial graph pasted!');
+      state.cy.endBatch();
+      state.cy.fit(state.cy.elements(":visible")); // needs to be outside the batch to fit correctly
+      log.debug(`Pasted ${clipboard.length} elements into ${state.name}.`);
     }
   });
 }
@@ -192,20 +189,9 @@ async function main()
   initKeyListener();
   MicroModal.init({openTrigger: 'data-custom-open'});
 
-  const views = [];
   for (let i = 0; i<2;i++)
   {
     const view = new View();
-    views.push(view);
-    if(i===0) {await addInitialGraph(view);}
-    else
-    {
-      view.graph.cy.add(views[0].graph.cy.elements());
-      const elements = view.graph.cy.elements();
-      Graph.setVisible(elements,false);
-      Graph.setVisible(elements.edgesWith(elements),false);
-    }
-    new ContextMenu(view.graph, menu);
   }
 }
 

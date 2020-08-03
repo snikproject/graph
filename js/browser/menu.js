@@ -18,13 +18,13 @@ import {Graph} from "./graph.js";
 export default class Menu
 {
   /** construct the main menu bar for the given graph */
-  constructor(graph)
+  constructor(graph,showInstancesBoxChecked)
   {
     this.graph = graph;
     document.body.addEventListener("click",Menu.closeListener);
     // bind this to the class instance instead of the event source
     this.showCloseMatches = this.showCloseMatches.bind(this);
-    this.addMenu();
+    this.addMenu(showInstancesBoxChecked);
   }
 
   /** @return whether subontologies are to be displayed separately. */
@@ -177,7 +177,7 @@ export default class Menu
 
   /** @param as an empty array that will be filled with the anchor elements
       Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.*/
-  addOptions(as)
+  addOptions(as,showInstancesBoxChecked)
   {
     const optionsContent = util.getElementById("options-menu-content");
     const names = ["separateSubs","cumulativeSearch","dayMode","devMode","extMode","combineMatchMode","showInstances"];
@@ -220,7 +220,7 @@ export default class Menu
     });
 
     // Initial state based on URL parameter. This checkbox is the only place where it is stored to prevent different values in different places.
-    this.showInstancesBox.checked = this.graph.params.instances;
+    this.showInstancesBox.checked = showInstancesBoxChecked;
     this.showInstancesBox.addEventListener("change",()=>
     {
       if(this.graph.instancesLoaded)
@@ -246,7 +246,7 @@ export default class Menu
   }
 
   /** Adds the menu to the graph parent DOM element and sets up the event listeners. */
-  addMenu()
+  addMenu(showInstancesBoxChecked)
   {
     console.groupCollapsed("Add menu");
     //const frag = new DocumentFragment();
@@ -351,7 +351,7 @@ export default class Menu
     addFilterEntries(this.graph.cy,util.getElementById("filter-menu-content"),aas[1]);  // update index when "Filter" position changes in the menu
     log.debug('filter entries added');
 
-    this.addOptions(aas[2]); // update index when "Options" position changes in the menu
+    this.addOptions(aas[2],showInstancesBoxChecked); // update index when "Options" position changes in the menu
 
     for(let i=0; i<aas.length; i++)
     {
