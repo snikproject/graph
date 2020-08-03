@@ -35,9 +35,9 @@ export default class ContextMenu
   }
 
   /** Add tooltips to all menu entries.*/
-  static addTippy(menu)
+  static addTippy(cxtMenu)
   {
-    menu.commands.forEach(c=>
+    cxtMenu.commands.forEach(c=>
     {
       if(c.tippy) {return;}
       c.tippy=true; // some commands are shared by multiple menus
@@ -46,6 +46,6 @@ export default class ContextMenu
       {c.contentStyle = {"pointer-events": "all"};}
       c.content=`<img src onerror="tippy('span')"><span data-tippy-content="${tooltip}" style="padding:3em;">${c.content}</span>`;
     });
-    return menu;
+    return cxtMenu;
   }
 }
