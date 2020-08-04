@@ -165,6 +165,7 @@ function initKeyListener()
       clipboard.length = 0;
       clipboard.push(...selected.map(node => node.id()));
       log.debug(`Copied ${clipboard.length} elements from ${state.name}.`);
+      log.info("Partial graph copied!");
     }
 
     if(e.code === "KeyP" || e.code === "KeyV")
@@ -177,6 +178,7 @@ function initKeyListener()
       state.cy.endBatch();
       state.cy.fit(state.cy.elements(":visible")); // needs to be outside the batch to fit correctly
       log.debug(`Pasted ${clipboard.length} elements into ${state.name}.`);
+      log.info("Partial graph inserted!");
     }
   });
 }
