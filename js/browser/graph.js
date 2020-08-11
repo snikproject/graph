@@ -453,9 +453,9 @@ export class Graph
   }
 
   /** Sets whether close matches are grouped in compound nodes. */
-  combineMatch(enabled)
+  async combineMatch(enabled)
   {
-    progress(()=>
+    await progress(()=>
     {
       if(!enabled)
       {
