@@ -10,6 +10,7 @@ const colorschemenight =
       "css":
       {
         'color': 'white',
+        "border-color": "white",
       },
     },
     {

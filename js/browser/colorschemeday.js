@@ -10,6 +10,7 @@ const colorschemeday =
       "css":
       {
         'color': 'black',
+        "border-color": "black",
       },
     },
     {

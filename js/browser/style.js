@@ -204,7 +204,6 @@ const style =
       "selector": "node",
       "css":
       {
-        "border-color": "rgb(255,255,255)",
         "background-color": (node)=>
         {
           let color = config.color.get(node.data(NODE.SOURCE));
