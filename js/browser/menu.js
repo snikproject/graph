@@ -13,7 +13,9 @@ import {showChapterSearch} from "./chaptersearch.js";
 import addFilterEntries from "./filter.js";
 import * as file from "./file.js";
 import {Graph} from "./graph.js";
-
+// grid picture as base64
+// eslint-disable-next-line
+const grid = "iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAYAAACoYAD2AAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TxSItDnYQUchQnSyIijhqFYpQIdQKrTqYXPoFTRqSFBdHwbXg4Mdi1cHFWVcHV0EQ/ABxcnRSdJES/5cUWsR4cNyPd/ced+8AoVFhmtU1Dmi6baaTCTGbWxV7XhFCBGEMIyIzy5iTpBR8x9c9Any9i/Ms/3N/joiatxgQEIlnmWHaxBvE05u2wXmfOMpKskp8Tjxm0gWJH7muePzGueiywDOjZiY9TxwlFosdrHQwK5ka8RRxTNV0yheyHquctzhrlRpr3ZO/MJzXV5a5TnMISSxiCRJEKKihjApsxGnVSbGQpv2Ej3/Q9UvkUshVBiPHAqrQILt+8D/43a1VmJzwksIJoPvFcT5GgJ5doFl3nO9jx2meAMFn4Epv+6sNYOaT9Hpbix0BfdvAxXVbU/aAyx1g4MmQTdmVgjSFQgF4P6NvygH9t0Dvmtdbax+nD0CGukrdAAeHwGiRstd93h3q7O3fM63+fgAltnKI89jkWgAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+QIDQwpAiBJZ4sAAABFSURBVFjD7dfBDQAgCARBtHI61yYgYjJbwGW+F1FcZp7qzR0fBAkJCQkJCQkJCQk5odXxScbniEFCQkJCQkJCQkJCPuwCY9AHy8qKGCgAAAAASUVORK5CYII=";
 /** main menu bar */
 export default class Menu
 {
@@ -180,7 +182,7 @@ export default class Menu
   addOptions(as,showInstancesBoxChecked)
   {
     const optionsContent = util.getElementById("options-menu-content");
-    const names = ["separateSubs","cumulativeSearch","dayMode","devMode","extMode","combineMatchMode","showInstances"];
+    const names = ["separateSubs","cumulativeSearch","grid","dayMode","devMode","extMode","combineMatchMode","showInstances"];
     for(const name of names)
     {
       log.trace("Add option "+name);
@@ -207,6 +209,7 @@ export default class Menu
 
     this.separateSubsBox.addEventListener("change",()=>{log.debug("Set separate Subontologies to "+this.separateSubsBox.checked);});
     this.dayModeBox.addEventListener("change",()=>{this.graph.invert(this.dayModeBox.checked);log.debug("Set dayMode to "+this.dayModeBox.checked);});
+    this.gridBox.addEventListener("change",()=>{this.graph.container.style.backgroundImage = this.gridBox.checked?"url('data:image/png;base64,"+grid+"')":"";});
     if(config.activeOptions.includes("day")) {this.dayModeBox.click();}
     if(config.activeOptions.includes("ext")) {this.extModeBox.click();}
     if(config.activeOptions.includes("dev")) {this.devModeBox.click();}

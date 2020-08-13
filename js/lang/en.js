@@ -22,6 +22,7 @@ export default
     "options": "Options",
     "separateSubs": "separate subontologies",
     "cumulativeSearch": "cumulative search",
+    "grid": "show grid",
     "dayMode": "day mode",
     "devMode": "developer mode",
     "extMode": "extended mode",
