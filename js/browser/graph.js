@@ -28,6 +28,7 @@ export class Graph
     const initTimer = timer("graph-init");
     this.matchComponents = [];
     this.container=container;
+    this.container.style.backgroundColor = "black"; // required to show background image
     this.cy = cytoscape(
       {
         container: container,

@@ -22,6 +22,7 @@ export default
     "options": "Optionen",
     "separateSubs": "nach Subontologien aufspalten",
     "cumulativeSearch": "Kumulative Suche",
+    "grid": "Raster anzeigen",
     "dayMode": "Tag-Modus",
     "devMode": "Entwickler-Modus",
     "extMode": "Erweiterter Modus",
