@@ -3,7 +3,7 @@ import chai from 'chai';
 chai.should();
 const assert = chai.assert;
 import log from 'loglevel';
-global.log=log
+global.log=log;
 
 describe('language', function()
 {

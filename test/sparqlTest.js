@@ -24,7 +24,7 @@ describe('sparql', function()
         {
           bindings[0].should.have.property("count");
           parseInt(bindings[0].count.value).should.be.within(EXPECTED_CLASSES_MIN,EXPECTED_CLASSES_MAX);
-        }
+        },
         );
     });
     it(`${GRAPH_SNIK_META} should contain between ${EXPECTED_META_CLASSES_MIN} and ${EXPECTED_META_CLASSES_MAX} classes`, function()
@@ -34,7 +34,7 @@ describe('sparql', function()
         {
           bindings[0].should.have.property("count");
           parseInt(bindings[0].count.value).should.be.within(EXPECTED_META_CLASSES_MIN,EXPECTED_META_CLASSES_MAX);
-        }
+        },
         );
     });
     it('should contain the snik subontology graphs', function()
@@ -54,7 +54,7 @@ describe('sparql', function()
             'http://www.snik.eu/ontology/it4it'];
           const difference = new Set(expectedGraphs.filter(x => !graphs.has(x))); //es6 set difference, see http://2ality.com/2015/01/es6-set-operations.html
           assert.deepEqual([...difference],[]);
-        }
+        },
         );
     });
     /*
