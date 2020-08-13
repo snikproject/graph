@@ -1,11 +1,13 @@
+/** Generates the HTML user manual using the help data describing the menu and context menu. */
 import fs from "fs";
 import * as help from "../js/help.js";
 import * as language from "../js/lang/language.js";
-//global.log = {debug: (console).info, warn: console.warn }; // log is a global in the browser code
-global.log = {debug: ()=>{}, warn: ()=>{}};
+// provide the log global to language.js, only show warnings and errors
+global.log = {debug: ()=>{}, info: ()=>{}, warn: console.warn, error: console.error };
 
 String.prototype.capitalize = function() {return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });};
 
+/** Recursively traverse the help data and transform it to HTML.*/
 function traverse(o, depth=1)
 {
   let html = "";
@@ -35,6 +37,7 @@ function traverse(o, depth=1)
   return html;
 }
 
+/** Fill the HTML template and write the result to the manual. */
 function generateManual()
 {
   language.setLanguage("en");
