@@ -4,7 +4,7 @@ Needs to be initialized before it can be used via the default export function.
 @module */
 import nodeMenus from "./contextmenuNodes.js";
 import ContextMenuEdges from "./contextmenuEdges.js";
-import {flatHelp} from "./help.js";
+import {flatHelp} from "../help.js";
 
 /** context menu for nodes and edges */
 export default class ContextMenu

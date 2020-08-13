@@ -1,5 +1,5 @@
 import fs from "fs";
-import * as help from "../js/browser/help.js";
+import * as help from "../js/help.js";
 import * as language from "../js/lang/language.js";
 //global.log = {debug: (console).info, warn: console.warn }; // log is a global in the browser code
 global.log = {debug: ()=>{}, warn: ()=>{}};

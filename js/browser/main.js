@@ -15,7 +15,7 @@ import initLog from "./log.js";
 import * as util from "./util.js";
 import ContextMenu from "./contextmenu.js";
 import {addOverlay} from "./benchmark.js";
-import * as help from "./help.js";
+import * as help from "../help.js";
 
 /** Parse browser URL POST parameters. */
 function parseParams()
