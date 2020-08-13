@@ -27,7 +27,7 @@ export class Graph
   {
     const initTimer = timer("graph-init");
     this.matchComponents = [];
-
+    this.container=container;
     this.cy = cytoscape(
       {
         container: container,
@@ -306,12 +306,12 @@ export class Graph
   {
     if (enabled)
     {
-      this.parent.style.backgroundColor = "white";
+      this.container.style.backgroundColor = "white";
       this.cy.style().fromJson(style.style.concat(colorschemeday)).update();
     }
     else
     {
-      this.parent.style.backgroundColor = "black";
+      this.container.style.backgroundColor = "black";
       this.cy.style().fromJson(style.style.concat(colorschemenight)).update();
     }
   }
