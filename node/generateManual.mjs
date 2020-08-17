@@ -11,27 +11,26 @@ String.prototype.capitalize = function() {return this.replace(/(?:^|\s)\S/g, fun
 function traverse(o, depth=1)
 {
   let html = "";
-  const label = key => (language.getString(key)?language.getString(key):key.replace("-"," ")).capitalize();
+  const label = key => (language.getString(key)?language.getString(key): // prefer the localized description string
+    key.replace("-"," ") // generate label out of key as fallback
+  ).capitalize();
   const heading = key => `<h${depth}>${label(key)}</h${depth}>\n`;
   for(const key in o)
   {
     const value = o[key];
-    if(typeof value !=="string")
+    if(typeof value !=="string") // value is an object
     {
       html+=heading(key);
-      if(help.flatHelp[key]) {html+=help.flatHelp[key];} // heading description
       {html+=traverse(value,depth+1);}
       continue;
     }
-    if(key!=="")
+    // value is a string
+    if(key==="img")
     {
-      if(key==="img")
-      {
-        html+=`<img src="img/${value}" style="max-width:100vw;">\n`;
-        continue;
-      }
-      else {html+=heading(key);}
+      html+=`<img src="img/${value}" style="max-width:100vw;">\n`;
+      continue;
     }
+    if(key!=="") {html+=heading(key);}
     html+=value+"\n";
   }
   return html;
