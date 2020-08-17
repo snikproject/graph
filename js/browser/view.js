@@ -128,6 +128,6 @@ export class View
       container.getElement()[0].appendChild(thisView.cyContainer);
     });
     goldenLayout.root.contentItems[0].addChild(itemConfig);
-    this.addGraph();
+    this.initialized = this.addGraph();
   }
 }
