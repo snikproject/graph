@@ -79,7 +79,7 @@ export const help =
       "filter":
       {
         "":"A collection of filters to display relevant subgraphs.",
-        "meta": "The Meta Ontology provides common superclasses and relations for the subontologies of SNIK.",
+        "meta": "The Meta Ontology provides common superclasses and properties for the subontologies of SNIK.",
         "bb":"Based on the book \"Health Information Systems Ontology–Architectures and Strategies\".",
         "ob": "Based on the book\"IT-Projektmanagement im Gesundheitswesen - Lehrbuch und Projektleitfaden.",
         "he": "Based on the book \"Informationsmanagement: Grundlagen, Aufgaben, Methoden\".",
@@ -96,8 +96,7 @@ export const help =
         "day-mode":"White background. Saves ink when printing.",
         "dev-mode":"Additional context menu entries for developers.",
         "ext-mode":"Additional context menu entries for power users.",
-        "combine-match": `Highlights groups of classes representing the same concept from different subontologies (matches) by placing them in boxes.
-Use "move matches on top of each other" or "move matches nearby" to shrink those boxes.`,
+        "combine-match": `Highlights groups of classes representing the same concept from different subontologies (matches) by placing them in boxes. Use "move matches on top of each other" or "move matches nearby" to shrink those boxes.`,
       },
       "layout":
       {
@@ -116,12 +115,12 @@ Use "move matches on top of each other" or "move matches nearby" to shrink those
       {
         "":"Other ways to access SNIK.",
         "sparql-endpoint": "Expert interface for the SPARQL Protocol and RDF Query Language endpoint.",
-        "rdf-browser": "Browse complete descriptions of classes in the RDF browser.",
+        "rdf-browser": "Browse complete descriptions of resources in the RDF browser.",
       },
       "language":"Language switch, you can choose between English, German and Persian. Ontologies may not or not fully support all available languages.",
       "help":"Common Help Menu, holds e.g. this manual",
     },
-    "search-field":"Search for classes by entering a full or partial name.",
+    "search-field":"Search for resources by entering a full or partial name.",
   },
 };
 

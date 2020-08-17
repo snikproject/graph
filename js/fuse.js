@@ -38,7 +38,7 @@ export async function createIndex()
   group_concat(distinct(str(?def));separator="|") as ?def
   ${froms}
   {
-    ?c a owl:Class.
+    {?c a owl:Class.} UNION {?c a [a owl:Class.]}
     ?c rdfs:label ?l.
     OPTIONAL {?c skos:altLabel ?al.}
     OPTIONAL {?c skos:definition ?def.}
@@ -65,7 +65,7 @@ export async function createIndex()
   return items; // for testing
 }
 
-/** Searches the Fuse index for classes with a similar label.
+/** Searches the Fuse index for resources with a similar label.
 @param {string} userQuery
 @return {Promise<string[]>} the class URIs found.
 */

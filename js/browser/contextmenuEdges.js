@@ -24,7 +24,7 @@ export default class ContextMenuEdges
     else {this.menus= [ContextMenuEdges.baseMenu(commands),ContextMenuEdges.baseLimesMenu(commands)];}
   }
 
-  /** Context menu for edges in base mode that are either confirmed interlinks (skos:closeMatch and friends in the match graph) or meta relations, such as meta:updates.
+  /** Context menu for edges in base mode that are either confirmed interlinks (skos:closeMatch and friends in the match graph) or meta properties, such as meta:updates.
   Offers base commands.*/
   static baseMenu(commands)
   {
