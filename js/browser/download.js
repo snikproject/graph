@@ -72,6 +72,7 @@ export function downloadSession()
       name: views[i].state.name,
       graph: views[i].state.cy.json(),
     });
+    delete session.tabs[i-1].graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
   }
   downloadJson(session,"snik-session.json");
 }
