@@ -1,6 +1,7 @@
 /** Module for loading files both locally from the server and via upload from the client.
 @module */
 import * as layout from "../layout.js";
+import {View,views,reset} from "./view.js";
 
 /**
 Uploads a JSON file from the user.
@@ -15,6 +16,21 @@ function uploadJson(event,callback)
   reader.readAsText(file);
 }
 
+/** Clear the graph and load the contents of the Cytoscape.js JSON file in it. */
+function loadGraphFromJson(graph,json)
+{
+  graph.cy.elements().remove();
+  graph.cy.json(json);
+  graph.cy.elements().addClass("unfiltered");
+  const visibleFraction = 1.0*graph.cy.elements(":visible").size()/graph.cy.elements().size();
+  const starMode = visibleFraction<0.8;
+  log.info("Load Graph from File: Visible fraction: "+visibleFraction+" set star mode to "+starMode);
+  if(graph.cy.nodes(":child").size()>0) {document.getElementById("combine-match-checkbox").checked=true;}
+  graph.starMode = starMode;
+  graph.cy.center(":visible");
+  graph.cy.fit(":visible");
+}
+
 /**
 Curried function.
 Load a layouted graph from the JSON file specified by the given file input change event.
@@ -25,18 +41,28 @@ export const loadGraphFromJsonFile = graph => event =>
 {
   uploadJson(event,json=>
   {
-    graph.cy.elements().remove();
-    graph.cy.json(json);
-    graph.cy.elements().addClass("unfiltered");
-    const visibleFraction = 1.0*graph.cy.elements(":visible").size()/graph.cy.elements().size();
-    const starMode = visibleFraction<0.8;
-    log.info("Load Graph from File: Visible fraction: "+visibleFraction+" set star mode to "+starMode);
-    if(graph.cy.nodes(":child").size()>0) {document.getElementById("combine-match-checkbox").checked=true;}
-    graph.starMode = starMode;
-    graph.cy.center(":visible");
-    graph.cy.fit(":visible");
+    loadGraphFromJson(graph,json);
   });
 };
+
+
+/** Loads the contents of all views from a JSON file.
+    @param {Event} event a file input change event
+*/
+export async function loadSessionFromJsonFile(event)
+{
+  uploadJson(event,async json =>
+  {
+    reset();
+    loadGraphFromJson(views[0].state.graph,json.graph);
+    for (let i =0; i<json.tabs.length;i++)
+    {
+      const view = new View();
+      await view.initialized;
+      loadGraphFromJson(view.state.graph,json.tabs[i].graph);
+    }
+  });
+}
 
 /**
 Load a layout from the JSON file specified by the given file input change event.
@@ -85,4 +111,5 @@ export function addFileLoadEntries(graph,parent,as)
 {
   addLoadEntry(parent,"load-layout","Load Layout",loadLayout(graph),as);
   addLoadEntry(parent,"load-graph-with-layout","Load Graph File with Layout",loadGraphFromJsonFile(graph),as);
+  addLoadEntry(parent,"load-session","Load Session",loadSessionFromJsonFile,as);
 }

@@ -74,9 +74,12 @@ goldenLayout.on('stackCreated', function(stack)
 });
 goldenLayout.init();
 
+
 let viewCount = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
-const views = [];
+export const views = [];
 let firstFinished = null; // following instances need to wait for the first to load
+
+
 
 export class View
 {
@@ -113,21 +116,62 @@ export class View
   {
     const name = viewCount++===0?"Gesamtmodell":"Teilmodell "+(viewCount-1);
     this.state = {name:name};
+    views.push(this);
+    const closable = views.length>1;
     const itemConfig = {
       title:name,
       type: 'component',
       componentName: name,
       componentState: this.state,
+      isClosable: closable,
     };
     const thisView = this; // supply this to callback
-    views.push(this);
 
     goldenLayout.registerComponent(name, function(container, state)
     {
       thisView.cyContainer = document.createElement("div");
+      thisView.element = container.getElement()[0];
       container.getElement()[0].appendChild(thisView.cyContainer);
     });
     goldenLayout.root.contentItems[0].addChild(itemConfig);
     this.initialized = this.addGraph();
   }
+}
+
+
+let removePleaseMrGoldenLayout = [];
+
+/***/
+function traverse(x,depth)
+{
+  if(x.type==="component"&&x.componentName!=="Gesamtmodell") {removePleaseMrGoldenLayout.push(x); return;}
+  if(depth>100) {console.log("I'm too deep.");return;}
+  for(const y of x.contentItems)
+  {
+    traverse(y,++depth);
+  }
+}
+
+/** close all tabs except the first one */
+export function reset()
+{
+  console.log(goldenLayout.root);
+  removePleaseMrGoldenLayout = [];
+  traverse(goldenLayout.root,0);
+  for(const content of removePleaseMrGoldenLayout) {content.remove();}
+  /*
+  for(const item of goldenLayout.root.contentItems[0].contentItems)
+  {
+    while(item.contentItems.length>0)
+    {
+      const it = item.contentItems[0];
+      //if(it.state.name!=="Gesamtmodell")
+      {it.remove();}
+    }
+  }
+*/
+  console.log("yes");
+  // for(let i=1;i<views.length;i++)
+  // {
+  // }
 }

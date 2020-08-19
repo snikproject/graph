@@ -3,6 +3,7 @@ Lets the user download files generated from the loaded graph.
 @module */
 import * as layout from "../layout.js";
 import config from "../config.js";
+import {views} from "./view.js";
 
 let a = null; // reused for all downloading, not visible to the user
 
@@ -57,6 +58,22 @@ export function downloadGraph(graph)
   const json = graph.cy.json();
   delete json.style; // the style gets corrupted on export due to including functions, the default style will be used instead
   downloadJson(json,"snik.json");
+}
+
+/** Downloads the contents of all views as a custom JSON file. */
+export function downloadSession()
+{
+  const session ={tabs:[]};
+  session.graph = views[0].state.cy.json();
+  delete session.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
+  for (let i=1; i<views.length;i++)
+  {
+    session.tabs.push({
+      name: views[i].state.name,
+      graph: views[i].state.cy.json(),
+    });
+  }
+  downloadJson(session,"snik-session.json");
 }
 
 /** Downloads all node positions. Can only be applied later with a compatible graph already loaded.*/
