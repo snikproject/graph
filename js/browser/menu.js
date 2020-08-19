@@ -96,7 +96,8 @@ export default class Menu
             progress(()=>layout.runCached(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs()));
           },
           "Load from SPARQL Endpoint","load-sparql"],
-          [()=>download.downloadGraph(this.graph),"Save Session","save-cytoscape-full"],
+          [()=>download.downloadSession(),"Save Session","save-cytoscape-full"],
+          [()=>download.downloadGraph(this.graph),"Save Graph","save-cytoscape-graph"],
           [()=>download.downloadLayout(this.graph),"Save Layout only","save-layout"],
           [()=>
           {
