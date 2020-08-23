@@ -139,12 +139,12 @@ export class View
 }
 
 
-let removePleaseMrGoldenLayout = [];
+let removeTabsArray = [];
 
-/***/
+/** helper function that traverses the component tree */
 function traverse(x,depth)
 {
-  if(x.type==="component"&&x.componentName!=="Gesamtmodell") {removePleaseMrGoldenLayout.push(x); return;}
+  if(x.type==="component"&&x.componentName!=="Gesamtmodell") {removeTabsArray.push(x); return;}
   if(depth>100) {console.log("I'm too deep.");return;}
   for(const y of x.contentItems)
   {
@@ -156,22 +156,7 @@ function traverse(x,depth)
 export function reset()
 {
   console.log(goldenLayout.root);
-  removePleaseMrGoldenLayout = [];
+  removeTabsArray = [];
   traverse(goldenLayout.root,0);
-  for(const content of removePleaseMrGoldenLayout) {content.remove();}
-  /*
-  for(const item of goldenLayout.root.contentItems[0].contentItems)
-  {
-    while(item.contentItems.length>0)
-    {
-      const it = item.contentItems[0];
-      //if(it.state.name!=="Gesamtmodell")
-      {it.remove();}
-    }
-  }
-*/
-  console.log("yes");
-  // for(let i=1;i<views.length;i++)
-  // {
-  // }
+  for(const content of removeTabsArray) {content.remove();}
 }
