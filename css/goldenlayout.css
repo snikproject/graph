@@ -27,3 +27,6 @@
   background-color:black;
   border-bottom:1px solid #ff2e88
 }
+.lm_header{
+  z-index: 0
+}
