@@ -39,7 +39,6 @@ export function goldenLayout()
 
     controls.querySelector('.plussign').addEventListener("click",()=>
     {
-      log.info(layout.selectedItem);
       const cy = activeState().cy;
       cy.zoom(cy.zoom()*1.2);
     });
