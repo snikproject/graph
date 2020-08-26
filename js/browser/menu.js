@@ -13,6 +13,7 @@ import {showChapterSearch} from "./chaptersearch.js";
 import addFilterEntries from "./filter.js";
 import * as file from "./file.js";
 import {Graph} from "./graph.js";
+import {activeState, views} from "./view.js";
 // grid picture as base64
 // eslint-disable-next-line
 const grid = "iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAYAAACoYAD2AAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TxSItDnYQUchQnSyIijhqFYpQIdQKrTqYXPoFTRqSFBdHwbXg4Mdi1cHFWVcHV0EQ/ABxcnRSdJES/5cUWsR4cNyPd/ced+8AoVFhmtU1Dmi6baaTCTGbWxV7XhFCBGEMIyIzy5iTpBR8x9c9Any9i/Ms/3N/joiatxgQEIlnmWHaxBvE05u2wXmfOMpKskp8Tjxm0gWJH7muePzGueiywDOjZiY9TxwlFosdrHQwK5ka8RRxTNV0yheyHquctzhrlRpr3ZO/MJzXV5a5TnMISSxiCRJEKKihjApsxGnVSbGQpv2Ej3/Q9UvkUshVBiPHAqrQILt+8D/43a1VmJzwksIJoPvFcT5GgJ5doFl3nO9jx2meAMFn4Epv+6sNYOaT9Hpbix0BfdvAxXVbU/aAyx1g4MmQTdmVgjSFQgF4P6NvygH9t0Dvmtdbax+nD0CGukrdAAeHwGiRstd93h3q7O3fM63+fgAltnKI89jkWgAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+QIDQwpAiBJZ4sAAABFSURBVFjD7dfBDQAgCARBtHI61yYgYjJbwGW+F1FcZp7qzR0fBAkJCQkJCQkJCQk5odXxScbniEFCQkJCQkJCQkJCPuwCY9AHy8qKGCgAAAAASUVORK5CYII=";
@@ -62,7 +63,7 @@ export default class Menu
   showCloseMatches()
   {
     log.debug("show close matches start");
-    const visible = this.graph.cy.elements('.unfiltered').not('.hidden');
+    const visible = activeState().graph.cy.elements('.unfiltered').not('.hidden');
     //const closeMatchEdges = this.graph.cy.edges('[pl="closeMatch"]');
     const newEdges = visible.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
     Graph.setVisible(newEdges,true);
@@ -98,14 +99,13 @@ export default class Menu
           "Load from SPARQL Endpoint","load-sparql"],
           [()=>download.downloadSession(),"Save Session","save-cytoscape-full"],
           [()=>download.downloadGraph(this.graph),"Save Graph","save-cytoscape-graph"],
-          [()=>download.downloadLayout(this.graph),"Save Layout only","save-layout"],
           [()=>
           {
             progress(()=>layout.run(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs(),true));
           },"Recalculate Layout and Replace in Browser Cache","recalculate-layout-replace"],
-          [()=>download.downloadPng(this.graph,this,false,false),"Save Image of Current View","save-image-current-view"],
+          [()=>download.downloadPng(activeState().graph,this,false,false),"Save Image of Current View","save-image-current-view"],
           [()=>download.downloadPng(this.graph,this,true,false),"Save Image of Whole Graph","save-image-whole-graph"],
-          [()=>download.downloadPng(this.graph,this,false,true),"Save Image of Current View (high res)","save-image-current-view-high-res"],
+          [()=>download.downloadPng(activeState().graph,this,false,true),"Save Image of Current View (high res)","save-image-current-view-high-res"],
           [()=>download.downloadPng(this.graph,this,true,true),"Save Image of Whole Graph (high res)","save-image-whole-graph-high-res"],
         ],
       },
@@ -130,8 +130,8 @@ export default class Menu
               [()=>{layout.run(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs()&&!this.graph.getStarMode(),true);}, "recalculate layout", "recalculate-layout","ctrl+alt+l"],
               [()=>{layout.run(this.graph.cy,layout.eulerTight,config.defaultSubOntologies,this.separateSubs()&&!this.graph.getStarMode(),false);}, "tight layout","tight-layout","ctrl+alt+t"],
               [()=>{layout.run(this.graph.cy,layout.cose,config.defaultSubOntologies,this.separateSubs()&&!this.graph.getStarMode(),false);}, "compound layout","compound-layout","ctrl+alt+c"],
-              [()=>this.graph.moveAllMatches(0), "move matches on top of each other","move-match-on-top"],
-              [()=>this.graph.moveAllMatches(100), "move matches nearby","move-match-nearby"],
+              [()=>activeState().graph.moveAllMatches(0), "move matches on top of each other","move-match-on-top"],
+              [()=>activeState().graph.moveAllMatches(100), "move matches nearby","move-match-nearby"],
               [()=>{showChapterSearch("bb");},"BB chapter search","bb-chapter-search"],
               [()=>{showChapterSearch("ob");},"OB chapter search","ob-chapter-search"],
               [this.graph.subOntologyConnectivity, "subontology connectivity","subontology-connectivity"],
@@ -209,8 +209,8 @@ export default class Menu
     }
 
     this.separateSubsBox.addEventListener("change",()=>{log.debug("Set separate Subontologies to "+this.separateSubsBox.checked);});
-    this.dayModeBox.addEventListener("change",()=>{this.graph.invert(this.dayModeBox.checked);log.debug("Set dayMode to "+this.dayModeBox.checked);});
-    this.gridBox.addEventListener("change",()=>{this.graph.container.style.backgroundImage = this.gridBox.checked?"url('data:image/png;base64,"+grid+"')":"";});
+    this.dayModeBox.addEventListener("change",()=>{for(const view of views){view.state.graph.invert(this.dayModeBox.checked);log.debug("Set dayMode to "+this.dayModeBox.checked);}});
+    this.gridBox.addEventListener("change",()=>{for(const view of views){view.state.graph.container.style.backgroundImage = this.gridBox.checked?"url('data:image/png;base64,"+grid+"')":"";}});
     if(config.activeOptions.includes("day")) {this.dayModeBox.click();}
     if(config.activeOptions.includes("ext")) {this.extModeBox.click();}
     if(config.activeOptions.includes("dev")) {this.devModeBox.click();}
@@ -219,7 +219,7 @@ export default class Menu
     /** @type {HTMLInputElement} */
     this.combineMatchModeBox.addEventListener("change",()=>
     {
-      this.graph.combineMatch(this.combineMatchModeBox.checked);
+      activeState().graph.combineMatch(this.combineMatchModeBox.checked);
       log.debug("Set combine match mode to "+this.combineMatchModeBox.checked);
     });
 
