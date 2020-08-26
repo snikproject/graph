@@ -42,4 +42,8 @@ export default
     "graph" :"http://www.snik.eu/ontology",
     "instances": false,
   },
+  "multiview":
+  {
+    "initialTabs": 1,
+  },
 };

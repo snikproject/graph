@@ -178,7 +178,7 @@ async function main()
   initKeyListener();
   MicroModal.init({openTrigger: 'data-custom-open'});
 
-  for (let i = 0; i<2;i++)
+  for (let i = 0; i<config.multiview.initialTabs;i++)
   {
     const view = new View();
     await view.initialized;
