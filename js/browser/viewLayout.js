@@ -1,7 +1,7 @@
 /** @module */
 import * as util from "./util.js";
 import {activeState, View} from "./view.js";
-
+import * as layout from "../layout.js";
 /** Create, configure and return a GoldenLayout instance.*/
 export function goldenLayout()
 {
@@ -13,19 +13,19 @@ export function goldenLayout()
     }],
   };
 
-  const layout = new GoldenLayout(config);
+  const viewLayout = new GoldenLayout(config);
   // TODO: update stack on focus change
 
-  layout.on("selectionChanged ",event=>
+  viewLayout.on("selectionChanged ",event=>
   {
   // TODO TP: This event is not firing despite following the docs. Please investigate and fix.
     log.info("SELECTION CHANGED");
     log.info(event);
   });
 
-  layout.on('stackCreated', function(stack)
+  viewLayout.on('stackCreated', function(stack)
   {
-    layout.selectItem(stack);
+    viewLayout.selectItem(stack);
     const template = util.getElementById('goldenlayout-header');
     const zoomButtons = document.importNode(template.content, true);
 
@@ -35,7 +35,7 @@ export function goldenLayout()
 
     // When a tab is selected then select its stack. For unknown reasons this is not default behaviour of GoldenLayout.
     // What happens when a tab is moved out of a stack? Testing showed no problems but this should be investigated for potential bugs.
-    stack.on("activeContentItemChanged",()=>{layout.selectItem(stack);});
+    stack.on("activeContentItemChanged",()=>{viewLayout.selectItem(stack);});
 
     controls.querySelector('.plussign').addEventListener("click",()=>
     {
@@ -60,6 +60,6 @@ export function goldenLayout()
       layout.run(activeState().cy,layout.euler,config.defaultSubOntologies,false,true); // TODO TP: put menu back in
     });
   });
-  layout.init();
-  return layout;
+  viewLayout.init();
+  return viewLayout;
 }

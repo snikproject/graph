@@ -7,12 +7,12 @@ import {goldenLayout} from "./viewLayout.js";
 let viewCount = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
 export const views = [];
 let firstFinished = null; // following instances need to wait for the first to load
-let layout=goldenLayout();
+let viewLayout=goldenLayout();
 
 /** Returns the state of the active (focussed) view. */
 export function activeState()
 {
-  return layout.selectedItem.getActiveContentItem().config.componentState;
+  return viewLayout.selectedItem.getActiveContentItem().config.componentState;
 }
 
 export class View
@@ -56,13 +56,13 @@ export class View
     };
     const thisView = this; // supply this to callback
 
-    layout.registerComponent(name, function(container, state)
+    viewLayout.registerComponent(name, function(container, state)
     {
       thisView.cyContainer = document.createElement("div");
       thisView.element = container.getElement()[0];
       container.getElement()[0].appendChild(thisView.cyContainer);
     });
-    layout.root.contentItems[0].addChild(itemConfig);
+    viewLayout.root.contentItems[0].addChild(itemConfig);
 
     const graph = new Graph(this.cyContainer);
     const cy = graph.cy;
@@ -89,13 +89,13 @@ function traverse(x,depth)
 /** close all tabs except the first one */
 export function reset()
 {
-  console.log(layout.root);
+  console.log(viewLayout.root);
   removeTabsArray = [];
-  traverse(layout.root,0);
+  traverse(viewLayout.root,0);
   for(const content of removeTabsArray){content.remove();}
   views.length=0;
   viewCount=0;
-  layout.destroy();
-  layout=goldenLayout();
+  viewLayout.destroy();
+  viewLayout=goldenLayout();
   // console.log(goldenLayoutConfig);
 }
