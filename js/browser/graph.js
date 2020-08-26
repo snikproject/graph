@@ -12,6 +12,7 @@ import * as sparql from "../sparql.js";
 import * as rdf from "../rdf.js";
 import * as language from "../lang/language.js";
 import progress from "./progress.js";
+import {View,activeState} from "./view.js";
 
 export const Direction = Object.freeze({
   IN:   Symbol("in"),
@@ -523,16 +524,18 @@ export class Graph
     MicroModal.show("subontology-connectivity");
     const form = document.getElementById("subontology-connectivity-form");
     if(form.listener) {return;}
-    form.listener = (e) =>
+    form.listener = async (e) =>
     {
       e.preventDefault();
       MicroModal.close("subontology-connectivity");
+      const connect=new View();
+      await connect.initialized;
       const subs = [form[0].value,form[1].value];
       log.debug(`Showing connectivity between the subontologies ${subs[0]} and ${subs[1]}.`);
-      const subGraphs = subs.map(s=>this.cy.nodes(`[source="${s}"]`));
+      const subGraphs = subs.map(s=>connect.state.cy.nodes(`[source="${s}"]`));
       const connections = subGraphs[0].edgesWith(subGraphs[1]);
       const nodes = connections.connectedNodes();
-      Graph.setVisible(this.cy.elements(),false);
+      Graph.setVisible(connect.state.cy.elements(),false);
       Graph.setVisible(nodes,true);
       Graph.setVisible(nodes.edgesWith(nodes),true);
       nodes.layout(

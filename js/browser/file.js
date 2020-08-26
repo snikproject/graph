@@ -54,11 +54,11 @@ export async function loadSessionFromJsonFile(event)
   uploadJson(event,async json =>
   {
     reset();
-    loadGraphFromJson(views[0].state.graph,json.graph);
+    const view=new View(false);
+    loadGraphFromJson(view.state.graph,json.graph);
     for (let i =0; i<json.tabs.length;i++)
     {
-      const view = new View();
-      await view.initialized;
+      const view = new View(false);
       loadGraphFromJson(view.state.graph,json.tabs[i].graph);
     }
   });
@@ -109,7 +109,6 @@ Cannot use the simpler default menu creation method because file upload only wor
 */
 export function addFileLoadEntries(graph,parent,as)
 {
-  addLoadEntry(parent,"load-layout","Load Layout",loadLayout(graph),as);
-  addLoadEntry(parent,"load-graph-with-layout","Load Graph File with Layout",loadGraphFromJsonFile(graph),as);
+  //addLoadEntry(parent,"load-layout","Load Layout",loadLayout(graph),as);
   addLoadEntry(parent,"load-session","Load Session",loadSessionFromJsonFile,as);
 }
