@@ -59,7 +59,7 @@ export default class Search
     {
       util.getElementById("h2:search-results").innerHTML=`${uris.length} Search Results for "${query}"`;
     }
-    // Preprocessing: Classify URIs as (0) in graph and visible, (1) in graph and invisible and (2) not in the graph.
+    // Preprocessing: Classify URIs as (0) in graph and visible, (1) in graph and hidden but not filtered, (2) in graph and filtered and (3) not in the graph.
     const uriType = {};
 
     uris.forEach(uri=>
@@ -68,9 +68,10 @@ export default class Search
       if(node)
       {
         uriType[uri]=0;
-        if(!node.visible()) {uriType[uri]=1;}
+        if(node.hasClass("hidden")&&!node.hasClass("filtered")) {uriType[uri]=1;}
+        else if(node.hasClass("filtered")) {uriType[uri]=2;}
       }
-      else {uriType[uri]=2;}
+      else {uriType[uri]=3;}
     });
     // JavaScript search implementation is up to the browser but most should have a stable array search, which means that URIs within a URI type should keep their relative ranking
     uris.sort((a,b)=>(uriType[a]-uriType[b]));
@@ -83,7 +84,7 @@ export default class Search
       window.presentUri=this.graph.presentUri;
       locateCell.innerHTML = `<a class="search-class${uriType[uri]}" href="javascript:MicroModal.close('search-results');window.presentUri('${uri}');void(0)">
           ${uri.replace(sparql.SNIK_PREFIX,"")}</a>`;
-      const html = `<a class="search-class0"" href="${uri}" target="_blank">Description</a>`;
+      const html = `<a class="search-class${uriType[uri]}" href="${uri}" target="_blank">Description</a>`;
       lodLiveCell.innerHTML = html;
     });
 

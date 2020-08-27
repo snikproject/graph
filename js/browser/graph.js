@@ -337,14 +337,19 @@ export class Graph
     const nodes = this.cy.elements().nodes().filter(`node[id= "${uri}"]`);
     if(nodes.length<1)
     {
-      log.warn(`Class not in graph. ${uri} may be available on the SPARQL endpoint but not in the graph.`);
+      log.warn(`Node not in graph. ${uri} may be available on the SPARQL endpoint but not in the graph.`);
       return false;
     }
     const node = nodes[0];
-    if(!node.visible())
+    if(node.hasClass("filtered"))
     {
-      log.warn(`Class not visible. ${uri} is not visible. Please adjust filters. `);
+      log.warn(`Node is filtered out. ${uri} is not visible. Please adjust filters.`);
       return false;
+    }
+    if(node.hasClass("hidden"))
+    {
+      log.info(`Node is hidden. Unhiding ${uri}.`);
+      Graph.setVisible(node,true);
     }
     if(!this.cumulativeSearch()) {this.resetStyle();}
     this.highlight(node);
