@@ -64,6 +64,16 @@ export async function loadSessionFromJsonFile(event)
   });
 }
 
+/** Loads a stored view from a JSON file. */
+export function loadView(event)
+{
+  uploadJson(event,json =>
+  {
+    const view=new View(false);
+    loadGraphFromJson(view.state.graph,json.graph);
+  });
+}
+
 /**
 Load a layout from the JSON file specified by the given file input change event.
 @param {Event} event a file input change event
@@ -109,6 +119,6 @@ Cannot use the simpler default menu creation method because file upload only wor
 */
 export function addFileLoadEntries(graph,parent,as)
 {
-  addLoadEntry(parent,"load-view","Load Partial Graph",loadLayout(graph),as);
+  addLoadEntry(parent,"load-view","Load Partial Graph",loadView,as);
   addLoadEntry(parent,"load-session","Load Session",loadSessionFromJsonFile,as);
 }

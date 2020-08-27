@@ -77,6 +77,17 @@ export function downloadSession()
   downloadJson(session,"snik-session.json");
 }
 
+/** Downloads the contents of the current view as a custom JSON file. */
+export function downloadView(state)
+{
+  const view ={
+    name: state.name,
+    graph: state.cy.json(),
+  };
+  delete view.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
+  downloadJson(view,"snik-view.json");
+}
+
 /** Downloads all node positions. Can only be applied later with a compatible graph already loaded.*/
 export function downloadLayout(graph) {return downloadJson(layout.positions(graph.cy.nodes()),"layout.json");}
 
