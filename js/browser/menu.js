@@ -128,15 +128,15 @@ export default class Menu
         "entries":
             [
               [this.showCloseMatches,"show close matches","show-close-matches"],
-              [()=>{layout.run(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs()&&!this.graph.getStarMode(),true);}, "recalculate layout", "recalculate-layout","ctrl+alt+l"],
-              [()=>{layout.run(this.graph.cy,layout.eulerTight,config.defaultSubOntologies,this.separateSubs()&&!this.graph.getStarMode(),false);}, "tight layout","tight-layout","ctrl+alt+t"],
-              [()=>{layout.run(this.graph.cy,layout.cose,config.defaultSubOntologies,this.separateSubs()&&!this.graph.getStarMode(),false);}, "compound layout","compound-layout","ctrl+alt+c"],
+              [()=>{layout.run(activeState().graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs()&&!activeState().graph.getStarMode(),true);}, "recalculate layout", "recalculate-layout","ctrl+alt+l"],
+              [()=>{layout.run(activeState().graph.cy,layout.eulerTight,config.defaultSubOntologies,this.separateSubs()&&!activeState().graph.getStarMode(),false);}, "tight layout","tight-layout","ctrl+alt+t"],
+              [()=>{layout.run(activeState().graph.cy,layout.cose,config.defaultSubOntologies,this.separateSubs()&&!activeState().graph.getStarMode(),false);}, "compound layout","compound-layout","ctrl+alt+c"],
               [()=>activeState().graph.moveAllMatches(0), "move matches on top of each other","move-match-on-top"],
               [()=>activeState().graph.moveAllMatches(100), "move matches nearby","move-match-nearby"],
               [()=>{showChapterSearch("bb");},"BB chapter search","bb-chapter-search"],
               [()=>{showChapterSearch("ob");},"OB chapter search","ob-chapter-search"],
               [this.graph.subOntologyConnectivity, "subontology connectivity","subontology-connectivity"],
-              [this.graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
+              [views[0].state.graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
             ],
       },
       {

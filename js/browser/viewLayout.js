@@ -59,6 +59,16 @@ export function goldenLayout()
     //layout.run(state.cy,layout.euler,config.defaultSubOntologies,this.menu.separateSubs()&&!state.graph.starMode,true);
       layout.run(activeState().cy,layout.euler,config.defaultSubOntologies,false,true); // TODO TP: put menu back in
     });
+
+    controls.querySelector('.tightlayoutsign').addEventListener("click",()=>
+    {
+      layout.run(activeState().cy,layout.eulerTight,config.defaultSubOntologies,false,true);
+    });
+
+    controls.querySelector('.compoundlayoutsign').addEventListener("click",()=>
+    {
+      layout.run(activeState().cy,layout.cose,config.defaultSubOntologies,false,true);
+    });
   });
   viewLayout.init();
   return viewLayout;
