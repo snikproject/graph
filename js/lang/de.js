@@ -6,11 +6,11 @@ export default
   // file **********************************************
     "file": "Datei",
     "load-graph-with-layout": "Lade Graph Datei mit Layout",
-    "load-layout": "Lade Layout",
+    "load-view": "Lade Teilgraph",
     "load-sparql": "Lade aus dem SPARQL Endpunkt",
     "save-cytoscape-full": "Speichere den kompletten Graph mit Layout als Cytoscape Datei",
     "save-cytoscape-visible": "Speichere den sichtbaren Graph mit Layout als Cytoscape Datei",
-    "save-layout": "Speichere nur das Layout",
+    "save-view": "Speichere aktuellen Teilgraphen",
     "recalculate-layout-replace":"Layout neu berechnen und im Browser Cache platzieren",
     "save-image-current-view": "Speichere Bilddatei der aktuellen Ansicht",
     "save-image-whole-graph": "Speichere Bilddatei des kompletten Graphen",
