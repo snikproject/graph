@@ -16,7 +16,7 @@ export default
   "nodeSize" : 39,
   "helperGraphs": ["limes-exact","match"],
   "activeOptions": [], // initially active options, choose a subset of: ["dev", "ext","day"]
-  "searchCloseMatch": false, // true is rejected because of the high estimated time by the SPARQL endpoint because of too many optional clauses
+  "searchCloseMatch": true, // true is rejected because of the high estimated time by the SPARQL endpoint because of too many optional clauses
   // only used for mobile, desktop will always use cxttapstart
   'openMenuEvents': 'cxttapstart taphold', // space-separated cytoscape events that will open the menu; only `cxttapstart` and/or `taphold` work here, see https://github.com/cytoscape/cytoscape.js-cxtmenu
   /** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */

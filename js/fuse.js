@@ -33,16 +33,16 @@ export async function createIndex()
   const sparqlQuery = `select
   ?c as ?uri
   group_concat(distinct(str(?l));separator="|") as ?l
-  group_concat(distinct(str(?al));separator="|") as ?al
-  group_concat(distinct(str(?cml));separator="|") as ?cml
   group_concat(distinct(str(?def));separator="|") as ?def
   ${froms}
   {
-    {?c a owl:Class.} UNION {?c a [a owl:Class.]}
-    ?c rdfs:label ?l.
-    OPTIONAL {?c skos:altLabel ?al.}
+    {
+     {?c a owl:Class.} UNION {?c a [a owl:Class]}
+     ?c rdfs:label ?l.
+    }
+    UNION {?c skos:altLabel ?l.}
+    ${config.searchCloseMatch?"UNION {?c skos:closeMatch|^skos:closeMatch ?cm. ?cm rdfs:label|skos:altLabel ?l.}":""}
     OPTIONAL {?c skos:definition ?def.}
-    ${config.searchCloseMatch?"OPTIONAL {?c skos:closeMatch|^skos:closeMatch ?cm. ?cm rdfs:label|skos:altLabel ?cml.}":""}
   }`;
   const bindings = await sparql.select(sparqlQuery);
   const items = [];
@@ -53,11 +53,6 @@ export async function createIndex()
     const suffix = b.uri.value.replace(/.*\//,"");
     item.uri = b.uri.value;
     item.l = [...b.l.value.split('|'),suffix];
-    if(b.al.value) {item.l = [...item.l,...b.al.value.split('|')];}
-    if(config.searchCloseMatch)
-    {
-      if(b.cml.value) {item.l = [...item.l,...b.cml.value.split('|')];} // add labels of close matches
-    }
     item.l = [...new Set(item.l)]; // remove duplicates
     if(b.def.value) {item.def = b.def.value;}
   }
