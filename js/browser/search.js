@@ -72,6 +72,7 @@ export default class Search
       }
       else {uriType[uri]=2;}
     });
+    // JavaScript search implementation is up to the browser but most should have a stable array search, which means that URIs within a URI type should keep their relative ranking
     uris.sort((a,b)=>(uriType[a]-uriType[b]));
     uris.forEach(uri=>
     {
@@ -130,6 +131,7 @@ export default class Search
   async showSearch(userQuery)
   {
     MicroModal.show("search-results");
+    // fuse returns results ordered by increasing score, where a low score is a better match than a high score
     const items = (await fuse.search(userQuery));
     const uris = items.map(x=>x.item.uri);
     this.showSearchResults(userQuery,uris);
