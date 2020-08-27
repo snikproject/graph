@@ -109,6 +109,6 @@ Cannot use the simpler default menu creation method because file upload only wor
 */
 export function addFileLoadEntries(graph,parent,as)
 {
-  //addLoadEntry(parent,"load-layout","Load Layout",loadLayout(graph),as);
+  addLoadEntry(parent,"load-view","Load Partial Graph",loadLayout(graph),as);
   addLoadEntry(parent,"load-session","Load Session",loadSessionFromJsonFile,as);
 }
