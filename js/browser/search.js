@@ -26,20 +26,6 @@ export default class Search
     log.debug('search initialized');
   }
 
-  /** Presents all search results from the previous search.
-  * @return {Boolean} Whether the search results are nonempty.
-  */
-  presentAll()
-  {
-    if(this.resultNodes.length<1)
-    {
-      log.warn("All search results are only available on the SPARQL endpoint but not in the graph.");
-      return false;
-    }
-
-    return true;
-  }
-
   /**
   * @param  {String} query The user query.
   * @param  {Array<String>} uris An array of OWL class URIs
