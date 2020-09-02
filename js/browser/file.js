@@ -55,7 +55,7 @@ export async function loadSessionFromJsonFile(event)
   {
     reset();
     const view=new View(false);
-    loadGraphFromJson(view.state.graph,json.graph);
+    loadGraphFromJson(view.state.graph,json.mainGraph.graph);
     activeView().setTitle(json.mainGraph.title);
     for (let i =0; i<json.tabs.length;i++)
     {

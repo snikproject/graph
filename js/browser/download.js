@@ -74,9 +74,9 @@ export function downloadSession()
   {
     session.tabs.push({
       title: views[i].state.title,
-      layout: layout.positions(views[i].state.cy.nodes()),
+      graph: views[i].state.cy.json(),
     });
-    //delete session.tabs[i-1].graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
+    delete session.tabs[i-1].graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
   }
   downloadJson(session,"snik-session.json");
 }
