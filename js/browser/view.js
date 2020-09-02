@@ -15,6 +15,12 @@ export function activeState()
   return viewLayout.selectedItem.getActiveContentItem().config.componentState;
 }
 
+/** Returns the active (focussed) view. */
+export function activeView()
+{
+  return viewLayout.selectedItem.getActiveContentItem();
+}
+
 export class View
 {
   /** Create an empty graph and add it to the state of this view along with its Cytoscape.js instance. */
@@ -42,21 +48,21 @@ export class View
   /***/
   constructor(initialize=true)
   {
-    const name = viewCount++===0?"Gesamtmodell":"Teilmodell "+(viewCount-1);
-    console.log("Aktueller Count:"+viewCount);
-    this.state = {name:name};
+    //find initial title of the new View
+    const title = viewCount++===0?"Gesamtmodell":"Teilmodell "+(viewCount-1);
+    this.state = {title:title};
     views.push(this);
     const closable = views.length>1;
     const itemConfig = {
-      title:name,
+      title:title,
       type: 'component',
-      componentName: name,
+      componentName: title,
       componentState: this.state,
       isClosable: closable,
     };
     const thisView = this; // supply this to callback
 
-    viewLayout.registerComponent(name, function(container, state)
+    viewLayout.registerComponent(title, function(container, state)
     {
       thisView.cyContainer = document.createElement("div");
       thisView.element = container.getElement()[0];

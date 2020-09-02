@@ -64,28 +64,35 @@ export function downloadGraph(graph)
 export function downloadSession()
 {
   const session ={tabs:[]};
-  session.graph = views[0].state.cy.json();
-  delete session.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
+  session.mainGraph=
+  {
+    title: views[0].state.title,
+    graph: views[0].state.cy.json(),
+  };
+  delete session.mainGraph.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
   for (let i=1; i<views.length;i++)
   {
     session.tabs.push({
-      name: views[i].state.name,
-      graph: views[i].state.cy.json(),
+      title: views[i].state.title,
+      layout: layout.positions(views[i].state.cy.nodes()),
     });
-    delete session.tabs[i-1].graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
+    //delete session.tabs[i-1].graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
   }
   downloadJson(session,"snik-session.json");
 }
 
-/** Downloads the contents of the current view as a custom JSON file. */
-export function downloadView(state)
+/** Downloads the contents of the current view as a custom JSON file.
+    @param view a GoldenLayout view
+*/
+export function downloadView(view)
 {
-  const view ={
-    name: state.name,
+  const state = view.config.componentState;
+  const json ={
+    title: view.config.title,
     graph: state.cy.json(),
   };
-  delete view.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
-  downloadJson(view,"snik-view.json");
+  delete json.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
+  downloadJson(json,"snik-view.json");
 }
 
 /** Downloads all node positions. Can only be applied later with a compatible graph already loaded.*/

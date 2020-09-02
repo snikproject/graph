@@ -13,7 +13,7 @@ import {showChapterSearch} from "./chaptersearch.js";
 import addFilterEntries from "./filter.js";
 import * as file from "./file.js";
 import {Graph} from "./graph.js";
-import {activeState, views} from "./view.js";
+import {activeState, activeView, views} from "./view.js";
 // grid picture as base64
 // eslint-disable-next-line
 const grid = "iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAYAAACoYAD2AAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TxSItDnYQUchQnSyIijhqFYpQIdQKrTqYXPoFTRqSFBdHwbXg4Mdi1cHFWVcHV0EQ/ABxcnRSdJES/5cUWsR4cNyPd/ced+8AoVFhmtU1Dmi6baaTCTGbWxV7XhFCBGEMIyIzy5iTpBR8x9c9Any9i/Ms/3N/joiatxgQEIlnmWHaxBvE05u2wXmfOMpKskp8Tjxm0gWJH7muePzGueiywDOjZiY9TxwlFosdrHQwK5ka8RRxTNV0yheyHquctzhrlRpr3ZO/MJzXV5a5TnMISSxiCRJEKKihjApsxGnVSbGQpv2Ej3/Q9UvkUshVBiPHAqrQILt+8D/43a1VmJzwksIJoPvFcT5GgJ5doFl3nO9jx2meAMFn4Epv+6sNYOaT9Hpbix0BfdvAxXVbU/aAyx1g4MmQTdmVgjSFQgF4P6NvygH9t0Dvmtdbax+nD0CGukrdAAeHwGiRstd93h3q7O3fM63+fgAltnKI89jkWgAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+QIDQwpAiBJZ4sAAABFSURBVFjD7dfBDQAgCARBtHI61yYgYjJbwGW+F1FcZp7qzR0fBAkJCQkJCQkJCQk5odXxScbniEFCQkJCQkJCQkJCPuwCY9AHy8qKGCgAAAAASUVORK5CYII=";
@@ -99,7 +99,7 @@ export default class Menu
           "Load from SPARQL Endpoint","load-sparql"],
           [()=>download.downloadSession(),"Save Session","save-cytoscape-full"],
           [()=>download.downloadGraph(this.graph),"Save Graph","save-cytoscape-graph"],
-          [()=>download.downloadView(activeState()),"Save current Partial Graph","save-view"],
+          [()=>download.downloadView(activeView()),"Save current Partial Graph","save-view"],
           [()=>
           {
             progress(()=>layout.run(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs(),true));
@@ -137,6 +137,7 @@ export default class Menu
               [()=>{showChapterSearch("ob");},"OB chapter search","ob-chapter-search"],
               [this.graph.subOntologyConnectivity, "subontology connectivity","subontology-connectivity"],
               [views[0].state.graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
+              [()=>{activeView().setTitle(prompt("Rename: "+activeView().config.title) || activeView().config.title);activeState().title=activeView().config.title;}, "change name", "change name"],
             ],
       },
       {

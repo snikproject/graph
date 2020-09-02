@@ -1,7 +1,7 @@
 /** Module for loading files both locally from the server and via upload from the client.
 @module */
 import * as layout from "../layout.js";
-import {View,views,reset} from "./view.js";
+import {View,views,reset,activeView} from "./view.js";
 
 /**
 Uploads a JSON file from the user.
@@ -56,10 +56,12 @@ export async function loadSessionFromJsonFile(event)
     reset();
     const view=new View(false);
     loadGraphFromJson(view.state.graph,json.graph);
+    activeView().setTitle(json.mainGraph.title);
     for (let i =0; i<json.tabs.length;i++)
     {
       const view = new View(false);
       loadGraphFromJson(view.state.graph,json.tabs[i].graph);
+      activeView().setTitle(json.tabs[i].title);
     }
   });
 }
@@ -71,6 +73,7 @@ export function loadView(event)
   {
     const view=new View(false);
     loadGraphFromJson(view.state.graph,json.graph);
+    activeView().setTitle(json.title);
   });
 }
 
