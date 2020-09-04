@@ -5,11 +5,11 @@ export default
     // menu *******************************************************************
     // file **********************************************
     "file": "File",
-    "load-graph-with-layout": "Load Graph File with Layout",
-    "load-view": "Load Partial Graph",
     "load-sparql": "Load from SPARQL endpoint",
-    "save-cytoscape-full": "Save Session",
-    "save-cytoscape-visible": "Save Visible Graph with Layout as Cytoscape File",
+    "load-session": "Load session",
+    "load-view": "Load Partial Graph",
+    "save-session": "Save Session",
+    "save-snik-graph": "Save complete SNIK Graph as Cytoscape File",
     "save-view": "Save current Partial Graph",
     "recalculate-layout-replace":"Recalculate Layout and Replace in Browser Cache",
     "save-image-current-view": "Save Image of Current View",
@@ -40,6 +40,7 @@ export default
     "reset-view": "reset view",
     "move-match-on-top": "move matches on top of each other",
     "move-match-nearby": "move matches nearby",
+    "change-title": "change title of active View",
     // services ******************************************
     "services": "Services",
     "sparql-endpoint": "SPARQL Endpoint",

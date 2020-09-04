@@ -5,11 +5,11 @@ export default
   // menu *******************************************************************
   // file **********************************************
     "file": "Datei",
-    "load-graph-with-layout": "Lade Graph Datei mit Layout",
-    "load-view": "Lade Teilgraph",
     "load-sparql": "Lade aus dem SPARQL Endpunkt",
-    "save-cytoscape-full": "Speichere den kompletten Graph mit Layout als Cytoscape Datei",
-    "save-cytoscape-visible": "Speichere den sichtbaren Graph mit Layout als Cytoscape Datei",
+    "load-session": "Lade gespeicherte Sitzung",
+    "load-view": "Lade Teilgraph",
+    "save-session": "Speichere aktuelle Sitzung",
+    "save-snik-graph": "Speichere kompletten SNIK Graph als Cytoscape Datei",
     "save-view": "Speichere aktuellen Teilgraphen",
     "recalculate-layout-replace":"Layout neu berechnen und im Browser Cache platzieren",
     "save-image-current-view": "Speichere Bilddatei der aktuellen Ansicht",
@@ -38,6 +38,9 @@ export default
     "bb-chapter-search": "BB Kapitelsuche",
     "ob-chapter-search": "OB Kapitelsuche",
     "reset-view": "Ansicht zurücksetzen",
+    "move-match-on-top": "Zeige close matches übereinander",
+    "move-match-nearby": "Zeige close matches verbunden",
+    "change-title": "Titel des aktuellen View ändern",
     // services ******************************************
     "services": "Services",
     "sparql-endpoint": "SPARQL Endpunkt",

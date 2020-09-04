@@ -64,14 +64,14 @@ export const help =
       "file":
       {
         "":"Holds different file options like loading and saving the graph in different ways.",
-        "load-graph-with-layout": "Discard the currently loaded graph and load a new one from a Cytoscape file.",
-        "load-layout": "Keep the currently loaded graph but load the position from those nodes from a layout file. Only works for nodes whose identifiers are contained in the file.",
         "load-sparql": "Discard the currently loaded graph and load all ontologies of SNIK.",
-        "save-cytoscape-full": "Save the complete graph (visible and hidden) to a Cytoscape file.",
-        "save-cytoscape-visible": "Save the currently visible subgraph to a Cytoscape file.",
-        "save-layout": "Save the positions all nodes in the graph to a layout file.",
+        "load-session": "Load a complete session from a Cytoscape JSON File. Caution: Discards all changes!",
+        "load-view": "Load a saved view (partial graph) and include it in the current session.",
+        "save-session": "Save the complete Session (all views).",
+        "save-snik-graph": "Save the complete SNIK graph to a Cytoscape file.",
+        "save-view": "Save only the currently active view (partial graph).",
         "recalculate-layout-replace":"Recalculate the position of all visible nodes. May take a while when a large number of nodes are visible.",
-        "save-image-current-view": "Save a screenshot of the current view.",
+        "save-image-current-view": "Save a screenshot of the currently active view.",
         "save-image-whole-graph": "Save an image of the whole graph with the same pixel density as the current view.",
         "save-image-current-view-high-res": "Save an image of the current view with a high resolution, for example for printing.",
         "save-image-whole-graph-high-res": "Save an image of the whole graph with a high resolution, for example for printing.",
@@ -97,6 +97,7 @@ export const help =
         "dev-mode":"Additional context menu entries for developers.",
         "ext-mode":"Additional context menu entries for power users.",
         "combine-match": `Highlights groups of classes representing the same concept from different subontologies (matches) by placing them in boxes. Use "move matches on top of each other" or "move matches nearby" to shrink those boxes.`,
+        "grid":"shows a grid that supports better organizing of nodes.",
       },
       "layout":
       {
@@ -110,6 +111,7 @@ export const help =
         "move-match-nearby": "Requires enabled \"Combine Matching\" option. Places all matching nodes in a small circle in their group.",
         "bb-chapter-search":"Presents you all chapters of the \"blue book\" and lets you build a subgraph out of selected chapters .",
         "ob-chapter-search":"Presents you all chapters of the \"orange book\" and lets you build a subgraph out of selected chapters .",
+        "change-title":"open a propmt to change the title of the currently active view",
       },
       "services":
       {
