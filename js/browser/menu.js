@@ -97,9 +97,9 @@ export default class Menu
             progress(()=>layout.runCached(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs()));
           },
           "Load from SPARQL Endpoint","load-sparql"],
-          [()=>download.downloadSession(),"Save Session","save-cytoscape-full"],
-          [()=>download.downloadGraph(this.graph),"Save Graph","save-cytoscape-graph"],
-          [()=>download.downloadView(activeView()),"Save current Partial Graph","save-view"],
+          [()=>download.downloadSession(),"Save Session","save-session"],
+          [()=>download.downloadGraph(this.graph),"Save the full SNIK Graph","save-snik-graph"],
+          [()=>download.downloadView(activeView()),"Save currently active view (partial graph)","save-view"],
           [()=>
           {
             progress(()=>layout.run(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs(),true));
@@ -137,7 +137,7 @@ export default class Menu
               [()=>{showChapterSearch("ob");},"OB chapter search","ob-chapter-search"],
               [this.graph.subOntologyConnectivity, "subontology connectivity","subontology-connectivity"],
               [views[0].state.graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
-              [()=>{activeView().setTitle(prompt("Rename: "+activeView().config.title) || activeView().config.title);activeState().title=activeView().config.title;}, "change name", "change name"],
+              [()=>{activeView().setTitle(prompt("Rename: "+activeView().config.title) || activeView().config.title);activeState().title=activeView().config.title;}, "change title of active View", "change-title"],
             ],
       },
       {
@@ -212,7 +212,14 @@ export default class Menu
 
     this.separateSubsBox.addEventListener("change",()=>{log.debug("Set separate Subontologies to "+this.separateSubsBox.checked);});
     this.dayModeBox.addEventListener("change",()=>{for(const view of views){view.state.graph.invert(this.dayModeBox.checked);log.debug("Set dayMode to "+this.dayModeBox.checked);}});
-    this.gridBox.addEventListener("change",()=>{for(const view of views){view.state.graph.container.style.backgroundImage = this.gridBox.checked?"url('data:image/png;base64,"+grid+"')":"";}});
+    this.gridBox.addEventListener("change",()=>
+    {
+      for(const view of views)
+      {
+        view.state.graph.container.style.backgroundImage = this.gridBox.checked?"url('data:image/png;base64,"+grid+"')":"";
+        log.debug("set gridBox to "+this.gridBox.checked);
+      }
+    });
     if(config.activeOptions.includes("day")) {this.dayModeBox.click();}
     if(config.activeOptions.includes("ext")) {this.extModeBox.click();}
     if(config.activeOptions.includes("dev")) {this.devModeBox.click();}
