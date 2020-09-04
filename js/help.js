@@ -121,6 +121,12 @@ export const help =
       "help":"Common Help Menu, holds e.g. this manual",
     },
     "search-field":"Search for resources by entering a full or partial name.",
+    "recalculatesign":"Recalculate Layout",
+    "tightlayoutsign":"Tight layout",
+    "compoundlayoutsign":"Compound layout",
+    "addsign":"Open new Tab",
+    "plussign":"Zoom in",
+    "minussign":"Zoom out",
   },
 };
 
