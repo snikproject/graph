@@ -9,7 +9,22 @@ import config from "./config.js";
 async function selectClasses(from)
 {
   const sparqlClassesTimer = timer("sparql-classes");
-  const classQuery =
+
+  const classQuerySimple =
+  `
+  PREFIX ov: <http://open.vocab.org/terms/>
+  SELECT ?c
+  GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") as ?l
+  ?src
+  ${from}
+  {
+    ?c a owl:Class.
+    OPTIONAL {?c rdfs:label ?l.}
+    OPTIONAL {?src ov:defines ?c.}
+  }
+  `;
+
+  const classQuerySnik =
   `
   PREFIX ov: <http://open.vocab.org/terms/>
   PREFIX meta: <http://www.snik.eu/ontology/meta/>
@@ -27,6 +42,7 @@ async function selectClasses(from)
     OPTIONAL {?inst a ?c.}
   }`;
 
+  const classQuery = config.sparql.endpoint.includes("snik.eu/sparql")?classQuerySnik:classQuerySimple;
   const json = await sparql.select(classQuery);
   sparqlClassesTimer.stop(json.length+" classes");
   return json;
