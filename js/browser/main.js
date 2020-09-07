@@ -34,7 +34,7 @@ function parseParams()
     // load and show instances when loading from endpoint, not only class
     // specify either without value ...&instances or as ...&instances=true
     ...((url.searchParams.get("instances")!==null) && {instances: url.searchParams.get("instances")==="" || url.searchParams.get("instances")===true}),
-    virtual: (url.searchParams.get("virtual")!==null), // create "virtual triples" to visualize connections like domain-rang
+    virtual: (url.searchParams.get("virtual")!==null), // create "virtual triples" to visualize connections like domain-range
     rdfGraph: url.searchParams.get("graph"),
     sub: url.searchParams.get("sub"),
     benchmark: (url.searchParams.get("benchmark")!==null),
@@ -70,13 +70,14 @@ async function applyParams(graph,params)
     }
     if(params.jsonUrl)
     {
+      log.info(`Loading from JSON URL `+params.jsonUrl);
       const json = await (await fetch(params.jsonUrl)).json();
       graph.cy.add(json);
       layout.run(graph.cy,layout.euler);
       return;
     }
     log.debug("Loading from SPARQL Endpoint "+params.endpoint);
-    config.sparql.endpoint = params.endpoint;
+    config.sparql.endpoint = params.endpoint; // loadGraphFromSparql loads from config.sparql.endpoint
     const graphs = [];
     if(params.endpoint===sparql.SNIK_ENDPOINT)
     {
