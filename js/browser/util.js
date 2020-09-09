@@ -40,7 +40,7 @@ export function createGitHubIssue(repo,title,body,logs)
     {
     //remove log elements from the front until the length of the log is under the limit to avoid 414 Error URI too large
       encodedLogs.shift();
-      encodedLog = encodedLogs.reduce((a,b)=>a+"%0A"+b);
+      encodedLog = encodedLogs.reduce((a,b)=>a+"%0A"+b,"");
     }
     encodedBody+="%0A%60%60%60%0A"+encodedLog+"%0A%60%60%60";
   }
