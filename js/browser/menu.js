@@ -44,9 +44,12 @@ export default class Menu
     // this.graph.cy.style(style); // does not display the style correctly and doesn't update the labels
     // this.graph.cy.forceRender(); // does not update the labels either
     // the nuclear option works
-    const elements = this.graph.cy.elements();
-    this.graph.cy.remove(elements);
-    elements.restore();
+    for (const view of views)
+    {
+      const elements = view.state.graph.cy.elements();
+      view.state.graph.cy.remove(elements);
+      elements.restore();
+    }
   }
 
   /** Notifies the user of the program version so that errors can be properly reported. */
