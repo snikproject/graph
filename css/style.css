@@ -28,6 +28,12 @@ body.waiting * {
 
 #top
 {
+  margin-top: 5px;
+  height: 40px;
+}
+
+#search-field {
+  margin-top: 0;
 }
 
 .dropdown-bar {
@@ -48,7 +54,6 @@ li a
 }
 
 .dropdown-menu {
-  display: inline-block;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
