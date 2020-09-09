@@ -41,6 +41,7 @@ export class View
       const elements = graph.cy.elements();
       Graph.setVisible(elements,false);
       Graph.setVisible(elements.edgesWith(elements),false);
+      graph.starMode=true;
       new ContextMenu(graph, views[0].state.graph.menu); // attach to the first views menu
     }
   }
