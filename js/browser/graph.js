@@ -350,8 +350,9 @@ export class Graph
     {
       log.info(`Node is hidden. Unhiding ${uri}.`);
       Graph.setVisible(node,true);
+      Graph.setVisible(node.edgesWith(this.cy.nodes(':visible')),true);
     }
-    if(!this.cumulativeSearch()) {this.resetStyle();}
+    if(!(this.starMode||this.cumulativeSearch())) {this.resetStyle();}
     this.highlight(node);
     this.cy.center(node);
   }
