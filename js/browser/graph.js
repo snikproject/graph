@@ -12,7 +12,7 @@ import * as sparql from "../sparql.js";
 import * as rdf from "../rdf.js";
 import * as language from "../lang/language.js";
 import progress from "./progress.js";
-import {View,activeState} from "./view.js";
+import {View} from "./view.js";
 
 export const Direction = Object.freeze({
   IN:   Symbol("in"),
@@ -201,6 +201,7 @@ export class Graph
     const outerNodes = nodes.difference(inner);
     // connect new nodes with all existing unfiltered visible ones
     //show(outerNodes.edgesWith(cy.nodes(".unfiltered").not(".hidden")));
+
 
     if(changeLayout||(!this.starMode))
     {
