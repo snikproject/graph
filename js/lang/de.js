@@ -26,7 +26,7 @@ export default
     "dayMode": "Tag-Modus",
     "devMode": "Entwickler-Modus",
     "extMode": "Erweiterter Modus",
-    "combineMatch": "Übereinstimmungen zusammenfassen",
+    "combineMatchMode": "Übereinstimmungen zusammenfassen",
     "showInstances": "Instanzen zeigen",
     // layout*********************************************
     "layout": "Layout",
@@ -40,6 +40,7 @@ export default
     "reset-view": "Ansicht zurücksetzen",
     "move-match-on-top": "Zeige close matches übereinander",
     "move-match-nearby": "Zeige close matches verbunden",
+    "subontology-connectivity": "Konnektivität zwischen Subontologien",
     "change-title": "Titel des aktuellen View ändern",
     // services ******************************************
     "services": "Services",
