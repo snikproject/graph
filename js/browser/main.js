@@ -125,7 +125,7 @@ export async function fillInitialGraph(graph)
   {
     const params = parseParams();
     await applyParams(graph,params);
-    graph.menu = new Menu(graph,params.instances);
+    graph.menu = new Menu(params.instances);
     new Search(util.getElementById("search"));
     help.init();
   });

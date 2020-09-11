@@ -21,9 +21,8 @@ const grid = "iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAYAAACoYAD2AAABhGlDQ1BJQ0MgcHJvZm
 export default class Menu
 {
   /** construct the main menu bar for the given graph */
-  constructor(graph,showInstancesBoxChecked)
+  constructor(showInstancesBoxChecked)
   {
-    this.graph = graph;
     document.body.addEventListener("click",Menu.closeListener);
     // bind this to the class instance instead of the event source
     this.showCloseMatches = this.showCloseMatches.bind(this);
@@ -101,16 +100,16 @@ export default class Menu
           },
           "Load from SPARQL Endpoint","load-sparql"],
           [()=>download.downloadSession(),"Save Session","save-session"],
-          [()=>download.downloadGraph(this.graph),"Save the full SNIK Graph","save-snik-graph"],
+          [()=>download.downloadGraph(activeState().graph),"Save the full SNIK Graph","save-snik-graph"],
           [()=>download.downloadView(activeView()),"Save currently active view (partial graph)","save-view"],
           [()=>
           {
-            progress(()=>layout.run(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs(),true));
+            progress(()=>layout.run(activeState().cy,layout.euler,config.defaultSubOntologies,this.separateSubs(),true));
           },"Recalculate Layout and Replace in Browser Cache","recalculate-layout-replace"],
           [()=>download.downloadPng(activeState().graph,this,false,false),"Save Image of Current View","save-image-current-view"],
-          [()=>download.downloadPng(this.graph,this,true,false),"Save Image of Whole Graph","save-image-whole-graph"],
+          [()=>download.downloadPng(activeState().graph,this,true,false),"Save Image of Whole Graph","save-image-whole-graph"],
           [()=>download.downloadPng(activeState().graph,this,false,true),"Save Image of Current View (high res)","save-image-current-view-high-res"],
-          [()=>download.downloadPng(this.graph,this,true,true),"Save Image of Whole Graph (high res)","save-image-whole-graph-high-res"],
+          [()=>download.downloadPng(activeState().graph,this,true,true),"Save Image of Whole Graph (high res)","save-image-whole-graph-high-res"],
         ],
       },
       {
@@ -138,7 +137,7 @@ export default class Menu
               [()=>activeState().graph.moveAllMatches(100), "move matches nearby","move-match-nearby"],
               [()=>{showChapterSearch("bb");},"BB chapter search","bb-chapter-search"],
               [()=>{showChapterSearch("ob");},"OB chapter search","ob-chapter-search"],
-              [this.graph.subOntologyConnectivity, "subontology connectivity","subontology-connectivity"],
+              [activeState().graph.subOntologyConnectivity, "subontology connectivity","subontology-connectivity"],
               [views[0].state.graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
               [()=>{activeView().setTitle(prompt("Rename: "+activeView().config.title) || activeView().config.title);activeState().title=activeView().config.title;}, "change title of active View", "change-title"],
             ],
@@ -361,10 +360,10 @@ export default class Menu
       });
     }
 
-    file.addFileLoadEntries(this.graph,util.getElementById("file-menu-content"),aas[0]); // update index when "File" position changes in the menu
+    file.addFileLoadEntries(activeState().graph,util.getElementById("file-menu-content"),aas[0]); // update index when "File" position changes in the menu
     log.debug('fileLoadEntries added');
 
-    addFilterEntries(this.graph.cy,util.getElementById("filter-menu-content"),aas[1]);  // update index when "Filter" position changes in the menu
+    addFilterEntries(activeState().cy,util.getElementById("filter-menu-content"),aas[1]);  // update index when "Filter" position changes in the menu
     log.debug('filter entries added');
 
     this.addOptions(aas[2],showInstancesBoxChecked); // update index when "Options" position changes in the menu
