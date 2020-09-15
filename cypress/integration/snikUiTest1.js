@@ -25,7 +25,7 @@ describe('My First Test', () =>
 
   it('tests the search field', () =>
   {
-    cy.wait(10000);
+    //cy.wait(10000);
     cy.get('#search-field')
       .type('Testsuche')
       .should('have.value', 'Testsuche');
@@ -38,30 +38,32 @@ describe('Golden Layout Test', ()=>
   {
     cy.visit('./index.html');
     cy.contains('File').click();
-    cy.get('.addsign')
-      .click();
+    cy.get('.addsign').click();
+    //cy.wait(2000);
+    cy.get('.dropdown-menu').contains('Layout').click();
+    cy.contains('change title of active View').click();
     cy.contains('Gesamtmodell').click();
-    cy.contains('File').click().click();
-    cy.wait(2000);
-    //cy.contains('options')
-    cy.contains('Options').click();
-    //cy.contains('change title of active View').click();
+});
+});
+describe('Zoom test', () =>
+{
+  it('zoom in and zoom out in the Gesamtmodell', () =>
+  {
+  cy.visit('./index.html');
+  //Zoom in
+  cy.get('.plussign')
+    .click()
+    .click()
+    .click()
+    .click()
+    .click();
 
-    //Zoom in
-    cy.get('.plussign')
-      .click()
-      .click()
-      .click()
-      .click()
-      .click();
-
-    //Zoom out
-    cy.get('.minussign')
-      .click()
-      .click()
-      .click()
-      .click()
-      .click();
-
+  //Zoom out
+  cy.get('.minussign')
+    .click()
+    .click()
+    .click()
+    .click()
+    .click();
   });
 });
