@@ -241,10 +241,14 @@ export default class Menu
     this.showInstancesBox.checked = showInstancesBoxChecked;
     this.showInstancesBox.addEventListener("change",()=>
     {
-      if(this.graph.instancesLoaded)
+      if(views[0].state.graph.instancesLoaded)
       {
-        Graph.setVisible(this.graph.instances,this.showInstancesBox.checked);
-        Graph.setVisible(this.graph.instances.connectedEdges(),this.showInstancesBox.checked);
+        for(const view of views)
+        {
+          const instances  = view.state.graph.instances;
+          Graph.setVisible(instances,this.showInstancesBox.checked);
+          Graph.setVisible(instances.connectedEdges(),this.showInstancesBox.checked);
+        }
       }
       else
       {
