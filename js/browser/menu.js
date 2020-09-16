@@ -226,11 +226,14 @@ export default class Menu
     if(config.activeOptions.includes("ext")) {this.extModeBox.click();}
     if(config.activeOptions.includes("dev")) {this.devModeBox.click();}
     /** @type {HTMLInputElement} */
+    // is only used by the main tab
     this.cumulativeSearchBox.addEventListener("change",()=>{log.debug("Set cumulative search to "+this.cumulativeSearchBox.checked);});
     /** @type {HTMLInputElement} */
     this.combineMatchModeBox.addEventListener("change",()=>
     {
-      activeState().graph.combineMatch(this.combineMatchModeBox.checked);
+      // Combine matches is *not* active in a new tab if the user first copies, then turns combine matches on and finally pastes.
+      // In this case, "combine matches" needs to be deactivated and activated again to take effect on the paste result.
+      views.map(v=>v.state.graph).forEach(graph => graph.combineMatch(this.combineMatchModeBox.checked));
       log.debug("Set combine match mode to "+this.combineMatchModeBox.checked);
     });
 
