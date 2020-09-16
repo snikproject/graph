@@ -139,6 +139,11 @@ function initKeyListener()
 {
   document.documentElement.addEventListener('keydown',e =>
   {
+    // prevent keydown listener from firing on input fields
+    // See https://stackoverflow.com/questions/40876422/jquery-disable-keydown-in-input-and-textareas
+    const el = e.target;
+    if(!el || el.nodeName!=="BODY") {return;}
+
     const state = activeState();
     if(e.code === "Delete" || e.code === "Backspace") // backspace (for mac) or delete key
     {
@@ -146,7 +151,8 @@ function initKeyListener()
     }
     if(e.code === "KeyS" || e.code === "KeyC")
     {
-      const selected = state.cy.elements(':selected');
+      const selected = state.cy.nodes(':selected');
+      if(selected.size()===0) {return;} // do nothing when nothing selected
       clipboard.length = 0;
       clipboard.push(...selected.map(node => node.id()));
       log.debug(`Copied ${clipboard.length} elements from ${state.name}.`);
