@@ -363,7 +363,7 @@ export default class Menu
     file.addFileLoadEntries(activeState().graph,util.getElementById("file-menu-content"),aas[0]); // update index when "File" position changes in the menu
     log.debug('fileLoadEntries added');
 
-    addFilterEntries(activeState().cy,util.getElementById("filter-menu-content"),aas[1]);  // update index when "Filter" position changes in the menu
+    addFilterEntries(util.getElementById("filter-menu-content"),aas[1]);  // update index when "Filter" position changes in the menu
     log.debug('filter entries added');
 
     this.addOptions(aas[2],showInstancesBoxChecked); // update index when "Options" position changes in the menu

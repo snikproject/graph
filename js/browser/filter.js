@@ -8,6 +8,7 @@ See http://js.cytoscape.org/#style/visibility.
 */
 import * as NODE from "../node.js";
 import {checkboxKeydownListener} from "./util.js";
+import {views} from "./view.js";
 
 const filterData = [
   [`node[${NODE.SOURCE}='meta']`,`meta`,"meta"],
@@ -31,6 +32,9 @@ const filterData = [
 const filters = [];
 const GRAPH_GETS_ADDITIONS = true;
 
+// apply a function to all cytoscape cores in all tabs
+const multicy = (f) => views.map(v=>v.state.cy).forEach(cy => f(cy));
+
 /**
 Toggles the visibility of a set of nodes defined by a selector.
 */
@@ -38,13 +42,11 @@ class Filter
 {
   /**
   Creates filter with HTML elements, filter functionality and listeners.
-  @param {cytoscape.Core} cy the cytoscape graph
   @param {string} selector a Cytoscape.js selector, see {@link http://js.cytoscape.org/#selectors}
   @param {string} label the menu entry label
   */
-  constructor(cy,selector,label,i18n)
+  constructor(selector,label,i18n)
   {
-    this.cy=cy;
     this.selector=selector;
     //let input = document.createRange().createContextualFragment('<input type="checkbox" class="filterbox" autocomplete="off" checked="true">'); // can't attach events to fragments
     const input = document.createElement("input");
@@ -60,11 +62,12 @@ class Filter
     this.a.setAttribute("tabindex",-1);
     this.a.addEventListener("keydown",checkboxKeydownListener(input));
     if(i18n) {this.a.setAttribute("data-i18n",i18n);}
-
+    // each filter has its own associated CSS class, such as "filter-BB"
     this.cssClass = `filter-${label}`;
     this.visible = true;
     // Does not apply to elements that get added later, so only use if you don't add elements to the graph. Alternative if you want to use this update this after adding something.
-    cy.elements(selector).addClass(this.cssClass);
+    // Assigns the CSS class of the filter to the nodes that match the filter selector.
+    multicy(cy => cy.elements(this.selector).addClass(this.cssClass));
     input.addEventListener("input",()=>this.setVisible(input.checked));
     filters.push(this);
   }
@@ -81,8 +84,6 @@ class Filter
     if(this.visible===visible) {return;}
     this.visible=visible;
 
-    this.cy.startBatch();
-
     const hiddenSelectors =
       filters
         .filter(f => !f.visible)
@@ -90,38 +91,40 @@ class Filter
 
     if(hiddenSelectors.length===0)
     {
-      this.cy.elements().removeClass("filtered");
+      multicy(cy=>cy.elements().removeClass("filtered"));
       // cytoscape.js does not have a class negation selector so we need to add a negation class ourselves
       // see https://stackoverflow.com/questions/54108410/how-to-negate-class-selector-in-cytoscape-js
-      this.cy.elements().addClass("unfiltered");
+      multicy(cy=>cy.elements().addClass("unfiltered"));
       log.debug("All filters checked");
     }
     else
     {
+      // "or" all selectors together to obtain a combined one
       const hiddenSelector = hiddenSelectors.reduce((a,b)=>a+ ',' +b);
-      const filtered = this.cy.elements(hiddenSelector);
-      filtered.addClass("filtered");
-      filtered.removeClass("unfiltered");
-      const unfiltered = this.cy.elements().not(filtered);
-      unfiltered.removeClass("filtered");
-      unfiltered.addClass("unfiltered");
+      multicy(cy=>
+      {
+        const filtered = cy.elements(hiddenSelector);
+        filtered.addClass("filtered");
+        filtered.removeClass("unfiltered");
+        const unfiltered = cy.elements().not(filtered);
+        unfiltered.removeClass("filtered");
+        unfiltered.addClass("unfiltered");
+      });
       log.debug("filter "+hiddenSelector+" triggered");
     }
-    this.cy.endBatch();
   }
 }
 
 /**
 Add filter entries to the filter menu.
-@param {cytoscape.Core} cy the cytoscape graph
 @param {HTMLElement} parent the parent element to attach the entries to
-@param {array} as an empty array of anchors to be filled
+@param {array} as an empty array of HTML anchors to be filled
 */
-function addFilterEntries(cy, parent,as)
+function addFilterEntries(parent,as)
 {
   for(const datum of filterData)
   {
-    const filter = new Filter(cy,datum[0],datum[1],datum[2]);
+    const filter = new Filter(datum[0],datum[1],datum[2]);
     parent.appendChild(filter.a);
     as.push(filter.a);
   }
