@@ -149,6 +149,7 @@ function initKeyListener()
     {
       state.cy.remove(':selected');
     }
+    // Copy
     if(e.code === "KeyS" || e.code === "KeyC")
     {
       const selected = state.cy.nodes(':selected');
@@ -158,7 +159,7 @@ function initKeyListener()
       log.debug(`Copied ${clipboard.length} elements from ${state.name}.`);
       log.info("Partial graph copied!");
     }
-
+    // Paste
     if(e.code === "KeyP" || e.code === "KeyV")
     {
       state.cy.startBatch();
@@ -167,6 +168,7 @@ function initKeyListener()
         Graph.setVisible(state.cy.getElementById(id),true);
       }
       state.cy.endBatch();
+      Graph.setVisible(state.cy.nodes(":visible").edgesWith(":visible"),true);
       state.cy.fit(state.cy.elements(":visible")); // needs to be outside the batch to fit correctly
       log.debug(`Pasted ${clipboard.length} elements into ${state.name}.`);
       log.info("Partial graph inserted!");
