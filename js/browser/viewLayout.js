@@ -1,6 +1,6 @@
 /** @module */
 import * as util from "./util.js";
-import {activeState, View} from "./view.js";
+import {View,views} from "./view.js";
 import * as layout from "../layout.js";
 /** Create, configure and return a GoldenLayout instance.*/
 export function goldenLayout()
@@ -31,44 +31,29 @@ export function goldenLayout()
 
     // Add the zoomButtons to the header
     stack.header.controlsContainer.prepend(zoomButtons);
-    const controls = stack.header.controlsContainer[0];
 
     // When a tab is selected then select its stack. For unknown reasons this is not default behaviour of GoldenLayout.
     // What happens when a tab is moved out of a stack? Testing showed no problems but this should be investigated for potential bugs.
     stack.on("activeContentItemChanged",()=>{viewLayout.selectItem(stack);});
 
-    controls.querySelector('.plussign').addEventListener("click",()=>
-    {
-      const cy = activeState().cy;
-      cy.zoom(cy.zoom()*1.2);
-    });
+    const stackState = () => stack.getActiveContentItem().config.componentState;
+    const cy = () => stackState().cy;
 
-    controls.querySelector('.minussign').addEventListener("click",()=>
+    const controls = stack.header.controlsContainer[0];
+    const separateSubs = () => views[0].state.graph.menu.separateSubs()&&!stackState().graph.starMode;
+    const data = [
+      [".plussign",           ()=>{log.info(separateSubs());cy().zoom(cy().zoom()*1.2);}],
+      [".minussign",          ()=>{cy().zoom(cy().zoom()/1.2);}],
+      [".addsign",            ()=>{new View();}],
+      [".recalculatesign",    ()=>{layout.run(cy(),layout.euler,config.defaultSubOntologies,separateSubs(),true);}],
+      [".tightlayoutsign",    ()=>{layout.run(cy(),layout.eulerTight,config.defaultSubOntologies,separateSubs(),true);}],
+      // The compound layout does not work with separate subs so set the latter always to false.
+      [".compoundlayoutsign", ()=>{layout.run(cy(),layout.cose,config.defaultSubOntologies,false,true);}],
+    ];
+    for(const datum of data)
     {
-      const cy = activeState().cy;
-      cy.zoom(cy.zoom()/1.2);
-    });
-
-    controls.querySelector('.addsign').addEventListener("click",()=>
-    {
-      new View();
-    });
-
-    controls.querySelector('.recalculatesign').addEventListener("click",()=>
-    {
-    //layout.run(state.cy,layout.euler,config.defaultSubOntologies,this.menu.separateSubs()&&!state.graph.starMode,true);
-      layout.run(activeState().cy,layout.euler,config.defaultSubOntologies,false,true); // TODO TP: put menu back in
-    });
-
-    controls.querySelector('.tightlayoutsign').addEventListener("click",()=>
-    {
-      layout.run(activeState().cy,layout.eulerTight,config.defaultSubOntologies,false,true);
-    });
-
-    controls.querySelector('.compoundlayoutsign').addEventListener("click",()=>
-    {
-      layout.run(activeState().cy,layout.cose,config.defaultSubOntologies,false,true);
-    });
+      controls.querySelector(datum[0]).addEventListener("click",datum[1]);
+    }
   });
   viewLayout.init();
   return viewLayout;
