@@ -63,7 +63,7 @@ export function downloadGraph(graph)
 /** Downloads the contents of all views as a custom JSON file. */
 export function downloadSession()
 {
-  const session ={tabs:[]};
+  const session = {tabs:[], config: config};
   session.mainGraph=
   {
     title: views[0].state.title,
