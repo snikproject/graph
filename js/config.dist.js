@@ -45,5 +45,6 @@ export default
   "multiview":
   {
     "initialTabs": 1,
+    "warnOnSessionLoad": true,
   },
 };

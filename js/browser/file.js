@@ -1,7 +1,8 @@
 /** Module for loading files both locally from the server and via upload from the client.
 @module */
 import * as layout from "../layout.js";
-import {View,views,reset,activeView} from "./view.js";
+import {View,reset,activeView} from "./view.js";
+import config from "../config.js";
 
 /**
 Uploads a JSON file from the user.
@@ -51,19 +52,26 @@ export const loadGraphFromJsonFile = graph => event =>
 */
 export async function loadSessionFromJsonFile(event)
 {
-  uploadJson(event,async json =>
+  if(config.multiview.warnOnSessionLoad)
   {
-    reset();
-    const view=new View(false);
-    loadGraphFromJson(view.state.graph,json.mainGraph.graph);
-    activeView().setTitle(json.mainGraph.title);
-    for (let i =0; i<json.tabs.length;i++)
+    const hint = confirm('This will override the current session. Continue?');
+    if (hint)
     {
-      const view = new View(false);
-      loadGraphFromJson(view.state.graph,json.tabs[i].graph);
-      activeView().setTitle(json.tabs[i].title);
+      uploadJson(event,async json =>
+      {
+        reset();
+        const view=new View(false);
+        loadGraphFromJson(view.state.graph,json.mainGraph.graph);
+        activeView().setTitle(json.mainGraph.title);
+        for (let i =0; i<json.tabs.length;i++)
+        {
+          const view = new View(false);
+          loadGraphFromJson(view.state.graph,json.tabs[i].graph);
+          activeView().setTitle(json.tabs[i].title);
+        }
+      });
     }
-  });
+  }
 }
 
 /** Loads a stored view from a JSON file. */
