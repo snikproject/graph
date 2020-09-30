@@ -220,11 +220,8 @@ export class Menu
     this.dayModeBox.addEventListener("change",()=>{for(const view of views){view.state.graph.invert(this.dayModeBox.checked);log.debug("Set dayMode to "+this.dayModeBox.checked);}});
     this.gridBox.addEventListener("change",()=>
     {
-      for(const view of views)
-      {
-        view.state.graph.container.style.backgroundImage = this.gridBox.checked?"url('data:image/png;base64,"+grid+"')":"";
-        log.debug("set gridBox to "+this.gridBox.checked);
-      }
+      (document.body.classList[this.gridBox.checked?"add":"remove"])("grid");
+      log.debug("set gridBox to "+this.gridBox.checked);
     });
     if(config.activeOptions.includes("day")) {this.dayModeBox.click();}
     if(config.activeOptions.includes("ext")) {this.extModeBox.click();}
