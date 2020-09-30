@@ -3,6 +3,7 @@ import {Graph} from "./graph.js";
 import {fillInitialGraph} from "./main.js";
 import ContextMenu from "./contextmenu.js";
 import {goldenLayout} from "./viewLayout.js";
+import {toJSON} from "./state.js";
 
 let viewCount = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
 export const views = [];
@@ -75,11 +76,10 @@ export class View
     const cy = graph.cy;
     this.state.graph = graph;
     this.state.cy = cy; // easier access for frequent use than this.state.graph.cy, also better separation
-
     this.initialized = initialize?this.fill(graph):Promise.resolve();
+    this.initialized.then(() => this.state.graph.invert(toJSON().options.dayMode));
   }
 }
-
 
 let removeTabsArray = [];
 
