@@ -31,7 +31,6 @@ export class View
     {
       firstFinished = fillInitialGraph(graph);
       await firstFinished;
-      new ContextMenu(graph, graph.menu);
       log.debug(`Main view ${this.state.name} loaded with ${graph.cy.elements().size()} elements.`);
     }
     else
@@ -43,7 +42,6 @@ export class View
       Graph.setVisible(elements,false);
       Graph.setVisible(elements.edgesWith(elements),false);
       graph.starMode=true;
-      new ContextMenu(graph, views[0].state.graph.menu); // attach to the first views menu
     }
   }
 
@@ -77,7 +75,11 @@ export class View
     this.state.graph = graph;
     this.state.cy = cy; // easier access for frequent use than this.state.graph.cy, also better separation
     this.initialized = initialize?this.fill(graph):Promise.resolve();
-    this.initialized.then(() => this.state.graph.invert(toJSON().options.dayMode));
+    this.initialized.then(() =>
+    {
+      this.state.graph.invert(toJSON().options.dayMode);
+      this.cxtMenu = new ContextMenu(graph);
+    });
   }
 }
 
@@ -100,6 +102,7 @@ export function reset()
   removeTabsArray = [];
   traverse(viewLayout.root,0);
   for(const content of removeTabsArray){content.remove();}
+  for(const view of views){view.cxtMenu.reset();}
   views.length=0;
   viewCount=0;
   viewLayout.destroy();

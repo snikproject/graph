@@ -13,8 +13,6 @@ export default class ContextMenu
   /** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
   The extension itself is already registered through the plain HTML/JS import in index.html,
   which makes available cy.cxtmenu().
-  @param {boolean} dev whether developer mode menu entries are shown
-  @param {boolean} ext whether extended mode menu entries are shown
   */
   constructor(graph)
   {
@@ -26,12 +24,21 @@ export default class ContextMenu
     menu.extModeBox.addEventListener("change",()=>{log.debug("Set extMode to "+menu.extModeBox.checked);this.populate(menu.devModeBox.checked,menu.extModeBox.checked);});
   }
 
-  /** Clears existing context menus of this menu and create anew the different context menus depending on whether dev and ext mode are active. */
-  populate(dev,ext)
+  /**Destroy all submenus**/
+  reset()
   {
-    /** Unregister and destroy all created menus of this context menu. */
     this.cxtmenus.forEach(c=>c.destroy());
     this.cxtmenus = [];
+  }
+
+  /** Clears existing context menus of this menu and create anew the different context menus depending on whether dev and ext mode are active.
+  @param {boolean} dev whether developer mode menu entries are shown
+  @param {boolean} ext whether extended mode menu entries are shown
+  */
+  populate(dev,ext)
+  {
+    this.reset();
+    /** Unregister and destroy all created menus of this context menu. */
     [...nodeMenus(this.graph,dev,ext),...new ContextMenuEdges(this.graph,dev).menus].forEach(ctxMenu=>{this.cxtmenus.push(this.graph.cy.cxtmenu(ContextMenu.addTippy(ctxMenu)));});
   }
 
