@@ -51,6 +51,7 @@ class Filter
     //let input = document.createRange().createContextualFragment('<input type="checkbox" class="filterbox" autocomplete="off" checked="true">'); // can't attach events to fragments
     const input = document.createElement("input");
     input.type="checkbox";
+    this.checkbox = input;
     input.classList.add("filterbox");
     input.autocomplete="off";
     input.checked=true;
@@ -120,7 +121,7 @@ Add filter entries to the filter menu.
 @param {HTMLElement} parent the parent element to attach the entries to
 @param {array} as an empty array of HTML anchors to be filled
 */
-function addFilterEntries(parent,as)
+export function addFilterEntries(parent,as)
 {
   for(const datum of filterData)
   {
@@ -130,4 +131,24 @@ function addFilterEntries(parent,as)
   }
 }
 
-export default addFilterEntries;
+/** Saves the visibility values of all filters.*/
+export function toJSON()
+{
+  const json = {};
+  for (const filter of filters)
+  {
+    json[filter.label]=filter.visible;
+  }
+  return json;
+}
+
+/** Loads the visibility values and apllies it to all filters.
+@param json the object what has to be applied
+*/
+export function fromJSON(json)
+{
+  for (const filter of filters)
+  {
+    filter.checkbox.checked = json[filter.label];
+  }
+}

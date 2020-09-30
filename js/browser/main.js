@@ -10,7 +10,6 @@ import * as layout from "../layout.js";
 import * as sparql from "../sparql.js";
 import progress from "./progress.js";
 import config from "../config.js";
-import state from "../state.js";
 import initLog from "./log.js";
 import * as util from "./util.js";
 import {addOverlay} from "./benchmark.js";

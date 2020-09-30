@@ -3,7 +3,7 @@
 import * as layout from "../layout.js";
 import {View,reset,activeView} from "./view.js";
 import config from "../config.js";
-import state from "../state.js";
+import {state,fromJSON} from "./state.js";
 /**
 Uploads a JSON file from the user.
 @param {Event} event a file input change event
@@ -58,7 +58,7 @@ export async function loadSessionFromJsonFile(event)
     let pacJson = {version:"unknown"};
     try {pacJson = await (await fetch('../../package.json')).json();}
     catch(e) {log.warn(e);} // fetch does not work while developing over the file protocol
-    Object.assign(state, json.state); // update changed values, keep existing values that don't exist in the save file
+    fromJSON(json.state); // update changed values, keep existing values that don't exist in the save file
     // compare versions of file and package.json and warn if deprecated
     console.log(state.version);
     console.log(pacJson.version);

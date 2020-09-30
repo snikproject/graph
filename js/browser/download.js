@@ -3,7 +3,7 @@ Lets the user download files generated from the loaded graph.
 @module */
 import * as layout from "../layout.js";
 import config from "../config.js";
-import state from "../state.js";
+import {toJSON} from "./state.js";
 import {views} from "./view.js";
 
 let a = null; // reused for all downloading, not visible to the user
@@ -65,7 +65,7 @@ export function downloadGraph(graph)
 /** Downloads the contents of all views as a custom JSON file. */
 export function downloadSession()
 {
-  const session = {tabs:[], state: state};
+  const session = {tabs:[], state: toJSON()};
   session.mainGraph=
   {
     title: views[0].state.title,

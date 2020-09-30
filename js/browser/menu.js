@@ -10,7 +10,7 @@ import * as util from "./util.js";
 import config from "../config.js";
 import progress from "./progress.js";
 import {showChapterSearch} from "./chaptersearch.js";
-import addFilterEntries from "./filter.js";
+import {addFilterEntries} from "./filter.js";
 import * as file from "./file.js";
 import {Graph} from "./graph.js";
 import {activeState, activeView, views} from "./view.js";
