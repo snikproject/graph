@@ -103,7 +103,7 @@ export class Menu
             progress(()=>layout.runCached(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs()));
           },
           "Load from SPARQL Endpoint","load-sparql"],
-          [()=>download.downloadSession(),"Save Session","save-session"],
+          [()=>download.downloadSession(this.optionsToJSON()),"Save Session","save-session"],
           [()=>download.downloadGraph(activeState().graph),"Save the full SNIK Graph","save-snik-graph"],
           [()=>download.downloadView(activeView()),"Save currently active view (partial graph)","save-view"],
           [()=>
@@ -191,7 +191,8 @@ export class Menu
   addOptions(as,showInstancesBoxChecked)
   {
     const optionsContent = util.getElementById("options-menu-content");
-    const names = ["separateSubs","cumulativeSearch","grid","dayMode","devMode","extMode","combineMatchMode","showInstances"];
+    const names = ["separateSubs","cumulativeSearch","grid","combineMatchMode","showInstances","dayMode","devMode","extMode"];
+    this.optionBoxes = {};
     for(const name of names)
     {
       log.trace("Add option "+name);
@@ -202,6 +203,7 @@ export class Menu
       a.classList.add("dropdown-entry");
 
       const box = document.createElement("input");
+      this.optionBoxes[name]=box;
       a.appendChild(box);
       box.type="checkbox";
       box.autocomplete="off";
@@ -368,7 +370,7 @@ export class Menu
       });
     }
 
-    file.addFileLoadEntries(activeState().graph,util.getElementById("file-menu-content"),aas[0]); // update index when "File" position changes in the menu
+    file.addFileLoadEntries(activeState().graph,util.getElementById("file-menu-content"),aas[0],this.optionsFromJSON); // update index when "File" position changes in the menu
     log.debug('fileLoadEntries added');
 
     addFilterEntries(util.getElementById("filter-menu-content"),aas[1]);  // update index when "Filter" position changes in the menu
@@ -418,6 +420,31 @@ export class Menu
     {
       const dropdowns = document.getElementsByClassName("dropdown-content");
       Array.from(dropdowns).forEach(d=>d.classList.remove('show'));
+    }
+  }
+
+  /** Save session-based options (not user preferences) to JSON. */
+  optionsToJSON()
+  {
+    //const sessionOptions = ["separateSubs","cumulativeSearch","grid","combineMatchMode","showInstances"];
+    const sessionOptions = ["separateSubs","cumulativeSearch","grid","combineMatchMode","showInstances","dayMode","devMode","extMode"];
+    const options = {};
+    for(const option of sessionOptions)
+    {
+      options[option] = this.optionBoxes[option].checked;
+    }
+    return options;
+  }
+
+  /** Restore session-based options from the output of toJSON(). */
+  optionsFromJSON(json)
+  {
+    const currentOptions = this.optionsToJSON();
+    console.log(currentOptions);
+    console.log(json);
+    for(const [name,checked] of Object.entries(json))
+    {
+      if(currentOptions[name]!==checked) {this.optionBoxes[name].click();}
     }
   }
 }

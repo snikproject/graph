@@ -1,5 +1,6 @@
 /** @module */
 import * as filter from "./filter.js";
+import {menu} from "./menu.js";
 
 export const state =
 {
@@ -11,6 +12,7 @@ export function toJSON()
 {
   const json = {};
   json.filters = filter.toJSON();
+  json.options = menu.optionsToJSON();
   return json;
 }
 
@@ -18,4 +20,5 @@ export function toJSON()
 export function fromJSON(json)
 {
   filter.fromJSON(json.filters);
+  menu.optionsFromJSON(json.options);
 }
