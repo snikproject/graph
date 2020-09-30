@@ -3,6 +3,7 @@ Lets the user download files generated from the loaded graph.
 @module */
 import * as layout from "../layout.js";
 import config from "../config.js";
+import state from "../state.js";
 import {views} from "./view.js";
 
 let a = null; // reused for all downloading, not visible to the user
@@ -21,6 +22,7 @@ export function downloadJson(data,fileName)
     document.body.appendChild(a);
     a.style = "display: none";
   }
+  console.log(data);
   const json = JSON.stringify(data);
   const blob = new Blob([json], {type: "application/json"});
   const url = window.URL.createObjectURL(blob);
@@ -63,7 +65,7 @@ export function downloadGraph(graph)
 /** Downloads the contents of all views as a custom JSON file. */
 export function downloadSession()
 {
-  const session = {tabs:[], config: config};
+  const session = {tabs:[], state: state};
   session.mainGraph=
   {
     title: views[0].state.title,
@@ -86,10 +88,10 @@ export function downloadSession()
 */
 export function downloadView(view)
 {
-  const state = view.config.componentState;
+  const layoutState = view.config.componentState;
   const json ={
     title: view.config.title,
-    graph: state.cy.json(),
+    graph: layoutState.cy.json(),
   };
   delete json.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
   downloadJson(json,"snik-view.json");

@@ -3,7 +3,7 @@
 import * as layout from "../layout.js";
 import {View,reset,activeView} from "./view.js";
 import config from "../config.js";
-
+import state from "../state.js";
 /**
 Uploads a JSON file from the user.
 @param {Event} event a file input change event
@@ -52,26 +52,32 @@ export const loadGraphFromJsonFile = graph => event =>
 */
 export async function loadSessionFromJsonFile(event)
 {
-  if(config.multiview.warnOnSessionLoad)
+  if(config.multiview.warnOnSessionLoad && !confirm('This will override the current session. Continue?')) {return;}
+  uploadJson(event,async json =>
   {
-    const hint = confirm('This will override the current session. Continue?');
-    if (hint)
+    let pacJson = {version:"unknown"};
+    try {pacJson = await (await fetch('../../package.json')).json();}
+    catch(e) {log.warn(e);} // fetch does not work while developing over the file protocol
+    Object.assign(state, json.state); // update changed values, keep existing values that don't exist in the save file
+    // compare versions of file and package.json and warn if deprecated
+    console.log(state.version);
+    console.log(pacJson.version);
+    if(state.version !== pacJson.version &&
+        !confirm(`Your file was saved in version ${state.version}, but SNIK Graph has version ${pacJson.version}, so it may not work properly. Continue anyway?`))
+    {return;}
+
+    reset();
+    const mainView=new View(false);
+    // First graph is an instance of Graph from graph.js; the second one is the graph attribute from the Cytoscape JSON format.
+    loadGraphFromJson(mainView.state.graph,json.mainGraph.graph);
+    activeView().setTitle(json.mainGraph.title);
+    for (let i =0; i<json.tabs.length;i++)
     {
-      uploadJson(event,async json =>
-      {
-        reset();
-        const view=new View(false);
-        loadGraphFromJson(view.state.graph,json.mainGraph.graph);
-        activeView().setTitle(json.mainGraph.title);
-        for (let i =0; i<json.tabs.length;i++)
-        {
-          const view = new View(false);
-          loadGraphFromJson(view.state.graph,json.tabs[i].graph);
-          activeView().setTitle(json.tabs[i].title);
-        }
-      });
+      const view = new View(false);
+      loadGraphFromJson(view.state.graph,json.tabs[i].graph);
+      activeView().setTitle(json.tabs[i].title);
     }
-  }
+  });
 }
 
 /** Loads a stored view from a JSON file. */

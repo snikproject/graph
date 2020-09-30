@@ -10,6 +10,7 @@ import * as layout from "../layout.js";
 import * as sparql from "../sparql.js";
 import progress from "./progress.js";
 import config from "../config.js";
+import state from "../state.js";
 import initLog from "./log.js";
 import * as util from "./util.js";
 import {addOverlay} from "./benchmark.js";
@@ -144,33 +145,33 @@ function initKeyListener()
     const el = e.target;
     if(!el || el.nodeName!=="BODY") {return;}
 
-    const state = activeState();
+    const layoutState = activeState();
     if(e.code === "Delete" || e.code === "Backspace") // backspace (for mac) or delete key
     {
-      state.cy.remove(':selected');
+      layoutState.cy.remove(':selected');
     }
     // Copy
     if(e.code === "KeyS" || e.code === "KeyC")
     {
-      const selected = state.cy.nodes(':selected');
+      const selected = layoutState.cy.nodes(':selected');
       if(selected.size()===0) {return;} // do nothing when nothing selected
       clipboard.length = 0;
       clipboard.push(...selected.map(node => node.id()));
-      log.debug(`Copied ${clipboard.length} elements from ${state.name}.`);
+      log.debug(`Copied ${clipboard.length} elements from ${layoutState.name}.`);
       log.info("Partial graph copied!");
     }
     // Paste
     if(e.code === "KeyP" || e.code === "KeyV")
     {
-      state.cy.startBatch();
+      layoutState.cy.startBatch();
       for(const id of clipboard)
       {
-        Graph.setVisible(state.cy.getElementById(id),true);
+        Graph.setVisible(layoutState.cy.getElementById(id),true);
       }
-      state.cy.endBatch();
-      Graph.setVisible(state.cy.nodes(":visible").edgesWith(":visible"),true);
-      state.cy.fit(state.cy.elements(":visible")); // needs to be outside the batch to fit correctly
-      log.debug(`Pasted ${clipboard.length} elements into ${state.name}.`);
+      layoutState.cy.endBatch();
+      Graph.setVisible(layoutState.cy.nodes(":visible").edgesWith(":visible"),true);
+      layoutState.cy.fit(layoutState.cy.elements(":visible")); // needs to be outside the batch to fit correctly
+      log.debug(`Pasted ${clipboard.length} elements into ${layoutState.name}.`);
       log.info("Partial graph inserted!");
     }
   });
