@@ -2,7 +2,7 @@
 Entry point.
 @module */
 import loadGraphFromSparql from "../loadGraphFromSparql.js";
-import Menu from "./menu.js";
+import {Menu} from "./menu.js";
 import Search from "./search.js";
 import {loadGraphFromJsonFile} from "./file.js";
 import {Graph} from "./graph.js";

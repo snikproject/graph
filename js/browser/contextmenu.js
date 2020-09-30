@@ -5,6 +5,7 @@ Needs to be initialized before it can be used via the default export function.
 import nodeMenus from "./contextmenuNodes.js";
 import ContextMenuEdges from "./contextmenuEdges.js";
 import {flatHelp} from "../help.js";
+import {menu} from "./menu.js";
 
 /** context menu for nodes and edges */
 export default class ContextMenu
@@ -15,7 +16,7 @@ export default class ContextMenu
   @param {boolean} dev whether developer mode menu entries are shown
   @param {boolean} ext whether extended mode menu entries are shown
   */
-  constructor(graph,menu)
+  constructor(graph)
   {
     this.graph = graph;
     log.debug(`Register Context Menu. Developer Entries: ${menu.devModeBox.checked}, Extended Entries: ${menu.extModeBox.checked}`);
@@ -31,7 +32,7 @@ export default class ContextMenu
     /** Unregister and destroy all created menus of this context menu. */
     this.cxtmenus.forEach(c=>c.destroy());
     this.cxtmenus = [];
-    [...nodeMenus(this.graph,dev,ext),...new ContextMenuEdges(this.graph,dev).menus].forEach(menu=>{this.cxtmenus.push(this.graph.cy.cxtmenu(ContextMenu.addTippy(menu)));});
+    [...nodeMenus(this.graph,dev,ext),...new ContextMenuEdges(this.graph,dev).menus].forEach(ctxMenu=>{this.cxtmenus.push(this.graph.cy.cxtmenu(ContextMenu.addTippy(ctxMenu)));});
   }
 
   /** Add tooltips to all menu entries.*/

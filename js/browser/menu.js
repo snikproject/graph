@@ -17,16 +17,20 @@ import {activeState, activeView, views} from "./view.js";
 // grid picture as base64
 // eslint-disable-next-line
 const grid = "iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAYAAACoYAD2AAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TxSItDnYQUchQnSyIijhqFYpQIdQKrTqYXPoFTRqSFBdHwbXg4Mdi1cHFWVcHV0EQ/ABxcnRSdJES/5cUWsR4cNyPd/ced+8AoVFhmtU1Dmi6baaTCTGbWxV7XhFCBGEMIyIzy5iTpBR8x9c9Any9i/Ms/3N/joiatxgQEIlnmWHaxBvE05u2wXmfOMpKskp8Tjxm0gWJH7muePzGueiywDOjZiY9TxwlFosdrHQwK5ka8RRxTNV0yheyHquctzhrlRpr3ZO/MJzXV5a5TnMISSxiCRJEKKihjApsxGnVSbGQpv2Ej3/Q9UvkUshVBiPHAqrQILt+8D/43a1VmJzwksIJoPvFcT5GgJ5doFl3nO9jx2meAMFn4Epv+6sNYOaT9Hpbix0BfdvAxXVbU/aAyx1g4MmQTdmVgjSFQgF4P6NvygH9t0Dvmtdbax+nD0CGukrdAAeHwGiRstd93h3q7O3fM63+fgAltnKI89jkWgAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+QIDQwpAiBJZ4sAAABFSURBVFjD7dfBDQAgCARBtHI61yYgYjJbwGW+F1FcZp7qzR0fBAkJCQkJCQkJCQk5odXxScbniEFCQkJCQkJCQkJCPuwCY9AHy8qKGCgAAAAASUVORK5CYII=";
+export let menu = null; // singleton instance
+
 /** main menu bar */
-export default class Menu
+export class Menu
 {
   /** construct the main menu bar for the given graph */
   constructor(showInstancesBoxChecked)
   {
+    if(menu) {throw Error("Menu already exists.");}
     document.body.addEventListener("click",Menu.closeListener);
     // bind this to the class instance instead of the event source
     this.showCloseMatches = this.showCloseMatches.bind(this);
     this.addMenu(showInstancesBoxChecked);
+    menu = this;
   }
 
   /** @return whether subontologies are to be displayed separately. */
