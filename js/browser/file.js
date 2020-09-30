@@ -56,7 +56,7 @@ export async function loadSessionFromJsonFile(event)
   uploadJson(event,async json =>
   {
     let pacJson = {version:"unknown"};
-    try {pacJson = await (await fetch('../../package.json')).json();}
+    try {pacJson = await (await fetch('package.json')).json();}
     catch(e) {log.warn(e);} // fetch does not work while developing over the file protocol
     // compare versions of file and package.json and warn if deprecated
     if(state.version !== pacJson.version &&
