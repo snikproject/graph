@@ -27,7 +27,7 @@ function traverse(o, depth=1)
     // value is a string
     if(key==="img")
     {
-      html+=`<img src="img/${value}" style="max-width:100vw;">\n`;
+      html+=`<center><img src="img/${value}" style="max-width:100vw;max-height:80vh;"></center>\n`;
       continue;
     }
     if(key!=="") {html+=heading(key);}
