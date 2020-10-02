@@ -2,7 +2,8 @@
 Various utility methods.s
 @module */
 
-
+// update manually on release
+export const VERSION = "1.6.0";
 const LOG_LIMIT = 500;
 
 /** getElementById with exception handling. */

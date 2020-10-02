@@ -3,7 +3,9 @@
 import * as layout from "../layout.js";
 import {View,reset,activeView} from "./view.js";
 import config from "../config.js";
-import {state,fromJSON} from "./state.js";
+import {fromJSON} from "./state.js";
+import {VERSION} from "./util.js";
+
 /**
 Uploads a JSON file from the user.
 @param {Event} event a file input change event
@@ -55,12 +57,9 @@ export async function loadSessionFromJsonFile(event)
   if(config.multiview.warnOnSessionLoad && !confirm('This will override the current session. Continue?')) {return;}
   uploadJson(event,async json =>
   {
-    let pacJson = {version:"unknown"};
-    try {pacJson = await (await fetch('package.json')).json();}
-    catch(e) {log.warn(e);} // fetch does not work while developing over the file protocol
     // compare versions of file and package.json and warn if deprecated
-    if(state.version !== pacJson.version &&
-        !confirm(`Your file was saved in version ${state.version}, but SNIK Graph has version ${pacJson.version}, so it may not work properly. Continue anyway?`))
+    if(json.state.version !== VERSION &&
+        !confirm(`Your file was saved in version ${json.state.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`))
     {return;}
 
     reset();
@@ -87,6 +86,10 @@ export function loadView(event)
 {
   uploadJson(event,json =>
   {
+    // compare versions of file and package.json and warn if deprecated
+    if(json.version !== VERSION &&
+      !confirm(`Your file was saved in version ${json.state.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`))
+    {return;}
     const view=new View(false);
     loadGraphFromJson(view.state.graph,json.graph);
     activeView().setTitle(json.title);
