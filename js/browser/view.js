@@ -62,7 +62,7 @@ export class View
     };
     const thisView = this; // supply this to callback
 
-    viewLayout.registerComponent(title, function(container, state)
+    viewLayout.registerComponent(title, function(container/*, state*/) // State is defined but never used, maybe it is needed for sth. later on.
     {
       thisView.cyContainer = document.createElement("div");
       thisView.element = container.getElement()[0];
