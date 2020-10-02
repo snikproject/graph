@@ -66,7 +66,8 @@ Result 2: "${[...results[j]]}"`);
       for(const query of queries)
       {
         const results = await fuse.search(query);
-        assert.includeMembers(results,correctResults.map(r=>rdf.long(r)));
+        const uris = results.map(x=>x.item.uri);
+        assert.includeMembers(uris,correctResults.map(r=>rdf.long(r)));
       }
     }
   });
