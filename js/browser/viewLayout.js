@@ -42,7 +42,7 @@ export function goldenLayout()
     const controls = stack.header.controlsContainer[0];
     const separateSubs = () => views[0].state.graph.menu.separateSubs()&&!stackState().graph.starMode;
     const data = [
-      [".plussign",           ()=>{log.info(separateSubs());cy().zoom(cy().zoom()*1.2);}],
+      [".plussign",           ()=>{cy().zoom(cy().zoom()*1.2);}],
       [".minussign",          ()=>{cy().zoom(cy().zoom()/1.2);}],
       [".addsign",            ()=>{new View();}],
       [".recalculatesign",    ()=>{layout.run(cy(),layout.euler,config.defaultSubOntologies,separateSubs(),true);}],
