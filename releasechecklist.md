@@ -8,7 +8,7 @@ Our releases have a major and minor version x.y with a corresponding milestone a
 * git pull
 * `npm install && npm update`
 * `cp js/config.dist.js js/config.js`
-* change the version number in package.json to the new release
+* change the version number in package.json and js/browser/util.js to the new release
 
 ### Upgrade major dependency versions
 Run `npx npm-upgrade` and upgrade all packages that don't break anything.

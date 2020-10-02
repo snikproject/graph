@@ -5,6 +5,7 @@ import * as layout from "../layout.js";
 import config from "../config.js";
 import {toJSON} from "./state.js";
 import {views} from "./view.js";
+import {VERSION} from "./util.js";
 
 let a = null; // reused for all downloading, not visible to the user
 
@@ -90,6 +91,7 @@ export function downloadView(view)
 {
   const layoutState = view.config.componentState;
   const json ={
+    version: VERSION,
     title: view.config.title,
     graph: layoutState.cy.json(),
   };
