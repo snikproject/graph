@@ -118,7 +118,7 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
   // Because it is a partial graph, the relation to the whole graph should still be discernable. That is why we preserve the center position of that partial graph and restore it later.
   if(partLayout) {oldCenter = center(elements.nodes());}
   const configCopy = { ...layoutConfig };
-  configCopy.animate = elements.size()>ANIMATE_THRESHOLD;
+  configCopy.animate = elements.size()>ANIMATE_THRESHOLD && (typeof window !== 'undefined'); // can't animate from node
   {activeLayout = elements.layout(configCopy);}
   activeLayout.on("layoutstop",()=>
   {
