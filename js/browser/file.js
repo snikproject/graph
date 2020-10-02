@@ -88,7 +88,7 @@ export function loadView(event)
   {
     // compare versions of file and package.json and warn if deprecated
     if(json.version !== VERSION &&
-      !confirm(`Your file was saved in version ${json.state.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`))
+      !confirm(`Your file was saved in version ${json.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`))
     {return;}
     const view=new View(false);
     loadGraphFromJson(view.state.graph,json.graph);
