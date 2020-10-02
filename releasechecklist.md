@@ -49,6 +49,10 @@ For example, run `python -m http.server` and open it at `http://0.0.0.0:8000`.
 * run index.html in different browsers
 * the most important test: it needs to load without errors. Make sure to open the console groups.
 * clear the cache and local storage and try to load again (press F5)
+* open a new tab
+* copy some nodes in the main tab
+* paste them in the new tab
+* go back to the main tab
 * test all the filters (by turning them on and off, some subontology filters like meta may have no effect if they aren't set to load in the config)
 * hide inter-ontology relations
 * press recalculate layout
