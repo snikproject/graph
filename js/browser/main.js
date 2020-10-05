@@ -168,8 +168,10 @@ function initKeyListener()
         Graph.setVisible(layoutState.cy.getElementById(id),true);
       }
       layoutState.cy.endBatch();
-      Graph.setVisible(layoutState.cy.nodes(":visible").edgesWith(":visible"),true);
-      layoutState.cy.fit(layoutState.cy.elements(":visible")); // needs to be outside the batch to fit correctly
+      const visible = layoutState.cy.nodes(".unfiltered").not(".hidden");
+      Graph.setVisible(visible.edgesWith(visible),true);
+
+      layoutState.cy.fit(layoutState.cy.elements(".unfiltered").not(".hidden")); // needs to be outside the batch to fit correctly
       log.debug(`Pasted ${clipboard.length} elements into ${layoutState.name}.`);
       log.info("Partial graph inserted!");
     }
