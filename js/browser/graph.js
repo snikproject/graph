@@ -85,7 +85,7 @@ export class Graph
   /**
     @param {cytoscape.Collection} eles the elements to assign the star mode css class to
     */
-  starStyle(eles)
+  static starStyle(eles)
   {
     eles.removeClass('hidden');
     eles.addClass('starmode');
@@ -138,7 +138,7 @@ export class Graph
         path.merge(edges);
         path.merge(edges.connectedNodes(".unfiltered"));
       }
-      this.starStyle(path);
+      Graph.starStyle(path);
       if(this.starMode)
       {
         // otherwise path might not be seen if it lies fully in an existing star
@@ -210,9 +210,9 @@ export class Graph
       Graph.setVisible(this.cy.elements().not(star),false);
     }
 
-    this.starStyle(star);
+    Graph.starStyle(star);
     const visible = this.cy.nodes(".unfiltered").not(".hidden");
-    this.starStyle(visible.edgesWith(visible));
+    Graph.starStyle(visible.edgesWith(visible));
 
     if(changeLayout)
     {
