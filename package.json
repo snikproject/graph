@@ -61,7 +61,7 @@
     "lint": "eslint js",
     "typecheck": "tsc --noEmit",
     "jsdoc": "node_modules/.bin/jsdoc js -c jsdoc.json -r",
-    "cypressTests": "cypress open"
+    "cypress": "cypress open"
   },
   "repository": {
     "type": "git",
