@@ -4,7 +4,7 @@ Entry point.
 import loadGraphFromSparql from "../loadGraphFromSparql.js";
 import {Menu} from "./menu.js";
 import Search from "./search.js";
-import {loadGraphFromJsonFile} from "./file.js";
+import {loadGraphFromJsonFile} from "./load.js";
 import {Graph} from "./graph.js";
 import * as layout from "../layout.js";
 import * as sparql from "../sparql.js";

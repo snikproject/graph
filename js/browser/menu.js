@@ -1,7 +1,7 @@
 /** Populates the menu bar on the top and initializes the context menu.*/
 /**
 @module */
-import * as download from "./download.js";
+import * as save from "./save.js";
 import * as layout from "../layout.js";
 import * as NODE from "../node.js";
 import loadGraphFromSparql from "../loadGraphFromSparql.js";
@@ -11,7 +11,7 @@ import config from "../config.js";
 import progress from "./progress.js";
 import {showChapterSearch} from "./chaptersearch.js";
 import {addFilterEntries} from "./filter.js";
-import * as file from "./file.js";
+import * as load from "./load.js";
 import {Graph} from "./graph.js";
 import {activeState, activeView, views} from "./view.js";
 
@@ -104,18 +104,18 @@ export class Menu
             progress(()=>layout.runCached(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs()));
           },
           "Load from SPARQL Endpoint","load-sparql"],
-          [()=>download.downloadSession(this.optionsToJSON()),"Save Session","save-session"],
-          [()=>download.downloadGraph(activeState().graph),"Save the full SNIK Graph","save-snik-graph"],
-          [()=>download.downloadView(activeView()),"Save currently active view (partial graph)","save-view"],
+          [()=>save.saveSession(this.optionsToJSON()),"Save Session","save-session"],
+          [()=>save.saveGraph(activeState().graph),"Save the full SNIK Graph","save-snik-graph"],
+          [()=>save.saveView(activeView()),"Save currently active view (partial graph)","save-view"],
           [()=>
           {
             progress(()=>layout.run(activeState().cy,layout.euler,config.defaultSubOntologies,this.separateSubs(),true));
           },"Recalculate Layout and Replace in Browser Cache","recalculate-layout-replace"],
-          [()=>download.downloadPng(activeState().graph,this.dayModeBox.checked,false,false),"Save Image of Current View","save-image-current-view"],
-          [()=>download.downloadPng(activeState().graph,this.dayModeBox.checked,true,false),"Save Image of Whole Graph","save-image-whole-graph"],
-          [()=>download.downloadPng(activeState().graph,this.dayModeBox.checked,false,true),"Save Image of Current View (high res)","save-image-current-view-high-res"],
-          [()=>download.downloadPng(activeState().graph,this.dayModeBox.checked,true,true),"Save Image of Whole Graph (high res)","save-image-whole-graph-high-res"],
-          [()=>download.downloadSvg(activeState().graph,this.dayModeBox.checked,true),"Save Image of Whole Graph (SVG)"],
+          [()=>save.savePng(activeState().graph,this.dayModeBox.checked,false,false),"Save Image of Current View","save-image-current-view"],
+          [()=>save.savePng(activeState().graph,this.dayModeBox.checked,true,false),"Save Image of Whole Graph","save-image-whole-graph"],
+          [()=>save.savePng(activeState().graph,this.dayModeBox.checked,false,true),"Save Image of Current View (high res)","save-image-current-view-high-res"],
+          [()=>save.savePng(activeState().graph,this.dayModeBox.checked,true,true),"Save Image of Whole Graph (high res)","save-image-whole-graph-high-res"],
+          [()=>save.saveSvg(activeState().graph,this.dayModeBox.checked,true),"Save Image of Whole Graph (SVG)"],
         ],
       },
       {
@@ -372,7 +372,7 @@ export class Menu
       });
     }
 
-    file.addFileLoadEntries(activeState().graph,util.getElementById("file-menu-content"),aas[0],this.optionsFromJSON); // update index when "File" position changes in the menu
+    load.addFileLoadEntries(activeState().graph,util.getElementById("file-menu-content"),aas[0],this.optionsFromJSON); // update index when "File" position changes in the menu
     log.debug('fileLoadEntries added');
 
     addFilterEntries(util.getElementById("filter-menu-content"),aas[1]);  // update index when "Filter" position changes in the menu
