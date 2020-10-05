@@ -55,8 +55,9 @@ export class Graph
   /** Show (unhide) the given elements or hide them using visibility: hidden.
     Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
     Does not unhide filtered elements on its own.
-    @param {cytoscape.Collection} eles the elements to hide */
-  static setVisible(eles,visible)
+    @param {cytoscape.Collection} eles the elements to hide
+    @param {boolean} visible Whether to show or hide the nodes. Defaults to the sometimes implied value of true.*/
+  static setVisible(eles,visible=true)
   {
     if(visible)
     {
