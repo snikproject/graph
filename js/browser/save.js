@@ -16,39 +16,42 @@ let a = null; // reused for all saving, not visible to the user
 Source: https://stackoverflow.com/a/64222534/398963 */
 function stringify(object, exclude, space)
 {
-  const recur = (obj, spacing) =>
+  const recur = (obj, spacing, inarray) =>
   {
     let txt = '';
 
-    for (const key of Object.keys(obj))
+    if (inarray)
     {
-      if (exclude===key)
+      if (Array.isArray(obj))
       {
-        txt += '\n' + spacing + '"' + key + '": ' + JSON.stringify(obj[key]);
+        txt += '[';
+        for(let i=0;i<obj.length;i++) {txt += recur(obj[i], spacing + space, true);}
+        txt = txt.substr(0, txt.length - 2) + ']';
       }
-      else if (Array.isArray(obj[key]))
-      {
-        txt += '\n' + spacing + '"' + key + '": [' + recur(obj[key], spacing + space) + '\n' + spacing + ']';
-      }
-      else if (typeof obj[key] === 'object' && obj[key] !== null)
-      {
-        txt += '\n' + spacing + '"' + key + '": {' + recur(obj[key], spacing + space) + '\n' + spacing + '}';
-      }
-      else if (typeof obj[key] === 'string')
-      {
-        txt += '\n' + spacing + '"' + key + '": "' + obj[key].replaceAll(/"/g, '\\"') + '"';
-      }
-      else
-      {
-        txt += '\n' + spacing + '"' + key + '": ' + obj[key];
-      }
-      txt += ',';
+      else if (typeof obj === 'object' && obj !== null) {txt += '{' + recur(obj, spacing + space, false) + '\n' + spacing + '}';}
+      else if (typeof obj === 'string') {txt += obj.replaceAll(/"/g, '\\"') + '"';}
+      else {txt += obj;}
+      return txt + ', ';
     }
-
-    return txt.substr(0, txt.length - 1);
+    else
+    {
+      for (const key of Object.keys(obj))
+      {
+        if (exclude===key) {txt += '\n' + spacing + '"' + key + '": ' + JSON.stringify(obj[key]);}
+        else if (Array.isArray(obj[key]))
+        {
+          txt += '\n' + spacing + '"' + key + '": [';for(let i=0;i<obj[key].length;i++) {txt += recur(obj[key][i], spacing + space, true);}
+          txt = txt.substr(0, txt.length - 2) + ']';
+        }
+        else if (typeof obj[key] === 'object' && obj[key] !== null) {txt += '\n' + spacing + '"' + key + '": {' + recur(obj[key], spacing + space, false) + '\n' + spacing + '}';}
+        else if (typeof obj[key] === 'string') {txt += '\n' + spacing + '"' + key + '": "' + obj[key].replaceAll(/"/g, '\\"') + '"';}
+        else {txt += '\n' + spacing + '"' + key + '": ' + obj[key];}
+        txt += ',';
+      }
+      return txt.substr(0, txt.length - 1);
+    }
   };
-
-  return '{' + recur(object, space) + '\n' + '}';
+  return (Array.isArray(object) ? '[' + recur(object, space, true) + '\n' + ']' : '{' + recur(object, space, false) + '\n' + '}');
 }
 
 /**
