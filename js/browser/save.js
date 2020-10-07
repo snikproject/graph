@@ -9,6 +9,48 @@ import {VERSION} from "./util.js";
 
 let a = null; // reused for all saving, not visible to the user
 
+/** JSON.stringify analogue with excluded values to save space. Can only be used on objects.
+@param {Object} obj a JSON object
+@param {string[]} exclude key to be excluded from prettification
+@param {string} space A String that's used to insert white space into the output JSON string for readability purposes. Like the space parameter for JSON.stringify but cannot be a Number.
+Source: https://stackoverflow.com/a/64222534/398963 */
+function stringify(object, exclude, space)
+{
+  const recur = (obj, spacing) =>
+  {
+    let txt = '';
+
+    for (const key of Object.keys(obj))
+    {
+      if (exclude===key)
+      {
+        txt += '\n' + spacing + '"' + key + '": ' + JSON.stringify(obj[key]);
+      }
+      else if (Array.isArray(obj[key]))
+      {
+        txt += '\n' + spacing + '"' + key + '": [' + recur(obj[key], spacing + space) + '\n' + spacing + ']';
+      }
+      else if (typeof obj[key] === 'object' && obj[key] !== null)
+      {
+        txt += '\n' + spacing + '"' + key + '": {' + recur(obj[key], spacing + space) + '\n' + spacing + '}';
+      }
+      else if (typeof obj[key] === 'string')
+      {
+        txt += '\n' + spacing + '"' + key + '": "' + obj[key].replaceAll(/"/g, '\\"') + '"';
+      }
+      else
+      {
+        txt += '\n' + spacing + '"' + key + '": ' + obj[key];
+      }
+      txt += ',';
+    }
+
+    return txt.substr(0, txt.length - 1);
+  };
+
+  return '{' + recur(object, space) + '\n' + '}';
+}
+
 /**
 Create a JSON file out of a JSON data string and lets the user save it.
 Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
@@ -24,7 +66,7 @@ export function saveJson(data,fileName)
     a.style = "display: none";
   }
   console.log(data);
-  const json = JSON.stringify(data);
+  const json = stringify(data,"graph",'\t');
   const blob = new Blob([json], {type: "application/json"});
   const url = window.URL.createObjectURL(blob);
   a.href = url;
