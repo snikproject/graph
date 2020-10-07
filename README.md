@@ -31,8 +31,8 @@ These are only needed if you access index.html locally over the file prototocol,
 
 ### Publish
 
-Execute the setup step one.
-If you want the newest changes from the GitHub repository, execute `git pull` first. The newest version may be unstable, however, so for production it is safer to use a release.
+Execute the setup step one but use `npm install --only=prod`.
+If you want the newest changes from the GitHub repository, follow the master branch. The newest version may be unstable, however, so for production it is safer to check out the newest release.
 
 ### Update
 
