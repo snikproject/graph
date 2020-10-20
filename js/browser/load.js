@@ -28,7 +28,7 @@ function loadGraphFromJson(graph,json)
   const visibleFraction = 1.0*graph.cy.elements(":visible").size()/graph.cy.elements().size();
   const starMode = visibleFraction<0.8;
   log.debug("Load Graph from File: Visible fraction: "+visibleFraction+" set star mode to "+starMode);
-  if(graph.cy.nodes(":child").size()>0) {document.getElementById("combine-match-checkbox").checked=true;}
+  if(graph.cy.nodes(":child").size()>0) {document.getElementById("combineMatchModeBox").checked=true;}
   graph.starMode = starMode;
   graph.cy.center(":visible");
   graph.cy.fit(":visible");
