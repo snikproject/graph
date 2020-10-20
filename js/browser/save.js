@@ -82,7 +82,7 @@ export function saveJson(data,fileName)
 Lets the user save a file.
 Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
 @param {string} url a URL that resolves to a file
-@param {string} fileName the name of the saveed file
+@param {string} fileName the name of the saved file
 */
 export function saveUrl(url, fileName)
 {
@@ -96,7 +96,7 @@ export function saveUrl(url, fileName)
   a.download = fileName;
   a.click();
   window.URL.revokeObjectURL(url);
-  log.debug("File saveed: "+fileName);
+  log.debug("File saved: "+fileName);
 }
 
 /** Saves the whole layouted graph as a Cytoscape JSON file. */
