@@ -339,7 +339,7 @@ export class Graph
     }
     if(node.hasClass("hidden"))
     {
-      log.info(`Node is hidden. Unhiding ${uri}.`);
+      log.debug(`Node is hidden. Unhiding ${uri}.`);
       Graph.setVisible(node,true);
       Graph.setVisible(node.edgesWith(this.cy.nodes(':visible')),true);
     }

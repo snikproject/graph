@@ -75,7 +75,7 @@ export function saveJson(data,fileName)
   a.download = fileName;
   a.click();
   window.URL.revokeObjectURL(url);
-  log.info("JSON File saved: "+fileName);
+  log.debug("JSON File saved: "+fileName);
 }
 
 /**
@@ -96,7 +96,7 @@ export function saveUrl(url, fileName)
   a.download = fileName;
   a.click();
   window.URL.revokeObjectURL(url);
-  log.info("File saveed: "+fileName);
+  log.debug("File saveed: "+fileName);
 }
 
 /** Saves the whole layouted graph as a Cytoscape JSON file. */
