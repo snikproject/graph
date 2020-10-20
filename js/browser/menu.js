@@ -238,8 +238,12 @@ export class Menu
     {
       // Combine matches is *not* active in a new tab if the user first copies, then turns combine matches on and finally pastes.
       // In this case, "combine matches" needs to be deactivated and activated again to take effect on the paste result.
-      views.map(v=>v.state.graph).forEach(graph => graph.combineMatch(this.combineMatchModeBox.checked));
       log.debug("Set combine match mode to "+this.combineMatchModeBox.checked);
+      // give the browser time to update the checkbox, see https://stackoverflow.com/questions/64442639/how-to-give-instant-user-feedback-on-slow-checkbox-listeners-in-javascript?noredirect=1#comment113950377_64442639
+      setTimeout(() =>
+      {
+        views.map(v=>v.state.graph).forEach(graph => graph.combineMatch(this.combineMatchModeBox.checked));
+      }, 10);
     });
 
     // Initial state based on URL parameter. This checkbox is the only place where it is stored to prevent different values in different places.
