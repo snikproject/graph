@@ -442,8 +442,6 @@ export class Menu
   optionsFromJSON(json)
   {
     const currentOptions = this.optionsToJSON();
-    console.log(currentOptions);
-    console.log(json);
     for(const [name,checked] of Object.entries(json))
     {
       if(currentOptions[name]!==checked) {this.optionBoxes[name].click();}

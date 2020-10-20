@@ -68,7 +68,6 @@ export function saveJson(data,fileName)
     document.body.appendChild(a);
     a.style = "display: none";
   }
-  console.log(data);
   const json = stringify(data,"graph",'\t');
   const blob = new Blob([json], {type: "application/json"});
   const url = window.URL.createObjectURL(blob);

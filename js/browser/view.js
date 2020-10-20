@@ -89,7 +89,6 @@ let removeTabsArray = [];
 function traverse(x,depth)
 {
   if(x.type==="component"&&x.componentName!=="Gesamtmodell") {removeTabsArray.push(x); return;}
-  if(depth>100) {console.log("I'm too deep.");return;}
   for(const y of x.contentItems)
   {
     traverse(y,++depth);
@@ -98,7 +97,6 @@ function traverse(x,depth)
 /** close all tabs except the first one */
 export function reset()
 {
-  console.log(viewLayout.root);
   removeTabsArray = [];
   traverse(viewLayout.root,0);
   for(const content of removeTabsArray){content.remove();}
@@ -107,5 +105,4 @@ export function reset()
   viewCount=0;
   viewLayout.destroy();
   viewLayout=goldenLayout();
-  // console.log(goldenLayoutConfig);
 }
