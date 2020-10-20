@@ -165,7 +165,6 @@ export const flatHelp = flatten(help);
 /** Add event listenerers for popups.*/
 export function init()
 {
-  //console.log(JSON.stringify(flatHelp));
   for(const key in flatHelp)
   {
     const value = flatHelp[key];
