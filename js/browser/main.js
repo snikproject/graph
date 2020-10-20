@@ -163,9 +163,12 @@ function initKeyListener()
     if(e.code === "KeyP" || e.code === "KeyV")
     {
       layoutState.cy.startBatch();
+      layoutState.cy.elements().unselect();
       for(const id of clipboard)
       {
-        Graph.setVisible(layoutState.cy.getElementById(id),true);
+        const node = layoutState.cy.getElementById(id);
+        Graph.setVisible(node,true);
+        node.select(); // select all pasted nodes so that they are more visible above the other nodes
       }
       layoutState.cy.endBatch();
       const visible = layoutState.cy.nodes(".unfiltered").not(".hidden");

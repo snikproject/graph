@@ -344,7 +344,8 @@ export class Graph
       Graph.setVisible(node.edgesWith(this.cy.nodes(':visible')),true);
     }
     if(!(this.starMode||this.cumulativeSearch())) {this.resetStyle();}
-    this.highlight(node);
+    this.cy.elements().unselect();
+    node.select();
     this.cy.center(node);
   }
 
@@ -368,7 +369,8 @@ export class Graph
       Graph.setVisible(resultNodes.edgesWith(resultNodes),true);
       this.starMode = true;
     }
-    this.highlight(resultNodes);
+    this.cy.elements().unselect();
+    resultNodes.select();
     this.cy.fit(this.cy.elements(".highlighted"));
   }
 
