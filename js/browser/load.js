@@ -32,6 +32,8 @@ function loadGraphFromJson(graph,json)
   graph.starMode = starMode;
   graph.cy.center(":visible");
   graph.cy.fit(":visible");
+  graph.cy.elements().removeClass('highlighted');
+  graph.cy.elements().removeClass('source');
 }
 
 /**
