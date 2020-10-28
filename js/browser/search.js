@@ -91,8 +91,8 @@ export default class Search
     const row = table.insertRow(0);
     const cell = row.insertCell();
 
-    cell.innerHTML = "Highlight All";
-    cell.addEventListener("click",()=>{MicroModal.close("search-results");activeState().graph.presentUris(uris);});
+    cell.innerHTML = "<a href='#'>Highlight All</a>";
+    cell.addEventListener("click",(e)=>{MicroModal.close("search-results");activeState().graph.presentUris(uris);e.preventDefault();});
 
     return true;
   }
