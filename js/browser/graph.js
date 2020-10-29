@@ -73,10 +73,11 @@ export class Graph
     }
   }
 
+  // not used anymore
   /** Highlight the given elements using the 'highlighted' css class from the color scheme stylesheet and show them.
     @param {cytoscape.Collection} eles the elements to highlight
     */
-  highlight(eles)
+  static highlight(eles)
   {
     eles.removeClass('hidden');
     eles.addClass('highlighted');
@@ -88,7 +89,8 @@ export class Graph
   static starStyle(eles)
   {
     eles.removeClass('hidden');
-    eles.addClass('starmode');
+    //eles.addClass('starmode');
+    eles.select();
   }
 
   /** Removes all highlighting (except selection) and shows all hidden nodes. */
@@ -173,7 +175,7 @@ export class Graph
   {
     this.cy.startBatch();
     // open 2 levels deep on closeMatch
-    let inner = center; // if you don't want to include close match, define inner like this
+    let inner = center; // if you don't want to include close match, keep inner at that
     let closeMatchEdges;
     for(let innerSize = 0; innerSize<inner.size();) // repeat until the close match chain ends
     {
@@ -211,8 +213,8 @@ export class Graph
     }
 
     Graph.starStyle(star);
-    const visible = this.cy.nodes(".unfiltered").not(".hidden");
-    Graph.starStyle(visible.edgesWith(visible));
+    //const visible = this.cy.nodes(".unfiltered").not(".hidden");
+    //Graph.starStyle(visible.edgesWith(visible));
 
     if(changeLayout)
     {
