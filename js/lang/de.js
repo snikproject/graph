@@ -37,7 +37,7 @@ export default
     "compound-layout": "verbundenes Layout",
     "bb-chapter-search": "BB Kapitelsuche",
     "ob-chapter-search": "OB Kapitelsuche",
-    "reset-view": "Ansicht zurücksetzen",
+    "reset-view": "Ansicht des Gesamtmodells zurücksetzen",
     "move-match-on-top": "Zeige close matches übereinander",
     "move-match-nearby": "Zeige close matches verbunden",
     "subontology-connectivity": "Konnektivität zwischen Subontologien",
