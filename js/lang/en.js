@@ -37,7 +37,7 @@ export default
     "compound-layout": "compound layout",
     "bb-chapter-search": "BB chapter search",
     "ob-chapter-search": "OB chapter search",
-    "reset-view": "reset view",
+    "reset-view": "reset main view",
     "move-match-on-top": "move matches on top of each other",
     "move-match-nearby": "move matches nearby",
     "subontology-connectivity": "subontology connectivity",

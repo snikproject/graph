@@ -144,7 +144,7 @@ export class Menu
               [()=>{showChapterSearch("bb");},"BB chapter search","bb-chapter-search"],
               [()=>{showChapterSearch("ob");},"OB chapter search","ob-chapter-search"],
               [activeState().graph.subOntologyConnectivity, "subontology connectivity","subontology-connectivity"],
-              [views[0].state.graph.resetStyle, "reset view","reset-view","ctrl+alt+r"],
+              [views[0].state.graph.resetStyle, "reset main view","reset-view","ctrl+alt+r"],
               [()=>{activeView().setTitle(prompt("Rename: "+activeView().config.title) || activeView().config.title);activeState().title=activeView().config.title;}, "change title of active View", "change-title"],
             ],
       },
