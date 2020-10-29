@@ -6,7 +6,10 @@ import {goldenLayout} from "./viewLayout.js";
 import {toJSON} from "./state.js";
 
 let viewCount = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
-export const views = [];
+export let mainView = null;
+export const partViews = new Set();
+export const views = () => [mainView,...partViews];
+
 let firstFinished = null; // following instances need to wait for the first to load
 let viewLayout=goldenLayout();
 
@@ -27,8 +30,9 @@ export class View
   /** Create an empty graph and add it to the state of this view along with its Cytoscape.js instance. */
   async fill(graph)
   {
-    if(views.length===1)
+    if(mainView===null)
     {
+      mainView = this;
       firstFinished = fillInitialGraph(graph);
       await firstFinished;
       log.debug(`Main view ${this.state.name} loaded with ${graph.cy.elements().size()} elements.`);
@@ -36,8 +40,8 @@ export class View
     else
     {
       await firstFinished;
-      graph.cy.add(views[0].state.cy.elements()); // don't load again, copy from first view
-      log.debug(`Create view ${this.state.name} with ${graph.cy.elements().size()} hidden elements copied from ${views[0].state.name}.`);
+      graph.cy.add(mainView.state.cy.elements()); // don't load again, copy from first view
+      log.debug(`Create view ${this.state.name} with ${graph.cy.elements().size()} hidden elements copied from ${mainView.state.name}.`);
       const elements = graph.cy.elements();
       Graph.setVisible(elements,false);
       Graph.setVisible(elements.edgesWith(elements),false);
@@ -51,22 +55,23 @@ export class View
     //find initial title of the new View
     const title = viewCount++===0?"Gesamtmodell":"Teilmodell "+(viewCount-1);
     this.state = {title:title};
-    views.push(this);
-    const closable = views.length>1;
+    //const closable = views.length>1;
     const itemConfig = {
       title:title,
       type: 'component',
       componentName: title,
       componentState: this.state,
-      isClosable: closable,
+      isClosable: mainView!==null,
     };
     const thisView = this; // supply this to callback
+    if(mainView!==null) {partViews.add(this);}
 
     viewLayout.registerComponent(title, function(container/*, state*/) // State is defined but never used, maybe it is needed for sth. later on.
     {
       thisView.cyContainer = document.createElement("div");
       thisView.element = container.getElement()[0];
       container.getElement()[0].appendChild(thisView.cyContainer);
+      container.on("destroy",()=>{partViews.delete(thisView);});
     });
     viewLayout.root.contentItems[0].addChild(itemConfig);
 
@@ -100,8 +105,8 @@ export function reset()
   removeTabsArray = [];
   traverse(viewLayout.root,0);
   for(const content of removeTabsArray){content.remove();}
-  for(const view of views){view.cxtMenu.reset();}
-  views.length=0;
+  for(const view of partViews){view.cxtMenu.reset();}
+  partViews.clear();
   viewCount=0;
   viewLayout.destroy();
   viewLayout=goldenLayout();

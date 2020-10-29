@@ -13,7 +13,7 @@ import {showChapterSearch} from "./chaptersearch.js";
 import {addFilterEntries} from "./filter.js";
 import * as load from "./load.js";
 import {Graph} from "./graph.js";
-import {activeState, activeView, views} from "./view.js";
+import {activeState, activeView, mainView,views} from "./view.js";
 
 // grid picture as base64
 // eslint-disable-next-line
@@ -48,7 +48,7 @@ export class Menu
     // this.graph.cy.style(style); // does not display the style correctly and doesn't update the labels
     // this.graph.cy.forceRender(); // does not update the labels either
     // the nuclear option works
-    for (const view of views)
+    for (const view of views())
     {
       const elements = view.state.graph.cy.elements();
       view.state.graph.cy.remove(elements);
@@ -144,7 +144,7 @@ export class Menu
               [()=>{showChapterSearch("bb");},"BB chapter search","bb-chapter-search"],
               [()=>{showChapterSearch("ob");},"OB chapter search","ob-chapter-search"],
               [activeState().graph.subOntologyConnectivity, "subontology connectivity","subontology-connectivity"],
-              [views[0].state.graph.resetStyle, "reset main view","reset-view","ctrl+alt+r"],
+              [mainView.state.graph.resetStyle, "reset main view","reset-view","ctrl+alt+r"],
               [()=>{activeView().setTitle(prompt("Rename: "+activeView().config.title) || activeView().config.title);activeState().title=activeView().config.title;}, "change title of active View", "change-title"],
             ],
       },
@@ -250,7 +250,7 @@ export class Menu
     this.showInstancesBox.checked = showInstancesBoxChecked;
     this.showInstancesBox.addEventListener("change",()=>
     {
-      if(views[0].state.graph.instancesLoaded)
+      if(mainView.state.graph.instancesLoaded)
       {
         for(const view of views)
         {
