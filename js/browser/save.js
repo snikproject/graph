@@ -4,7 +4,7 @@ Lets the user save files generated from the loaded graph.
 import * as layout from "../layout.js";
 import config from "../config.js";
 import {toJSON} from "./state.js";
-import {views} from "./view.js";
+import {mainView,partViews} from "./view.js";
 import {VERSION} from "./util.js";
 
 let a = null; // reused for all saving, not visible to the user
@@ -26,7 +26,8 @@ function stringify(object, exclude, space)
       {
         txt += '[';
         for(let i=0;i<obj.length;i++) {txt += recur(obj[i], spacing + space, true);}
-        txt = txt.substr(0, txt.length - 2) + ']';
+        txt = txt.replace(/,$/,"");
+        txt = txt + ']';
       }
       else if (typeof obj === 'object' && obj !== null) {txt += '{' + recur(obj, spacing + space, false) + '\n' + spacing + '}';}
       else if (typeof obj === 'string') {txt += obj.replaceAll(/"/g, '\\"') + '"';}
@@ -41,14 +42,16 @@ function stringify(object, exclude, space)
         else if (Array.isArray(obj[key]))
         {
           txt += '\n' + spacing + '"' + key + '": [';for(let i=0;i<obj[key].length;i++) {txt += recur(obj[key][i], spacing + space, true);}
-          txt = txt.substr(0, txt.length - 2) + ']';
+          txt = txt.replace(/,$/,"");
+          txt = txt + ']';
         }
         else if (typeof obj[key] === 'object' && obj[key] !== null) {txt += '\n' + spacing + '"' + key + '": {' + recur(obj[key], spacing + space, false) + '\n' + spacing + '}';}
         else if (typeof obj[key] === 'string') {txt += '\n' + spacing + '"' + key + '": "' + obj[key].replaceAll(/"/g, '\\"') + '"';}
         else {txt += '\n' + spacing + '"' + key + '": ' + obj[key];}
         txt += ',';
       }
-      return txt.substr(0, txt.length - 1);
+      txt = txt.replace(/,$/,"");
+      return txt;
     }
   };
   return (Array.isArray(object) ? '[' + recur(object, space, true) + '\n' + ']' : '{' + recur(object, space, false) + '\n' + '}');
@@ -68,7 +71,8 @@ export function saveJson(data,fileName)
     document.body.appendChild(a);
     a.style = "display: none";
   }
-  const json = stringify(data,"graph",'\t');
+  //const json = stringify(data,"graph",'\t'); // partially prettified variant not working correctly
+  const json = JSON.stringify(data); // unprettified variant
   const blob = new Blob([json], {type: "application/json"});
   const url = window.URL.createObjectURL(blob);
   a.href = url;
@@ -113,17 +117,18 @@ export function saveSession()
   const session = {tabs:[], state: toJSON()};
   session.mainGraph=
   {
-    title: views[0].state.title,
-    graph: views[0].state.cy.json(),
+    title: mainView.state.title,
+    graph: mainView.state.cy.json(),
   };
   delete session.mainGraph.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
-  for (let i=1; i<views.length;i++)
+  for (const view of partViews)
   {
-    session.tabs.push({
-      title: views[i].state.title,
-      graph: views[i].state.cy.json(),
-    });
-    delete session.tabs[i-1].graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
+    const tabContent = {
+      title: view.state.title,
+      graph: view.state.cy.json(),
+    };
+    delete tabContent.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
+    session.tabs.push(tabContent);
   }
   saveJson(session,"snik-session.json");
 }

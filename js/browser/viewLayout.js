@@ -1,6 +1,6 @@
 /** @module */
 import * as util from "./util.js";
-import {View,views} from "./view.js";
+import {View,mainView} from "./view.js";
 import * as layout from "../layout.js";
 /** Create, configure and return a GoldenLayout instance.*/
 export function goldenLayout()
@@ -40,7 +40,7 @@ export function goldenLayout()
     const cy = () => stackState().cy;
 
     const controls = stack.header.controlsContainer[0];
-    const separateSubs = () => views[0].state.graph.menu.separateSubs()&&!stackState().graph.starMode;
+    const separateSubs = () => mainView.state.graph.menu.separateSubs()&&!stackState().graph.starMode;
     const data = [
       [".plussign",           ()=>{cy().zoom(cy().zoom()*1.2);}],
       [".minussign",          ()=>{cy().zoom(cy().zoom()/1.2);}],

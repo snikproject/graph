@@ -33,7 +33,7 @@ const filters = [];
 const GRAPH_GETS_ADDITIONS = true;
 
 // apply a function to all cytoscape cores in all tabs
-const multicy = (f) => views.map(v=>v.state.cy).forEach(cy => f(cy));
+const multicy = (f) => views().map(v=>v.state.cy).forEach(cy => f(cy));
 
 /**
 Toggles the visibility of a set of nodes defined by a selector.
