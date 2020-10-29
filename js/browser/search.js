@@ -73,15 +73,27 @@ export default class Search
       }
       else {uriType[uri]=3;}
     });
+    const selected = new Set();
     // JavaScript search implementation is up to the browser but most should have a stable array search, which means that URIs within a URI type should keep their relative ranking
     uris.sort((a,b)=>(uriType[a]-uriType[b]));
     uris.forEach(uri=>
     {
       const row = table.insertRow();
+      const checkCell = row.insertCell();
+      const checkBox = document.createElement("input");
+      checkBox.type = "checkbox";
+      checkCell.appendChild(checkBox);
+      checkCell.addEventListener("change",(e)=>
+      {
+        selected[e.target.checked?"add":"remove"](uri);
+      });
       const locateCell = row.insertCell();
       const lodLiveCell = row.insertCell();
       // @ts-ignore
       window.presentUri=activeState().graph.presentUri;
+
+      // todo: listener to add to selected uris
+
       locateCell.innerHTML = `<a class="search-class${uriType[uri]}" href="javascript:MicroModal.close('search-results');window.presentUri('${uri}');void(0)">
           ${uri.replace(sparql.SNIK_PREFIX,"")}</a>`;
       const html = `<a class="search-class${uriType[uri]}" href="${uri}" target="_blank">Description</a>`;
@@ -89,10 +101,17 @@ export default class Search
     });
 
     const row = table.insertRow(0);
-    const cell = row.insertCell();
-
-    cell.innerHTML = "<a href='#'>Highlight All</a>";
-    cell.addEventListener("click",(e)=>{MicroModal.close("search-results");activeState().graph.presentUris(uris);e.preventDefault();});
+    row.insertCell();
+    {
+      const cell = row.insertCell();
+      cell.innerHTML = "<a href='#'>Highlight All</a>";
+      cell.addEventListener("click",(e)=>{MicroModal.close("search-results");activeState().graph.presentUris(uris);e.preventDefault();});
+    }
+    {
+      const cell = row.insertCell();
+      cell.innerHTML = "<a href='#'>Highlight Selected</a>";
+      cell.addEventListener("click",(e)=>{MicroModal.close("search-results");activeState().graph.presentUris([...selected]);e.preventDefault();});
+    }
 
     return true;
   }

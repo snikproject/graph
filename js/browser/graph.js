@@ -371,7 +371,7 @@ export class Graph
     }
     this.cy.elements().unselect();
     resultNodes.select();
-    this.cy.fit(this.cy.elements(".highlighted"));
+    this.cy.fit(this.cy.elements(":selected"));
   }
 
   /** Applies the function to multiple nodes if given or if not given then if selected.
