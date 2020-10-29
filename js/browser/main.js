@@ -164,15 +164,22 @@ function initKeyListener()
     {
       layoutState.cy.startBatch();
       layoutState.cy.elements().unselect();
+      const nodes = layoutState.cy.collection();
+
       for(const id of clipboard)
       {
         const node = layoutState.cy.getElementById(id);
-        Graph.setVisible(node,true);
-        node.select(); // select all pasted nodes so that they are more visible above the other nodes
+        nodes.merge(node);
       }
+      Graph.setVisible(nodes,true);
+
       layoutState.cy.endBatch();
-      const visible = layoutState.cy.nodes(".unfiltered").not(".hidden");
-      Graph.setVisible(visible.edgesWith(visible),true);
+
+      const visibleNodes = layoutState.cy.nodes(".unfiltered").not(".hidden");
+      const edges = nodes.edgesWith(visibleNodes);
+      const pasted = nodes.union(edges);
+      Graph.setVisible(pasted,true);
+      pasted.select(); // select all pasted nodes so that they are more visible above the other nodes
 
       layoutState.cy.fit(layoutState.cy.elements(".unfiltered").not(".hidden")); // needs to be outside the batch to fit correctly
       log.debug(`Pasted ${clipboard.length} elements into ${layoutState.name}.`);
