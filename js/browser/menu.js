@@ -242,7 +242,7 @@ export class Menu
       // give the browser time to update the checkbox, see https://stackoverflow.com/questions/64442639/how-to-give-instant-user-feedback-on-slow-checkbox-listeners-in-javascript?noredirect=1#comment113950377_64442639
       setTimeout(() =>
       {
-        views.map(v=>v.state.graph).forEach(graph => graph.combineMatch(this.combineMatchModeBox.checked));
+        views().map(v=>v.state.graph).forEach(graph => graph.combineMatch(this.combineMatchModeBox.checked));
       }, 10);
     });
 
@@ -252,7 +252,7 @@ export class Menu
     {
       if(mainView.state.graph.instancesLoaded)
       {
-        for(const view of views)
+        for(const view of views())
         {
           const instances  = view.state.graph.instances;
           Graph.setVisible(instances,this.showInstancesBox.checked);
