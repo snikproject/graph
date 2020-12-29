@@ -454,8 +454,8 @@ export class Graph
   }
 
   /** Sets whether close matches are grouped in compound nodes.
-   * @param {boolean} move Whether to move combined nodes nearby. True by default because it is needed for large graphs.*/
-  async combineMatch(enabled,move=true)
+   * @param {boolean} enabled Whether to activate or deactivate combine match mode. **/
+  async combineMatch(enabled)
   {
     await progress(()=>
     {
@@ -472,8 +472,9 @@ export class Graph
       // Can be calculated only once per session but then it needs to be synchronized with in-visualization ontology edits.
       const matchEdges = this.cy.edges('[pl="closeMatch"]').filter('.unfiltered').not('.hidden');
       const matchGraph = this.cy.nodes('.unfiltered').not('.hidden').union(matchEdges);
+      if(!this.moveMatchNotified&&this.cy.nodes(":visible").size()>1000) {log.info("Combining Matches. Consider using Move Matches Nearby or Move Matches on top of each other.");this.moveMatchNotified=true;}
 
-      this.matchComponents.length=0;
+      {this.matchComponents.length=0;}
       this.matchComponents.push(...matchGraph.components());
       for(let i=0; i < this.matchComponents.length; i++)
       {
@@ -512,7 +513,6 @@ export class Graph
 
         for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
       }
-      if(move) {this.moveAllMatches(100);}
       this.cy.endBatch();
     });
   }
