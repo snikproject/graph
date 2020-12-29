@@ -4,6 +4,10 @@ Show the environment of a single node using a special layout.
 import * as sparql from "../sparql.js";
 import * as NODE from "../node.js";
 import {Graph} from "./graph.js";
+import {View,views,mainView} from "./view.js";
+import {short} from "../rdf.js";
+
+let count = 0;
 
 /** Centers a class and shows directly and indirectly connected roles, functions and entity types in a concentric layout.
 Hides all other nodes. Resetting the view unhides the other nodes but keeps the layout of those shown before.
@@ -11,9 +15,9 @@ Recalculate the layout to place those nodes in relation to the whole graph again
 @param {string} clazz The URI of the class.
 @param {string} subTop The sub top letter of the class (R,F or E)
 */
-export default async function classUse(graph,clazz,subTop)
+export default async function classUse(clazz,subTop)
 {
-  graph.cy.startBatch();
+  // preparation and check
 
   const types = {
     "R":["meta:Role","meta:Function","meta:EntityType"],
@@ -69,18 +73,22 @@ export default async function classUse(graph,clazz,subTop)
     log.warn("Class "+clazz+" is not used.");
     return;
   }
+  // check passed ***************************************************************************************+
 
-  // now we know we can display something
-
-  // class use does not work with combine matches enabled, disable it. See https://github.com/IMISE/snik-cytoscape.js/issues/341
+  // Class Use does not work with Combine Matches enabled, disable it temporarily.
+  // Enable again after finishing Class Use.
+  // See https://github.com/IMISE/snik-cytoscape.js/issues/341
   const box = document.getElementById("combineMatchModeBox");
-  if(box.checked)
-  {
-    box.checked=false;
-    graph.combineMatch(false);
-    log.warn("Class Use is not compatible with Combine Matches. Disabling Combine Matches.");
-  }
+  const combineMatch = box.checked;
+  if(combineMatch) {mainView.state.graph.combineMatch(false);}
 
+  // Create new tab. See https://github.com/IMISE/snik-cytoscape.js/issues/341
+  const view = new View(true,"Class Use "+(++count)+" "+short(clazz));
+  await view.initialized;
+  const graph = view.state.graph;
+
+  // show it ****************************************************************
+  graph.cy.startBatch();
   graph.resetStyle();
   Graph.setVisible(graph.cy.elements(),false);
   graph.starMode = true;
@@ -127,6 +135,7 @@ export default async function classUse(graph,clazz,subTop)
   ).run();
 
   Graph.setVisible(selectedElements,true);
+  if(combineMatch) {[mainView,view].forEach(v=>v.state.graph.combineMatch(true));} // enable combine match for the main view again and for the new view
 
   const centerNode = graph.cy.nodes(`node[id='${clazz}']`);
   graph.cy.center(centerNode);

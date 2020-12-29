@@ -82,7 +82,7 @@ const baseCommands = graph =>
     {
       content: 'class use',
       id: "class-use",
-      select: node=> {classUse(graph,node.data(NODE.ID),node.data(NODE.SUBTOP));},
+      select: node=> {classUse(node.data(NODE.ID),node.data(NODE.SUBTOP));},
     },
     {
       content: 'hide',
