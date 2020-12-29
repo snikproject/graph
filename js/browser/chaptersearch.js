@@ -5,14 +5,14 @@ import * as sparql from "../sparql.js";
 import * as util from "./util.js";
 import * as language from "../lang/language.js";
 
-/** @type {Map<Array<string>>} */
+/** @type {Map<String,Array<string>>} */
 const chapters = new Map();
 const labels = new Map();
 
 const selectedChapters = new Set();
 
 /**
-@return {Set<string>} classes the set of classes in that chapter
+@return {Promise<Set<string>>} classes the set of classes in that chapter
 @param {string} chapter the chapter string value exactly as in the SPARQL triples, such as "5.3".
 */
 async function getClasses(sub,chapter)

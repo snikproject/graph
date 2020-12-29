@@ -39,8 +39,8 @@ function loadGraphFromJson(graph,json)
 /**
 Curried function.
 Load a layouted graph from the JSON file specified by the given file input change event.
-@param {Graph} graph a
-@param {Event} event a file input change event
+@param {object} graph the graph to load the file into
+@return {function(Event)} a function that loads the graph from a file input change event
 */
 export const loadGraphFromJsonFile = graph => event =>
 {
@@ -100,7 +100,8 @@ export function loadView(event)
 
 /**
 Load a layout from the JSON file specified by the given file input change event.
-@param {Event} event a file input change event
+@param {object} graph the graph to load the layout into
+@return {function(Event)} a function loading the loayout from a file input change event
 */
 export const loadLayout = graph => event =>
 {
@@ -110,16 +111,17 @@ export const loadLayout = graph => event =>
 /**
 Add an upload entry to the file menu.
 @param {Element} parent the parent element of the menu
-@param {string} id id root for the generated elements, must be unique
+@param {string} i18n internationalization key
 @param {string} description the text of the menu item
-@param {function} func the function to be executed when the user clicks on the menu entry
+@param {EventListener} func the function to be executed when the user clicks on the menu entry
+@param {Array<HTMLAnchorElement>} as the file menu in the form of anchor elements that get styled by CSS
 */
 function addLoadEntry(parent,i18n,description,func,as)
 {
   const a = document.createElement("a");
   as.push(a);
   a.classList.add("dropdown-entry");
-  a.setAttribute("tabindex",-1);
+  a.setAttribute("tabindex","-1");
   parent.appendChild(a);
   const input = document.createElement("input");
   input.type="file";

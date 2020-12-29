@@ -4,7 +4,7 @@
   "allowJs": true,
   "checkJs": true,
   "outDir": "tsout",
-  "lib": ["esnext","dom"],
+  "lib": ["es2020","dom","dom.iterable","esnext"],
   "target": "es6",
   "allowSyntheticDefaultImports": true,
   "typeRoots": [ "./node_modules/@types" ],

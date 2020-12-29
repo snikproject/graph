@@ -147,7 +147,7 @@ export default class Search
   }
 
   /**Search the class labels and display the result to the user.
-      * @return {Promise<false>} false to prevent page reload triggered by submit.*/
+  * @return {Promise<false>} false to prevent page reload triggered by submit.*/
   async showSearch(userQuery)
   {
     MicroModal.show("search-results");
