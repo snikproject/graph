@@ -135,7 +135,11 @@ export default async function classUse(clazz,subTop)
   ).run();
 
   Graph.setVisible(selectedElements,true);
-  if(combineMatch) {[mainView,view].forEach(v=>v.state.graph.combineMatch(true));} // enable combine match for the main view again and for the new view
+  if(combineMatch)
+  {
+    mainView.state.graph.combineMatch(true,false); // restore previous state, no move required
+    view.state.graph.combineMatch(true,false); // don't move to keep the circle intact
+  }
 
   const centerNode = graph.cy.nodes(`node[id='${clazz}']`);
   graph.cy.center(centerNode);

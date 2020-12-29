@@ -453,8 +453,9 @@ export class Graph
     for(let j=1; j < nodes.length ;j++) {nodes[j].shift({x: distance*Math.cos(2*Math.PI*j/(nodes.length-1)), y: distance*Math.sin(2*Math.PI*j/(nodes.length-1))});}
   }
 
-  /** Sets whether close matches are grouped in compound nodes. */
-  async combineMatch(enabled)
+  /** Sets whether close matches are grouped in compound nodes.
+   * @param {boolean} move Whether to move combined nodes nearby. True by default because it is needed for large graphs.*/
+  async combineMatch(enabled,move=true)
   {
     await progress(()=>
     {
@@ -511,7 +512,7 @@ export class Graph
 
         for(let j=0; j < nodes.length ;j++) {nodes[j].move({parent:id});}
       }
-      this.moveAllMatches(100);
+      if(move) {this.moveAllMatches(100);}
       this.cy.endBatch();
     });
   }
