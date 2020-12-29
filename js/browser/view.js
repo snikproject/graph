@@ -41,7 +41,7 @@ export class View
     {
       await firstFinished;
       graph.cy.add(mainView.state.cy.elements()); // don't load again, copy from first view
-      log.debug(`Create view ${this.state.name} with ${graph.cy.elements().size()} hidden elements copied from ${mainView.state.name}.`);
+      log.debug(`Create view ${this.state.title} with ${graph.cy.elements().size()} hidden elements copied from ${mainView.state.title}.`);
       const elements = graph.cy.elements();
       Graph.setVisible(elements,false);
       Graph.setVisible(elements.edgesWith(elements),false);
@@ -50,10 +50,10 @@ export class View
   }
 
   /***/
-  constructor(initialize=true)
+  constructor(initialize=true,title)
   {
     //find initial title of the new View
-    const title = viewCount++===0?"Gesamtmodell":"Teilmodell "+(viewCount-1);
+    title = title ?? (viewCount++===0?"Gesamtmodell":"Teilmodell "+(viewCount-1));
     this.state = {title:title};
     //const closable = views.length>1;
     const itemConfig = {
