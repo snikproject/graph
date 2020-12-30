@@ -1,7 +1,12 @@
 import config from "../config.js";
 import * as rdf from "../rdf.js";
 
-/** Add a logging wrapper to a context menu command. */
+/**
+ * Add a logging wrapper to a context menu command.
+ * @param  {object} cmd            the context menu command to wrap if it isn't already wrapped
+ * @param  {function} messageFunction a function that describes the element
+ * @return {void}
+ */
 export function logWrap(cmd,messageFunction)
 {
   if(cmd.select.wrapped) {return;}
@@ -16,7 +21,8 @@ export function logWrap(cmd,messageFunction)
 
 export const ontoWikiUrl = uri => 'https://www.snik.eu/ontowiki/view/?r='+uri+"&m="+rdf.sub(uri);
 
-/** Define as a function to prevent circular dependency problems. */
+/** Define as a function to prevent circular dependency problems.
+ *  @return {object} the menu defaults object */
 export function menuDefaults()
 {
   let openMenuEvents  = config.openMenuEvents;

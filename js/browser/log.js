@@ -1,7 +1,8 @@
 /** @module*/
 import config from "../config.js";
 
-/** Record log statements and show some to the user via overlays.*/
+/** Record log statements and show some to the user via overlays.
+ *  @return {void} */
 export default function initLog()
 {
   const notyf = new Notyf(

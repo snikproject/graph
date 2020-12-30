@@ -44,6 +44,7 @@ class Filter
   Creates filter with HTML elements, filter functionality and listeners.
   @param {string} selector a Cytoscape.js selector, see {@link http://js.cytoscape.org/#selectors}
   @param {string} label the menu entry label
+  @param {string} i18n internationalization key
   */
   constructor(selector,label,i18n)
   {
@@ -73,12 +74,14 @@ class Filter
     filters.push(this);
   }
 
-  /** label */
+  /** label
+   * @return {string} the label*/
   toString() {return this.label;}
 
   /**
   Set the visibility of the nodes selected by the filter.
-  @param {boolean} visible
+  @param {boolean} visible whether the nodes should be visible
+  @return {void}
   */
   setVisible(visible)
   {
@@ -120,6 +123,7 @@ class Filter
 Add filter entries to the filter menu.
 @param {HTMLElement} parent the parent element to attach the entries to
 @param {array} as an empty array of HTML anchors to be filled
+@return {void}
 */
 export function addFilterEntries(parent,as)
 {
@@ -131,7 +135,8 @@ export function addFilterEntries(parent,as)
   }
 }
 
-/** Saves the visibility values of all filters.*/
+/** Saves the visibility values of all filters.
+@return {object} JSON representation of all filters */
 export function toJSON()
 {
   const json = {};
@@ -142,8 +147,9 @@ export function toJSON()
   return json;
 }
 
-/** Loads the visibility values and apllies it to all filters.
-@param json the object what has to be applied
+/** Loads the visibility values and applies it to all filters.
+@param {object} json JSON representation of all filters
+@return {void}
 */
 export function fromJSON(json)
 {

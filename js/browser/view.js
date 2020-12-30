@@ -13,13 +13,15 @@ export const views = () => [mainView,...partViews];
 let firstFinished = null; // following instances need to wait for the first to load
 let viewLayout=goldenLayout();
 
-/** Returns the state of the active (focussed) view. */
+/** Returns the state of the active (focussed) view.
+@return {object} The state of the active (focussed) view. */
 export function activeState()
 {
   return viewLayout.selectedItem.getActiveContentItem().config.componentState;
 }
 
-/** Returns the active (focussed) view. */
+/** Returns the active (focussed) view.
+@return {object} The active (focussed) view. */
 export function activeView()
 {
   return viewLayout.selectedItem.getActiveContentItem();
@@ -27,9 +29,11 @@ export function activeView()
 
 export class View
 {
-  /** Create an empty graph and add it to the state of this view along with its Cytoscape.js instance. */
-  async fill(graph)
+  /** Fill the initial graph or copy over from the main view if it is not the first.
+   * @return {void} */
+  async fill()
   {
+    const graph = this.state.graph;
     if(mainView===null)
     {
       mainView = this;
@@ -49,7 +53,11 @@ export class View
     }
   }
 
-  /***/
+  /**
+   * Create an empty graph and add it to the state of this view along with its Cytoscape.js instance.
+   * @param {Boolean} [initialize=true] [description]
+   * @param {[type]}  title             [description]
+   */
   constructor(initialize=true,title)
   {
     //find initial title of the new View
@@ -79,7 +87,7 @@ export class View
     const cy = graph.cy;
     this.state.graph = graph;
     this.state.cy = cy; // easier access for frequent use than this.state.graph.cy, also better separation
-    this.initialized = initialize?this.fill(graph):Promise.resolve();
+    this.initialized = initialize?this.fill():Promise.resolve();
     this.initialized.then(() =>
     {
       this.state.graph.invert(toJSON().options.dayMode);
@@ -90,7 +98,10 @@ export class View
 
 let removeTabsArray = [];
 
-/** helper function that traverses the component tree */
+/** Helper function that traverses the component tree.
+ *  @param {object} x the component to traverse
+ *  @param {number} depth recursive depth
+ *  @return {void}*/
 function traverse(x,depth)
 {
   if(x.type==="component"&&x.componentName!=="Gesamtmodell") {removeTabsArray.push(x); return;}
@@ -99,7 +110,9 @@ function traverse(x,depth)
     traverse(y,++depth);
   }
 }
-/** close all tabs except the first one */
+
+/** Close all tabs except the first one.
+ *  @return {void} */
 export function reset()
 {
   removeTabsArray = [];

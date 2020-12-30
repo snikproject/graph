@@ -66,7 +66,10 @@ const compoundMenu = graph => Object.assign(menuDefaults(),
   ],
   });
 
-/** Default Entries that are always shown ***********************************************************************************/
+/** Default Entries that are always shown **********************************************************************************
+@param {Graph} graph the graph that the commands should apply to, if any
+@return {Array<object>} the base commands
+*/
 const baseCommands = graph =>
   [
     {
@@ -142,7 +145,10 @@ const baseCommands = graph =>
   // },
   ];
 
-/** Commands that are only useful for Developers ***********************************************************************************/
+/** Commands that are only useful for developers **********************************************************************************
+@param {Graph} graph the graph that the commands should apply to, if any
+@return {Array<object>} the developer commands
+*/
 const devCommands = graph =>
   [
     {
@@ -168,7 +174,10 @@ const devCommands = graph =>
     },
   ];
 
-/** Extended Base Entries that are used less often **********************************************************************************/
+/** Extended Base Entries that are used less often *********************************************************************************
+@param {Graph} graph the graph that the commands should apply to, if any
+@return {Array<object>} the extended base commands
+*/
 const extCommands = graph =>
   [
     {
@@ -221,7 +230,13 @@ const extCommands = graph =>
     },
   ];
 
-/** Register modular node context menu. */
+/**
+ * Register modular node context menu.
+ * @param  {Graph} graph the graph the commands should apply to, if they do so
+ * @param  {boolean} dev  whether to include the developer menu
+ * @param  {boolean} ext  whether to include the extendd menu
+ * @return {Array<object>} the context menus
+ */
 export default function nodeMenus(graph,dev,ext)
 {
   menu.commands = [...baseCommands(graph),...dev?devCommands(graph):[],...ext?extCommands(graph):[]];
