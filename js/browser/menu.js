@@ -207,7 +207,7 @@ export class Menu
       box.type="checkbox";
       box.autocomplete="off";
       this[name+"Box"] = box;
-      box.id = [name+"Box"];
+      box.id = name+"Box";
 
       a.addEventListener("keydown",util.checkboxKeydownListener(box));
 
