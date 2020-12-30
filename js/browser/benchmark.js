@@ -4,7 +4,7 @@
 /**
  * Show the performance overlay.
  * @param {cytoscape.Core} cy The core to add the overlay to.
- * @returns {void}
+ * @return {void}
  */
 export function addOverlay(cy)
 {

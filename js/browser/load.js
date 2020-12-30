@@ -10,7 +10,7 @@ import {VERSION} from "./util.js";
 Uploads a JSON file from the user.
 @param {Event} event a file input change event
 @param {function} callback the code to execute, receives a JSON object
-@returns {void}
+@return {void}
 */
 function uploadJson(event,callback)
 {

@@ -15,14 +15,14 @@ let activeLayout = undefined;
 @param {string} layoutName Cytoscape.js layout name
 @param {array} subs the subontology identifiers included in the graph. Used to retrieve the correct layout later.
 @param {boolean} [separateSubs=false] Whether to separate the graph based on the subontologies.
-@returns the storage name coded by the layout and the subontologies
+@return the storage name coded by the layout and the subontologies
 @example storageName("euler",new Set(["meta","ob","bb"]));
 */
 function storageName(layoutName,subs,separateSubs) {return "layout"+layoutName+subs.sort().toString().replace(/[^a-z]/g,"")+(!!separateSubs);}
 
 /** Returns an array containing the positions of the given nodes
 @param {cytoscape.NodeCollection} nodes the nodes whose positions are returned
-@returns an array containing the positions of the given nodes
+@return an array containing the positions of the given nodes
 @example
 // returns [["http://www.snik.eu...",{"x":0,"y":0}],...]
 positions(cy.nodes());
@@ -39,7 +39,7 @@ export function positions(nodes)
 }
 
 /** @param {cytoscape.NodeCollection} nodes the nodes whose center is returned
-@returns {object} the center point of the nodes */
+@return {object} the center point of the nodes */
 function center(nodes)
 {
   const c = {x:0.0 , y:0.0};
@@ -61,7 +61,7 @@ function center(nodes)
 @param {array} [subs] Set of subontologies. If the subs are not given the layout still works but it is not saved.
 @param {boolean} [separateSubs=false] Whether to separate the graph based on the subontologies.
 @param {boolean} [save=false] Whether to save the layout on local storage.
-@returns whether the layout could successfully be applied. Does not indicate success of saving to cache.
+@return whether the layout could successfully be applied. Does not indicate success of saving to cache.
 @example
 run(cy,{"name":"grid"},new Set(["meta","ciox"]))
 */
@@ -157,7 +157,7 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
 in pos are set to position {x:0,y:0}, positions without matching node id are ignored.
 @param {cytoscape.Core} cy the Cytoscape.js graph to apply the positions on, node id's need to match those in the given positions
 @param {array} pos an array of arrays, each of which contains the positions for a node id
-@returns whether the layout could be successfully applied
+@return whether the layout could be successfully applied
 @example
 presetLayout(cy,[["http://www.snik.eu...",{"x":0,"y":0}],...]);
 */
@@ -212,7 +212,7 @@ export function presetLayout(cy,pos)
 @param {object} layoutConfig the layout configuration, which includes the layout name and options
 @param {string[]} subs Set of subontologies. If the subs are not given the layout still works but it is not cached.
 @param {boolean} [separateSubs=false] Whether to separate the graph based on the subontologies.
-@returns {boolean} whether the layout could successfully be applied. Does not indicate success of loading from cache,
+@return {boolean} whether the layout could successfully be applied. Does not indicate success of loading from cache,
 in which case it is calculated anew.
 */
 export function runCached(cy,layoutConfig,subs,separateSubs)
@@ -250,7 +250,7 @@ export function runCached(cy,layoutConfig,subs,separateSubs)
 /** Very fast but useless for most purposes except for testing.*/
 export const grid = {name: "grid"};
 
-/** @returns the preferred spring length of an edge */
+/** @return the preferred spring length of an edge */
 function springLength(edge)
 {
   const len = edge.data("springLength");
