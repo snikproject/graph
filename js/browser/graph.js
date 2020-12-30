@@ -73,16 +73,6 @@ export class Graph
     }
   }
 
-  // not used anymore
-  /** Highlight the given elements using the 'highlighted' css class from the color scheme stylesheet and show them.
-    @param {cytoscape.Collection} eles the elements to highlight
-    */
-  static highlight(eles)
-  {
-    eles.removeClass('hidden');
-    eles.addClass('highlighted');
-  }
-
   /**
     @param {cytoscape.Collection} eles the elements to assign the star mode css class to
     */
