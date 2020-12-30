@@ -4,7 +4,7 @@ Show the environment of a single node using a special layout.
 import * as sparql from "../sparql.js";
 import * as NODE from "../node.js";
 import {Graph} from "./graph.js";
-import {View,views,mainView} from "./view.js";
+import {View,mainView} from "./view.js";
 import {short} from "../rdf.js";
 
 let count = 0;

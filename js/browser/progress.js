@@ -28,7 +28,11 @@ const opts = {
 let spinner = null;
 let active = 0;
 
-/** Not thread safe but javascript is single threaded for now.*/
+/**
+ * Not thread safe but javascript is single threaded for now.
+ * @param  {function} func any function that should have its progress displayed while it is running
+ * @return {void}
+ */
 export default async function(func)
 {
   if(!window) {return;} // ignore when running in nodejs
