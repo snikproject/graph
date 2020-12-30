@@ -46,7 +46,7 @@ export class Graph
     initTimer.stop();
   }
 
-  /** @returns whether cumulative search is activated. */
+  /** @return whether cumulative search is activated. */
   cumulativeSearch()
   {
     return (document.getElementById('cumulativeSearchBox') || {}).checked; // menu may not be initialized yet
@@ -114,7 +114,7 @@ export class Graph
     @param {cytoscape.NodeSingular} from path start node
     @param {cytoscape.NodeSingular} to path target node
     @param {Boolean} [starPath] whether to show the star around all nodes on the path
-    @returns whether a path could be found
+    @return whether a path could be found
     */
   showPath(to, starPath)
   {
@@ -249,7 +249,7 @@ export class Graph
       Hide all other nodes except when in star mode.
       @param {cytoscape.NodeSingular} from path start node
       @param {cytoscape.NodeSingular} to path target node, gets a "star" around it as well
-      @returns whether a path could be found
+      @return whether a path could be found
       */
   showWorm(to)
   {
@@ -265,7 +265,7 @@ export class Graph
       Hide all other nodes except when in star mode.
       @param {cytoscape.NodeSingular} from path start node
       @param {cytoscape.NodeSingular} to path target node
-      @returns whether a path could be found
+      @return whether a path could be found
       */
   showDoubleStar(to)
   {
@@ -280,7 +280,7 @@ export class Graph
   }
 
   /** Returns the start node for all path operations
-      @returns the start node for all path operations, or null if none exists. */
+      @return the start node for all path operations, or null if none exists. */
   getSource()
   {
     if(this.pathSource) {return this.pathSource;}
@@ -290,7 +290,7 @@ export class Graph
 
   /** Set the given node as source for all path operations.
       @param {cytoscape.NodeSingular} node the new source
-      @returns whether node is not null
+      @return whether node is not null
       */
   setSource(node)
   {
