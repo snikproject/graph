@@ -65,6 +65,7 @@
 		"semi": ["error"],
 		"comma-style": ["error","last"],
 		"class-methods-use-this": ["off"],
+		"no-trailing-spaces": "error",
 		"require-jsdoc": ["warn", {
 			"require": {
 				"FunctionDeclaration": true,
