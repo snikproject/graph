@@ -20,21 +20,18 @@ export let menu = null; // singleton instance
 /** main menu bar */
 export class Menu
 {
-  /**
-   * Construct the main menu bar for the given graph.
-   * @param {boolean} showInstancesBoxChecked [description]
-   */
-  constructor(showInstancesBoxChecked)
+  /** Construct the main menu bar for the given graph. */
+  constructor()
   {
     if(menu) {throw Error("Menu already exists.");}
     document.body.addEventListener("click",Menu.closeListener);
     // bind this to the class instance instead of the event source
     this.showCloseMatches = this.showCloseMatches.bind(this);
-    this.addMenu(showInstancesBoxChecked);
+    this.addMenu();
     menu = this;
   }
 
-  /** @return whether subontologies are to be displayed separately. */
+  /** @return {boolean} whether subontologies are to be displayed separately. */
   separateSubs()
   {
     return this.separateSubsBox.checked;
@@ -190,10 +187,10 @@ export class Menu
 
   /** @param as an empty array that will be filled with the anchor elements
       Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.*/
-  addOptions(as,showInstancesBoxChecked)
+  addOptions(as)
   {
     const optionsContent = util.getElementById("options-menu-content");
-    const names = ["separateSubs","cumulativeSearch","grid","combineMatchMode","showInstances","dayMode","devMode","extMode"];
+    const names = ["separateSubs","cumulativeSearch","grid","combineMatchMode","dayMode","devMode","extMode"];
     this.optionBoxes = {};
     for(const name of names)
     {
@@ -248,7 +245,7 @@ export class Menu
   }
 
   /** Adds the menu to the graph parent DOM element and sets up the event listeners. */
-  addMenu(showInstancesBoxChecked)
+  addMenu()
   {
     console.groupCollapsed("Add menu");
     //const frag = new DocumentFragment();
@@ -353,7 +350,7 @@ export class Menu
     addFilterEntries(util.getElementById("filter-menu-content"),aas[1]);  // update index when "Filter" position changes in the menu
     log.debug('filter entries added');
 
-    this.addOptions(aas[2],showInstancesBoxChecked); // update index when "Options" position changes in the menu
+    this.addOptions(aas[2]); // update index when "Options" position changes in the menu
 
     for(let i=0; i<aas.length; i++)
     {
@@ -403,8 +400,7 @@ export class Menu
   /** Save session-based options (not user preferences) to JSON. */
   optionsToJSON()
   {
-    //const sessionOptions = ["separateSubs","cumulativeSearch","grid","combineMatchMode","showInstances"];
-    const sessionOptions = ["separateSubs","cumulativeSearch","grid","combineMatchMode","showInstances","dayMode","devMode","extMode"];
+    const sessionOptions = ["separateSubs","cumulativeSearch","grid","combineMatchMode","dayMode","devMode","extMode"];
     const options = {};
     for(const option of sessionOptions)
     {
