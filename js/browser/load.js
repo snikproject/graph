@@ -10,6 +10,7 @@ import {VERSION} from "./util.js";
 Uploads a JSON file from the user.
 @param {Event} event a file input change event
 @param {function} callback the code to execute, receives a JSON object
+@returns {void}
 */
 function uploadJson(event,callback)
 {
@@ -19,7 +20,12 @@ function uploadJson(event,callback)
   reader.readAsText(file);
 }
 
-/** Clear the graph and load the contents of the Cytoscape.js JSON file in it. */
+/**
+ * Clear the graph and load the contents of the Cytoscape.js JSON file in it.
+ * @param  {Graph} graph the graph instance to load into
+ * @param  {object} json Cytoscape.js/Cytoscape JSON format graph object
+ * @return {void}
+ */
 function loadGraphFromJson(graph,json)
 {
   graph.cy.elements().remove();
@@ -50,9 +56,9 @@ export const loadGraphFromJsonFile = graph => event =>
   });
 };
 
-
 /** Loads the contents of all views from a JSON file.
-    @param {Event} event a file input change event
+@param {Event} event a file input change event
+@return {void}
 */
 export async function loadSessionFromJsonFile(event)
 {
@@ -83,7 +89,10 @@ export async function loadSessionFromJsonFile(event)
   });
 }
 
-/** Loads a stored view from a JSON file. */
+/** Loads a stored view from a JSON file.
+@param {Event} event a file input change event
+@return {void}
+*/
 export function loadView(event)
 {
   uploadJson(event,json =>
@@ -115,6 +124,7 @@ Add an upload entry to the file menu.
 @param {string} description the text of the menu item
 @param {EventListener} func the function to be executed when the user clicks on the menu entry
 @param {Array<HTMLAnchorElement>} as the file menu in the form of anchor elements that get styled by CSS
+@return {void}
 */
 function addLoadEntry(parent,i18n,description,func,as)
 {
@@ -141,7 +151,10 @@ function addLoadEntry(parent,i18n,description,func,as)
 /**
 Add upload entries to the file menu.
 Cannot use the simpler default menu creation method because file upload only works with an input.
+@param  {Graph} graph the graph instance to load into
 @param {Element} parent the parent element of the menu
+@param {Array<HTMLAnchorElement>} as the file menu in the form of anchor elements that get styled by CSS
+@return {void}
 */
 export function addFileLoadEntries(graph,parent,as)
 {

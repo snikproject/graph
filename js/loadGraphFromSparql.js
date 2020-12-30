@@ -63,7 +63,11 @@ function parseLabels(s)
   return l;
 }
 
-/**  Creates cytoscape nodes for the classes */
+/**
+ *  Creates cytoscape nodes for the classes
+ * @param  {string} from a SPARQL FROM clause defining where to load the classes from
+ * @return {Promise<Array.<cytoscape.ElementDefinition>>} nodes representing the classes
+ */
 async function createClassNodes(from)
 {
   const json = await selectClasses(from);
@@ -213,7 +217,12 @@ async function createEdges(from, fromNamed, instances, virtual)
   return edges;
 }
 
-/** Create cytoscape nodes for classes and optionally also instances. */
+/**
+ * Create cytoscape nodes for classes and optionally also instances.
+ * @param  {string} from      a SPARQL from clause
+ * @param  {boolean} instances whether to load instances in addition to the classes
+ * @return {Promise<Array>} an array of nodes
+ */
 async function createNodes(from, instances)
 {
   if(!instances) {return createClassNodes(from);}
