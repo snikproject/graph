@@ -20,7 +20,10 @@ export let menu = null; // singleton instance
 /** main menu bar */
 export class Menu
 {
-  /** construct the main menu bar for the given graph */
+  /**
+   * Construct the main menu bar for the given graph.
+   * @param {boolean} showInstancesBoxChecked [description]
+   */
   constructor(showInstancesBoxChecked)
   {
     if(menu) {throw Error("Menu already exists.");}
