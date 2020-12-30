@@ -6,7 +6,9 @@ Various utility methods.s
 export const VERSION = "2.0.0";
 const LOG_LIMIT = 500;
 
-/** getElementById with exception handling. */
+/** getElementById with exception handling.
+* @param {string} id an HTML DOM id
+* @return {HTMLElement} the element with the given id */
 export function getElementById(id)
 {
   const el = document.getElementById(id);
@@ -22,6 +24,7 @@ export const REPO_ONTOLOGY = "https://github.com/IMISE/snik-ontology";
 @param {string} title issue title
 @param {string} body issue body text
 @param {array} logs optional array of github markdown formatted log strings
+@return {void}
 */
 export function createGitHubIssue(repo,title,body,logs)
 {

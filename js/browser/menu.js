@@ -37,7 +37,9 @@ export class Menu
     return this.separateSubsBox.checked;
   }
 
-  /** Sets the preferred node label language attribute. Use the values from node.js. */
+  /** Sets the preferred node label language attribute. Use the values from node.js.
+   * @param {string} lang the language to set
+   * @return {void} */
   setLanguage(lang)
   {
     if(!language.setLanguage(lang)) {return;}
@@ -53,17 +55,20 @@ export class Menu
     }
   }
 
-  /** Notifies the user of the program version so that errors can be properly reported. */
+  /** Notifies the user of the program version so that errors can be properly reported.
+   * @return {void} */
   static about() {window.alert("SNIK Graph version "+util.VERSION);}
 
-  /** Creates a GitHub issue for the visualization. */
+  /** Creates a GitHub issue for the visualization.
+   *  @return {void} */
   static visualizationFeedback()
   {
     util.createGitHubIssue(util.REPO_APPLICATION,"","Please type your issue here:\n\n\n\n"+
     "!!Please do not delete the following text, because its the log for developers!!\n\n", log.logs);
   }
 
-  /** Show all nodes that are connected via close matches to visible nodes. */
+  /** Show all nodes that are connected via close matches to visible nodes.
+    *  @return {void} */
   showCloseMatches()
   {
     log.debug("show close matches start");
@@ -185,8 +190,10 @@ export class Menu
     ];
   }
 
-  /** @param as an empty array that will be filled with the anchor elements
-      Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.*/
+  /**
+   * Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.
+   * @param {Array<HTMLAnchorElement>} as an empty array that will be filled with the anchor elements
+   * @return {void} */
   addOptions(as)
   {
     const optionsContent = util.getElementById("options-menu-content");
@@ -244,7 +251,8 @@ export class Menu
     });
   }
 
-  /** Adds the menu to the graph parent DOM element and sets up the event listeners. */
+  /** Adds the menu to the graph parent DOM element and sets up the event listeners.
+   *  @return {void} */
   addMenu()
   {
     console.groupCollapsed("Add menu");
@@ -386,7 +394,9 @@ export class Menu
     console.groupEnd();
   }
 
-  /** Close the dropdown if the user clicks outside of the menu */
+  /** Close the dropdown if the user clicks outside of the menu.
+   *  @param {Event} e a click event
+   *  @return {void} */
   static closeListener(e)
   {
     if (e&&e.target&&e.target.matches&&!e.target.matches('.dropdown-entry')&&!e.target.matches('.dropdown-menu')
@@ -397,7 +407,8 @@ export class Menu
     }
   }
 
-  /** Save session-based options (not user preferences) to JSON. */
+  /** Save session-based options (not user preferences) to JSON.
+   *  @return {void} */
   optionsToJSON()
   {
     const sessionOptions = ["separateSubs","cumulativeSearch","grid","combineMatchMode","dayMode","devMode","extMode"];
@@ -409,7 +420,9 @@ export class Menu
     return options;
   }
 
-  /** Restore session-based options from the output of toJSON(). */
+  /** Restore session-based options from the output of toJSON().
+   *  @param {object} json an option object
+   *  @return {void} */
   optionsFromJSON(json)
   {
     const currentOptions = this.optionsToJSON();

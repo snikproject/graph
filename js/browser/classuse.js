@@ -14,6 +14,7 @@ Hides all other nodes. Resetting the view unhides the other nodes but keeps the 
 Recalculate the layout to place those nodes in relation to the whole graph again.
 @param {string} clazz The URI of the class.
 @param {string} subTop The sub top letter of the class (R,F or E)
+@return {void}
 */
 export default async function classUse(clazz,subTop)
 {

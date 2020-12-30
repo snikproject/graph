@@ -13,11 +13,13 @@ import {activeState} from "./view.js";
 
 export default class Search
 {
-  /** Add search functionality to the text field. */
-  constructor(textField)
+  /** Add search functionality to the form.
+   *  @param {HTMLFormElement} form a form with a search field named "query"
+   *  @return {void} */
+  constructor(form)
   {
     this.resultNodes = [];
-    textField.addEventListener("submit",(event)=>
+    form.addEventListener("submit",(event)=>
     {
       event.preventDefault();
       // @ts-ignore
@@ -119,6 +121,7 @@ export default class Search
   /** Searches the SPARQL endpoint for classes with the given label.
       Case and space insensitive when not using bif:contains. Can be used by node.js.
       @deprecated Old search without fuse index. Not used anymore.
+      @param {string} userQuery the search query as given by the user
       @return {Promise<Array<String>>} A promise with an array of class URIs.
       */
   async search(userQuery)
@@ -146,8 +149,9 @@ export default class Search
     //filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
   }
 
-  /**Search the class labels and display the result to the user.
-  * @return {Promise<false>} false to prevent page reload triggered by submit.*/
+  /** Search the class labels and display the result to the user.
+   *  @param {string} userQuery the search query as given by the user
+   *  @return {Promise<false>} false to prevent page reload triggered by submit.*/
   async showSearch(userQuery)
   {
     MicroModal.show("search-results");

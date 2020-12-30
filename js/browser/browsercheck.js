@@ -23,7 +23,8 @@ const sayswho= (function()
 
 /* eslint no-unused-vars: 0 */ // included from index
 /** Alerts the user if the browser version is so old, that even the transpiled and polyfilled version is not guaranteed to work.
-Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly. */
+Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly.
+@return {void} */
 function browserCheckTranspiled()
 {
   if (
@@ -39,7 +40,8 @@ function browserCheckTranspiled()
 
 /* eslint no-unused-vars: 0 */ // included from index
 /**Alerts the user if the browser cannot run the nontranspiled code, which uses ES6 modules.
-Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly. */
+Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly.
+@return {void} */
 function browserCheckNonTranspiled()
 {
   if (

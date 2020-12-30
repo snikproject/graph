@@ -2,7 +2,9 @@
 import * as util from "./util.js";
 import {View,mainView} from "./view.js";
 import * as layout from "../layout.js";
-/** Create, configure and return a GoldenLayout instance.*/
+
+/** Create, configure and return a GoldenLayout instance.
+ *  @return {GoldenLayout} the created GoldenLayout instance */
 export function goldenLayout()
 {
   const config = {

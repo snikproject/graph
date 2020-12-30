@@ -11,6 +11,7 @@ import {logWrap,menuDefaults,ontoWikiUrl} from "./contextmenuUtil.js";
 export default class ContextMenuEdges
 {
   /** Register modular edge context menu. Does have additional functionality in development mode but not in extended mode.
+  @param {Graph} graph the graph that the context menu operates on
   @param {boolean} dev whether development mode is activated.
   */
   constructor(graph,dev)
@@ -25,7 +26,9 @@ export default class ContextMenuEdges
   }
 
   /** Context menu for edges in base mode that are either confirmed interlinks (skos:closeMatch and friends in the match graph) or meta properties, such as meta:updates.
-  Offers base commands.*/
+  Offers base commands.
+  @param {object} commands the commands object containing all command types
+  @return {object} the base menu */
   static baseMenu(commands)
   {
     return Object.assign(menuDefaults(),
@@ -37,7 +40,9 @@ export default class ContextMenuEdges
   }
 
   /** Context menu for edges in base mode that are unconfirmed interlinks, that is skos:closeMatch and friends in the limes-exact graph.
-  Offers base and confirm commands.*/
+  Offers base and confirm commands.
+    @param {object} commands the commands object containing all command types
+  @return {object} the base and limes menu */
   static baseLimesMenu(commands)
   {
     return Object.assign(menuDefaults(),
@@ -49,7 +54,9 @@ export default class ContextMenuEdges
   }
 
   /** Context menu for edges in development mode that are either confirmed interlinks (skos:closeMatch and friends in the match graph) or meta relations, such as meta:updates.
-  Offers base and development commands.*/
+  Offers base and development commands.
+  @param {object} commands the commands object containing all command types
+  @return {object} the base and dev menu */
   static devMenu(commands)
   {
     return Object.assign(menuDefaults(),
@@ -61,7 +68,9 @@ export default class ContextMenuEdges
   }
 
   /** Context menu for edges in development mode that are unconfirmed interlinks, that is skos:closeMatch and friends in the limes-exact graph.
-  Offers base, development and confirm commands.*/
+  Offers base, development and confirm commands.
+  @param {object} commands the commands object containing all command types
+  @return {object} the base, dev and limes menu */
   static devLimesMenu(commands)
   {
     return Object.assign(menuDefaults(),
@@ -72,10 +81,13 @@ export default class ContextMenuEdges
       });
   }
 
-  /** Creates a human readable string of the triple an edge represents. */
+  /** Creates a human readable string of the triple that an edge represents.
+   *  @param {cytoscape.EdgeSingular} edge the edge, whose label is determined
+   *  @return {string} a human readable string of the triple that an edge represents. */
   edgeLabel(edge) {return rdf.short(edge.data(EDGE.SOURCE)) +" "+ rdf.short(edge.data(EDGE.PROPERTY)) +" "+ rdf.short(edge.data(EDGE.TARGET));}
 
-  /** collection of common edge commands to use in baseMenu and defaultsLimesRelations */
+  /** collection of common edge commands to use in baseMenu and defaultsLimesRelations
+   *  @return {Array} the base commands*/
   baseCommands()
   {
     return [
@@ -105,7 +117,8 @@ export default class ContextMenuEdges
     ];
   }
 
-  /** collection of expert edge commands to use in devMenu and baseLimesMenu */
+  /** collection of expert edge commands to use in devMenu and baseLimesMenu
+   *  @return {Array} the dev commands*/
   devCommands()
   {
     return [
@@ -151,7 +164,7 @@ export default class ContextMenuEdges
     ];
   }
 
-  /** */
+  /**  @return {Array} the limes commands*/
   limesCommands()
   {
     return [
