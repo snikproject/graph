@@ -1,6 +1,5 @@
 /** Module for loading files both locally from the server and via upload from the client.
 @module */
-import * as layout from "../layout.js";
 import {View,reset,activeView} from "./view.js";
 import config from "../config.js";
 import {fromJSON} from "./state.js";
@@ -106,16 +105,6 @@ export function loadView(event)
     activeView().setTitle(json.title);
   });
 }
-
-/**
-Load a layout from the JSON file specified by the given file input change event.
-@param {object} graph the graph to load the layout into
-@return {function(Event)} a function loading the loayout from a file input change event
-*/
-export const loadLayout = graph => event =>
-{
-  uploadJson(event,json=>{layout.presetLayout(graph.cy,json);});
-};
 
 /**
 Add an upload entry to the file menu.

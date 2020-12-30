@@ -148,9 +148,6 @@ export function saveView(view)
   saveJson(json,"snik-view.json");
 }
 
-/** Saves all node positions. Can only be applied later with a compatible graph already loaded.*/
-export function saveLayout(graph) {return saveJson(layout.positions(graph.cy.nodes()),"layout.json");}
-
 /**
 Save the graph as a PNG (lossless compression).
 @param {boolean} full Iff true, include the whole graph, otherwise only include what is inside the canvas boundaries.
