@@ -16,7 +16,9 @@ import {addOverlay} from "./benchmark.js";
 import * as help from "../help.js";
 import {View,activeState} from "./view.js";
 
-/** Parse browser URL POST parameters. */
+/** Parse browser URL POST parameters.
+@return {void}
+*/
 function parseParams()
 {
   const url = new URL(window.location.href);
@@ -40,7 +42,12 @@ function parseParams()
   });
 }
 
-/** Apply parameters. */
+/**
+ * Apply parameters.
+@param {Graph} graph the graph to apply the params to
+@param {params} params parameter object
+@return {void}
+ */
 async function applyParams(graph,params)
 {
   try
@@ -118,7 +125,10 @@ async function applyParams(graph,params)
   }
 }
 
-/** Fill the initial Graph based on the URL GET parameters.*/
+/** Fill the initial Graph based on the URL GET parameters.
+@param {Graph} graph the initial graph
+@return {void}
+*/
 export async function fillInitialGraph(graph)
 {
   await progress(async ()=>
@@ -134,7 +144,9 @@ export async function fillInitialGraph(graph)
 
 const clipboard = [];
 
-/** Relegate keypresses to the active view.  */
+/** Relegate keypresses to the active view.
+@return {void}
+*/
 function initKeyListener()
 {
   document.documentElement.addEventListener('keydown',e =>
@@ -188,7 +200,9 @@ function initKeyListener()
   });
 }
 
-/** Entry point. Is run when DOM is loaded. **/
+/** Entry point. Is run when DOM is loaded.
+@return {void}
+*/
 async function main()
 {
   console.groupCollapsed("Initializing");
