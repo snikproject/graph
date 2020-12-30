@@ -242,35 +242,6 @@ export class Menu
         views().map(v=>v.state.graph).forEach(graph => graph.combineMatch(this.combineMatchModeBox.checked));
       }, 10);
     });
-
-    // Initial state based on URL parameter. This checkbox is the only place where it is stored to prevent different values in different places.
-    this.showInstancesBox.checked = showInstancesBoxChecked;
-    this.showInstancesBox.addEventListener("change",()=>
-    {
-      if(mainView.state.graph.instancesLoaded)
-      {
-        for(const view of views())
-        {
-          const instances  = view.state.graph.instances;
-          Graph.setVisible(instances,this.showInstancesBox.checked);
-          Graph.setVisible(instances.connectedEdges(),this.showInstancesBox.checked);
-        }
-      }
-      else
-      {
-        if(this.showInstancesBox.checked)
-        {
-          alert("Instances are not loaded. Please reload with the 'instances' URL parameter.");
-          //log.debug("Show instances: Not in memory. Reloading.");
-          //Graph.setVisible(this.graph.instances,this.showInstancesBox.checked);
-          //Graph.setVisible(this.graph.instances.connectedEdges(),this.showInstancesBox.checked);
-        }
-        else
-        {
-          log.warn("Cannot hide instances as they are not loaded.");
-        }
-      }
-    });
   }
 
   /** Adds the menu to the graph parent DOM element and sets up the event listeners. */
