@@ -5,7 +5,11 @@ import * as sparql from "./sparql.js";
 import timer from "./timer.js";
 import config from "./config.js";
 
-/** Query for classes from the endpoint */
+/**
+ * Query for classes from the endpoint
+ * @param  {string} from SPARQL from clause
+ * @return {Promise<JSON>}      SPARQL JSON result
+ */
 async function selectClasses(from)
 {
   const sparqlClassesTimer = timer("sparql-classes");
@@ -48,7 +52,9 @@ async function selectClasses(from)
   return json;
 }
 
-/** Parse "|"-separated labels with language tag into the SNIK graph label structure. */
+/** Parse "|"-separated labels with language tag into the SNIK graph label structure.
+@param {string} s a string containing "|"-separated parts
+@return {object} an object containing different language labels keyed by language tag */
 function parseLabels(s)
 {
   const labels = s.split("|");
@@ -112,7 +118,9 @@ async function createClassNodes(from)
   return nodes;
 }
 
-/** Query for instances from the endpoint */
+/** Query for instances from the endpoint
+* @param  {string} from a SPARQL FROM clause defining where to load the instances from
+ @return {Promise<JSON>}      SPARQL JSON result */
 async function selectInstances(from)
 {
   const sparqlInstancesTimer = timer("sparql-classes");
@@ -131,7 +139,9 @@ async function selectInstances(from)
   return json;
 }
 
-/** Create cytoscape nodes for the instances. */
+/** Create cytoscape nodes for the instances.
+* @param  {string} from a SPARQL FROM clause defining where to load the instances from
+ @return {Promise<Array<object>>} cytoscape nodes for the instances */
 async function createInstanceNodes(from)
 {
   const json = await selectInstances(from);
@@ -153,7 +163,14 @@ async function createInstanceNodes(from)
   return nodes;
 }
 
-/** Query for triples between classes  */
+/**
+   * Query for triples between resources in the SPARQL endpoint
+   * @param  {string} from      SPARQL from clause
+   * @param  {string} fromNamed SPARQL from named clause
+   * @param  {boolean} instances whether to load instances as well
+   * @param  {boolean} virtual   whether to select virtual triples from domain and range statements
+   * @return {Promise<JSON>}           SPARQL query result object
+   */
 async function selectTriples(from, fromNamed, instances, virtual)
 {
   const sparqlPropertiesTimer = timer("sparql-properties");
@@ -191,7 +208,13 @@ async function selectTriples(from, fromNamed, instances, virtual)
   return json;
 }
 
-/**  Creates cytoscape nodes for the classes */
+/**  Creates cytoscape edges for the resources in the SPARQL endpoint
+* @param  {string} from      SPARQL from clause
+* @param  {string} fromNamed SPARQL from named clause
+* @param  {boolean} instances whether to load instances as well
+* @param  {boolean} virtual   whether to select virtual triples from domain and range statements
+* @return {Promise<JSON>}           SPARQL query result object
+*/
 async function createEdges(from, fromNamed, instances, virtual)
 {
   const json = await selectTriples(from, fromNamed, instances, virtual);
@@ -231,8 +254,11 @@ async function createNodes(from, instances)
 }
 
 /** Clears the given graph and loads a set of subontologies. Data from RDF helper graphs is loaded as well, such as virtual triples.
-  @param{cytoscape.Core} cy the cytoscape graph to clear and to load the data into
-  @param{string[]} graphs subontologies to load.
+  * @param{cytoscape.Core} cy the cytoscape graph to clear and to load the data into
+  * @param{string[]} graphs subontologies to load.
+  * @param  {boolean} instances whether to load instances as well
+  * @param  {boolean} virtual   whether to select virtual triples from domain and range statements
+  * @return {Promise<void>} nothing
   @example
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */

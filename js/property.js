@@ -36,7 +36,8 @@ const properties = [];
 /** RDF Property class for use in SNIK. */
 export class Property
 {
-  /** *Sets up the property from an array with 6 elements: [uri,label,domain,range,interontology,restriction].*/
+  /** Sets up the property from an array.
+   * @param {Array} array Contains 6 elements: [uri,label,domain,range,interontology,restriction]. */
   constructor(array)
   {
     this.uri=rdf.long(array[0]);
@@ -53,7 +54,12 @@ for(const a of propertyData)
   properties.push(new Property(a));
 }
 
-/** Possible properties between two nodes in the graph.*/
+/**
+ * Possible properties between two nodes in the graph.
+ * @param  {cytoscape.NodeSingular} subjectNode node representing a resource in subject position
+ * @param  {cytoscape.NodeSingular} objectNode  node representing a resource in object position
+ * @return {Array<Property>}                    all properties that are allowed between the given subject and object node
+ */
 export function possible(subjectNode,objectNode)
 {
   const possibleProperties = properties.filter((element)=>

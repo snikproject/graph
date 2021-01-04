@@ -7,11 +7,12 @@ export const SNIK_GRAPH_BB = "http://www.snik.eu/ontology/bb";
 export const SNIK_PREFIX = "http://www.snik.eu/ontology/";//problem: different prefixes for different partial ontologies
 export const SNIK_ENDPOINT = "https://www.snik.eu/sparql";
 export const SPARQL_LIMIT = 100;
+
 /** Query public SNIK SPARQL endpoint with a SELECT query.
 ASK queries should also work but better use {@link ask} instead as it is more convenient.
-{@param query} A valid SPARQL query.
-{@param graph} An optional SPARQL graph.
-{@param endpoint} An optional SPARQL endpoint. May override FROM statements.
+@param {string} query A valid SPARQL query.
+@param {string} graph An optional SPARQL graph.
+@param {string} endpoint An optional SPARQL endpoint. May override FROM statements.
 @return {Promise<object[]>} A promise of a set of SPARQL select result bindings.
 */
 export async function select(query,graph, endpoint=config.sparql.endpoint)
@@ -45,8 +46,8 @@ export async function select(query,graph, endpoint=config.sparql.endpoint)
 }
 
 /** Query public SNIK SPARQL endpoint with an ASK (boolean) query.
-{@param query} A valid SPARQL ask query.
-{@param graphOpt} An optional SPARQL graph.
+@param {string} query A valid SPARQL ask query.
+@param {string} graphOpt An optional SPARQL graph.
 @return {Promise<boolean>} A promise of the boolean SPARQL ask result.
 */
 export function ask(query,graphOpt)

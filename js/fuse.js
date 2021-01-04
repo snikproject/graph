@@ -24,7 +24,8 @@ const options =
   ],
 };
 
-/** Create fulltext index from SPARQL endpoint. */
+/** Create fulltext index from SPARQL endpoint.
+@return {Promise<Array<object>>} the index items for testing*/
 export async function createIndex()
 {
   log.debug("Create Fuse Search Index with searchCloseMatch = "+config.searchCloseMatch);
@@ -61,7 +62,7 @@ export async function createIndex()
 }
 
 /** Searches the Fuse index for resources with a similar label.
-@param {string} userQuery
+@param {string} userQuery search query as given by a user
 @return {Promise<string[]>} the class URIs found.
 */
 export async function search(userQuery)
