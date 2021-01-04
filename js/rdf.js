@@ -16,7 +16,10 @@ const prefixes =
   ["rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#"],
 ];
 
-/**@return {String} the prefix part of a URI if it is defined in this file.*/
+/**
+ * @param  {string} uri any URI
+ * @return {String} the prefix part of a URI if it is defined in this file.
+ */
 export function longPrefix(uri)
 {
   for(const prefix of prefixes) {if(uri.startsWith(prefix[1])) {return prefix[1].replace(/\/$/,'');}}
@@ -43,7 +46,11 @@ export function long(uri)
   return uri;
 }
 
-/**Returns the subontology a SNIK uri belongs to.*/
+/**
+   * Returns the subontology a SNIK uri belongs to.
+   * @param  {[type]} uri a SNIK URI
+   * @return {string}     the subontology of the URI
+   */
 export function sub(uri)
 {
   if(uri.startsWith("http://www.snik.eu/ontology/")) {return uri.replace(/\/[^/]*$/,"");}

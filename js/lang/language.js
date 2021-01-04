@@ -15,6 +15,7 @@ const strings =
 let language = "en";
 
 /** Sets the user interface language if it exists.
+@param {string} lang the language tag that the user interface should switch to
 @return {boolean} whether the language exists
 */
 export function setLanguage(lang)
@@ -35,8 +36,8 @@ export function setLanguage(lang)
 export function getLanguage() {return language;}
 
 /**
- * @param {string} key
- * @return {string} description
+ * @param {string} key langauge independent key
+ * @return {string} language dependend string
  */
 export function getString(key)
 {
@@ -60,7 +61,8 @@ export const CONSTANTS =
   SPARUL_WARNING: 'Please be careful with all SPARUL operations and always create a <a href="https://wiki.imise.uni-leipzig.de/Projekte/SNIK/ontologie/sparql">SPARQL dump</a> as a backup beforehand.',
 };
 
-/** Update all HTML elements with data-i18n tags. */
+/** Update all HTML elements with data-i18n tags.
+ *  @return {void} */
 export function updateHtml()
 {
   const idstrings = getIdStrings();

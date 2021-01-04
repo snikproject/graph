@@ -13,6 +13,7 @@ const selectedChapters = new Set();
 
 /**
 @return {Promise<Set<string>>} classes the set of classes in that chapter
+@param {string} sub subontology, such as "bb" or "ob"
 @param {string} chapter the chapter string value exactly as in the SPARQL triples, such as "5.3".
 */
 async function getClasses(sub,chapter)
@@ -46,9 +47,10 @@ async function getClasses(sub,chapter)
   return new Set(classes);
 }
 
-
 /** Show the classes of a chapter in the class table
-@param {Set<string>} classes the classes to show. */
+@param {Graph} graph the graph that contains the nodes with the given URIs
+@param {Set<string>} classes resource URIs
+@returns {Promise<void>} Void promise, just for waiting. */
 async function showClasses(graph,classes)
 {
   const table = util.getElementById("tab:chapter-search-classes");
@@ -93,7 +95,10 @@ async function showClasses(graph,classes)
   // *************************************************************
 }
 
-/** Populate and show the chapter search modal. */
+/** Populate and show the chapter search modal.
+@param {Graph} graph the graph that is searched
+@param {string} sub subontology, such as "bb" or "ob"
+@return {Promise<void>} void promise just for waiting*/
 export async function showChapterSearch(graph, sub)
 {
   MicroModal.show("chapter-search");
