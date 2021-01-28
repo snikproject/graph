@@ -226,7 +226,7 @@ export class Menu
     }
 
     this.separateSubsBox.addEventListener("change",()=>{log.debug("Set separate Subontologies to "+this.separateSubsBox.checked);});
-    this.dayModeBox.addEventListener("change",()=>{for(const view of views){view.state.graph.invert(this.dayModeBox.checked);}log.debug("Set dayMode to "+this.dayModeBox.checked);});
+    this.dayModeBox.addEventListener("change",()=>{for(const view of views()){view.state.graph.invert(this.dayModeBox.checked);}log.debug("Set dayMode to "+this.dayModeBox.checked);});
     this.gridBox.addEventListener("change",()=>
     {
       (document.body.classList[this.gridBox.checked?"add":"remove"])("grid");
