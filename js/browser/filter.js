@@ -21,6 +21,8 @@ const filterData = [
   [`node[${NODE.SUBTOP}='${NODE.SUBTOP_ROLE}']`,`Role`,"role"],
   [`node[${NODE.SUBTOP}='${NODE.SUBTOP_FUNCTION}']`,`Function`,"function"],
   [`node[${NODE.SUBTOP}='${NODE.SUBTOP_ENTITY_TYPE}']`,`EntityType`,"entitytype"],
+  [`node[?${NODE.INSTANCE}]`,`Show Instances`,"show-instances"],
+  [`node[!${NODE.INSTANCE}]`,`Show Non-Instances`],
   [`edge[p='http://www.w3.org/2000/01/rdf-schema#subClassOf']`,`subClassOf`, "subclassof"],
   [`edge[p!='http://www.w3.org/2000/01/rdf-schema#subClassOf']`,`non-subClassOf`, "non-subclassof"],
   [`edge[p^='http://www.w3.org/2004/02/skos/core#']`,`inter-ontology-relations`, "inter-ontology-relations"],
