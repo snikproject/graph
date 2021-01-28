@@ -222,6 +222,7 @@ export class Menu
       a.appendChild(span);
       span.setAttribute("data-i18n",name);
       span.innerText=language.getString(name);
+      span.addEventListener("click",()=>box.click());
     }
 
     this.separateSubsBox.addEventListener("change",()=>{log.debug("Set separate Subontologies to "+this.separateSubsBox.checked);});
