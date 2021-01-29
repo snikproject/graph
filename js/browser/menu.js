@@ -217,12 +217,7 @@ export class Menu
       box.id = name+"Box";
 
       a.addEventListener("keydown",util.checkboxKeydownListener(box));
-
-      const span = document.createElement("span");
-      a.appendChild(span);
-      span.setAttribute("data-i18n",name);
-      span.innerText=language.getString(name);
-      span.addEventListener("click",()=>box.click());
+      a.appendChild(util.checkboxClickableDiv(box,language.getString(name),name));
     }
 
     this.separateSubsBox.addEventListener("change",()=>{log.debug("Set separate Subontologies to "+this.separateSubsBox.checked);});
