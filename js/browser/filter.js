@@ -7,7 +7,7 @@ See http://js.cytoscape.org/#style/visibility.
 @module
 */
 import * as NODE from "../node.js";
-import {checkboxKeydownListener} from "./util.js";
+import {checkboxKeydownListener,checkboxClickableDiv} from "./util.js";
 import {views} from "./view.js";
 
 const filterData = [
@@ -62,10 +62,9 @@ class Filter
     this.a = document.createElement("a");
     this.a.classList.add("dropdown-entry");
     this.a.appendChild(input);
-    this.a.appendChild(document.createTextNode(label));
     this.a.setAttribute("tabindex","-1");
     this.a.addEventListener("keydown",checkboxKeydownListener(input));
-    if(i18n) {this.a.setAttribute("data-i18n",i18n);}
+    this.a.appendChild(checkboxClickableDiv(input,label,i18n));
     // each filter has its own associated CSS class, such as "filter-BB"
     this.cssClass = `filter-${label}`;
     this.visible = true;

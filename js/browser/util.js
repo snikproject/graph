@@ -61,3 +61,19 @@ export const checkboxKeydownListener = (box) => (e)=>
 //      box.checked = !box.checked;
   }
 };
+
+/** Creates a new div element with the given text that triggers the given check box.
+@param {HTMLInputElement} box the checkbox that should be triggered when the div is clicked
+@param {string}text the text of the div
+@param {string}i18n optional internationalization key
+@returns {HTMLElement} the created div element
+*/
+export function checkboxClickableDiv(box,text,i18n)
+{
+  const div = document.createElement("div");
+  div.style="display:inline-block;min-width:12em;"; // extend clickable area beyond short texts
+  div.innerText=text;
+  if(i18n) {div.setAttribute("data-i18n",i18n);}
+  div.addEventListener("click",()=>{box.click();});
+  return div;
+}

@@ -82,6 +82,7 @@ export function updateHtml()
       {
         case "A":
         case "BUTTON":
+        case "DIV":
         case "SPAN": element.textContent = s; break;
         default: log.warn(`Cannot assign text "${s}" to element with i18n key ${key} because its tag type ${element.tagName} is unsupported.`);
       }
