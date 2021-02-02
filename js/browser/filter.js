@@ -157,5 +157,6 @@ export function fromJSON(json)
   for (const filter of filters)
   {
     filter.checkbox.checked = json[filter.label];
+    filter.visible = json[filter.label];
   }
 }
