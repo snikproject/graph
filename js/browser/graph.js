@@ -381,11 +381,6 @@ export class Graph
     return true;
   }
 
-  /**
-      * @callback nodeFunction
-      * @param {cytoscape.NodeSingular} node
-      */
-
   /** Applies the function to multiple nodes if given or if not given then if selected.
       * @param {nodeFunction} f a function that accepts a single node
       * @param {cytoscape.NodeCollection} nodes the nodes, each of which will be passed as parameter to a separate call of the given function
