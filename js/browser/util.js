@@ -71,7 +71,7 @@ export const checkboxKeydownListener = (box) => (e)=>
 export function checkboxClickableDiv(box,text,i18n)
 {
   const div = document.createElement("div");
-  div.style="display:inline-block;min-width:12em;"; // extend clickable area beyond short texts
+  div.classList.add("dropdown-entry-checkboxtext"); // extend clickable area beyond short texts
   div.innerText=text;
   if(i18n) {div.setAttribute("data-i18n",i18n);}
   div.addEventListener("click",()=>{box.click();});

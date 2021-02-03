@@ -96,6 +96,12 @@ li a
   text-align: left;
 }
 
+.dropdown-entry-checkboxtext
+{
+  display:inline-block;
+  min-width:12em;
+}
+
 figure {
   border-style: groove none groove none;
   border-width: 1px;
