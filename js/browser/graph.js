@@ -12,7 +12,7 @@ import * as sparql from "../sparql.js";
 import * as rdf from "../rdf.js";
 import * as language from "../lang/language.js";
 import progress from "./progress.js";
-import {View} from "./view.js";
+import {mainView,View} from "./view.js";
 
 export const Direction = Object.freeze({
   IN:   Symbol("in"),
@@ -43,7 +43,7 @@ export class Graph
     this.selectedNode = null;
     this.cy.on('select', 'node', event => {this.selectedNode = event.target;});
     // bind this to the class instance instead of the event source
-    const binds = ["resetStyle", "presentUri", "showPath", "showStar", "showWorm", "showDoubleStar", "combineMatch", "showCloseMatch","subOntologyConnectivity"];
+    const binds = ["resetStyle", "presentUri", "showPath", "showStar", "showWorm", "showDoubleStar", "combineMatch", "showCloseMatch","subOntologyConnectivity","newGraph"];
     for(const bind of binds) {this[bind] = this[bind].bind(this);}
     initTimer.stop();
   }
@@ -71,7 +71,7 @@ export class Graph
     {
       eles.addClass('hidden');
       eles.removeClass('highlighted');
-      const edges = eles.connectedEdges();
+      const edges = eles.connectedEdges(); // connected edges may still be visible for a short while until Cytoscape.js refreshes
       edges.addClass('hidden');
       edges.removeClass('highlighted');
     }
@@ -114,15 +114,12 @@ export class Graph
   showPath(to, starPath)
   {
     /** @param {cytoscape.NodeSingular} from path source node
-     *  @return {boolean} whether a path could be found */
+      * @return {boolean} whether a path could be found */
     return (from) =>
     {
-      console.log(from);
-      /*    const from = this.getSource();
+      if(!from) {log.error("No path source."); return false;}
+      if(from===to) {log.warn("Path source equals target."); return false;}
 
-    if(!from) {log.warn("No path source."); return false;}
-    if(from===to) {log.warn("Path source equals target."); return false;}
-*/
       const elements = this.cy.elements(".unfiltered");
 
       const aStar = elements.aStar(
@@ -144,8 +141,9 @@ export class Graph
         Graph.starStyle(path);
         if(this.starMode)
         {
-        // otherwise path might not be seen if it lies fully in an existing star
-          this.cy.elements().unselect();
+          // otherwise path might not be seen if it lies fully in an existing star
+          // deactivate so that multiple paths can be seen at once when multiplexing
+          // this.cy.elements().unselect();
           path.select();
         }
         else
@@ -166,10 +164,22 @@ export class Graph
   }
 
   /** Multiplex star operations.
-      @param {boolean} [changeLayout=false] arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
+      @param {boolean} [changeLayout=false] arrange the given node and its close matches in the center and the connected nodes in a circle around them.
       @param {boolean} [direction=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.
       @return {function} show star function applied to multiple nodes  */
   showStarMultiplexed(changeLayout, direction) {return this.multiplex((x)=>this.showStar(x,changeLayout,direction),null,true);}
+
+  /** Multiplex star operations into a new view.
+      @param {boolean} [changeLayout=false] arrange the given node and its close matches in the center and the connected nodes in a circle around them.
+      @param {boolean} [direction=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.
+      @return {function} show star function applied to multiple nodes  */
+  async showStarMultiplexedNew(changeLayout, direction)
+  {
+    const graph = await this.newGraph();
+    const f = graph.multiplex((x)=>graph.showStar(graph.assimilate(x),changeLayout,direction),graph.assimilate(this.cy.nodes(":selected")),true);
+    //graph.cy.fit(graph.cy.elements(":visible")); // doesn't work correctly
+    return f;
+  }
 
   /** Highlight the give node and all its directly connected nodes (in both directions).
       Hide all other nodes except when in star mode.
@@ -180,6 +190,7 @@ export class Graph
       */
   showStar(center, changeLayout, direction)
   {
+    console.log("center",center);
     this.cy.startBatch();
     // open 2 levels deep on closeMatch
     let inner = center; // if you don't want to include close match, keep inner at that
@@ -219,6 +230,7 @@ export class Graph
       Graph.setVisible(this.cy.elements().not(star),false);
     }
 
+    console.log("star",star);
     Graph.starStyle(star);
     //const visible = this.cy.nodes(".unfiltered").not(".hidden");
     //Graph.starStyle(visible.edgesWith(visible));
@@ -285,13 +297,18 @@ export class Graph
   }
 
   /** Get the equivalent elements in this graph of the given elements from another graph.
-      * @param {cytoscape.Collection} foreign elements from another graph
+      * @param {cytoscape.Collection} eles elements from another graph
       * @return {cytoscape.Collection} equivalent elements that exist in this graph */
-  assimilate(foreign)
+  assimilate(eles) {return this.getElementsByIds(eles.map(ele => ele.id()));}
+
+  /** @param {Array<string>} ids iterable of cytoscape ids
+   * @return {cytoscape.Collection} cytoscape collection of elements with those ids */
+  getElementsByIds(ids)
   {
     const own = this.cy.collection();
-    for(const id of foreign)
+    for(const id of ids)
     {
+      console.log("old element ");
       const ele = this.cy.getElementById(id);
       own.merge(ele);
     }
@@ -303,7 +320,7 @@ export class Graph
   getSource()
   {
     if(this.pathSource) {return this.pathSource;}
-    if(this.selectedNode) {log.debug("Path source not set, using selected node"); return this.selectedNode;}
+    if(this.selectedNode) {log.trace("Path source not set, using selected node"); return this.selectedNode;}
     return null;
   }
 
@@ -320,6 +337,7 @@ export class Graph
       this.cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
     }
     if(this.pathSource) {this.pathSource.removeClass('source');}
+    if(this.pathSource===node) {log.info("Toggling path source off."); this.pathSource = null; return true;} // only way to remove path source is to select it again
     this.pathSource = node;
     this.pathSource.addClass('source');
     return true;
@@ -403,14 +421,21 @@ export class Graph
     return true;
   }
 
-  /** Applies the function to multiple nodes if given or if not given then if selected.
+  /**  Multiplex takes a function that takes exactly one parameter in the form of a a single cytoscape Node, such as a star.
+      * It returns a function that executes the given function one or more times with different input based on the following criteria:
+      * If the nodes parameter is given, then multiplex uses it as input.
+      * For example multiplexing a star on a collection of nodes will execute that star for each node in the collection.
+      * If the nodes parameter is not given, but more than one node is selected, then multiplex uses the nodes selected in this graph as input.
+      * If the direct parameter is truthy then f will be called exactly once directly passing in the input as single parameter instead of looping over it.
+      * If the nodes parameter is not given and the set of selected nodes has size 0 or 1, then the given function is executed with the original input.
+      * Whatever happens, the singular input parameter of the returned function is always included as well.
+      * TODO: This function is hard to maintain, simplify if possible.
       * @param {nodeFunction} f a function that accepts a single node
-      * @param {cytoscape.NodeCollection} nodes the nodes, each of which will be passed as parameter to a separate call of the given function
+      * @param {cytoscape.NodeCollection} nodes The nodes, each of which will be passed as parameter to a separate call of the given function. Can be null or undefined,
       * @param {boolean} direct whether the input is a cytoscape collection that can be passed directly into the function without looping, which can be much faster if possible.
       * @return {void} */
   multiplex(f, nodes, direct)
   {
-    console.log("multiplexing function "+f+" with nodes "+nodes);
     return ele =>
     {
       const selected = this.cy.nodes(":selected");
@@ -420,23 +445,12 @@ export class Graph
       if(!nodes&&selected.size()>1) {collection = selected;}
       if(collection)
       {
+        collection = collection.union(ele);
+        log.debug("multiplexing of "+collection.size()+" elements (direct="+direct+")");
         if(direct) {f(collection);}
         else {for(let i=0; i<collection.length;i++) {f(collection[i]);}}
       }
       else {f(ele);}
-    };
-  }
-
-  /** Applies the function to multiple nodes if given or if not given then if selected.
-      * @param {nodeFunction} f a function that accepts a single node
-      * @param {cytoscape.NodeCollection} nodes the nodes, each of which will be passed as parameter to a separate call of the given function
-      * @return {void} */
-  multiplexNew(f, nodes)
-  {
-    console.log("multiplexing function "+f+" with nodes "+nodes);
-    return ele =>
-    {
-      for(let i=0; i<collection.length;i++) {f(collection[i]);}
     };
   }
 
@@ -621,13 +635,14 @@ export class Graph
   }
 
   /** Create and return a new graph if the option is set to create star operations in a new view.
-        * @param {string} title optional view title
-        * @return {Graph} this iff the option to create stars in a new view is unset, a new view's graph if it is set */
-  newGraph(title)
+   *  @param {string} title optional view title
+   *  @return {Graph} this iff the option to create stars in a new view is unset, a new view's graph if it is set */
+  async newGraph(title)
   {
-    const STAR_IN_NEW_VIEW = true;
-    if(!STAR_IN_NEW_VIEW) {return this;}
+    //if(!mainView.state.graph.menu.starNewView()) {return this;} // using the menu option to determine whether to create a new graph
+    if(this!==mainView.state.graph) {return this;} // span new views only from the main view
     const view = new View(true,title);
+    await view.initialized;
     return view.state.graph;
   }
 }

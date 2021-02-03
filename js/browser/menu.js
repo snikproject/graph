@@ -37,6 +37,9 @@ export class Menu
     return this.separateSubsBox.checked;
   }
 
+  ///** @return {boolean} whether star operations should be shown in a new view. */
+  // starNewView() {return this.starNewViewBox.checked;}
+
   /** Sets the preferred node label language attribute. Use the values from node.js.
    * @param {string} lang the language to set
    * @return {void} */
@@ -197,7 +200,7 @@ export class Menu
   addOptions(as)
   {
     const optionsContent = util.getElementById("options-menu-content");
-    const names = ["separateSubs","cumulativeSearch","grid","combineMatchMode","dayMode","devMode","extMode"];
+    const names = ["separateSubs","cumulativeSearch","grid","combineMatchMode","dayMode","devMode","extMode"]; // ,"starNewView"
     this.optionBoxes = {};
     for(const name of names)
     {

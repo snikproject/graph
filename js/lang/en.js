@@ -28,6 +28,7 @@ export default
     "extMode": "extended mode",
     "combineMatchMode": "Combine Matches",
     "showInstances": "Show Instances",
+    "starNewView": "Star in new View",
     // layout*********************************************
     "layout": "Layout",
     "show-close-matches": "show close matches",
