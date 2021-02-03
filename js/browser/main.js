@@ -176,13 +176,7 @@ function initKeyListener()
     {
       layoutState.cy.startBatch();
       layoutState.cy.elements().unselect();
-      const nodes = layoutState.cy.collection();
-
-      for(const id of clipboard)
-      {
-        const node = layoutState.cy.getElementById(id);
-        nodes.merge(node);
-      }
+      const nodes = layoutState.graph.assimilate(clipboard);
       Graph.setVisible(nodes,true);
 
       layoutState.cy.endBatch();

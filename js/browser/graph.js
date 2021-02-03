@@ -109,53 +109,60 @@ export class Graph
     Hide all other nodes except when in star mode.
     @param {cytoscape.NodeSingular} to path target node
     @param {boolean} starPath whether to show the star around all nodes on the path
-    @return {boolean} whether a path could be found
+    @return {function} a function that given a source node shows that path if possible and returns whether a path could be found
     */
   showPath(to, starPath)
   {
-    const from = this.getSource();
+    /** @param {cytoscape.NodeSingular} from path source node
+     *  @return {boolean} whether a path could be found */
+    return (from) =>
+    {
+      console.log(from);
+      /*    const from = this.getSource();
+
     if(!from) {log.warn("No path source."); return false;}
     if(from===to) {log.warn("Path source equals target."); return false;}
+*/
+      const elements = this.cy.elements(".unfiltered");
 
-    const elements = this.cy.elements(".unfiltered");
-
-    const aStar = elements.aStar(
+      const aStar = elements.aStar(
+        {
+          root: from,
+          goal: to,
+        });
+      const path = aStar.path;
+      if (path)
       {
-        root: from,
-        goal: to,
-      });
-    const path = aStar.path;
-    if (path)
-    {
-      this.cy.startBatch();
-      this.cy.add(path);
-      if(starPath)
-      {
-        const edges = path.connectedEdges(".unfiltered");
-        path.merge(edges);
-        path.merge(edges.connectedNodes(".unfiltered"));
-      }
-      Graph.starStyle(path);
-      if(this.starMode)
-      {
+        this.cy.startBatch();
+        this.cy.add(path);
+        if(starPath)
+        {
+          const edges = path.connectedEdges(".unfiltered");
+          path.merge(edges);
+          path.merge(edges.connectedNodes(".unfiltered"));
+        }
+        Graph.starStyle(path);
+        if(this.starMode)
+        {
         // otherwise path might not be seen if it lies fully in an existing star
-        this.cy.elements().unselect();
-        path.select();
+          this.cy.elements().unselect();
+          path.select();
+        }
+        else
+        {
+          this.starMode=true;
+          Graph.setVisible(elements.not(path),false);
+        }
+        this.cy.endBatch();
       }
       else
       {
-        this.starMode=true;
-        Graph.setVisible(elements.not(path),false);
+        if(!this.starMode) {this.resetStyle();} // keep it as it was before the path operation
+        log.warn("No path found!");
+        return false;
       }
-      this.cy.endBatch();
-    }
-    else
-    {
-      if(!this.starMode) {this.resetStyle();} // keep it as it was before the path operation
-      log.warn("No path found!");
-      return false;
-    }
-    return true;
+      return true;
+    };
   }
 
   /** Multiplex star operations.
@@ -277,12 +284,26 @@ export class Graph
     return false;
   }
 
+  /** Get the equivalent elements in this graph of the given elements from another graph.
+      * @param {cytoscape.Collection} foreign elements from another graph
+      * @return {cytoscape.Collection} equivalent elements that exist in this graph */
+  assimilate(foreign)
+  {
+    const own = this.cy.collection();
+    for(const id of foreign)
+    {
+      const ele = this.cy.getElementById(id);
+      own.merge(ele);
+    }
+    return own;
+  }
+
   /** Returns the start node for all path operations
       @return {?cytoscape.NodeSingular} the start node for all path operations, or null if none exists. */
   getSource()
   {
     if(this.pathSource) {return this.pathSource;}
-    if(this.selectedNode) {return this.selectedNode;}
+    if(this.selectedNode) {log.debug("Path source not set, using selected node"); return this.selectedNode;}
     return null;
   }
 
@@ -293,6 +314,7 @@ export class Graph
   setSource(node)
   {
     if(!node) {return false;}
+    if(node.length!==1) {log.error("Invalid source. Length != 1"); return false;}
     if(this.pathTarget)
     {
       this.cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
@@ -388,6 +410,7 @@ export class Graph
       * @return {void} */
   multiplex(f, nodes, direct)
   {
+    console.log("multiplexing function "+f+" with nodes "+nodes);
     return ele =>
     {
       const selected = this.cy.nodes(":selected");
@@ -401,6 +424,19 @@ export class Graph
         else {for(let i=0; i<collection.length;i++) {f(collection[i]);}}
       }
       else {f(ele);}
+    };
+  }
+
+  /** Applies the function to multiple nodes if given or if not given then if selected.
+      * @param {nodeFunction} f a function that accepts a single node
+      * @param {cytoscape.NodeCollection} nodes the nodes, each of which will be passed as parameter to a separate call of the given function
+      * @return {void} */
+  multiplexNew(f, nodes)
+  {
+    console.log("multiplexing function "+f+" with nodes "+nodes);
+    return ele =>
+    {
+      for(let i=0; i<collection.length;i++) {f(collection[i]);}
     };
   }
 
@@ -471,8 +507,8 @@ export class Graph
   }
 
   /** Sets whether close matches are grouped in compound nodes.
-    * @param {boolean} enabled Whether to activate or deactivate combine match mode.
-    * @return {Promise<void>} **/
+        * @param {boolean} enabled Whether to activate or deactivate combine match mode.
+        * @return {Promise<void>} **/
   async combineMatch(enabled)
   {
     await progress(()=>
@@ -536,8 +572,8 @@ export class Graph
   }
 
   /**Show close matches of the given nodes.
-   * @param {cytoscape.NodeCollection} nodes the nodes whose close matches are shown
-   * @return {void} */
+        * @param {cytoscape.NodeCollection} nodes the nodes whose close matches are shown
+        * @return {void} */
   showCloseMatch(nodes)
   {
     MicroModal.show("search-results");
@@ -547,7 +583,7 @@ export class Graph
   }
 
   /** Shows how any two subontologies are interconnected. The user chooses two subontologies and gets shown all pairs between them.
-   * @return {void} */
+        * @return {void} */
   subOntologyConnectivity()
   {
     MicroModal.show("subontology-connectivity");
@@ -582,5 +618,16 @@ export class Graph
       ).run();
     };
     form.addEventListener("submit",form.listener);
+  }
+
+  /** Create and return a new graph if the option is set to create star operations in a new view.
+        * @param {string} title optional view title
+        * @return {Graph} this iff the option to create stars in a new view is unset, a new view's graph if it is set */
+  newGraph(title)
+  {
+    const STAR_IN_NEW_VIEW = true;
+    if(!STAR_IN_NEW_VIEW) {return this;}
+    const view = new View(true,title);
+    return view.state.graph;
   }
 }

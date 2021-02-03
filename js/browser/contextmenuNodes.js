@@ -105,6 +105,7 @@ const baseCommands = graph =>
     {
       content: 'star',
       id: 'star',
+      //select: ()=>graph.newGraph("Star").showStarMultiplexed(false)(),
       select: graph.showStarMultiplexed(false),
     },
     {
@@ -120,7 +121,7 @@ const baseCommands = graph =>
     {
       content: 'path',
       id: 'path',
-      select: graph.multiplex(graph.showPath),
+      select: (node)=>graph.multiplex(graph.showPath,graph.cy.nodes(":selected"))(node),
     },
     {
       content: 'spiderworm',
