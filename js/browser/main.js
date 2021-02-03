@@ -176,7 +176,7 @@ function initKeyListener()
     {
       layoutState.cy.startBatch();
       layoutState.cy.elements().unselect();
-      const nodes = layoutState.graph.assimilate(clipboard);
+      const nodes = layoutState.graph.getElementsByIds(clipboard);
       Graph.setVisible(nodes,true);
 
       layoutState.cy.endBatch();

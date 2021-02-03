@@ -106,22 +106,24 @@ const baseCommands = graph =>
       content: 'star',
       id: 'star',
       //select: ()=>graph.newGraph("Star").showStarMultiplexed(false)(),
-      select: graph.showStarMultiplexed(false),
+      select: async (node)  =>  {(await graph.showStarMultiplexedNew(false))(node);},
     },
     {
       content: 'incoming star',
       id: 'incoming-star',
-      select: graph.showStarMultiplexed(false,Direction.IN),
+      //select: graph.showStarMultiplexed(false,Direction.IN),
+      select: async (node)  =>  {(await graph.showStarMultiplexedNew(false,Direction.IN))(node);},
     },
     {
       content: 'outgoing star',
       id: 'outgoing-star',
-      select: graph.showStarMultiplexed(false,Direction.OUT),
+      //select: graph.showStarMultiplexed(false,Direction.OUT),
+      select: async (node)  =>  {(await graph.showStarMultiplexedNew(false,Direction.OUT))(node);},
     },
     {
       content: 'path',
       id: 'path',
-      select: (node)=>graph.multiplex(graph.showPath,graph.cy.nodes(":selected"))(node),
+      select: (node)=>graph.multiplex(graph.showPath(node))(graph.getSource()),
     },
     {
       content: 'spiderworm',
@@ -189,7 +191,7 @@ const extCommands = graph =>
     {
       content: 'starpath',
       id: 'starpath',
-      select: graph.multiplex(node=>graph.showPath(node,true)),
+      select: (node)=>graph.multiplex(graph.showPath(node,true))(graph.getSource()),
     },
     {
       content: 'circle star',
