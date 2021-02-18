@@ -15,6 +15,7 @@ const options =
   minMatchCharLength: 3,
   matchAllTokens: true,
   location: 0,
+  ignoreLocation: true,
   distance: 100,
   id: "uri",
   keys:
