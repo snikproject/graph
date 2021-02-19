@@ -34,9 +34,9 @@ const colorschemenight =
           // highlight skos interlinks
           if((String(edge.data(EDGE.PROPERTY)).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
           {
-            return "rgb(165,165,128)";
+            return "rgb(255,255,190)";
           }
-          return "rgb(128,128,128)";
+          return "rgb(252,252,252)";
         },
       },
     },
