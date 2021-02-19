@@ -38,15 +38,14 @@ const colorschemeday =
       "selector": "edge[!selected]",
       "css":
       {
-        "opacity": 0.4,
         'line-color': function(edge)
         {
         // highlight skos interlinks
           if((String(edge.data(EDGE.PROPERTY)).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
           {
-            return "rgb(160,150,10)";
+            return "rgb(140,130,10)";
           }
-          return "rgb(128,128,128)";
+          return "rgb(110,110,110)";
         },
       },
     },

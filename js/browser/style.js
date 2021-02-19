@@ -123,7 +123,7 @@ const style =
       {
         'z-compound-depth': 'bottom',
         'width': 2.0,
-        'opacity': 0.5,
+        "opacity": 0.2,
       },
     },
     {
