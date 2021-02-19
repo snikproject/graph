@@ -144,7 +144,7 @@ const style =
           }
           return "triangle";
         },
-        'edge-text-rotation': 'autorotate',
+        /* 'edge-text-rotation': 'autorotate',*/ /* temporarily disabled due to SVG export bug*/
         'text-margin-y': '-1em',
         'min-zoomed-font-size': 5,
         'font-size': 11,
