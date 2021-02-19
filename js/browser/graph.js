@@ -412,11 +412,12 @@ export class Graph
     if(hideOthers)
     {
       Graph.setVisible(this.cy.elements(),false);
-      Graph.setVisible(resultNodes.edgesWith(resultNodes),true);
+      Graph.setVisible(resultNodes.edgesTo(resultNodes),true);
       this.starMode = true;
     }
     this.cy.elements().unselect();
     resultNodes.select();
+    resultNodes.edgesTo(resultNodes).select();
     this.cy.fit(this.cy.elements(":selected"));
     return true;
   }
