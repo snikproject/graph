@@ -63,7 +63,7 @@ export class View
   /**
    * Create an empty graph and add it to the state of this view along with its Cytoscape.js instance.
    * @param {Boolean} [initialize=true] if initialize is true or not given, the graph is copied from the main view or, if that doesn't exist, from the SPARQL endpoint
-   * @param {[type]}  title             optional view title
+   * @param {string}  title             optional view title
    */
   constructor(initialize=true,title)
   {

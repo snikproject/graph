@@ -48,7 +48,7 @@ export function long(uri)
 
 /**
    * Returns the subontology a SNIK uri belongs to.
-   * @param  {[type]} uri a SNIK URI
+   * @param  {string} uri a SNIK URI
    * @return {string}     the subontology of the URI
    */
 export function sub(uri)
