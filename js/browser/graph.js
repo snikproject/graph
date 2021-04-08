@@ -302,7 +302,7 @@ export class Graph
   assimilate(eles) {return this.getElementsByIds(eles.map(ele => ele.id()));}
 
   /** @param {Array<string>} ids iterable of cytoscape ids
-   * @return {cytoscape.Collection} cytoscape collection of elements with those ids */
+      * @return {cytoscape.Collection} cytoscape collection of elements with those ids */
   getElementsByIds(ids)
   {
     const own = this.cy.collection();
@@ -511,9 +511,9 @@ export class Graph
 
   /**
         * position in a circle around the first node
-        * @param  {[type]} nodes    [description]
-        * @param  {[type]} distance [description]
-        * @return {[type]}          [description]
+        * @param  {cytoscape.NodeCollection} nodes the nodes to position
+        * @param  {number} distance the radius of the circle
+        * @return {void}
         */
   moveNodes(nodes,distance)
   {
@@ -636,8 +636,8 @@ export class Graph
   }
 
   /** Create and return a new graph if the option is set to create star operations in a new view.
-   *  @param {string} title optional view title
-   *  @return {Graph} this iff the option to create stars in a new view is unset, a new view's graph if it is set */
+        *  @param {string} title optional view title
+        *  @return {Graph} this iff the option to create stars in a new view is unset, a new view's graph if it is set */
   async newGraph(title)
   {
     //if(!mainView.state.graph.menu.starNewView()) {return this;} // using the menu option to determine whether to create a new graph
