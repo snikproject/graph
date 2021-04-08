@@ -18,7 +18,7 @@ jobs:
           source_dir: ./js
           output_dir: ./out
           template: docdash
-          recourse: true
+          recurse: true
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
