@@ -181,6 +181,7 @@ export class Menu
               ["manual.html","Manual"],
               ["https://www.snik.eu/sites/www.snik.eu/files/files/uploads/Einfuehrung/snik-tutorial.pdf","Tutorial"],
               ["layoutHelp.html","Layout Help"],
+              ["https://imise.github.io/snik-cytoscape.js/","Developer Documentation"],
               ["https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured","YouTube Channel"],
               ["troubleshooting.html","Troubleshooting"],
               ["contribute.html","Contribute"],
