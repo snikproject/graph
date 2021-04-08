@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>layout.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module-browser_contextmenu.html">browser/contextmenu</a><ul class='methods'><li data-type='method'><a href="module-browser_contextmenu.html#.addTippy">addTippy</a></li><li data-type='method'><a href="module-browser_contextmenu.html#populate">populate</a></li><li data-type='method'><a href="module-browser_contextmenu.html#reset">reset</a></li></ul></li><li><a href="module-browser_contextmenuEdges.html">browser/contextmenuEdges</a><ul class='methods'><li data-type='method'><a href="module-browser_contextmenuEdges.html#.baseLimesMenu">baseLimesMenu</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#.baseMenu">baseMenu</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#.devLimesMenu">devLimesMenu</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#.devMenu">devMenu</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#baseCommands">baseCommands</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#devCommands">devCommands</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#edgeLabel">edgeLabel</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#limesCommands">limesCommands</a></li></ul></li><li><a href="module-browser_filter-Filter.html">Filter</a><ul class='methods'><li data-type='method'><a href="module-browser_filter-Filter.html#setVisible">setVisible</a></li><li data-type='method'><a href="module-browser_filter-Filter.html#toString">toString</a></li></ul></li><li><a href="module-browser_menu.Menu.html">Menu</a><ul class='methods'><li data-type='method'><a href="module-browser_menu.Menu.html#.about">about</a></li><li data-type='method'><a href="module-browser_menu.Menu.html#.closeListener">closeListener</a></li><li data-type='method'><a href="module-browser_menu.Menu.html#.visualizationFeedback">visualizationFeedback</a></li><li data-type='method'><a href="module-browser_menu.Menu.html#addMenu">addMenu</a></li><li data-type='method'><a href="module-browser_menu.Menu.html#addOptions">addOptions</a></li><li data-type='method'><a href="module-browser_menu.Menu.html#menuData">menuData</a></li><li data-type='method'><a href="module-browser_menu.Menu.html#optionsFromJSON">optionsFromJSON</a></li><li data-type='method'><a href="module-browser_menu.Menu.html#optionsToJSON">optionsToJSON</a></li><li data-type='method'><a href="module-browser_menu.Menu.html#separateSubs">separateSubs</a></li><li data-type='method'><a href="module-browser_menu.Menu.html#setLanguage">setLanguage</a></li><li data-type='method'><a href="module-browser_menu.Menu.html#showCloseMatches">showCloseMatches</a></li></ul></li><li><a href="module-browser_search.html">browser/search</a><ul class='methods'><li data-type='method'><a href="module-browser_search.html#search">search</a></li><li data-type='method'><a href="module-browser_search.html#showSearch">showSearch</a></li><li data-type='method'><a href="module-browser_search.html#showSearchResults">showSearchResults</a></li></ul></li><li><a href="module-browser_view.View.html">View</a><ul class='methods'><li data-type='method'><a href="module-browser_view.View.html#fill">fill</a></li></ul></li><li><a href="module-graph.Graph.html">Graph</a><ul class='methods'><li data-type='method'><a href="module-graph.Graph.html#.setVisible">setVisible</a></li><li data-type='method'><a href="module-graph.Graph.html#.starStyle">starStyle</a></li><li data-type='method'><a href="module-graph.Graph.html#assimilate">assimilate</a></li><li data-type='method'><a href="module-graph.Graph.html#combineMatch">combineMatch</a></li><li data-type='method'><a href="module-graph.Graph.html#createRemoveIssue">createRemoveIssue</a></li><li data-type='method'><a href="module-graph.Graph.html#cumulativeSearch">cumulativeSearch</a></li><li data-type='method'><a href="module-graph.Graph.html#getElementsByIds">getElementsByIds</a></li><li data-type='method'><a href="module-graph.Graph.html#getSource">getSource</a></li><li data-type='method'><a href="module-graph.Graph.html#invert">invert</a></li><li data-type='method'><a href="module-graph.Graph.html#moveAllMatches">moveAllMatches</a></li><li data-type='method'><a href="module-graph.Graph.html#moveNodes">moveNodes</a></li><li data-type='method'><a href="module-graph.Graph.html#multiplex">multiplex</a></li><li data-type='method'><a href="module-graph.Graph.html#newGraph">newGraph</a></li><li data-type='method'><a href="module-graph.Graph.html#presentUri">presentUri</a></li><li data-type='method'><a href="module-graph.Graph.html#presentUris">presentUris</a></li><li data-type='method'><a href="module-graph.Graph.html#resetStyle">resetStyle</a></li><li data-type='method'><a href="module-graph.Graph.html#setSource">setSource</a></li><li data-type='method'><a href="module-graph.Graph.html#showCloseMatch">showCloseMatch</a></li><li data-type='method'><a href="module-graph.Graph.html#showDoubleStar">showDoubleStar</a></li><li data-type='method'><a href="module-graph.Graph.html#showPath">showPath</a></li><li data-type='method'><a href="module-graph.Graph.html#showStar">showStar</a></li><li data-type='method'><a href="module-graph.Graph.html#showStarMultiplexed">showStarMultiplexed</a></li><li data-type='method'><a href="module-graph.Graph.html#showStarMultiplexedNew">showStarMultiplexedNew</a></li><li data-type='method'><a href="module-graph.Graph.html#showWorm">showWorm</a></li><li data-type='method'><a href="module-graph.Graph.html#subOntologyConnectivity">subOntologyConnectivity</a></li></ul></li><li><a href="module-property.Property.html">Property</a></li></ul><h3>Modules</h3><ul><li><a href="config.module_dist.html">dist</a></li><li><a href="module-browser_benchmark.html">browser/benchmark</a><ul class='methods'><li data-type='method'><a href="module-browser_benchmark.html#.addOverlay">addOverlay</a></li></ul></li><li><a href="module-browser_chaptersearch.html">browser/chaptersearch</a><ul class='methods'><li data-type='method'><a href="module-browser_chaptersearch.html#.showChapterSearch">showChapterSearch</a></li><li data-type='method'><a href="module-browser_chaptersearch.html#~getClasses">getClasses</a></li><li data-type='method'><a href="module-browser_chaptersearch.html#~showClasses">showClasses</a></li></ul></li><li><a href="module-browser_classuse.html">browser/classuse</a></li><li><a href="module-browser_colorschemeday.html">browser/colorschemeday</a></li><li><a href="module-browser_colorschemenight.html">browser/colorschemenight</a></li><li><a href="module-browser_contextmenu.html">browser/contextmenu</a><ul class='methods'><li data-type='method'><a href="module-browser_contextmenu.html#.addTippy">addTippy</a></li><li data-type='method'><a href="module-browser_contextmenu.html#populate">populate</a></li><li data-type='method'><a href="module-browser_contextmenu.html#reset">reset</a></li></ul></li><li><a href="module-browser_contextmenuEdges.html">browser/contextmenuEdges</a><ul class='methods'><li data-type='method'><a href="module-browser_contextmenuEdges.html#.baseLimesMenu">baseLimesMenu</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#.baseMenu">baseMenu</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#.devLimesMenu">devLimesMenu</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#.devMenu">devMenu</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#baseCommands">baseCommands</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#devCommands">devCommands</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#edgeLabel">edgeLabel</a></li><li data-type='method'><a href="module-browser_contextmenuEdges.html#limesCommands">limesCommands</a></li></ul></li><li><a href="module-browser_contextmenuNodes.html">browser/contextmenuNodes</a><ul class='methods'><li data-type='method'><a href="module-browser_contextmenuNodes.html#~baseCommands">baseCommands</a></li><li data-type='method'><a href="module-browser_contextmenuNodes.html#~devCommands">devCommands</a></li><li data-type='method'><a href="module-browser_contextmenuNodes.html#~extCommands">extCommands</a></li></ul></li><li><a href="module-browser_filter.html">browser/filter</a><ul class='methods'><li data-type='method'><a href="module-browser_filter.html#.addFilterEntries">addFilterEntries</a></li><li data-type='method'><a href="module-browser_filter.html#.fromJSON">fromJSON</a></li><li data-type='method'><a href="module-browser_filter.html#.toJSON">toJSON</a></li></ul></li><li><a href="module-browser_load.html">browser/load</a><ul class='methods'><li data-type='method'><a href="module-browser_load.html#.addFileLoadEntries">addFileLoadEntries</a></li><li data-type='method'><a href="module-browser_load.html#.loadSessionFromJsonFile">loadSessionFromJsonFile</a></li><li data-type='method'><a href="module-browser_load.html#.loadView">loadView</a></li><li data-type='method'><a href="module-browser_load.html#~addLoadEntry">addLoadEntry</a></li><li data-type='method'><a href="module-browser_load.html#~loadGraphFromJson">loadGraphFromJson</a></li><li data-type='method'><a href="module-browser_load.html#~uploadJson">uploadJson</a></li></ul></li><li><a href="module-browser_log.html">browser/log</a></li><li><a href="module-browser_main.html">browser/main</a><ul class='methods'><li data-type='method'><a href="module-browser_main.html#.fillInitialGraph">fillInitialGraph</a></li><li data-type='method'><a href="module-browser_main.html#~applyParams">applyParams</a></li><li data-type='method'><a href="module-browser_main.html#~initKeyListener">initKeyListener</a></li><li data-type='method'><a href="module-browser_main.html#~main">main</a></li><li data-type='method'><a href="module-browser_main.html#~parseParams">parseParams</a></li></ul></li><li><a href="module-browser_menu.html">browser/menu</a></li><li><a href="module-browser_progress.html">browser/progress</a></li><li><a href="module-browser_save.html">browser/save</a><ul class='methods'><li data-type='method'><a href="module-browser_save.html#.saveGraph">saveGraph</a></li><li data-type='method'><a href="module-browser_save.html#.saveJson">saveJson</a></li><li data-type='method'><a href="module-browser_save.html#.savePng">savePng</a></li><li data-type='method'><a href="module-browser_save.html#.saveSession">saveSession</a></li><li data-type='method'><a href="module-browser_save.html#.saveSvg">saveSvg</a></li><li data-type='method'><a href="module-browser_save.html#.saveUrl">saveUrl</a></li><li data-type='method'><a href="module-browser_save.html#.saveView">saveView</a></li><li data-type='method'><a href="module-browser_save.html#~stringify">stringify</a></li></ul></li><li><a href="module-browser_search.html">browser/search</a><ul class='methods'><li data-type='method'><a href="module-browser_search.html#search">search</a></li><li data-type='method'><a href="module-browser_search.html#showSearch">showSearch</a></li><li data-type='method'><a href="module-browser_search.html#showSearchResults">showSearchResults</a></li></ul></li><li><a href="module-browser_state.html">browser/state</a><ul class='methods'><li data-type='method'><a href="module-browser_state.html#.fromJSON">fromJSON</a></li><li data-type='method'><a href="module-browser_state.html#.toJSON">toJSON</a></li></ul></li><li><a href="module-browser_style.html">browser/style</a></li><li><a href="module-browser_teststyle.html">browser/teststyle</a></li><li><a href="module-browser_util.html">browser/util</a><ul class='methods'><li data-type='method'><a href="module-browser_util.html#.checkboxClickableDiv">checkboxClickableDiv</a></li><li data-type='method'><a href="module-browser_util.html#.createGitHubIssue">createGitHubIssue</a></li><li data-type='method'><a href="module-browser_util.html#.getElementById">getElementById</a></li></ul></li><li><a href="module-browser_view.html">browser/view</a><ul class='methods'><li data-type='method'><a href="module-browser_view.html#.activeState">activeState</a></li><li data-type='method'><a href="module-browser_view.html#.activeView">activeView</a></li><li data-type='method'><a href="module-browser_view.html#.reset">reset</a></li><li data-type='method'><a href="module-browser_view.html#~traverse">traverse</a></li></ul></li><li><a href="module-browser_viewLayout.html">browser/viewLayout</a><ul class='methods'><li data-type='method'><a href="module-browser_viewLayout.html#.goldenLayout">goldenLayout</a></li></ul></li><li><a href="module-edge.html">edge</a></li><li><a href="module-fuse.html">fuse</a><ul class='methods'><li data-type='method'><a href="module-fuse.html#.createIndex">createIndex</a></li><li data-type='method'><a href="module-fuse.html#.search">search</a></li></ul></li><li><a href="module-graph.html">graph</a></li><li><a href="module-lang_language.html">lang/language</a><ul class='methods'><li data-type='method'><a href="module-lang_language.html#.getIdStrings">getIdStrings</a></li><li data-type='method'><a href="module-lang_language.html#.getLanguage">getLanguage</a></li><li data-type='method'><a href="module-lang_language.html#.getString">getString</a></li><li data-type='method'><a href="module-lang_language.html#.setLanguage">setLanguage</a></li><li data-type='method'><a href="module-lang_language.html#.updateHtml">updateHtml</a></li></ul></li><li><a href="module-layout.html">layout</a><ul class='methods'><li data-type='method'><a href="module-layout.html#.positions">positions</a></li><li data-type='method'><a href="module-layout.html#.presetLayout">presetLayout</a></li><li data-type='method'><a href="module-layout.html#.run">run</a></li><li data-type='method'><a href="module-layout.html#.runCached">runCached</a></li><li data-type='method'><a href="module-layout.html#~center">center</a></li><li data-type='method'><a href="module-layout.html#~springLength">springLength</a></li><li data-type='method'><a href="module-layout.html#~storageName">storageName</a></li></ul></li><li><a href="module-loadGraphFromSparql.html">loadGraphFromSparql</a><ul class='methods'><li data-type='method'><a href="module-loadGraphFromSparql.html#~createClassNodes">createClassNodes</a></li><li data-type='method'><a href="module-loadGraphFromSparql.html#~createEdges">createEdges</a></li><li data-type='method'><a href="module-loadGraphFromSparql.html#~createInstanceNodes">createInstanceNodes</a></li><li data-type='method'><a href="module-loadGraphFromSparql.html#~createNodes">createNodes</a></li><li data-type='method'><a href="module-loadGraphFromSparql.html#~parseLabels">parseLabels</a></li><li data-type='method'><a href="module-loadGraphFromSparql.html#~selectClasses">selectClasses</a></li><li data-type='method'><a href="module-loadGraphFromSparql.html#~selectInstances">selectInstances</a></li><li data-type='method'><a href="module-loadGraphFromSparql.html#~selectTriples">selectTriples</a></li></ul></li><li><a href="module-node.html">node</a></li><li><a href="module-property.html">property</a><ul class='methods'><li data-type='method'><a href="module-property.html#.possible">possible</a></li></ul></li><li><a href="module-rdf.html">rdf</a><ul class='methods'><li data-type='method'><a href="module-rdf.html#.long">long</a></li><li data-type='method'><a href="module-rdf.html#.longPrefix">longPrefix</a></li><li data-type='method'><a href="module-rdf.html#.short">short</a></li><li data-type='method'><a href="module-rdf.html#.sub">sub</a></li></ul></li><li><a href="module-sparql.html">sparql</a><ul class='methods'><li data-type='method'><a href="module-sparql.html#.ask">ask</a></li><li data-type='method'><a href="module-sparql.html#.describe">describe</a></li><li data-type='method'><a href="module-sparql.html#.select">select</a></li></ul></li><li><a href="module-string.html">string</a><ul class='methods'><li data-type='method'><a href="module-string.html#.abbrv">abbrv</a></li></ul></li><li><a href="module-timer.html">timer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#browserCheckNonTranspiled">browserCheckNonTranspiled</a></li><li><a href="global.html#browserCheckTranspiled">browserCheckTranspiled</a></li><li><a href="global.html#flatten">flatten</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#logWrap">logWrap</a></li><li><a href="global.html#menuDefaults">menuDefaults</a></li><li><a href="global.html#sayswho">sayswho</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">layout.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+Due to JavaScript being a slow mostly single-threaded language with no really fast layouting library available, layouting the full 4000+ node graph can take a minute or more depending on the client PC.
+After the first time, the layout is cached and reused, until major changes occur in the graph.
+If a breakthrough occurs in JavaScript graph layouting, update here and possibly remove cache.
+@module */
+import timer from "./timer.js";
+import * as NODE from "./node.js";
+import config from "./config.js";
+
+const ANIMATE_THRESHOLD = 500;
+
+let activeLayout = undefined;
+
+/**
+@param {string} layoutName Cytoscape.js layout name
+@param {array} subs the subontology identifiers included in the graph. Used to retrieve the correct layout later.
+@param {boolean} [separateSubs=false] Whether to separate the graph based on the subontologies.
+@return {string} the storage name coded by the layout and the subontologies
+@example storageName("euler",new Set(["meta","ob","bb"]));
+*/
+function storageName(layoutName,subs,separateSubs) {return "layout"+layoutName+subs.sort().toString().replace(/[^a-z]/g,"")+(!!separateSubs);}
+
+/** Returns an array containing the positions of the given nodes
+@param {cytoscape.NodeCollection} nodes the nodes whose positions are returned
+@return {Array&lt;Array>} an array containing the positions of the given nodes
+@example
+// returns [["http://www.snik.eu...",{"x":0,"y":0}],...]
+positions(cy.nodes());
+*/
+export function positions(nodes)
+{
+  const pos=[];
+  for(let i=0;i&lt;nodes.size();i++)
+  {
+    const node = nodes[i];
+    pos.push([node.data(NODE.ID),node.position()]);
+  }
+  return pos;
+}
+
+/** @param {cytoscape.NodeCollection} nodes the nodes whose center is returned
+@return {object} the center point of the nodes */
+function center(nodes)
+{
+  const c = {x:0.0 , y:0.0};
+  for(let i=0; i&lt;nodes.length; i++)
+  {
+    const pos = nodes[i].position();
+    c.x+=pos.x;
+    c.y+=pos.y;
+  }
+  c.x/=(nodes.length);
+  c.y/=(nodes.length);
+  return c;
+}
+
+
+/** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it (use {@link module:layout.runCached} for that).
+@param {cytoscape.Core} cy the Cytoscape.js graph to run the layout on
+@param {object} layoutConfig the layout configuration, which includes the layout name and options
+@param {array} [subs] Set of subontologies. If the subs are not given the layout still works but it is not saved.
+@param {boolean} [separateSubs=false] Whether to separate the graph based on the subontologies.
+@param {boolean} [save=false] Whether to save the layout on local storage.
+@return {boolean} whether the layout could successfully be applied. Does not indicate success of saving to cache.
+@example
+run(cy,{"name":"grid"},new Set(["meta","ciox"]))
+*/
+export function run(cy,layoutConfig,subs,separateSubs,save)
+{
+  if(cy.nodes().size()===0)
+  {
+    log.warn("layout.js#run: Graph empty. Nothing to layout.");
+    return false;
+  }
+  const layoutTimer = timer("layout");
+  if(separateSubs)
+  {
+    /** @type{cytoscape.ElementDefinition[]} */
+    const sources = new Set();
+    /** @type{cytoscape.ElementDefinition[]} */
+    const virtualEdges = [];
+
+    const nodes = cy.nodes();
+    for(let i=0;i&lt;nodes.length;i++)
+    {
+      const node = nodes[i];
+      const source = node.data(NODE.SOURCE);
+      if(source)
+      {
+        if(!sources.has(source))
+        {
+          cy.add({group: "nodes", data: { id: source, mass: 400, type: "virtual"}});
+          sources.add(source);
+        }
+        virtualEdges.push({group: "edges", data: { source: node.data(NODE.ID), target: source, springLength: 180 }});
+      }
+    }
+    log.debug("Separate subontologies checked");
+    log.debug(`Adding ${virtualEdges.length} virtual edges.`);
+    cy.add(virtualEdges);
+  }
+  else{log.debug("Separate subontologies unchecked");}
+  if(activeLayout) {activeLayout.stop();}
+
+  let elements;
+  let partLayout; // only change the positions of the selected nodes, keep the other ones in place
+  if(cy.nodes(":selected").size()>1)
+  {
+    elements = cy.elements(":selected");
+    partLayout = true;
+  }
+  else
+  {
+    elements = cy.elements(":visible");
+    partLayout = false;
+  }
+  let oldCenter;
+  // Because it is a partial graph, the relation to the whole graph should still be discernable. That is why we preserve the center position of that partial graph and restore it later.
+  if(partLayout) {oldCenter = center(elements.nodes());}
+  const configCopy = { ...layoutConfig };
+  configCopy.animate = elements.size()>ANIMATE_THRESHOLD &amp;&amp; (typeof window !== 'undefined'); // can't animate from node
+  {activeLayout = elements.layout(configCopy);}
+  activeLayout.on("layoutstop",()=>
+  {
+    if(partLayout)
+    {
+      const newCenter = center(elements.nodes());
+      // move the nodes so that the center is at the same spot as before
+      elements.nodes().shift({x: oldCenter.x-newCenter.x,y: oldCenter.y-newCenter.y});
+    }
+    layoutTimer.stop();
+    if(subs&amp;&amp;separateSubs)
+    {
+      const virtualNodes = cy.nodes("[type='virtual']");
+      log.debug(`Removing ${virtualNodes.length} virtual nodes.`);
+      cy.remove(virtualNodes); // connected edges should go away automatically
+    }
+    if(subs&amp;&amp;save)
+    {
+      if(typeof(localStorage)=== "undefined")
+      {
+        log.warn("web storage not available, could not write to cache.");
+        return true;
+      }
+      const pos = positions(cy.nodes());
+      const name = storageName(layoutConfig.name,subs,separateSubs);
+      localStorage.setItem(name,JSON.stringify(pos));
+      log.info("Replaced layout cache.");
+    }
+  });
+  activeLayout.run();
+  cy.fit(cy.nodes(":visible"));
+  return true;
+}
+
+/** Applies a preset layout matching the node id's to the first element of each subarray in pos. Nodes without matching entry
+in pos are set to position {x:0,y:0}, positions without matching node id are ignored.
+@param {cytoscape.Core} cy the Cytoscape.js graph to apply the positions on, node id's need to match those in the given positions
+@param {array} pos an array of arrays, each of which contains the positions for a node id
+@return {boolean} whether the layout could be successfully applied
+@example
+presetLayout(cy,[["http://www.snik.eu...",{"x":0,"y":0}],...]);
+*/
+export function presetLayout(cy,pos)
+{
+  const map = new Map(pos);
+  let hits = 0;
+  let misses = 0;
+  const layoutConfig =
+  {
+    name: 'preset',
+    fit:true,
+    positions: node=>
+    {
+      let position;
+      if((position= map.get(node.data(NODE.ID))))
+      {
+        hits++;
+        return position;
+      }
+      misses++;
+      return {x:0,y:0};
+    },
+  };
+  const status = run(cy,layoutConfig);
+  if(misses>0||hits&lt;positions.length)
+  {
+    log.debug(`...${hits}/${cy.nodes().size()} node positions set. ${pos.length-hits} superfluous layout positions .`);
+    const precision = hits/pos.length;
+    const recall = hits/cy.nodes().size();
+    if(precision&lt;config.layoutCacheMinPrecision)
+    {
+      log.warn(`Precision of ${precision} less than minimal required precision of ${config.layoutCacheMinPrecision}.`);
+      return false;
+    }
+    if(recall&lt;config.layoutCacheMinRecall)
+    {
+      log.warn(`Recall of ${recall} less than minimal required of recall of ${config.layoutCacheMinRecall}.`);
+      return false;
+    }
+  }
+  else
+  {
+    log.debug("...layout applied with 100% overlap.");
+  }
+  if(hits===0) {return false;}
+  return status;
+}
+
+/** Cached version of {@link module:layout.run}.
+@param {cytoscape.Core} cy the Cytoscape.js graph to run the layout on
+@param {object} layoutConfig the layout configuration, which includes the layout name and options
+@param {string[]} subs Set of subontologies. If the subs are not given the layout still works but it is not cached.
+@param {boolean} [separateSubs=false] Whether to separate the graph based on the subontologies.
+@return {boolean} whether the layout could successfully be applied. Does not indicate success of loading from cache,
+in which case it is calculated anew.
+*/
+export function runCached(cy,layoutConfig,subs,separateSubs)
+{
+  if(typeof(localStorage)=== "undefined")
+  {
+    log.error("Web storage not available, could not access browser-based cache.");
+    return run(cy,layoutConfig,subs,separateSubs,false);
+  }
+  const name = storageName(layoutConfig.name,subs,separateSubs);
+  // web storage
+  const cacheItem = localStorage.getItem(name);
+  if(cacheItem) // cache hit
+  {
+    try
+    {
+      const pos=JSON.parse(cacheItem);
+      log.debug(`Loaded layout from cache, applying ${pos.length} positions...`);
+      const status = presetLayout(cy,pos);
+      if(status) {return true;}
+      log.warn("Could not apply layout to active graph, recalculating layout...");
+    }
+    catch(e)
+    {
+      log.warn("Could not load cache item, recalculating layout...",e);
+    }
+  }
+  else // cache miss
+  {
+    log.warn("Layout not in cache, recalculating layout...");
+  }
+  return run(cy,layoutConfig,subs,separateSubs,true);
+}
+
+/** Very fast but useless for most purposes except for testing.*/
+export const grid = {name: "grid"};
+
+/**
+ *  @param {cytoscape.EdgeSingular} edge any edge
+ *  @return {number} the preferred spring length of an edge
+ */
+function springLength(edge)
+{
+  const len = edge.data("springLength");
+  if(len) {return len;}
+  return 800;
+}
+
+/**Fastest (but still slow) force directed Cytoscape.js layout found.*/
+export const euler =
+{
+  /*eslint no-unused-vars: "off"*/
+  name: "euler",
+  springLength: edge => springLength(edge),
+  animate: true,
+  refresh: 50,
+  maxSimulationTime: 40000,
+  maxIterations: 500,
+  timeStep: 80,
+  randomize: true,
+  movementThreshold: 1,
+  fit:true, // center and zoom after so that it fits in the view
+  mass: node => node.data("mass")?node.data("mass"):40,
+};
+
+/**Fastest (but still slow) force directed Cytoscape.js layout found.*/
+export const eulerTight =
+{
+  /*eslint no-unused-vars: "off"*/
+  name: "euler",
+  springLength: 40,
+  animate: false,
+  maxSimulationTime: 40000,
+  maxIterations: 500,
+  timeStep: 80,
+  refresh: 50,
+  randomize: false,
+  movementThreshold: 1,
+  fit:true,
+  mass: 40,
+};
+
+/** Creates a euler layout with custom spring length. */
+/*
+export function eulerVariable(len)
+{
+  const layout =
+  {
+    name: "euler",
+    springLength: len,
+    animate: false,
+    refresh: 50,
+    randomize: false,
+    movementThreshold: 1,
+    fit:true,
+    mass: 40,
+  };
+  return layout;
+}
+*/
+
+/** Layout for compound graphs */
+export const cose =
+{
+  name: "cose",
+  animate: true,
+  refresh: 50,
+  numIter: 500,
+  initialTemp: 1000,
+  nestingFactor: 1.01,
+  randomize: false,
+  fit: true,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Thu Apr 08 2021 12:17:24 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
