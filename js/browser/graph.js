@@ -97,11 +97,13 @@ export class Graph
     this.cy.elements().removeClass("highlighted");
     this.cy.elements().removeClass("starmode");
     this.cy.elements().removeClass("hidden");
+    /*
     if(this.pathSource)
     {
       this.pathSource.removeClass('source');
       this.pathSource = null;
     }
+    */
     this.cy.endBatch();
   }
 
@@ -118,7 +120,7 @@ export class Graph
     return (from) =>
     {
       if(!from) {log.error("No path source."); return false;}
-      if(from===to) {log.warn("Path source equals target."); return false;}
+      if(from===to) {log.warn(`Path source ${from.data(NODE.ID)} equals target.`); return false;}
 
       const elements = this.cy.elements(".unfiltered");
 
@@ -308,7 +310,6 @@ export class Graph
     const own = this.cy.collection();
     for(const id of ids)
     {
-      console.log("old element ");
       const ele = this.cy.getElementById(id);
       own.merge(ele);
     }
@@ -320,7 +321,7 @@ export class Graph
   getSource()
   {
     if(this.pathSource) {return this.pathSource;}
-    if(this.selectedNode) {log.trace("Path source not set, using selected node"); return this.selectedNode;}
+    if(this.selectedNode) {log.debug("Path source not set, using selected node"); return this.selectedNode;}
     return null;
   }
 
@@ -330,6 +331,7 @@ export class Graph
       */
   setSource(node)
   {
+    log.debug("Setting path source to "+node.data(NODE.ID));
     if(!node) {return false;}
     if(node.length!==1) {log.error("Invalid source. Length != 1"); return false;}
     if(this.pathTarget)
