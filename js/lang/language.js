@@ -88,5 +88,5 @@ export function updateHtml()
       }
     }
   }
-  if(unused.length>0) {log.warn(`UpdateHtml: i18n keys ${unused.toString()} not used`);}
+  if(unused.length>0) {log.debug(`UpdateHtml: i18n keys ${unused.toString()} not used`);}
 }
