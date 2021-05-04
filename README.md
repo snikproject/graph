@@ -67,3 +67,7 @@ Use the `typecheck` script to use TypeScript as a static type checker.
 
 If you like SNIK Graph and want to use it with different data, please open an issue.
 While the main part is written generally, there .
+
+## License
+SNIK Graph has a noncommercial license with copyleft, the *Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International*, see LICENCE for details.
+We want to encourage reuse, modification, derivation and distribution as much as possible, so if that license is a problem for you please contact [Prof. Winter](www.people.imise.uni-leipzig.de/alfred.winter) and we try our best to find a solution.
