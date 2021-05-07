@@ -65,7 +65,7 @@ function center(nodes)
 @example
 run(cy,{"name":"grid"},new Set(["meta","ciox"]))
 */
-export function run(cy,layoutConfig,subs,separateSubs,save)
+export async function run(cy,layoutConfig,subs,separateSubs,save)
 {
   if(cy.nodes().size()===0)
   {
@@ -148,9 +148,9 @@ export function run(cy,layoutConfig,subs,separateSubs,save)
       log.info("Replaced layout cache.");
     }
   });
+  const promise = activeLayout.promiseOn("layoutready");
   activeLayout.run();
-  cy.fit(cy.nodes(":visible"));
-  return true;
+  return promise;
 }
 
 /** Applies a preset layout matching the node id's to the first element of each subarray in pos. Nodes without matching entry
@@ -161,7 +161,7 @@ in pos are set to position {x:0,y:0}, positions without matching node id are ign
 @example
 presetLayout(cy,[["http://www.snik.eu...",{"x":0,"y":0}],...]);
 */
-export function presetLayout(cy,pos)
+export async function presetLayout(cy,pos)
 {
   const map = new Map(pos);
   let hits = 0;
@@ -182,7 +182,7 @@ export function presetLayout(cy,pos)
       return {x:0,y:0};
     },
   };
-  const status = run(cy,layoutConfig);
+  const status = await run(cy,layoutConfig);
   if(misses>0||hits<positions.length)
   {
     log.debug(`...${hits}/${cy.nodes().size()} node positions set. ${pos.length-hits} superfluous layout positions .`);

@@ -105,17 +105,18 @@ async function applyParams(graph,params)
     graph.instancesLoaded = params.instances;
     if(params.endpoint===sparql.SNIK_ENDPOINT)
     {
-      layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,false); // todo: use the correct subs
+      await layout.runCached(graph.cy,layout.euler,config.defaultSubOntologies,false); // todo: use the correct subs
     }
     else
     {
-      layout.run(graph.cy,layout.euler);
+      await layout.run(graph.cy,layout.euler);
     }
 
     if(params.clazz)
     {
       log.info(`Parameter "class" detected. Centering on URI ${params.clazz}.`);
-      graph.presentUri(params.clazz);
+      // shouldn't be needed in theory due to the await in front of layout.run/runCached but is needed in practice
+      setTimeout(()=>graph.presentUri(params.clazz),300);
     }
   }
   catch(e)
