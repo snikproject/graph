@@ -1,15 +1,12 @@
 {
-	"env":
-	{
+	"env": {
 		"mocha": true
 	},
-	"globals":
-	{
+	"globals": {
 		"global": true,
 		"require": true
 	},
-	"rules":
-	{
+	"rules": {
 		"require-jsdoc": "off",
 		"no-console": "off"
 	},

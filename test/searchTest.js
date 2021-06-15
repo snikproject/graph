@@ -1,27 +1,31 @@
 //import * as search from '../js/search.js';
-import * as fuse from '../js/fuse.js';
-import chai from 'chai';
+import * as fuse from "../js/fuse.js";
+import chai from "chai";
 const assert = chai.assert;
-import 'isomorphic-fetch';
+import "isomorphic-fetch";
 // the global "log" is normally registered in the index file, so we have to do that here
-import log from 'loglevel';
+import log from "loglevel";
 global.log = log;
-import * as rdf from '../js/rdf.js';
+import * as rdf from "../js/rdf.js";
 // the global "Fuse" is normally registered in the index file, so we have to do that here
-import Fuse from 'fuse.js';
+import Fuse from "fuse.js";
 global.Fuse = Fuse;
 //const fs = require('fs');
 
-function equals(as, bs)
-{
-  if (as.size !== bs.size) {return false;}
-  for (const a of as) {if (!bs.has(a)) {return false;}}
-  return true;
+function equals(as, bs) {
+	if (as.size !== bs.size) {
+		return false;
+	}
+	for (const a of as) {
+		if (!bs.has(a)) {
+			return false;
+		}
+	}
+	return true;
 }
 
-describe('search', function()
-{
-  /*
+describe("search", function () {
+	/*
   it('#exactSearch()', function()
   {
     const queries = ["Chief Information Officer","chief information officer","chiefinformationofficer"];
@@ -42,33 +46,35 @@ Result 2: "${[...results[j]]}"`);
       }
     });
   });*/
-  it('fuse#createIndex()', async () =>
-  {
-    //const items =
-    await fuse.createIndex();
-    //const fs = require('fs');
-    //fs.writeFile("./cache/index.json",'['+items.map(x=>JSON.stringify(x,null,'\t')).toString()+']',(e)=>{if(e) {return console.error(e);}});
-  });
-  it('fuse#search()', async  () =>
-  {
-    // each of the terms in the first array of each entry should lead to each in the second array
-    const benchmark = [
-      // space and case insensitive
-      [["Chief Information Officer","chief information officer","chiefinformationofficer","CiO"],["bb:ChiefInformationOfficer","ob:ChiefInformationOfficer","he:ChiefInformationOfficer","ciox:ChiefInformationOfficer"]],
-      // ² / 2
-      [["3LGM2 Service Class","3LGM²-S Service Class"],["bb:3LGM2SServiceClass"]],
-      [["DurchfuehrungJourFixeCEO","Durchfuehrung Jour-Fixe CEO","Durchführung Jour-Fixé CEO"],["ciox:DurchfuehrungJourFixeCEO"]],
-    ];
-    for(const entry of benchmark)
-    {
-      const queries = entry[0];
-      const correctResults = entry[1];
-      for(const query of queries)
-      {
-        const results = await fuse.search(query);
-        const uris = results.map(x=>x.item.uri);
-        assert.includeMembers(uris,correctResults.map(r=>rdf.long(r)));
-      }
-    }
-  });
+	it("fuse#createIndex()", async () => {
+		//const items =
+		await fuse.createIndex();
+		//const fs = require('fs');
+		//fs.writeFile("./cache/index.json",'['+items.map(x=>JSON.stringify(x,null,'\t')).toString()+']',(e)=>{if(e) {return console.error(e);}});
+	});
+	it("fuse#search()", async () => {
+		// each of the terms in the first array of each entry should lead to each in the second array
+		const benchmark = [
+			// space and case insensitive
+			[
+				["Chief Information Officer", "chief information officer", "chiefinformationofficer", "CiO"],
+				["bb:ChiefInformationOfficer", "ob:ChiefInformationOfficer", "he:ChiefInformationOfficer", "ciox:ChiefInformationOfficer"],
+			],
+			// ² / 2
+			[["3LGM2 Service Class", "3LGM²-S Service Class"], ["bb:3LGM2SServiceClass"]],
+			[["DurchfuehrungJourFixeCEO", "Durchfuehrung Jour-Fixe CEO", "Durchführung Jour-Fixé CEO"], ["ciox:DurchfuehrungJourFixeCEO"]],
+		];
+		for (const entry of benchmark) {
+			const queries = entry[0];
+			const correctResults = entry[1];
+			for (const query of queries) {
+				const results = await fuse.search(query);
+				const uris = results.map((x) => x.item.uri);
+				assert.includeMembers(
+					uris,
+					correctResults.map((r) => rdf.long(r))
+				);
+			}
+		}
+	});
 });
