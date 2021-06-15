@@ -54,12 +54,10 @@ import config from "./config.js";
  * @param  {string} from SPARQL from clause
  * @return {Promise&lt;JSON>}      SPARQL JSON result
  */
-async function selectClasses(from)
-{
-  const sparqlClassesTimer = timer("sparql-classes");
+async function selectClasses(from) {
+	const sparqlClassesTimer = timer("sparql-classes");
 
-  const classQuerySimple =
-  `
+	const classQuerySimple = `
   PREFIX ov: &lt;http://open.vocab.org/terms/>
   SELECT ?c
   GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") as ?l
@@ -72,8 +70,7 @@ async function selectClasses(from)
   }
   `;
 
-  const classQuerySnik =
-  `
+	const classQuerySnik = `
   PREFIX ov: &lt;http://open.vocab.org/terms/>
   PREFIX meta: &lt;http://www.snik.eu/ontology/meta/>
   SELECT DISTINCT(?c)
@@ -90,27 +87,31 @@ async function selectClasses(from)
     OPTIONAL {?inst a ?c.}
   }`;
 
-  const classQuery = config.sparql.endpoint.includes("snik.eu/sparql")?classQuerySnik:classQuerySimple;
-  const json = await sparql.select(classQuery);
-  sparqlClassesTimer.stop(json.length+" classes");
-  return json;
+	const classQuery = config.sparql.endpoint.includes("snik.eu/sparql") ? classQuerySnik : classQuerySimple;
+	const json = await sparql.select(classQuery);
+	sparqlClassesTimer.stop(json.length + " classes");
+	return json;
 }
 
 /** Parse "|"-separated labels with language tag into the SNIK graph label structure.
 @param {string} s a string containing "|"-separated parts
 @return {object} an object containing different language labels keyed by language tag */
-function parseLabels(s)
-{
-  const labels = s.split("|");
-  const l = {};
-  for(const label of labels)
-  {
-    const [lex,tag] = label.split("@");
-    if(!lex.trim()) {continue;}
-    {if(!l[tag]) {l[tag]=[];}}
-    l[tag].push(lex);
-  }
-  return l;
+function parseLabels(s) {
+	const labels = s.split("|");
+	const l = {};
+	for (const label of labels) {
+		const [lex, tag] = label.split("@");
+		if (!lex.trim()) {
+			continue;
+		}
+		{
+			if (!l[tag]) {
+				l[tag] = [];
+			}
+		}
+		l[tag].push(lex);
+	}
+	return l;
 }
 
 /**
@@ -118,58 +119,52 @@ function parseLabels(s)
  * @param  {string} from a SPARQL FROM clause defining where to load the classes from
  * @return {Promise&lt;Array.&lt;cytoscape.ElementDefinition>>} nodes representing the classes
  */
-async function createClassNodes(from)
-{
-  const json = await selectClasses(from);
+async function createClassNodes(from) {
+	const json = await selectClasses(from);
 
-  /** @type{cytoscape.ElementDefinition[]} */
-  const nodes = [];
-  const sources = new Set();
-  for(let i=0;i&lt;json.length;i++)
-  {
-    let source;
-    if (json[i].src)
-    {
-      source = json[i].src.value;
-      if(source.includes("http://www.snik.eu/ontology/")) {source=source.replace("http://www.snik.eu/ontology/","");} // abbreviate snik
-      sources.add(source);
-    }
-    nodes.push(
-      {
-        group: "nodes",
-        data: {
-          id: json[i].c.value,
-          l: parseLabels(json[i].l.value),
-          ...(json[i].st &amp;&amp; {st: json[i].st.value.replace("http://www.snik.eu/ontology/meta/","").substring(0,1)}),
-          ...(source &amp;&amp; {source: source}),
-          ...(json[i].inst &amp;&amp; {inst: true}), // has at least one instance
-        },
-      });
-  }
+	/** @type{cytoscape.ElementDefinition[]} */
+	const nodes = [];
+	const sources = new Set();
+	for (let i = 0; i &lt; json.length; i++) {
+		let source;
+		if (json[i].src) {
+			source = json[i].src.value;
+			if (source.includes("http://www.snik.eu/ontology/")) {
+				source = source.replace("http://www.snik.eu/ontology/", "");
+			} // abbreviate snik
+			sources.add(source);
+		}
+		nodes.push({
+			group: "nodes",
+			data: {
+				id: json[i].c.value,
+				l: parseLabels(json[i].l.value),
+				...(json[i].st &amp;&amp; { st: json[i].st.value.replace("http://www.snik.eu/ontology/meta/", "").substring(0, 1) }),
+				...(source &amp;&amp; { source: source }),
+				...(json[i].inst &amp;&amp; { inst: true }), // has at least one instance
+			},
+		});
+	}
 
-  const colors = ["rgb(30,152,255)","rgb(255,173,30)","rgb(80,255,250)","rgb(150,255,120)","rgb(204, 0, 204)","rgb(255, 255, 0)"];
-  let count = 0;
-  for(const source of sources)
-  {
-    if(!config.color.has(source))
-    {
-      config.color.set(source,colors[count]);
-      count = (count+1) % colors.length;
-    }
-  }
+	const colors = ["rgb(30,152,255)", "rgb(255,173,30)", "rgb(80,255,250)", "rgb(150,255,120)", "rgb(204, 0, 204)", "rgb(255, 255, 0)"];
+	let count = 0;
+	for (const source of sources) {
+		if (!config.color.has(source)) {
+			config.color.set(source, colors[count]);
+			count = (count + 1) % colors.length;
+		}
+	}
 
-  log.debug(json.length+" Nodes loaded from SPARQL");
-  return nodes;
+	log.debug(json.length + " Nodes loaded from SPARQL");
+	return nodes;
 }
 
 /** Query for instances from the endpoint
 * @param  {string} from a SPARQL FROM clause defining where to load the instances from
  @return {Promise&lt;JSON>}      SPARQL JSON result */
-async function selectInstances(from)
-{
-  const sparqlInstancesTimer = timer("sparql-classes");
-  const instanceQuery =
-  `SELECT
+async function selectInstances(from) {
+	const sparqlInstancesTimer = timer("sparql-classes");
+	const instanceQuery = `SELECT
   DISTINCT(?i)
   GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
   ${from}
@@ -178,65 +173,58 @@ async function selectInstances(from)
     OPTIONAL {?i rdfs:label ?l.}
   }
   `;
-  const json = await sparql.select(instanceQuery);
-  sparqlInstancesTimer.stop(json.length+" instances");
-  return json;
+	const json = await sparql.select(instanceQuery);
+	sparqlInstancesTimer.stop(json.length + " instances");
+	return json;
 }
 
 /** Create cytoscape nodes for the instances.
 * @param  {string} from a SPARQL FROM clause defining where to load the instances from
  @return {Promise&lt;Array&lt;object>>} cytoscape nodes for the instances */
-async function createInstanceNodes(from)
-{
-  const json = await selectInstances(from);
-  /** @type{cytoscape.ElementDefinition[]} */
-  const nodes = [];
-  for(let i=0;i&lt;json.length;i++)
-  {
-    nodes.push(
-      {
-        group: "nodes",
-        data:
-        {
-          id: json[i].i.value,
-          l: parseLabels(json[i].l.value),
-          instance: true,
-        },
-      });
-  }
-  return nodes;
+async function createInstanceNodes(from) {
+	const json = await selectInstances(from);
+	/** @type{cytoscape.ElementDefinition[]} */
+	const nodes = [];
+	for (let i = 0; i &lt; json.length; i++) {
+		nodes.push({
+			group: "nodes",
+			data: {
+				id: json[i].i.value,
+				l: parseLabels(json[i].l.value),
+				instance: true,
+			},
+		});
+	}
+	return nodes;
 }
 
 /**
-   * Query for triples between resources in the SPARQL endpoint
-   * @param  {string} from      SPARQL from clause
-   * @param  {string} fromNamed SPARQL from named clause
-   * @param  {boolean} instances whether to load instances as well
-   * @param  {boolean} virtual   whether to select virtual triples from domain and range statements
-   * @return {Promise&lt;JSON>}           SPARQL query result object
-   */
-async function selectTriples(from, fromNamed, instances, virtual)
-{
-  const sparqlPropertiesTimer = timer("sparql-properties");
-  const tripleQuerySimple =
-    `
+ * Query for triples between resources in the SPARQL endpoint
+ * @param  {string} from      SPARQL from clause
+ * @param  {string} fromNamed SPARQL from named clause
+ * @param  {boolean} instances whether to load instances as well
+ * @param  {boolean} virtual   whether to select virtual triples from domain and range statements
+ * @return {Promise&lt;JSON>}           SPARQL query result object
+ */
+async function selectTriples(from, fromNamed, instances, virtual) {
+	const sparqlPropertiesTimer = timer("sparql-properties");
+	const tripleQuerySimple = `
     select  ?c ?p ?d
     ${from}
     {
-      {?c ?p ?d.} ${virtual?" UNION {?p rdfs:domain ?c; rdfs:range ?d.}":""}
-      {?c a owl:Class.} ${instances?" UNION {?c a [a owl:Class]}":""}
-      {?d a owl:Class.} ${instances?" UNION {?d a [a owl:Class]}":""}
+      {?c ?p ?d.} ${virtual ? " UNION {?p rdfs:domain ?c; rdfs:range ?d.}" : ""}
+      {?c a owl:Class.} ${instances ? " UNION {?c a [a owl:Class]}" : ""}
+      {?d a owl:Class.} ${instances ? " UNION {?d a [a owl:Class]}" : ""}
     }`;
-    // the optional part should be a union
-  const tripleQuerySnik =
-    `select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
+	// the optional part should be a union
+	const tripleQuerySnik = `select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
     ${from}
     ${fromNamed}
     {
       graph ?g {?c ?p ?d.}
       filter(?g!=sniko:)
-      {?c a owl:Class.} ${instances?" UNION {?c a [a owl:Class]}":""}
-      {?d a owl:Class.} ${instances?" UNION {?d a [a owl:Class]}":""}
+      {?c a owl:Class.} ${instances ? " UNION {?c a [a owl:Class]}" : ""}
+      {?d a owl:Class.} ${instances ? " UNION {?d a [a owl:Class]}" : ""}
       filter(?p!=meta:subTopClass)
       OPTIONAL
       {
@@ -246,42 +234,39 @@ async function selectTriples(from, fromNamed, instances, virtual)
         owl:annotatedTarget ?d.
       }
     }`;
-  const tripleQuery = config.sparql.endpoint.includes("snik.eu/sparql")?tripleQuerySnik:tripleQuerySimple;
-  const json = await sparql.select(tripleQuery);
-  sparqlPropertiesTimer.stop(json.length+" properties");
-  return json;
+	const tripleQuery = config.sparql.endpoint.includes("snik.eu/sparql") ? tripleQuerySnik : tripleQuerySimple;
+	const json = await sparql.select(tripleQuery);
+	sparqlPropertiesTimer.stop(json.length + " properties");
+	return json;
 }
 
 /**  Creates cytoscape edges for the resources in the SPARQL endpoint
-* @param  {string} from      SPARQL from clause
-* @param  {string} fromNamed SPARQL from named clause
-* @param  {boolean} instances whether to load instances as well
-* @param  {boolean} virtual   whether to select virtual triples from domain and range statements
-* @return {Promise&lt;JSON>}           SPARQL query result object
-*/
-async function createEdges(from, fromNamed, instances, virtual)
-{
-  const json = await selectTriples(from, fromNamed, instances, virtual);
-  const edges = [];
-  for(let i=0;i&lt;json.length;i++)
-  {
-    edges.push(
-      {
-        group: "edges",
-        data: {
-          source: json[i].c.value,
-          target: json[i].d.value,
-          id: i,
-          p: json[i].p.value,
-          pl: json[i].p.value.replace(/.*[#/]/,""),
-          ...(json[i].g &amp;&amp; {g: json[i].g.value}), // don't add null/undefined values, see https://stackoverflow.com/a/40560953/398963
-          ...(json[i].ax &amp;&amp; {ax: json[i].ax.value}), // in case of virtual triples: the URI of the axiom
-        },
-        //position: { x: 200, y: 200 }
-      });
-  }
-  log.debug(json.length+" Edges loaded from SPARQL");
-  return edges;
+ * @param  {string} from      SPARQL from clause
+ * @param  {string} fromNamed SPARQL from named clause
+ * @param  {boolean} instances whether to load instances as well
+ * @param  {boolean} virtual   whether to select virtual triples from domain and range statements
+ * @return {Promise&lt;JSON>}           SPARQL query result object
+ */
+async function createEdges(from, fromNamed, instances, virtual) {
+	const json = await selectTriples(from, fromNamed, instances, virtual);
+	const edges = [];
+	for (let i = 0; i &lt; json.length; i++) {
+		edges.push({
+			group: "edges",
+			data: {
+				source: json[i].c.value,
+				target: json[i].d.value,
+				id: i,
+				p: json[i].p.value,
+				pl: json[i].p.value.replace(/.*[#/]/, ""),
+				...(json[i].g &amp;&amp; { g: json[i].g.value }), // don't add null/undefined values, see https://stackoverflow.com/a/40560953/398963
+				...(json[i].ax &amp;&amp; { ax: json[i].ax.value }), // in case of virtual triples: the URI of the axiom
+			},
+			//position: { x: 200, y: 200 }
+		});
+	}
+	log.debug(json.length + " Edges loaded from SPARQL");
+	return edges;
 }
 
 /**
@@ -290,11 +275,12 @@ async function createEdges(from, fromNamed, instances, virtual)
  * @param  {boolean} instances whether to load instances in addition to the classes
  * @return {Promise&lt;Array>} an array of nodes
  */
-async function createNodes(from, instances)
-{
-  if(!instances) {return createClassNodes(from);}
-  const [classNodes,instanceNodes] = await Promise.all([createClassNodes(from),createInstanceNodes(from)]);
-  return classNodes.concat(instanceNodes);
+async function createNodes(from, instances) {
+	if (!instances) {
+		return createClassNodes(from);
+	}
+	const [classNodes, instanceNodes] = await Promise.all([createClassNodes(from), createInstanceNodes(from)]);
+	return classNodes.concat(instanceNodes);
 }
 
 /** Clears the given graph and loads a set of subontologies. Data from RDF helper graphs is loaded as well, such as virtual triples.
@@ -306,17 +292,16 @@ async function createNodes(from, instances)
   @example
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
-export default async function loadGraphFromSparql(cy,graphs,instances, virtual)
-{
-  log.debug(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
-  const from = graphs.map(g=>`FROM &lt;${g}>`).reduce((a,b)=>a+"\n"+b,"");
-  const fromNamed = from.replace(/FROM/g,"FROM NAMED");
+export default async function loadGraphFromSparql(cy, graphs, instances, virtual) {
+	log.debug(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
+	const from = graphs.map((g) => `FROM &lt;${g}>`).reduce((a, b) => a + "\n" + b, "");
+	const fromNamed = from.replace(/FROM/g, "FROM NAMED");
 
-  const [nodes,edges] = await Promise.all([createNodes(from,instances),createEdges(from, fromNamed, instances, virtual)]);
-  cy.elements().remove();
-  cy.add(nodes);
-  cy.add(edges); // will throw an error if any edge refers to a node not contained in the nodes loaded before
-  cy.elements().addClass("unfiltered");
+	const [nodes, edges] = await Promise.all([createNodes(from, instances), createEdges(from, fromNamed, instances, virtual)]);
+	cy.elements().remove();
+	cy.add(nodes);
+	cy.add(edges); // will throw an error if any edge refers to a node not contained in the nodes loaded before
+	cy.elements().addClass("unfiltered");
 }
 </code></pre>
         </article>
@@ -332,7 +317,7 @@ export default async function loadGraphFromSparql(cy,graphs,instances, virtual)
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Fri May 07 2021 15:12:37 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Tue Jun 15 2021 13:10:51 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
