@@ -8,15 +8,14 @@ import * as rdf from "../rdf.js";
  * @return {void}
  */
 export function logWrap(cmd, messageFunction) {
-	if (cmd.select.wrapped) {
-		return;
-	}
-	const tmp = cmd.select;
-	cmd.select = (ele) => {
+	if (!cmd.onClickFunction || cmd.onClickFunction.wrapped) return;
+
+	const tmp = cmd.onClickFunction;
+	cmd.onClickFunction = (ele) => {
 		log.debug("Context Menu: Operation " + cmd.content + " on " + messageFunction(ele));
 		tmp(ele);
 	};
-	cmd.select.wrapped = true;
+	cmd.onClickFunction.wrapped = true;
 }
 
 export const ontoWikiUrl = (uri) => "https://www.snik.eu/ontowiki/view/?r=" + uri + "&m=" + rdf.sub(uri);
