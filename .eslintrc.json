@@ -43,7 +43,7 @@
 		"no-undef": ["error"],
 		"no-var": ["error"],
 		"no-control-regex": ["off"],
-		"curly": ["error"],
+		"curly": ["warn"],
 		"camelcase": ["warn"],
 		"no-unused-vars": ["warn"],
 		"prefer-const": ["warn"],
