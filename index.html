@@ -1,99 +1,104 @@
 <!DOCTYPE html>
 <html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui" />
+		<title>SNIK Ontology Graph</title>
+		<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+		<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen" />
+		<link rel="stylesheet" href="node_modules/spin.js/spin.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/notyf/notyf.min.css" />
+		<script src="node_modules/cytoscape/dist/cytoscape.min.js"></script>
+		<script src="node_modules/cytoscape-cxtmenu/cytoscape-cxtmenu.js"></script>
+		<script src="node_modules/cytoscape-euler/cytoscape-euler.js"></script>
+		<script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+		<script src="node_modules/loglevel/dist/loglevel.min.js"></script>
+		<script src="node_modules/fuse.js/dist/fuse.js"></script>
+		<script src="node_modules/hotkeys-js/dist/hotkeys.js"></script>
+		<script src="node_modules/micromodal/dist/micromodal.js"></script>
+		<!-- windows on top of the main window -->
+		<script src="node_modules/stats.js/build/stats.min.js"></script>
+		<script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+		<!-- dependency of tippy -->
+		<script src="node_modules/tippy.js/dist/tippy-bundle.umd.min.js"></script>
+		<!-- mouseover tooltips-->
+		<script src="node_modules/cytoscape-svg/cytoscape-svg.js"></script>
+		<script src="node_modules/golden-layout/dist/goldenlayout.js"></script>
+		<link rel="stylesheet" type="text/css" href="node_modules/golden-layout/src/css/goldenlayout-base.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/golden-layout/src/css/goldenlayout-dark-theme.css" />
+		<link rel="stylesheet" type="text/css" href="css/goldenlayout.css" />
+		<script src="node_modules/notyf/notyf.min.js"></script>
+		<script type="module" src="./js/browser/main.js"></script>
+		<script src="./js/browser/browsercheck.js"></script>
+	</head>
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
-	<title>SNIK Ontology Graph</title>
-	<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
-	<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
-	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen">
-	<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen">
-	<link rel="stylesheet" href="node_modules/spin.js/spin.css">
-	<link rel="stylesheet" type="text/css" href="node_modules/notyf/notyf.min.css">
-	<script src="node_modules/cytoscape/dist/cytoscape.min.js"></script>
-	<script src="node_modules/cytoscape-cxtmenu/cytoscape-cxtmenu.js"></script>
-	<script src="node_modules/cytoscape-euler/cytoscape-euler.js"></script>
-	<script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
-	<script src="node_modules/loglevel/dist/loglevel.min.js"></script>
-	<script src="node_modules/fuse.js/dist/fuse.js"></script>
-	<script src="node_modules/hotkeys-js/dist/hotkeys.js"></script>
-	<script src="node_modules/micromodal/dist/micromodal.js"></script> <!-- windows on top of the main window -->
-	<script src="node_modules/stats.js/build/stats.min.js"></script>
-	<script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script> <!-- dependency of tippy -->
-	<script src="node_modules/tippy.js/dist/tippy-bundle.umd.min.js"></script> <!-- mouseover tooltips-->
-	<script src="node_modules/cytoscape-svg/cytoscape-svg.js"></script>
-	<script src="node_modules/golden-layout/dist/goldenlayout.js"></script>
-	<link rel="stylesheet" type="text/css" href="node_modules/golden-layout/src/css/goldenlayout-base.css">
-	<link rel="stylesheet" type="text/css" href="node_modules/golden-layout/src/css/goldenlayout-dark-theme.css">
-	<link rel="stylesheet" type="text/css" href="css/goldenlayout.css">
-	<script src="node_modules/notyf/notyf.min.js"></script>
-	<script type="module" src="./js/browser/main.js"></script>
-	<script src="./js/browser/browsercheck.js"></script>
-</head>
+	<body style="margin: 0; height: 100vh; overflow: hidden">
+		<noscript
+			><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h1></noscript
+		>
+		<script>
+			browserCheckNonTranspiled();
+		</script>
+		<div id="top">
+			<form id="search" method="post">
+				<input type="text" name="query" id="search-field" list="matches" placeholder="🔍 Class Name" />
+			</form>
+		</div>
 
-<body style="margin: 0; height: 100vh; overflow: hidden">
-	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h1></noscript>
-	<script>browserCheckNonTranspiled();</script>
-	<div id="top">
-		<form id="search" method="post">
-			<input type="text" name="query" id="search-field" list="matches" placeholder="🔍 Class Name"/>
-		</form>
-	</div>
+		<div id="overlay-legend" class="overlay-legend">
+			<img src="img/legend.png" />
+		</div>
 
-	<div id="overlay-legend" class="overlay-legend">
-		<img src="img/legend.png"/>
-	</div>
+		<div id="search-results" class="fullscreen modal" aria-hidden="true">
+			<header>
+				<h2 id="h2:search-results">Search Results</h2>
+				<a href="javascript:void(0)" class="closebtn" data-micromodal-close>&times;</a>
+			</header>
+			<table id="tab:search-results"></table>
+		</div>
 
-	<div id="search-results" class="fullscreen modal" aria-hidden="true">
-		<header>
-			<h2 id="h2:search-results">Search Results</h2>
-			<a href="javascript:void(0)" class="closebtn" data-micromodal-close>&times;</a>
-		</header>
-		<table id="tab:search-results"></table>
-	</div>
+		<div id="chapter-search" class="fullscreen modal" aria-hidden="true">
+			<header>
+				<h2>Chapter Search</h2>
+				<a href="javascript:void(0)" class="closebtn" data-micromodal-close>&times;</a>
+			</header>
+			<table id="tab:chapter-search-chapters" style="float: left; margin-right: 5em"></table>
+			<table id="tab:chapter-search-classes" style="float: left"></table>
+		</div>
 
-	<div id="chapter-search" class="fullscreen modal" aria-hidden="true">
-		<header>
-			<h2>Chapter Search</h2>
-			<a href="javascript:void(0)" class="closebtn" data-micromodal-close>&times;</a>
-		</header>
-		<table id="tab:chapter-search-chapters" style="float: left;margin-right:5em;"></table>
-		<table id="tab:chapter-search-classes" style="float: left"></table>
-	</div>
+		<div id="subontology-connectivity" class="fullscreen modal" aria-hidden="true">
+			<header>
+				<h2>Choose two Subontologies to Connect</h2>
+				<a href="javascript:void(0)" class="closebtn" data-micromodal-close>&times;</a>
+			</header>
+			<form id="subontology-connectivity-form">
+				<select id="subontology-connectivity-select1" name="subontology-connectivity-select1">
+					<option value="ob">Orange Book</option>
+					<option value="bb">Blue Book</option>
+					<option value="he">Heinrich et al.</option>
+					<option value="ciox">CIO X</option>
+				</select>
+				<select id="subontology-connectivity-select2" name="subontology-connectivity-select2">
+					<option value="bb">Blue Book</option>
+					<option value="ob">Orange Book</option>
+					<option value="he">Heinrich et al.</option>
+					<option value="ciox">CIO X</option>
+				</select>
+				<input type="submit" value="Show Connectivity" />
+			</form>
+		</div>
 
-	<div id="subontology-connectivity" class="fullscreen modal" aria-hidden="true">
-		<header>
-			<h2>Choose two Subontologies to Connect</h2>
-			<a href="javascript:void(0)" class="closebtn" data-micromodal-close>&times;</a>
-		</header>
-		<form id="subontology-connectivity-form">
-			<select id="subontology-connectivity-select1" name="subontology-connectivity-select1">
-				<option value="ob">Orange Book</option>
-				<option value="bb">Blue Book</option>
-				<option value="he">Heinrich et al.</option>
-				<option value="ciox">CIO X</option>
-			</select>
-			<select id="subontology-connectivity-select2" name="subontology-connectivity-select2">
-				<option value="bb">Blue Book</option>
-				<option value="ob">Orange Book</option>
-				<option value="he">Heinrich et al.</option>
-				<option value="ciox">CIO X</option>
-			</select>
-			<input type="submit" value="Show Connectivity"/>
-		</form>
-	</div>
+		<div id="loadarea"></div>
 
-	<div id="loadarea"></div>
-
-	<template id="goldenlayout-header" type="text/html">
-		<li class="recalculatesign" id="recalculatesign"></li>
-		<li class="tightlayoutsign" id="tightlayoutsign"></li>
-		<li class="compoundlayoutsign" id="compoundlayoutsign"></li>
-		<li class="addsign" id="addsign"></li>
-	  <li class="plussign" id="plussign"></li>
-	  <li class="minussign" id="minussign"></li>
-	</template>
-
-</body>
+		<template id="goldenlayout-header" type="text/html">
+			<li class="recalculatesign" id="recalculatesign"></li>
+			<li class="tightlayoutsign" id="tightlayoutsign"></li>
+			<li class="compoundlayoutsign" id="compoundlayoutsign"></li>
+			<li class="addsign" id="addsign"></li>
+			<li class="plussign" id="plussign"></li>
+			<li class="minussign" id="minussign"></li>
+		</template>
+	</body>
 </html>
