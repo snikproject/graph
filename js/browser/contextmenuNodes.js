@@ -64,114 +64,116 @@ export default (graph) => [
 			},
 		],
 	},
+	/* Comment out base entry to put base items directly as root items
 	{
 		content: "base",
 		id: "base",
 		selector: "node",
 		submenu: [
-			{
-				//content: '<img src onerror="tippy(\'span\')"><span data-tippy-content="Tooltip">edit/report</span>',
-				content: "edit/report",
-				id: "edit",
-				selector: "node",
-				onClickFunction: (event) => {
-					const node = event.target;
-					const body = `Problem with the class [${rdf.short(node.data(NODE.ID))}](${node.data(NODE.ID)}) ([OntoWiki URL](${ontoWikiUrl(
-						node.data(NODE.ID)
-					)})):\n\n`;
-					util.createGitHubIssue(util.REPO_ONTOLOGY, node.data(NODE.ID), body);
-				},
-			},
-			{
-				content: "class use",
-				id: "class-use",
-				selector: "node",
-				onClickFunction: (event) => {
-					const node = event.target;
-					classUse(node.data(NODE.ID), node.data(NODE.SUBTOP));
-				},
-			},
-			{
-				content: "hide",
-				id: "hide",
-				selector: "node",
-				onClickFunction: eventify(graph.multiplex((node) => Graph.setVisible(node, false))),
-				//onClickFunction: eventMultiplex(graph, event, (node) => Graph.setVisible(node, false)),
-			},
-			{
-				content: "set as path source",
-				id: "set-path-source",
-				selector: "node",
-				onClickFunction: (event) => {
-					graph.setSource(event.target);
-				},
-			},
-			{
-				content: "description",
-				id: "description",
-				selector: "node",
-				onClickFunction: (event) => {
-					window.open(event.target.data(NODE.ID));
-				},
-			},
-			{
-				content: "star",
-				id: "star",
-				selector: "node",
-				//select: ()=>graph.newGraph("Star").showStarMultiplexed(false)(),
-				onClickFunction: async (event) => {
-					(await graph.showStarMultiplexedNew(false))(event.target);
-				},
-			},
-			{
-				content: "incoming star",
-				id: "incoming-star",
-				selector: "node",
-				//select: graph.showStarMultiplexed(false,Direction.IN),
-				onClickFunction: async (event) => {
-					(await graph.showStarMultiplexedNew(false, Direction.IN))(event.target);
-				},
-			},
-			{
-				content: "outgoing star",
-				id: "outgoing-star",
-				selector: "node",
-				//select: graph.showStarMultiplexed(false,Direction.OUT),
-				onClickFunction: async (event) => {
-					(await graph.showStarMultiplexedNew(false, Direction.OUT))(event.target);
-				},
-			},
-			{
-				content: "path",
-				id: "path",
-				selector: "node",
-				// onClickFunction: eventify(graph.multiplex(graph.showPath)), // does not work for unknown reasons
-				onClickFunction: (event) => graph.multiplex(graph.showPath(event.target))(graph.getSource()),
-			},
-			{
-				content: "spiderworm",
-				id: "spiderworm",
-				selector: "node",
-				onClickFunction: eventify(graph.multiplex(graph.showWorm)),
-			},
-			// {
-			//   content: 'find neighbours',
-			//   id: 'find-neighbours',
-			//   select: node=>
-			//   {
-			//     log.warn("'find neighbours' not implemented yet!", node);
-			//   },
-			// },
-			// {
-			//   content: 'combine close matches',
-			//   id: 'combine-close-matches',
-			//   select: node=>
-			//   {
-			//     log.warn("'combine close matches' not implemented yet!", node);
-			//   },
-			// },
-		],
+		*/
+	{
+		//content: '<img src onerror="tippy(\'span\')"><span data-tippy-content="Tooltip">edit/report</span>',
+		content: "edit/report",
+		id: "edit",
+		selector: "node",
+		onClickFunction: (event) => {
+			const node = event.target;
+			const body = `Problem with the class [${rdf.short(node.data(NODE.ID))}](${node.data(NODE.ID)}) ([OntoWiki URL](${ontoWikiUrl(node.data(NODE.ID))})):\n\n`;
+			util.createGitHubIssue(util.REPO_ONTOLOGY, node.data(NODE.ID), body);
+		},
 	},
+
+	{
+		content: "class use",
+		id: "class-use",
+		selector: "node",
+		onClickFunction: (event) => {
+			const node = event.target;
+			classUse(node.data(NODE.ID), node.data(NODE.SUBTOP));
+		},
+	},
+	{
+		content: "hide",
+		id: "hide",
+		selector: "node",
+		onClickFunction: eventify(graph.multiplex((node) => Graph.setVisible(node, false))),
+		//onClickFunction: eventMultiplex(graph, event, (node) => Graph.setVisible(node, false)),
+	},
+	{
+		content: "set as path source",
+		id: "set-path-source",
+		selector: "node",
+		onClickFunction: (event) => {
+			graph.setSource(event.target);
+		},
+	},
+	{
+		content: "description",
+		id: "description",
+		selector: "node",
+		onClickFunction: (event) => {
+			window.open(event.target.data(NODE.ID));
+		},
+	},
+	{
+		content: "star",
+		id: "star",
+		selector: "node",
+		//select: ()=>graph.newGraph("Star").showStarMultiplexed(false)(),
+		onClickFunction: async (event) => {
+			(await graph.showStarMultiplexedNew(false))(event.target);
+		},
+	},
+	{
+		content: "incoming star",
+		id: "incoming-star",
+		selector: "node",
+		//select: graph.showStarMultiplexed(false,Direction.IN),
+		onClickFunction: async (event) => {
+			(await graph.showStarMultiplexedNew(false, Direction.IN))(event.target);
+		},
+	},
+	{
+		content: "outgoing star",
+		id: "outgoing-star",
+		selector: "node",
+		//select: graph.showStarMultiplexed(false,Direction.OUT),
+		onClickFunction: async (event) => {
+			(await graph.showStarMultiplexedNew(false, Direction.OUT))(event.target);
+		},
+	},
+	{
+		content: "path",
+		id: "path",
+		selector: "node",
+		// onClickFunction: eventify(graph.multiplex(graph.showPath)), // does not work for unknown reasons
+		onClickFunction: (event) => graph.multiplex(graph.showPath(event.target))(graph.getSource()),
+	},
+	{
+		content: "spiderworm",
+		id: "spiderworm",
+		selector: "node",
+		onClickFunction: eventify(graph.multiplex(graph.showWorm)),
+	},
+	// {
+	//   content: 'find neighbours',
+	//   id: 'find-neighbours',
+	//   select: node=>
+	//   {
+	//     log.warn("'find neighbours' not implemented yet!", node);
+	//   },
+	// },
+	// {
+	//   content: 'combine close matches',
+	//   id: 'combine-close-matches',
+	//   select: node=>
+	//   {
+	//     log.warn("'combine close matches' not implemented yet!", node);
+	//   },
+	// },
+	/*
+		],
+	},*/
 	{
 		content: "developer",
 		id: "dev",

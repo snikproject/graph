@@ -50,6 +50,35 @@ export default (graph) => {
 				}
 			},
 		},
+		/** Context menu for edges that are unconfirmed interlinks, that is skos:closeMatch and friends in the limes-exact graph.
+					selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`, */
+		{
+			content: "confirm link",
+			id: "edge-confirm-link",
+			selector: "edge",
+			onClickFunction: (event) => {
+				const edge = event.target;
+				edge.data(EDGE.GRAPH, "http://www.snik.eu/ontology/match");
+				const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
+					\`\`\`\n
+					sparql
+					DELETE DATA FROM <http://www.snik.eu/ontology/limes-exact>
+					{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+					INSERT DATA INTO <http://www.snik.eu/ontology/match>
+					{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+					\n\`\`\`
+					Undo with
+					\`\`\`\n
+					sparql
+					DELETE DATA FROM <http://www.snik.eu/ontology/match>
+					{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+					INSERT DATA INTO <http://www.snik.eu/ontology/limes-exact>
+					{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+					\n\`\`\`
+					${language.CONSTANTS.SPARUL_WARNING}`;
+				util.createGitHubIssue(util.REPO_ONTOLOGY, edgeLabel(edge), body);
+			},
+		},
 		/** Context menu for edges in development mode that are either confirmed interlinks (skos:closeMatch and friends in the match graph) or meta relations, such as meta:updates.
 			Offers base and development commands. */
 		{
@@ -95,35 +124,6 @@ export default (graph) => {
 					},
 				},
 			],
-		},
-		/** Context menu for edges that are unconfirmed interlinks, that is skos:closeMatch and friends in the limes-exact graph.
-					selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`, */
-		{
-			content: "confirm link",
-			id: "edge-confirm-link",
-			selector: "edge",
-			onClickFunction: (event) => {
-				const edge = event.target;
-				edge.data(EDGE.GRAPH, "http://www.snik.eu/ontology/match");
-				const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
-					\`\`\`\n
-					sparql
-					DELETE DATA FROM <http://www.snik.eu/ontology/limes-exact>
-					{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-					INSERT DATA INTO <http://www.snik.eu/ontology/match>
-					{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-					\n\`\`\`
-					Undo with
-					\`\`\`\n
-					sparql
-					DELETE DATA FROM <http://www.snik.eu/ontology/match>
-					{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-					INSERT DATA INTO <http://www.snik.eu/ontology/limes-exact>
-					{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-					\n\`\`\`
-					${language.CONSTANTS.SPARUL_WARNING}`;
-				util.createGitHubIssue(util.REPO_ONTOLOGY, edgeLabel(edge), body);
-			},
 		},
 	];
 
