@@ -197,6 +197,7 @@ export class Graph {
 	showStar(center, changeLayout, direction) {
 		console.log("center", center);
 		this.cy.startBatch();
+
 		// open 2 levels deep on closeMatch
 		let inner = center; // if you don't want to include close match, keep inner at that
 		let closeMatchEdges;
@@ -229,7 +230,7 @@ export class Graph {
 		const outerNodes = nodes.difference(inner);
 		// connect new nodes with all existing unfiltered visible ones
 		//show(outerNodes.edgesWith(cy.nodes(".unfiltered").not(".hidden")));
-
+		//
 		if (changeLayout || !this.starMode) {
 			this.starMode = true;
 			Graph.setVisible(this.cy.elements().not(star), false);
@@ -281,8 +282,12 @@ export class Graph {
 				})
 				.run();
 		}
-
 		this.cy.endBatch();
+
+		const visible = this.cy.nodes(":visible");
+		if (visible.size() < 100) {
+			this.cy.fit(visible, 100);
+		}
 	}
 
 	/** Show a "spider worm" between two nodes, which combines a star around "from" with a shortest path to "to".
