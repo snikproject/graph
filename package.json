@@ -1,83 +1,95 @@
 {
-  "name": "snikgraph",
-  "version": "2.0.0",
-  "description": "SNIK Graph",
-  "main": "js/main.js",
-  "type": "module",
-  "homepage": "https://github.com/IMISE/snik-cytoscape.js#readme",
-  "dependencies": {
-    "cytoscape": "^3.18.0",
-    "cytoscape-context-menus": "^4.1.0",
-    "cytoscape-euler": "^1.2.2",
-    "cytoscape-svg": "^0.3.1",
-    "fuse.js": "^6.4.6",
-    "golden-layout": "^1.5.9",
-    "hotkeys-js": "^3.8.2",
-    "jquery": "^3.5.1",
-    "loglevel": "^1.7.1",
-    "micromodal": "^0.4.6",
-    "notyf": "^3.9.0",
-    "spin.js": "^4.1.0",
-    "stats.js": "^0.17.0",
-    "tippy.js": "^6.2.7"
-  },
-  "devDependencies": {
-    "@types/cytoscape": "^3.14.12",
-    "@types/loglevel": "^1.6.3",
-    "@types/micromodal": "^0.3.2",
-    "chai": "^4.3.0",
-    "circular-dependency-plugin": "^5.2.2",
-    "cypress": "^5.3.0",
-    "docdash": "^1.2.0",
-    "es6-promise": "^4.2.8",
-    "eslint": "^7.20.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-mocha": "^8.0.0",
-    "esm": "^3.2.25",
-    "isomorphic-fetch": "^3.0.0",
-    "jsdoc": "^3.6.6",
-    "jsdom": "^16.4.0",
-    "jsdom-global": "^3.0.2",
-    "mocha": "^8.3.0",
-    "node-localstorage": "^2.1.6",
-    "prettier": "^2.3.1",
-    "typescript": "^4.1.5"
-  },
-  "mocha": {
-    "timeout": 15000
-  },
-  "keywords": [
-    "graph",
-    "visualisation",
-    "visualization",
-    "ontology",
-    "snik",
-    "hospital information management",
-    "cytoscape"
-  ],
-  "bugs": {
-    "url": "https://github.com/IMISE/snik-cytoscape.js/issues"
-  },
-  "scripts": {
-    "test": "mocha",
-    "lint": "eslint js",
-    "typecheck": "tsc --noEmit",
-    "jsdoc": "node_modules/.bin/jsdoc js -c jsdoc.json -r",
-    "cypress": "cypress open"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/IMISE/snik-cytoscape.js.git"
-  },
-  "author": {
-    "name": "Konrad Höffner",
-    "url": "https://github.com/konradhoeffner/"
-  },
-  "contributors": [
-    {
-      "name": "Thomas Pause",
-      "url": "https://github.com/ThomasPause"
-    }
-  ],
-  "license": "CC-BY-SA-4.0"
+	"name": "snikgraph",
+	"version": "2.0.0",
+	"description": "SNIK Graph",
+	"main": "js/main.js",
+	"type": "module",
+	"homepage": "https://github.com/IMISE/snik-cytoscape.js#readme",
+	"dependencies": {
+		"cytoscape": "^3.18.0",
+		"cytoscape-context-menus": "^4.1.0",
+		"cytoscape-euler": "^1.2.2",
+		"cytoscape-svg": "^0.3.1",
+		"fuse.js": "^6.4.6",
+		"golden-layout": "^1.5.9",
+		"hotkeys-js": "^3.8.2",
+		"jquery": "^3.5.1",
+		"loglevel": "^1.7.1",
+		"micromodal": "^0.4.6",
+		"notyf": "^3.9.0",
+		"spin.js": "^4.1.0",
+		"stats.js": "^0.17.0",
+		"tippy.js": "^6.2.7"
+	},
+	"devDependencies": {
+		"@types/cytoscape": "^3.14.12",
+		"@types/loglevel": "^1.6.3",
+		"@types/micromodal": "^0.3.2",
+		"chai": "^4.3.0",
+		"circular-dependency-plugin": "^5.2.2",
+		"cypress": "^5.3.0",
+		"docdash": "^1.2.0",
+		"es6-promise": "^4.2.8",
+		"eslint": "^7.20.0",
+		"eslint-plugin-import": "^2.22.1",
+		"eslint-plugin-mocha": "^8.0.0",
+		"esm": "^3.2.25",
+		"husky": "^6.0.0",
+		"isomorphic-fetch": "^3.0.0",
+		"jsdoc": "^3.6.6",
+		"jsdom": "^16.4.0",
+		"jsdom-global": "^3.0.2",
+		"lint-staged": "^11.0.0",
+		"mocha": "^8.3.0",
+		"node-localstorage": "^2.1.6",
+		"prettier": "^2.3.1",
+		"typescript": "^4.1.5"
+	},
+	"mocha": {
+		"timeout": 15000
+	},
+	"keywords": [
+		"graph",
+		"visualisation",
+		"visualization",
+		"ontology",
+		"snik",
+		"hospital information management",
+		"cytoscape"
+	],
+	"bugs": {
+		"url": "https://github.com/IMISE/snik-cytoscape.js/issues"
+	},
+	"scripts": {
+		"test": "mocha",
+		"lint": "eslint js",
+		"typecheck": "tsc --noEmit",
+		"jsdoc": "node_modules/.bin/jsdoc js -c jsdoc.json -r",
+		"cypress": "cypress open",
+		"prepare": "husky install"
+	},
+	"lint-staged": {
+		"*.{js,mjs}": [
+			"prettier --write",
+			"eslint --fix"
+		],
+		"*.{html,css,json}": [
+			"prettier --write"
+		]
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/IMISE/snik-cytoscape.js.git"
+	},
+	"author": {
+		"name": "Konrad Höffner",
+		"url": "https://github.com/konradhoeffner/"
+	},
+	"contributors": [
+		{
+			"name": "Thomas Pause",
+			"url": "https://github.com/ThomasPause"
+		}
+	],
+	"license": "CC-BY-SA-4.0"
 }
