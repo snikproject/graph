@@ -12,11 +12,11 @@ Call example: myTimer = timer("egg cooking"); cookEgg(); timer.stop("successfull
 export default function timer(name) {
 	const start = new Date();
 	return {
-		stop: function (message) {
+		stop: function (message?: String) {
 			const end = new Date();
 			const time = end.getTime() - start.getTime();
-			const f = time > config.minInfoTime ? log.debug : time > config.minDebugTime ? log.debug : log.debug;
-			f(name, "finished in", time, "ms" + (message ? ` (${message})` : ""));
+			//const f = time > config.minInfoTime ? log.debug : time > config.minDebugTime ? log.debug : log.debug;
+			log.debug(name, "finished in", time, "ms" + (message ? ` (${message})` : ""));
 		},
 	};
 }
