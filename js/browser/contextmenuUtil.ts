@@ -1,5 +1,6 @@
-import config from "../config.js";
-import * as rdf from "../rdf.js";
+import config from "../config";
+import * as rdf from "../rdf";
+import log from "loglevel";
 
 /**
  * Add a logging wrapper to a context menu command.

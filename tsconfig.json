@@ -4,9 +4,10 @@
 		"checkJs": true,
 		"outDir": "target",
 		"lib": ["es2020", "dom", "dom.iterable", "esnext"],
-		"target": "es6",
+		"target": "esnext",
 		"allowSyntheticDefaultImports": true,
 		"typeRoots": ["./node_modules/@types"],
+		"types": ["vite/client"],
 		"module": "esnext",
 		"moduleResolution": "node",
 		"esModuleInterop": true,
@@ -15,6 +16,6 @@
 		"noEmit": false,
 		"strict": false
 	},
-	"include": ["js/**/*", "globals.d.ts", "test.ts"],
+	"include": ["js/**/*", "globals.d.ts"],
 	"exclude": ["node_modules"]
 }

@@ -1,7 +1,8 @@
 /** @module*/
-import config from "../config.js";
-//import { Notyf } from "../../node_modules/notyf/notyf.min.js";
-//import log from "../../node_modules/loglevel/dist/loglevel.js";
+import config from "../config";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
+import log from "loglevel";
 
 /** Record log statements and show some to the user via overlays.
  *  @return {void} */
@@ -59,9 +60,9 @@ export default function initLog() {
 		) => {
 			tmp(message); // execute the saved original function, which writes to console
 			if (value[level] <= value[config.logLevelMemory]) {
-				if (!log.logs) {
-					log.logs = [];
-				}
+				// @ts-expect-error
+				if (!log.logs) log.logs = [];
+				// @ts-expect-error
 				log.logs.push(message);
 			}
 			if (value[level] <= value[config.logLevelDisplay]) {

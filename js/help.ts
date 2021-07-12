@@ -1,4 +1,5 @@
-//import log from "../node_modules/loglevel/dist/loglevel.js";
+import tippy from "tippy.js";
+import log from "loglevel";
 
 export const help = {
 	"SNIK Graph Manual": {

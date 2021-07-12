@@ -1,11 +1,12 @@
 /**
 Lets the user save files generated from the loaded graph.
 @module */
-import * as layout from "../layout.js";
-import config from "../config.js";
-import { toJSON } from "./state.js";
-import { mainView, partViews } from "./view.js";
-import { VERSION } from "./util.js";
+import * as layout from "../layout";
+import config from "../config";
+import { toJSON } from "./state";
+import { mainView, partViews } from "./view";
+import { VERSION } from "./util";
+import log from "loglevel";
 
 let a = null; // reused for all saving, not visible to the user
 
