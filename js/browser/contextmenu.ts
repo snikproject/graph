@@ -9,6 +9,7 @@ import cytoscape, { Collection, EdgeSingular, NodeSingular, SingularElementRetur
 import contextMenus from "cytoscape-context-menus";
 cytoscape.use(contextMenus);
 import "cytoscape-context-menus/cytoscape-context-menus.css";
+import "cytoscape-context-menus/assets/submenu-indicator-default.svg";
 import log from "loglevel";
 import { sub } from "../rdf";
 
