@@ -2,7 +2,7 @@
 Measures elapsed duration.
 @module */
 
-import config from "./config";
+//import config from "./config";
 import log from "loglevel";
 
 /** Generates a timer object that logs the elapsed time after its stop function is called.
@@ -17,7 +17,7 @@ export default function timer(name: string) {
 			const end = new Date();
 			const time = end.getTime() - start.getTime();
 			//const f = time > config.minInfoTime ? log.debug : time > config.minDebugTime ? log.debug : log.debug;
-			log.debug(name, "finished in", time, "ms" + (message ? ` (${message})` : ""));
+			log.debug(name + " finished in " + time + " ms" + (message ? ` (${message})` : ""));
 		},
 	};
 }
