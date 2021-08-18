@@ -56,14 +56,15 @@ async function applyParams(graph, params) {
 
 		if (params.empty) {
 			log.info(`Parameter "empty" detected. Skip loading and display file load prompt.`);
-			const loadArea = document.getElementById("loadarea");
+			const loadArea = document.getElementById("loadarea")!;
 			const center = document.createElement("center");
 			loadArea.appendChild(center);
 			center.innerHTML += `<button id="load-button" style="font-size:10vh;margin-top:20vh">Datei Laden
       <input id="load-input" type="file" style="display:none"></input>
       </button>`;
-			const loadInput = document.getElementById("load-input");
-			document.getElementById("load-button").onclick = () => {
+			const loadInput = document.getElementById("load-input")!;
+			const button = document.getElementById("load-button")!;
+			button.onclick = () => {
 				loadInput.click();
 			};
 			loadInput.addEventListener("change", (event) => {
@@ -82,9 +83,9 @@ async function applyParams(graph, params) {
 		}
 		log.debug("Loading from SPARQL Endpoint " + params.endpoint);
 		config.sparql.endpoint = params.endpoint; // loadGraphFromSparql loads from config.sparql.endpoint
-		const graphs = [];
+		const graphs: string[] = [];
 		if (params.endpoint === sparql.SNIK_ENDPOINT) {
-			let subs = [];
+			let subs: string[] = [];
 			if (params.sub) {
 				subs = params.sub.split(",");
 			}
@@ -134,7 +135,7 @@ export async function fillInitialGraph(graph) {
 	help.init();
 }
 
-const clipboard = [];
+const clipboard: string[] = [];
 
 /** Relegate keypresses to the active view.
 @return {void}

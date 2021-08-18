@@ -5,6 +5,7 @@ import * as sparql from "./sparql";
 import config from "./config";
 import Fuse from "fuse.js";
 import log from "loglevel";
+import timer from "./timer";
 
 let index: Fuse = null;
 
@@ -34,14 +35,16 @@ interface Item {
 /** Create fulltext index from SPARQL endpoint.
 @return {Promise<Array<object>>} the index items for testing*/
 export async function createIndex() {
+	console.groupCollapsed("Create Fuse.js index");
+	const indexTimer = timer("Create Fuse search index");
+
 	log.debug("Create Fuse Search Index with searchCloseMatch = " + config.searchCloseMatch);
 	const graphs = [...config.allSubOntologies, ...config.helperGraphs];
-	const froms = graphs.map((sub) => `from <http://www.snik.eu/ontology/${sub}>`).reduce((a, b) => a + "\n" + b);
 	const sparqlQuery = `select
   ?c as ?uri
   group_concat(distinct(str(?l));separator="|") as ?l
   group_concat(distinct(str(?def));separator="|") as ?def
-  ${froms}
+  from <${config.sparql.graph}>
   {
     {
      {?c a owl:Class.} UNION {?c a [a owl:Class]}
@@ -67,6 +70,8 @@ export async function createIndex() {
 		}
 	}
 	index = new Fuse(items, options);
+	indexTimer.stop(items.length + " items");
+	console.groupEnd();
 	return items; // for testing
 }
 

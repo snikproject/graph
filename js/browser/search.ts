@@ -29,7 +29,7 @@ export default class Search {
 	 * @param  {Array<String>} uris An array of OWL class URIs
 	 * @return {Boolean} Whether the search results are nonempty.
 	 */
-	showSearchResults(query, uris) {
+	showSearchResults(query: string, uris: string[]): boolean {
 		this.resultNodes = [];
 		/** @type{HTMLTableElement} */
 		const table = util.getElementById("tab:search-results") as HTMLTableElement;
