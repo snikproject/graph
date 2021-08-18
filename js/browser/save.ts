@@ -7,6 +7,9 @@ import { toJSON } from "./state";
 import { mainView, partViews } from "./view";
 import { VERSION } from "./util";
 import log from "loglevel";
+import cytoscape from "cytoscape";
+import svg from "cytoscape-svg";
+cytoscape.use(svg);
 
 const a = document.createElement("a"); // reused for all saving, not visible to the user
 document.body.appendChild(a);
