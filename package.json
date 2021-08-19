@@ -6,11 +6,11 @@
 	"type": "module",
 	"homepage": "https://github.com/IMISE/snik-cytoscape.js#readme",
 	"dependencies": {
-		"cytoscape": "^3.19.0",
+		"cytoscape": "^3.19.1",
 		"cytoscape-context-menus": "^4.1.0",
 		"cytoscape-euler": "^1.2.2",
 		"cytoscape-svg": "^0.3.1",
-		"esbuild": "^0.12.19",
+		"esbuild": "^0.12.21",
 		"fuse.js": "^6.4.6",
 		"golden-layout": "^1.5.9",
 		"hotkeys-js": "^3.8.7",
@@ -28,8 +28,8 @@
 		"@types/loglevel": "^1.6.3",
 		"@types/micromodal": "^0.3.3",
 		"@types/stats": "^0.16.30",
-		"@typescript-eslint/eslint-plugin": "^4.29.1",
-		"@typescript-eslint/parser": "^4.29.1",
+		"@typescript-eslint/eslint-plugin": "^4.29.2",
+		"@typescript-eslint/parser": "^4.29.2",
 		"chai": "^4.3.4",
 		"circular-dependency-plugin": "^5.2.2",
 		"docdash": "^1.2.0",
@@ -48,7 +48,7 @@
 		"node-localstorage": "^2.2.1",
 		"prettier": "^2.3.2",
 		"typescript": "^4.3.5",
-		"vite": "^2.4.4"
+		"vite": "^2.5.0"
 	},
 	"mocha": {
 		"timeout": 15000
