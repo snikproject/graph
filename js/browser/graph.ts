@@ -171,7 +171,7 @@ export class Graph {
       @param {Direction} [only] show edges that originate from node, not those that end in it. Optional and defaults to false.
       @return {function} show star function applied to multiple nodes  */
 	showStarMultiplexed(changeLayout: boolean = false, direction: Direction) {
-		return this.multiplex((x) => this.showStar(x, changeLayout, direction), null, true);
+		return this.multiplex((x) => this.showStar(x, changeLayout, direction), undefined, true);
 	}
 	/** Multiplex star operations into a new view.
       @param {boolean} [changeLayout=false] arrange the given node and its close matches in the center and the connected nodes in a circle around them.
@@ -222,9 +222,6 @@ export class Graph {
 		star.merge(star.children());
 		// show edges between outer nodes to visible nodes
 		const outerNodes = nodes.difference(inner);
-		// connect new nodes with all existing unfiltered visible ones
-		//show(outerNodes.edgesWith(cy.nodes(".unfiltered").not(".hidden")));
-		//
 		if (changeLayout || !this.starMode) {
 			this.starMode = true;
 			Graph.setVisible(this.cy.elements().not(star), false);
@@ -274,6 +271,9 @@ export class Graph {
 				.run();
 		}
 		this.cy.endBatch();
+		// connect new nodes with all existing unfiltered visible ones
+		Graph.setVisible(outerNodes.edgesWith(this.cy.nodes(".unfiltered").not(".hidden")));
+
 		const visible = this.cy.nodes(":visible");
 		if (visible.size() < 100) {
 			this.cy.fit(visible, 100);
