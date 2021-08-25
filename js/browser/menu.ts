@@ -105,7 +105,7 @@ export class Menu {
 					[
 						async () => {
 							await loadGraphFromSparql((this as any).graph.cy, []);
-							progress(() => layout.runCached((this as any).graph.cy, layout.euler, config.defaultSubOntologies, this.separateSubs()));
+							progress(async () => await layout.runCached((this as any).graph.cy, layout.euler, config.defaultSubOntologies, this.separateSubs()));
 						},
 						"Load from SPARQL Endpoint",
 						"load-sparql",

@@ -67,7 +67,7 @@ export const CONSTANTS = {
  *  @return {void} */
 export function updateHtml() {
 	const idstrings = getIdStrings();
-	const unused = [];
+	const unused: string[] = [];
 	for (const key of Object.keys(idstrings)) {
 		const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
 		if (elements.length === 0) {
