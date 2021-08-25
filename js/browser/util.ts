@@ -3,7 +3,7 @@ Various utility methods.s
 @module */
 
 // update manually on release
-export const VERSION = "2.0.0";
+export const VERSION = "3.0.0";
 const LOG_LIMIT = 500;
 
 /** getElementById with exception handling.
