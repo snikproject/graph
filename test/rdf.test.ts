@@ -1,4 +1,4 @@
-import * as rdf from "../js/rdf.js";
+import * as rdf from "../js/rdf";
 import assert from "assert"; // 'assert.js' does not work for some reason, probably only works because of the transpilation to require
 
 const shortlongs = [
@@ -16,7 +16,7 @@ const shortlongs = [
 
 describe("rdf", function () {
 	describe("#short()", function () {
-		it("should replace uris with their prefixed form", function () {
+		test("should replace uris with their prefixed form", function () {
 			for (const sl of shortlongs) {
 				assert.equal(sl[0], rdf.short(sl[1]));
 			}
@@ -24,7 +24,7 @@ describe("rdf", function () {
 	});
 
 	describe("#long()", function () {
-		it("should replace prefixed uris with their long form", function () {
+		test("should replace prefixed uris with their long form", function () {
 			for (const sl of shortlongs) {
 				assert.equal(sl[1], rdf.long(sl[0]));
 			}

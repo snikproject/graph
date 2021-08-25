@@ -1,6 +1,6 @@
-import * as layout from "../js/layout.js";
-import loadGraphFromSparql from "../js/loadGraphFromSparql.js";
-import { SNIK_PREFIX } from "../js/sparql.js";
+import * as layout from "../js/layout";
+import loadGraphFromSparql from "../js/loadGraphFromSparql";
+import { SNIK_PREFIX } from "../js/sparql";
 import cytoscape from "cytoscape";
 import euler from "cytoscape-euler";
 import "isomorphic-fetch";
@@ -8,23 +8,21 @@ cytoscape.use(euler);
 //import {LocalStorage} from 'node-localstorage';
 //global.localStorage = new LocalStorage('./scratch');
 import chai from "chai";
-import log from "../../node_modules/loglevel/dist/loglevel.js";
-global.log = log;
 const assert = chai.assert;
 
 describe("cytoscape", function () {
 	let cy;
 	const subs = ["meta", "bb"];
 	const graphs = subs.map((s) => SNIK_PREFIX + s);
-	it("create empty graph", function () {
+	test("create empty graph", function () {
 		cy = cytoscape({});
 		assert(cy);
 		assert(cy._private.layout === null);
 	});
-	it("load graph from sparql", function () {
+	test("load graph from sparql", function () {
 		return loadGraphFromSparql(cy, graphs).then(() => assert.closeTo(cy.nodes().size(), 1134, 100));
 	});
-	it("calculate layout", function () {
+	test("calculate layout", function () {
 		// Causes "TypeError: Cannot read property 'pos' of undefined"
 		// see https://github.com/cytoscape/cytoscape.js-euler/issues/14
 		//layout.run(cy,layout.euler,subs);
@@ -43,6 +41,6 @@ describe("cytoscape", function () {
 			}
 		}
 	});
-	it("load layout from file", function () {});
-	it("load layout from cache", function () {});
+	//test("load layout from file", function () {});
+	//test("load layout from cache", function () {});
 });

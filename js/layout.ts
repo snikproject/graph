@@ -13,7 +13,7 @@ cytoscape.use(cytoscapeeuler);
 
 const ANIMATE_THRESHOLD = 500;
 
-let activeLayout = null;
+let activeLayout: cytoscape.Layouts;
 
 /**
 @param {string} layoutName Cytoscape.js layout name
@@ -105,7 +105,7 @@ export async function run(cy: cytoscape.Core, layoutConfig: LayoutConfig, subs?:
 		log.debug("Separate subontologies unchecked");
 	}
 	if (activeLayout) {
-		activeLayout.stop();
+		activeLayout!.stop();
 	}
 
 	let elements;
@@ -215,7 +215,7 @@ interface LayoutConfig {
 @return {boolean} whether the layout could successfully be applied. Does not indicate success of loading from cache,
 in which case it is calculated anew.
 */
-export function runCached(cy, layoutConfig, subs, separateSubs) {
+export async function runCached(cy, layoutConfig, subs, separateSubs) {
 	if (typeof localStorage === "undefined") {
 		log.error("Web storage not available, could not access browser-based cache.");
 		return run(cy, layoutConfig, subs, separateSubs, false);
@@ -228,7 +228,7 @@ export function runCached(cy, layoutConfig, subs, separateSubs) {
 		try {
 			const pos = JSON.parse(cacheItem);
 			log.debug(`Loaded layout from cache, applying ${pos.length} positions...`);
-			const status = presetLayout(cy, pos);
+			const status = await presetLayout(cy, pos);
 			if (status) {
 				return true;
 			}
