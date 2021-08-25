@@ -90,10 +90,13 @@ Create a local web server and test it on localhost using `npm run dev`.
 - add, commit and push the release commit
 - create the release on GitHub, attach package-lock.json to the assets
 - ssh bruchtal
-- `cd /var/www/html/snik_prod/graph`
-- pgraph analogously with `/var/www/html/snik_prod/pgraph`
+- `cd /var/www/html/snik_prod`
+- go into the graph and pgraph source folders
 - fulfill the code preparations
 - perform the unit tests
+- (first time) link the dist folder of the graph and pgraph source folders to "graph" and "pgraph" folders
+- npm run build
+- replace "/assets" with "assets" in dist/index.html
 
 ## Bruchtal configuration
 
