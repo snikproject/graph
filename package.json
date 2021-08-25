@@ -71,7 +71,7 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "jest",
-		"lint": "eslint js",
+		"lint": "eslint js --ext .ts",
 		"typecheck": "tsc --noEmit",
 		"jsdoc": "node_modules/.bin/jsdoc js -c jsdoc.json -r",
 		"prepare": "husky install"
