@@ -26,9 +26,9 @@ describe("cytoscape", function () {
 		// Causes "TypeError: Cannot read property 'pos' of undefined"
 		// see https://github.com/cytoscape/cytoscape.js-euler/issues/14
 		//layout.run(cy,layout.euler,subs);
-		// use cose for now
+		// cose is more realistic for SNIK Graph but takes over a minute
 		//assert(layout.run(cy,layout.cose,subs));
-		// cose places all nodes on 0|0, use grid for now
+		// use the faster grid layout
 		assert(layout.run(cy, layout.grid, subs));
 
 		const nodes = cy.nodes();
@@ -36,7 +36,7 @@ describe("cytoscape", function () {
 			for (let j = i + 1; j < nodes.size(); j += 10) {
 				assert(
 					JSON.stringify(nodes[i].position()) !== JSON.stringify(nodes[j].position()),
-					() => "2 nodes at the same position " + JSON.stringify(nodes[i].position())
+					"2 nodes at the same position " + JSON.stringify(nodes[i].position())
 				);
 			}
 		}
