@@ -105,6 +105,12 @@ async function applyParams(graph, params) {
 		graph.instancesLoaded = params.instances;
 		if (params.endpoint === sparql.SNIK_ENDPOINT) {
 			await layout.runCached(graph.cy, layout.euler, config.defaultSubOntologies, false); // todo: use the correct subs
+			Graph.setVisible(graph.cy.elements(), false);
+			// restrict visible nodes at start to improve performance
+			const start = graph.cy.nodes("node[id='http://www.snik.eu/ontology/bb/ChiefInformationOfficer']");
+			graph.showStar(start);
+			Graph.setVisible(start, true);
+			graph.starMode = true;
 		} else {
 			await layout.run(graph.cy, layout.euler);
 		}
