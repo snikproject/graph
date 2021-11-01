@@ -174,7 +174,8 @@ async function selectTriples(from, fromNamed, instances, virtual) {
       {?d a owl:Class.} ${instances ? " UNION {?d a [a owl:Class]}" : ""}
     }`;
 	// the optional part should be a union
-	const tripleQuerySnik = `select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
+	const tripleQuerySnik = `PREFIX sniko: <http://www.snik.eu/ontology/>
+    select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
     ${from}
     ${fromNamed}
     {
