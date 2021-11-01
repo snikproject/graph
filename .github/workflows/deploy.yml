@@ -26,6 +26,7 @@ jobs:
           cp js/config.dist.ts js/config.ts
           npm install
           npm run build
+          sed -i "s|/assets|./assets|" dist/index.html
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
