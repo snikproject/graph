@@ -12,6 +12,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        run: cp js/config.dist.ts js/config.ts
 
       - uses: actions/setup-node@v2
 
