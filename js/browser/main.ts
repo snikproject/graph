@@ -108,7 +108,7 @@ async function applyParams(graph, params) {
 			Graph.setVisible(graph.cy.elements(), false);
 			// restrict visible nodes at start to improve performance
 			const start = graph.cy.nodes("node[id='http://www.snik.eu/ontology/bb/ChiefInformationOfficer']");
-			//graph.showStar(start);
+			graph.showStar(start);
 			await layout.run(graph.cy, layout.eulerTight);
 			graph.cy.elements().unselect();
 			graph.cy.center(start);
