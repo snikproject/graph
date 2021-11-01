@@ -78,7 +78,7 @@ async function applyParams(graph, params) {
 			log.info(`Loading from JSON URL ` + params.jsonUrl);
 			const json = await (await fetch(params.jsonUrl)).json();
 			graph.cy.add(json);
-			layout.run(graph.cy, layout.euler);
+			layout.run(graph.cy, layout.eulerTight);
 			return;
 		}
 		log.debug("Loading from SPARQL Endpoint " + params.endpoint);
@@ -108,8 +108,13 @@ async function applyParams(graph, params) {
 			Graph.setVisible(graph.cy.elements(), false);
 			// restrict visible nodes at start to improve performance
 			const start = graph.cy.nodes("node[id='http://www.snik.eu/ontology/bb/ChiefInformationOfficer']");
-			graph.showStar(start);
+			//graph.showStar(start);
+			await layout.run(graph.cy, layout.eulerTight);
+			graph.cy.elements().unselect();
+			graph.cy.center(start);
+			graph.cy.fit(graph.cy.elements(":visible"));
 			Graph.setVisible(start, true);
+
 			graph.starMode = true;
 		} else {
 			await layout.run(graph.cy, layout.euler);
@@ -198,6 +203,11 @@ function initKeyListener() {
 @return {void}
 */
 async function main() {
+	if (window.mainCalled) {
+		log.warn("main() is called multiple times for unknown reasons. Ignoring.");
+		return;
+	}
+	window.mainCalled = true;
 	console.groupCollapsed("Initializing");
 	console.time("Initializing");
 
