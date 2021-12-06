@@ -108,7 +108,7 @@ Results: ${JSON.stringify(o.map(i=>i.id()))}`);const s=o.union(n);m.setVisible(s
         ?i a <${e.target.data(y)}>
         OPTIONAL {?i rdfs:label ?label. FILTER(LANGMATCHES(LANG(?label),"${Ke()}"))}
         }`,a=(await M(s)).map(r=>r.i.value+" "+(r.l?r.l.value:"")).reduce((r,l)=>r+`
-`+l);alert(a)}}]}]}function j(t){return q(t.data(N))+" "+q(t.data(A))+" "+q(t.data(z))}function Xt(t){return[{content:"edit / report",id:"edge-edit",selector:"edge",onClickFunction:n=>{const o=n.target,s=`Problem with the edge [${j(o)}](${o.data(N)}) ([OntoWiki URL](${re(o.data(N))})):
+`+l,"");alert(a)}}]}]}function j(t){return q(t.data(N))+" "+q(t.data(A))+" "+q(t.data(z))}function Xt(t){return[{content:"edit / report",id:"edge-edit",selector:"edge",onClickFunction:n=>{const o=n.target,s=`Problem with the edge [${j(o)}](${o.data(N)}) ([OntoWiki URL](${re(o.data(N))})):
 
 `;_(oe,j(o),s)}},{content:"hide",id:"edge-hide",selector:"edge",onClickFunction:n=>m.setVisible(n.target,!1)},{content:"description (if it exists)",id:"edge-description",selector:"edge",onClickFunction:n=>{const o=n.target;o.data(We)?window.open(o.data(We)):c.warn("There is no description for this edge.")}},{content:"confirm link",id:"edge-confirm-link",selector:"edge",onClickFunction:n=>{const o=n.target;o.data(je,"http://www.snik.eu/ontology/match");const s=`Please confirm the automatic interlink ${j(o)}:
 					\`\`\`
