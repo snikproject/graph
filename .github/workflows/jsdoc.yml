@@ -1,6 +1,7 @@
 name: jsdoc
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -21,7 +22,7 @@ jobs:
           recurse: true
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
+          branch: doc
+          folder: out
