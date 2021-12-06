@@ -597,10 +597,14 @@ export class Graph {
 	 * @param {cytoscape.NodeCollection} nodes the nodes whose close matches are shown
 	 * @return {void} */
 	showCloseMatch(nodes) {
-		MicroModal.show("search-results");
 		const edges = nodes.connectedEdges(".unfiltered").filter('[pl="closeMatch"]'); // ,[pl="narrowMatch"],[pl="narrowMatch"]
 		const matches = edges.connectedNodes(".unfiltered");
-		Graph.setVisible(matches.union(edges), true);
+		log.debug(
+			`Showing close matches of ${nodes.length} nodes ${JSON.stringify(nodes.map((x) => x.id()))}.\nResults: ${JSON.stringify(matches.map((x) => x.id()))}`
+		);
+		const eles = matches.union(edges);
+		Graph.setVisible(eles, true);
+		Graph.starStyle(eles);
 	}
 	/** Shows how any two subontologies are interconnected. The user chooses two subontologies and gets shown all pairs between them.
 	 * @return {void} */
