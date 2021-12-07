@@ -7,7 +7,12 @@ import Fuse from "fuse.js";
 import log from "loglevel";
 import timer from "./timer";
 
-let index: Fuse = null;
+interface Item {
+	uri: string;
+	l: Array<string>;
+	def?: string;
+}
+let index: Fuse<Item> = null;
 
 const options = {
 	shouldSort: true,
@@ -25,12 +30,6 @@ const options = {
 		{ name: "def", weight: 0.3 },
 	],
 };
-
-interface Item {
-	uri: string;
-	l: Array<string>;
-	def?: string;
-}
 
 /** Create fulltext index from SPARQL endpoint.
 @return {Promise<Array<object>>} the index items for testing*/

@@ -203,10 +203,12 @@ function initKeyListener() {
 @return {void}
 */
 async function main() {
+	//@ts-ignore
 	if (window.mainCalled) {
 		log.warn("main() is called multiple times for unknown reasons. Ignoring.");
 		return;
 	}
+	//@ts-ignore
 	window.mainCalled = true;
 	console.groupCollapsed("Initializing");
 	console.time("Initializing");
