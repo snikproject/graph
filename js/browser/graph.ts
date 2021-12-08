@@ -456,7 +456,9 @@ export class Graph {
 				collection = selected;
 			}
 			if (collection) {
-				if (ele) collection = collection.union(ele);
+				if (ele) {
+					collection = collection.union(ele);
+				}
 				log.debug("multiplexing of " + collection.size() + " elements (direct=" + direct + ")");
 				if (direct) {
 					f(collection);

@@ -74,7 +74,7 @@ function center(nodes) {
 @example
 run(cy,{"name":"grid"},new Set(["meta","ciox"]))
 */
-export async function run(cy: cytoscape.Core, layoutConfig: LayoutConfig, subs?: Array<String>, separateSubs?: boolean, save?: boolean) {
+export async function run(cy: cytoscape.Core, layoutConfig: LayoutConfig, subs?: Array<string>, separateSubs?: boolean, save?: boolean) {
 	if (cy.nodes().size() === 0) {
 		log.warn("layout.js#run: Graph empty. Nothing to layout.");
 		return false;

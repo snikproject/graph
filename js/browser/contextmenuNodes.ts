@@ -260,8 +260,10 @@ export default function nodeCommands(graph: Graph): Array<MenuItem> {
         OPTIONAL {?i rdfs:label ?label. FILTER(LANGMATCHES(LANG(?label),"${language.getLanguage()}"))}
         }`;
 						const bindings = await sparql.select(query);
-						var message = bindings.map((b) => b.i.value + " " + (b.l ? b.l.value : "")).reduce((a, b) => a + "\n" + b, "");
-						if (message === "") message = `Class ${uri} does not have any instances.`;
+						let message = bindings.map((b) => b.i.value + " " + (b.l ? b.l.value : "")).reduce((a, b) => a + "\n" + b, "");
+						if (message === "") {
+							message = `Class ${uri} does not have any instances.`;
+						}
 						alert(message);
 					},
 				},

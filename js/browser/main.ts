@@ -161,7 +161,9 @@ function initKeyListener() {
 		}
 
 		const layoutState = activeState();
-		if (!layoutState) return;
+		if (!layoutState) {
+			return;
+		}
 		if (e.code === "Delete" || e.code === "Backspace") {
 			// backspace (for mac) or delete key
 			layoutState.cy.remove(":selected");

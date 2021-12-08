@@ -15,8 +15,8 @@ let firstFinished = null; // following instances need to wait for the first to l
 let viewLayout = goldenLayout();
 
 /** Returns the state of the active (focussed) view.
-@return {object} The state of the active (focussed) view. */
-export function activeState() {
+@return {State} The state of the active (focussed) view. */
+export function activeState(): State {
 	return (viewLayout as any).selectedItem?.getActiveContentItem()?.config?.componentState;
 }
 

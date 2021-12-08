@@ -9,10 +9,10 @@ import log from "loglevel";
 /**
 Uploads a JSON file from the user.
 @param {Event} event a file input change event
-@param {function} callback the code to execute, receives a JSON object
+@param callback the code to execute, receives a JSON object
 @return {void}
 */
-function uploadJson(event: Event, callback: Function) {
+function uploadJson(event: Event, callback: (o: JSON) => any) {
 	const file = (event.target as HTMLInputElement).files[0];
 	const reader = new FileReader();
 
@@ -108,9 +108,9 @@ Add an upload entry to the file menu.
 @param {Element} parent the parent element of the menu
 @param {string} i18n internationalization key
 @param {string} description the text of the menu item
-@param {EventListener} func the function to be executed when the user clicks on the menu entry
+@param func the function to be executed when the user clicks on the menu entry
 @param {Array<HTMLAnchorElement>} as the file menu in the form of anchor elements that get styled by CSS
-//@param {Function} optionsFromJson a function that loads session options, such as whether day mode is activated
+//@param optionsFromJson a function that loads session options, such as whether day mode is activated
 @return {void}
 */
 function addLoadEntry(parent: Element, i18n: string, description: string, func: EventListener, as: Array<HTMLAnchorElement> /*, optionsFromJson: Function*/) {
