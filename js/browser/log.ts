@@ -62,6 +62,7 @@ export default function initLog() {
 			if (value[level] <= value[config.logLevelMemory]) {
 				// @ts-expect-error
 				if (!log.logs) {
+					//@ts-expect-error
 					log.logs = [];
 				}
 				// @ts-expect-error

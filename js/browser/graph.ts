@@ -407,9 +407,9 @@ export class Graph {
 	}
 	/** Center and highlight the given URIs.
 	 * @param  {Array<string>} uris the URIs to present
-	 * @param  {boolean} hideOthers whether to hide the other nodes
+	 * @param   hideOthers whether to hide the other nodes
 	 * @return {boolean} whether presenting the URIs succeeded */
-	presentUris(uris, hideOthers) {
+	presentUris(uris, hideOthers: boolean = false) {
 		if (uris.length < 1) {
 			log.warn("All search results are only available on the SPARQL endpoint but not in the graph.");
 			return false;

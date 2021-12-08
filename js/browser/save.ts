@@ -4,12 +4,12 @@ Lets the user save files generated from the loaded graph.
 import * as layout from "../layout";
 import config from "../config";
 import { toJSON } from "./state";
-import { mainView, partViews } from "./view";
+import { mainView, partViews, View } from "./view";
 import { VERSION } from "./util";
 import log from "loglevel";
-import cytoscape from "cytoscape";
+import c from "cytoscape";
 import svg from "cytoscape-svg";
-cytoscape.use(svg);
+c.use(svg);
 
 const a = document.createElement("a"); // reused for all saving, not visible to the user
 document.body.appendChild(a);
@@ -71,11 +71,11 @@ function stringify(object, exclude, space) {
 /**
 Create a JSON file out of a JSON data string and lets the user save it.
 Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
-@param {string} data a JSON string
+@param data a JSON object
 @param {string} fileName the name of the saved file
 @return {void}
 */
-export function saveJson(data: string, fileName: string) {
+export function saveJson(data: any, fileName: string) {
 	//const json = stringify(data,"graph",'\t'); // partially prettified variant not working correctly
 	const json = JSON.stringify(data); // unprettified variant
 	const blob = new Blob([json], { type: "application/json" });
@@ -111,6 +111,17 @@ export function saveGraph(graph) {
 	saveJson(json, "snik.json");
 }
 
+interface TabContent {
+	title: string;
+	graph: any;
+}
+
+export interface Session {
+	tabs: Array<TabContent>;
+	state: any;
+	mainGraph: any;
+}
+
 /** Saves the contents of all views as a custom JSON file.
  *  @return {void} */
 export function saveSession(options) {
@@ -121,7 +132,7 @@ export function saveSession(options) {
 	};
 	delete mainGraph.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 
-	const session = { tabs: [], state: toJSON(), mainGraph };
+	const session: Session = { tabs: [], state: toJSON(), mainGraph };
 
 	for (const view of partViews) {
 		const tabContent = {
@@ -134,16 +145,22 @@ export function saveSession(options) {
 	saveJson(session, "snik-session.json");
 }
 
+export interface ViewJson {
+	version: string;
+	title: string;
+	graph: object;
+}
+
 /** Saves the contents of the current view as a custom JSON file.
- *  @param {object} view a GoldenLayout view
+ *  @param view a GoldenLayout view
  *  @return {void} */
-export function saveView(view) {
-	const layoutState = view.config.componentState;
-	const json = {
+export function saveView(view: View) {
+	const json: ViewJson = {
 		version: VERSION,
-		title: view.config.title,
-		graph: layoutState.cy.json(),
+		title: view.state.title,
+		graph: view.state.cy.json(),
 	};
+	//@ts-ignore
 	delete json.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 	saveJson(json, "snik-view.json");
 }

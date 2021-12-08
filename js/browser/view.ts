@@ -26,7 +26,7 @@ export function activeView() {
 	return (viewLayout as any).selectedItem?.getActiveContentItem();
 }
 
-interface State {
+export interface State {
 	title: string;
 	graph: Graph;
 	name: string;
