@@ -71,14 +71,16 @@ export function ask(query, graphOpt) {
 /** Query the public SNIK SPARQL endpoint with a describe query, which describes a single resource.
 @param {string} uri A resource URI
 @param {string} [graphOpt] An optional SPARQL graph.
-@return {Promise<string|void>} A promise of the SPARQL describe result as text.
+@return {Promise<string>} A promise of the SPARQL describe result as text.
 */
-export function describe(uri, graphOpt?: string) {
+export function describe(uri, graphOpt?: string): Promise<string> {
 	const query = "describe <" + uri + ">";
 	const url =
 		config.sparql.endpoint + "?query=" + encodeURIComponent(query) + "&format=text" + (graphOpt ? "&default-graph-uri=" + encodeURIComponent(graphOpt) : "");
 
 	return fetch(url)
 		.then((response) => response.text())
-		.catch((err) => log.error(`Error executing SPARQL query ${query}: ${err}`));
+		.catch((err) => {
+			throw new Error(`Error executing SPARQL query ${query}: ${err}`);
+		});
 }

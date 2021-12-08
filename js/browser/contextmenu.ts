@@ -27,7 +27,7 @@ const config = { menuItems: [] as Array<MenuItem> };
 /** context menu for nodes and edges */
 export class ContextMenu {
 	graph: cytoscape.Core;
-	cxtMenus: Array<Object>;
+	cxtMenus: Array<Record<string, unknown>>;
 
 	/** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
   The extension itself is already registered through the plain HTML/JS import in index.html,
