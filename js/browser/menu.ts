@@ -155,7 +155,7 @@ export class Menu {
 					[this.showCloseMatches, "show close matches", "show-close-matches"],
 					[
 						() => {
-							layout.run(activeState().graph.cy, layout.euler, config.defaultSubOntologies, this.separateSubs() && !activeState().graph.getStarMode(), true);
+							layout.run(activeState().graph.cy, layout.euler, config.defaultSubOntologies, this.separateSubs() && !activeState().graph.starMode, true);
 						},
 						"recalculate layout",
 						"recalculate-layout",
@@ -163,13 +163,7 @@ export class Menu {
 					],
 					[
 						() => {
-							layout.run(
-								activeState().graph.cy,
-								layout.eulerTight,
-								config.defaultSubOntologies,
-								this.separateSubs() && !activeState().graph.getStarMode(),
-								false
-							);
+							layout.run(activeState().graph.cy, layout.eulerTight, config.defaultSubOntologies, this.separateSubs() && !activeState().graph.starMode, false);
 						},
 						"tight layout",
 						"tight-layout",
@@ -177,7 +171,7 @@ export class Menu {
 					],
 					[
 						() => {
-							layout.run(activeState().graph.cy, layout.cose, config.defaultSubOntologies, this.separateSubs() && !activeState().graph.getStarMode(), false);
+							layout.run(activeState().graph.cy, layout.cose, config.defaultSubOntologies, this.separateSubs() && !activeState().graph.starMode, false);
 						},
 						"compound layout",
 						"compound-layout",

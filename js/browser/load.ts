@@ -1,6 +1,7 @@
 /** Module for loading files both locally from the server and via upload from the client.
 @module */
 import { View, reset, activeView } from "./view";
+import { ViewJson, Session } from "./save";
 import config from "../config";
 import { fromJSON } from "./state";
 import { VERSION } from "./util";
@@ -60,7 +61,8 @@ export async function loadSessionFromJsonFile(event) {
 	if (config.multiview.warnOnSessionLoad && !confirm("This will override the current session. Continue?")) {
 		return;
 	}
-	uploadJson(event, async (json) => {
+	//@ts-ignore
+	uploadJson(event, async (json: Session) => {
 		// compare versions of file and package.json and warn if deprecated
 		if (
 			json.state.version !== VERSION &&
@@ -90,7 +92,8 @@ export async function loadSessionFromJsonFile(event) {
 @return {void}
 */
 export function loadView(event) {
-	uploadJson(event, (json) => {
+	//@ts-ignore
+	uploadJson(event, (json: ViewJson) => {
 		// compare versions of file and package.json and warn if deprecated
 		if (
 			json.version !== VERSION &&
