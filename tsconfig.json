@@ -17,7 +17,8 @@
 		"strict": false
 	},
 	"typedocOptions": {
-		"entryPoints": ["js/browser/main.ts"],
+		"entryPoints": ["./js"],
+		"entryPointStrategy": "expand",
 		"out": "docs"
 	},
 	"include": ["js/**/*", "globals.d.ts"],
