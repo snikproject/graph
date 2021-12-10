@@ -236,7 +236,7 @@ export class Menu {
 					["troubleshooting.html", "Troubleshooting"],
 					["contribute.html", "Contribute"],
 					["https://www.snik.eu/", "Project Homepage"],
-					["https://www.snik.eu/sites/www.snik.eu/files/files/uploads/Ergebnisse/SNIK_Metamodell_V8.png", "SNIK Meta Model"],
+					["https://www.snik.eu/public/SNIK_Metamodell_V8.svg", "SNIK Meta Model"],
 					[Menu.about, "About SNIK Graph"],
 					["https://github.com/IMISE/snik-ontology/issues", "Submit Feedback about the Ontology"],
 					[Menu.visualizationFeedback, "Submit Feedback about the Visualization"],
