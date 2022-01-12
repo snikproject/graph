@@ -6,6 +6,8 @@
 	"type": "module",
 	"homepage": "https://github.com/snikproject/snik-graph#readme",
 	"dependencies": {
+		"@algolia/autocomplete-js": "^1.5.1",
+		"@algolia/autocomplete-theme-classic": "^1.5.1",
 		"cytoscape": "^3.20.0",
 		"cytoscape-context-menus": "^4.1.0",
 		"cytoscape-euler": "^1.2.2",
@@ -20,6 +22,7 @@
 		"notyf": "^3.10.0",
 		"spin.js": "^4.1.1",
 		"stats.js": "^0.17.0",
+		"throttle-debounce": "^3.0.1",
 		"tippy.js": "^6.3.7",
 		"ts-jest": "^27.1.2",
 		"typedoc": "^0.22.10"
