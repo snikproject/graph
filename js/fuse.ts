@@ -13,6 +13,7 @@ interface Item {
 	def?: string;
 }
 let index: Fuse<Item> = null;
+let indexPromise: Promise<Array<Item>> = null;
 
 const options = {
 	shouldSort: true,
@@ -37,7 +38,7 @@ export async function createIndex() {
 	console.groupCollapsed("Create Fuse.js index");
 	const indexTimer = timer("Create Fuse search index");
 
-	log.debug("Create Fuse Search Index with searchCloseMatch = " + config.searchCloseMatch);
+	log.info("Create Fuse Search Index with searchCloseMatch = " + config.searchCloseMatch + ". This may take a few seconds.");
 	const graphs = [...config.allSubOntologies, ...config.helperGraphs];
 	const sparqlQuery = `select
   ?c as ?uri
@@ -79,9 +80,10 @@ export async function createIndex() {
 @return {Promise<string[]>} the class URIs found.
 */
 export async function search(userQuery) {
-	if (!index) {
-		await createIndex();
+	if (!indexPromise) {
+		indexPromise = createIndex();
 	}
+	await indexPromise;
 	const result = index.search(userQuery);
 	return result;
 }

@@ -9,14 +9,14 @@ import { activeState } from "./view";
 import MicroModal from "micromodal";
 import { debounce } from "throttle-debounce";
 import log from "loglevel";
-import { autocomplete } from "@algolia/autocomplete-js";
-import "@algolia/autocomplete-theme-classic";
+import "./autocomplete";
 
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
 // const USE_BIF_CONTAINS = false;
 export default class Search {
 	resultNodes = [];
+
 	/** Add search functionality to the form.
 	 *  @param {HTMLFormElement} form a form with a search field named "query"
 	 *  @return {void} */
@@ -33,36 +33,7 @@ export default class Search {
 				console.log(query);
 			})
 		);
-		console.log("setting up autocomplete");
-		autocomplete({
-			container: "#autocomplete",
-			placeholder: "Search for products",
-			getSources({ query }) {
-				console.log("getting sources for query " + query);
-				return [
-					{
-						sourceId: "fuse",
-						templates: {
-							item({ item, components }) {
-								const i = item.item;
-								console.log(i);
-								return i.l[0] + ": " + i.def;
-								//return JSON.stringify(item.item);
-								//return item.name + " " + item.description + " " + item.foo;
-							},
-						},
-						async getItems() {
-							const items = await fuse.search(query);
-							return items;
-							/*return [
-								{ name: "john", description: "the john of johns", foo: "bar" },
-								{ name: "jill", description: "the jill of jills", foo: "mak" },
-							];*/
-						},
-					},
-				];
-			},
-		});
+
 		log.debug("search initialized");
 	}
 	/**
