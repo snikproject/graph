@@ -21,10 +21,16 @@ jobs:
           path: ~/node_modules
           key: cache-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install and build
+      - name: Install
         run: |
           cp js/config.dist.ts js/config.ts
           npm install
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: |
           npm run build
           sed -i "s|/assets|./assets|" dist/index.html
 
@@ -33,4 +39,3 @@ jobs:
         with:
           branch: gh-pages
           folder: dist
-
