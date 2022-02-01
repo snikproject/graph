@@ -17,8 +17,8 @@ export function getElementById(id) {
 	return el;
 }
 
-export const REPO_APPLICATION = "https://github.com/IMISE/snik-cytoscape";
-export const REPO_ONTOLOGY = "https://github.com/IMISE/snik-ontology";
+export const REPO_APPLICATION = "https://github.com/snikproject/snik-graph";
+export const REPO_ONTOLOGY = "https://github.com/snikproject/ontology";
 
 /** Open a new issue on the GitHub repository.
 @param {string} repo GIT repository URL

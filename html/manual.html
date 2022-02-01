@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<base href="../" />
+		<title>SNIK Graph Manual</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+	</head>
+	<body>
+		<h1>SNIK Graph Manual</h1>
+		<center><img src="img/graph.png" class="helpimage" /></center>
+		<h1>Multiview Functionality</h1>
+		SNIK Graph supports the organization and management of different partial models in separate views.To copy a part of the whole graph, press 'C' or 'S' and to
+		insert it into a new model press 'V' or 'P'.
+		<h2>Search Field</h2>
+		Search the currently active view for resources by entering a full or partial name.
+		<h2>View Specific Menu</h2>
+		The view-specific menu can be found in the upper right position of each view, described from left to right.
+		<center><img src="img/viewmenu.png" class="helpimage" /></center>
+		<h3>Recalculatesign</h3>
+		Recalculate Layout
+		<h3>Tightlayoutsign</h3>
+		Tight layout
+		<h3>Compoundlayoutsign</h3>
+		Compound layout
+		<h3>Addsign</h3>
+		Open new Tab
+		<h3>Plussign</h3>
+		Zoom in
+		<h3>Minussign</h3>
+		Zoom out
+		<h1>Menu</h1>
+		<h2>File</h2>
+		Holds different file options like loading and saving the graph in different ways.
+		<h3>Load From SPARQL Endpoint</h3>
+		Discard the currently loaded graph and load all ontologies of SNIK.
+		<h3>Load Session</h3>
+		Load a complete session from a Cytoscape JSON File. Caution: Discards all changes!
+		<h3>Load Partial Graph</h3>
+		Load a saved view (partial graph) and include it in the current session.
+		<h3>Save Session</h3>
+		Save the complete Session (all views).
+		<h3>Save Complete SNIK Graph As Cytoscape File</h3>
+		Save the complete SNIK graph to a Cytoscape file.
+		<h3>Save Current Partial Graph</h3>
+		Save only the currently active view (partial graph).
+		<h3>Recalculate Layout And Replace In Browser Cache</h3>
+		Recalculate the position of all visible nodes. May take a while when a large number of nodes are visible.
+		<h3>Save Image Of Current View</h3>
+		Save a screenshot of the currently active view.
+		<h3>Save Image Of Whole Graph</h3>
+		Save an image of the whole graph with the same pixel density as the current view.
+		<h3>Save Image Of Current View (high Res)</h3>
+		Save an image of the current view with a high resolution, for example for printing.
+		<h3>Save Image Of Whole Graph (high Res)</h3>
+		Save an image of the whole graph with a high resolution, for example for printing.
+		<h2>Filter</h2>
+		A collection of filters to display relevant subgraphs. Filters are applied to all open views.
+		<h3>Meta</h3>
+		The Meta Ontology provides common superclasses and properties for the subontologies of SNIK.
+		<h3>Bb</h3>
+		Based on the book "Health Information Systems Ontology–Architectures and Strategies".
+		<h3>Ob</h3>
+		Based on the book"IT-Projektmanagement im Gesundheitswesen - Lehrbuch und Projektleitfaden.
+		<h3>He</h3>
+		Based on the book "Informationsmanagement: Grundlagen, Aufgaben, Methoden".
+		<h3>Ciox</h3>
+		Based on interviews about the Health Information System with Department B1, the Department for Information Management, of the Uniklinikum Leipzig.
+		<h3>Role</h3>
+		Who...
+		<h3>Function</h3>
+		...does what...
+		<h3>Entitytype</h3>
+		...and which information is therefore needed.
+		<h2>Options</h2>
+		Here you can find different checkboxes that toggle the behaviour of SNIK Graph. These are applied to all open views.
+		<h3>Separate Subs</h3>
+		Spread the SNIK Graph into subgraphs of the subontologies.
+		<h3>Cumulative Search</h3>
+		Keep previous search results visible when searching again.
+		<h3>Show Grid</h3>
+		shows a grid that supports better organizing of nodes.
+		<h3>Combine Match</h3>
+		Highlights groups of classes representing the same concept from different subontologies (matches) by placing them in boxes. Use "move matches on top of each
+		other" or "move matches nearby" to shrink those boxes.
+		<h3>Show Instances</h3>
+		Display instances of SNIK Classes, if loaded via parameter.
+		<h3>Day Mode</h3>
+		White background. Saves ink when printing.
+		<h3>Dev Mode</h3>
+		Additional context menu entries for developers.
+		<h3>Ext Mode</h3>
+		Additional context menu entries for power users.
+		<h2>Layout</h2>
+		This part of the menu holds the layout features.
+		<h3>Show Close Matches</h3>
+		Shows (unhides) all nodes that are connected via close matches to visible nodes.
+		<h3>Recalculate Layout</h3>
+		Hotkey: Ctrl+Alt+L. Recalculates the position of all selected nodes, or all visible nodes if there are not at least two selected nodes. Can take a while if
+		there are many visible nodes.
+		<h3>Tight Layout</h3>
+		Hotkey: Ctrl+Alt+T. You can use this for a more narrow view.
+		<h3>Compound Layout</h3>
+		Hotkey: Ctrl+Alt+C. Layout that tries to places combined matches next to each other.
+		<h3>Move Matches On Top Of Each Other</h3>
+		Requires enabled "Combine Matching" option. Places all matching nodes in the center of their group.
+		<h3>Move Matches Nearby</h3>
+		Requires enabled "Combine Matching" option. Places all matching nodes in a small circle in their group.
+		<h3>BB Chapter Search</h3>
+		Presents you all chapters of the "blue book" and lets you build a subgraph out of selected chapters .
+		<h3>OB Chapter Search</h3>
+		Presents you all chapters of the "orange book" and lets you build a subgraph out of selected chapters .
+		<h3>Subontology Connectivity</h3>
+		Shows the connectivity between chosen Subontologies, i.e. between BB and OB, in a new tab.
+		<center><img src="img/subontologyConnectivity.png" class="helpimage" /></center>
+		<h3>Reset View</h3>
+		Resets all the layout operations to get you back to the starting point of the visualization.
+		<h3>Change Title Of Active View</h3>
+		Opens a propmt to change the title of the currently active view.
+		<h2>Services</h2>
+		Other ways to access SNIK.
+		<h3>SPARQL Endpoint</h3>
+		Expert interface for the SPARQL Protocol and RDF Query Language endpoint.
+		<h3>RDF Browser</h3>
+		Browse complete descriptions of resources in the RDF browser.
+		<h2>Language</h2>
+		Language switch, you can choose between English, German and Persian. Ontologies may not or not fully support all available languages.
+		<h2>Help</h2>
+		Common Help Menu, holds e.g. this manual
+		<h1>Context Menu</h1>
+		Right click on a node/edge to open the context menu and choose among:
+		<h2>Basic Menu Items</h2>
+		<h3>Description</h3>
+		Opens the node in an RDF browser, which shows all its properties and values.
+		<h3>Star</h3>
+		Highlights and expands the node and all its directly connected nodes.
+		<center><img src="img/star.png" class="helpimage" /></center>
+		<h3>Incoming Star</h3>
+		Highlights and expands the node and all neighbours directly connected via incoming edges.
+		<h3>Outgoing Star</h3>
+		Highlights and expands the node and all neighbours directly connected via outgoing edges.
+		<h3>Path</h3>
+		Shortest Path between a selected source and this node.
+		<center><img src="img/star.png" class="helpimage" /></center>
+		<h3>Spiderworm</h3>
+		The Spider Worm consists of the shortest path between a selected source and this node plus all direct neighbours. Displaying a spiderworm hides all other
+		nodes and edges.
+		<center><img src="img/spiderworm.png" class="helpimage" /></center>
+		<h3>Edit</h3>
+		If you are a domain expert and notice incorrectly modelled facts or connections of a node, feel free to send us an issue.
+		<h3>Combine Close Matches</h3>
+		Merge equivalent classes from different subontologies.
+		<h3>Class Use</h3>
+		Visualize the interplay of role, function and entity type (related to the Meta model).
+		<h3>Hide</h3>
+		Hide the selected item until the view is resetted.
+		<h3>Set Path-source</h3>
+		Set the starting point for path operations.
+		<h3>Confirm Link</h3>
+		Confirm that the automatically generated interlink is correct.
+		<h2>Dev Mode</h2>
+		<h3>Remove Permanently</h3>
+		Send us an issue to delete the selected item permanently. Also removes it until graph is reloaded.
+		<h3>Ontowiki</h3>
+		Access restricted ontology editing tool.
+		<h3>Debug</h3>
+		Get debug information to the edge/node from the JSON File
+		<h2>Ext Mode</h2>
+		<h3>Doublestar</h3>
+		The double star is like the spiderworm but shows connected nodes for both source and target, not just the target.
+		<center><img src="img/doublestar.png" class="helpimage" /></center>
+		<h3>Starpath</h3>
+		Creates a path and star (expand) every node along it.
+		<center><img src="img/starpath.png" class="helpimage" /></center>
+		<h3>Circlestar</h3>
+		A star (expansion of the node) using a circular layout. Hides all other nodes.
+		<center><img src="img/circlestar.png" class="helpimage" /></center>
+		<h3>Lodlive</h3>
+		Third party data visualization exploration tool.
+	</body>
+</html>
