@@ -24,7 +24,7 @@ jobs:
       - name: Install
         run: |
           cp js/config.dist.ts js/config.ts
-          npm install
+          npm install --ignore-scripts --production --no-audit
 
       - name: Test
         run: npm run test
