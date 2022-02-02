@@ -10,6 +10,9 @@ cytoscape.use(euler);
 import chai from "chai";
 const assert = chai.assert;
 
+// increase timeout for GitHub pages
+jest.setTimeout(60000);
+
 describe("cytoscape", function () {
 	let cy;
 	const subs = ["meta", "bb"];
