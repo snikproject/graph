@@ -27,7 +27,9 @@ jobs:
           npm install --ignore-scripts --production --no-audit
 
       - name: Test
-        run: npm run test
+        run: |
+          npm install jest ts-jest # the only dev dependencies we need
+          npm run test
 
       - name: Build
         run: |
