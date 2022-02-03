@@ -1,4 +1,4 @@
-name: Build and deploy SNIK Graph to GitHub Pages
+name: build
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - master
 
 jobs:
-  deploy:
+  build: 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
