@@ -2,29 +2,40 @@
 <a href="#snik-graph" id="snik-graph" style="color: inherit; text-decoration: none;">
   <h1>SNIK Graph</h1>
 </a>
+<p><img src="https://github.com/snikproject/snik-graph/actions/workflows/build.yml/badge.svg" alt="build">
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-blue.svg" alt="License: CC BY-NC-SA 4.0"></a></p>
 <p>Visualization of the SNIK ontology using the Cytoscape.js graph library.
-Can also be used to generate Cytoscape Desktop graph files.
 Live at <a href="https://www.snik.eu/graph">https://www.snik.eu/graph</a> and <a href="https://snikproject.github.io/snik-graph/index.html">https://snikproject.github.io/snik-graph/index.html</a>.</p>
 <!--Browse the code documentation [here](https://snikproject.github.io/snik-graph/index.html)!-->
 
 
+<a href="#installation-and-preview" id="installation-and-preview" style="color: inherit; text-decoration: none;">
+  <h2>Installation and Preview</h2>
+</a>
+
+<a href="#node" id="node" style="color: inherit; text-decoration: none;">
+  <h3>Node</h3>
+</a>
+<pre><code><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-0">clone</span><span class="hl-1"> </span><span class="hl-2">https</span><span class="hl-1">:</span><span class="hl-3">//github.com/snikproject/snik-graph.git</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-0">install</span><br/><span class="hl-0">cp</span><span class="hl-1"> </span><span class="hl-0">js</span><span class="hl-1">/</span><span class="hl-0">config</span><span class="hl-1">.</span><span class="hl-0">dist</span><span class="hl-1">.</span><span class="hl-0">js</span><span class="hl-1"> </span><span class="hl-0">js</span><span class="hl-1">/</span><span class="hl-0">config</span><span class="hl-1">.</span><span class="hl-0">js</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-0">run</span><span class="hl-1"> </span><span class="hl-0">preview</span>
+</code></pre>
+<p>Open <a href="http://localhost:3000/">http://localhost:3000/</a> in a browser.</p>
+
+<a href="#docker" id="docker" style="color: inherit; text-decoration: none;">
+  <h3>Docker</h3>
+</a>
+<pre><code><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-0">clone</span><span class="hl-1"> </span><span class="hl-2">https</span><span class="hl-1">:</span><span class="hl-3">//github.com/snikproject/snik-graph.git</span><br/><span class="hl-0">docker</span><span class="hl-1"> </span><span class="hl-0">build</span><span class="hl-1"> . -</span><span class="hl-0">t</span><span class="hl-1"> </span><span class="hl-0">snik</span><span class="hl-1">-</span><span class="hl-0">graph</span><br/><span class="hl-0">docker</span><span class="hl-1"> </span><span class="hl-0">run</span><span class="hl-1"> --</span><span class="hl-0">network</span><span class="hl-1">=</span><span class="hl-4">&quot;host&quot;</span><span class="hl-1"> </span><span class="hl-0">snik</span><span class="hl-1">-</span><span class="hl-0">graph</span>
+</code></pre>
+<p>Open <a href="http://localhost:8043/">http://localhost:8043/</a> in a browser.</p>
+
 <a href="#usage-requirements" id="usage-requirements" style="color: inherit; text-decoration: none;">
   <h2>Usage Requirements</h2>
 </a>
-<p>Optimized for PC with mouse, does not work well on mobile devices. Internet Explorer is not supported.</p>
+<p>Optimized for PC with mouse, does not work well on mobile devices.
+Requires a browser with <a href="https://caniuse.com/es6-module">ES6 module support</a>.</p>
 
 <a href="#indexhtml" id="indexhtml" style="color: inherit; text-decoration: none;">
   <h3>index.html</h3>
 </a>
-<p>This is the development version where you can just edit the JavaScript files and see the changes directly on page reload.
-This version is deployed at <a href="http://www.snik.eu/graph/index.html">http://www.snik.eu/graph/index.html</a> and sometimes at <a href="http://www.snik.eu/pgraph">http://www.snik.eu/pgraph</a> (including experimental changes).
-Requires a browser with ES6 module support:</p>
-<ul>
-<li>Firefox [54-59] with <code>dom.moduleScripts.enabled=true</code> in <code>about:config</code>, Firefox 60+ otherwise</li>
-<li>Safari 10.1</li>
-<li>Chrome 61</li>
-<li>Edge 16</li>
-</ul>
 
 <a href="#development" id="development" style="color: inherit; text-decoration: none;">
   <h2>Development</h2>
@@ -33,11 +44,6 @@ Requires a browser with ES6 module support:</p>
 <a href="#setup" id="setup" style="color: inherit; text-decoration: none;">
   <h3>Setup</h3>
 </a>
-<ol>
-<li><code>git clone</code> this repository</li>
-<li><code>npm install</code></li>
-<li>copy <code>js/config.dist.js</code> to <code>js/config.js</code></li>
-</ol>
 <p>If the website and the SPARQL endpoint are on different domains, you may need to bypass CORS.</p>
 
 <a href="#browser-settings" id="browser-settings" style="color: inherit; text-decoration: none;">
@@ -108,5 +114,4 @@ While the main part is written generally, there .</p>
 </a>
 <p>SNIK Graph has a noncommercial license with copyleft, the <em>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</em>, see LICENCE for details.
 We want to encourage reuse, modification, derivation and distribution as much as possible, so if that license is a problem for you please contact <a href="www.people.imise.uni-leipzig.de/alfred.winter">Prof. Winter</a> and we try our best to find a solution.</p>
-<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg" alt="License: CC BY-NC-SA 4.0"></a></p>
 </div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/browser_benchmark.html">browser/benchmark</a></li><li class=" tsd-kind-module"><a href="modules/browser_browsercheck.html">browser/browsercheck</a></li><li class=" tsd-kind-module"><a href="modules/browser_chaptersearch.html">browser/chaptersearch</a></li><li class=" tsd-kind-module"><a href="modules/browser_classuse.html">browser/classuse</a></li><li class=" tsd-kind-module"><a href="modules/browser_colorschemeday.html">browser/colorschemeday</a></li><li class=" tsd-kind-module"><a href="modules/browser_colorschemenight.html">browser/colorschemenight</a></li><li class=" tsd-kind-module"><a href="modules/browser_contextmenu.html">browser/contextmenu</a></li><li class=" tsd-kind-module"><a href="modules/browser_contextmenuEdges.html">browser/contextmenu<wbr/>Edges</a></li><li class=" tsd-kind-module"><a href="modules/browser_contextmenuNodes.html">browser/contextmenu<wbr/>Nodes</a></li><li class=" tsd-kind-module"><a href="modules/browser_filter.html">browser/filter</a></li><li class=" tsd-kind-module"><a href="modules/browser_load.html">browser/load</a></li><li class=" tsd-kind-module"><a href="modules/browser_log.html">browser/log</a></li><li class=" tsd-kind-module"><a href="modules/browser_main.html">browser/main</a></li><li class=" tsd-kind-module"><a href="modules/browser_menu.html">browser/menu</a></li><li class=" tsd-kind-module"><a href="modules/browser_progress.html">browser/progress</a></li><li class=" tsd-kind-module"><a href="modules/browser_save.html">browser/save</a></li><li class=" tsd-kind-module"><a href="modules/browser_search.html">browser/search</a></li><li class=" tsd-kind-module"><a href="modules/browser_state.html">browser/state</a></li><li class=" tsd-kind-module"><a href="modules/browser_style.html">browser/style</a></li><li class=" tsd-kind-module"><a href="modules/browser_teststyle.html">browser/teststyle</a></li><li class=" tsd-kind-module"><a href="modules/browser_util.html">browser/util</a></li><li class=" tsd-kind-module"><a href="modules/browser_view.html">browser/view</a></li><li class=" tsd-kind-module"><a href="modules/browser_viewLayout.html">browser/view<wbr/>Layout</a></li><li class=" tsd-kind-module"><a href="modules/config.html">config</a></li><li class=" tsd-kind-module"><a href="modules/config_dist.html">config.dist</a></li><li class=" tsd-kind-module"><a href="modules/edge.html">edge</a></li><li class=" tsd-kind-module"><a href="modules/fuse.html">fuse</a></li><li class=" tsd-kind-module"><a href="modules/graph.html">graph</a></li><li class=" tsd-kind-module"><a href="modules/help.html">help</a></li><li class=" tsd-kind-module"><a href="modules/lang_de.html">lang/de</a></li><li class=" tsd-kind-module"><a href="modules/lang_en.html">lang/en</a></li><li class=" tsd-kind-module"><a href="modules/lang_language.html">lang/language</a></li><li class=" tsd-kind-module"><a href="modules/layout.html">layout</a></li><li class=" tsd-kind-module"><a href="modules/loadGraphFromSparql.html">load<wbr/>Graph<wbr/>From<wbr/>Sparql</a></li><li class=" tsd-kind-module"><a href="modules/node.html">node</a></li><li class=" tsd-kind-module"><a href="modules/property.html">property</a></li><li class=" tsd-kind-module"><a href="modules/rdf.html">rdf</a></li><li class=" tsd-kind-module"><a href="modules/sparql.html">sparql</a></li><li class=" tsd-kind-module"><a href="modules/string.html">string</a></li><li class=" tsd-kind-module"><a href="modules/timer.html">timer</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li><li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
