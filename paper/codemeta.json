@@ -1,0 +1,37 @@
+{
+	"@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
+	"@type": "Code",
+	"author": [
+		{
+			"@id": " https://orcid.org/0000-0001-7358-3217",
+			"@type": "Person",
+			"email": "konrad.hoeffner@uni-leipzig.de",
+			"name": "Konrad Höffner",
+			"affiliation": "Leipzig University"
+		},
+		{
+			"@id": "https://orcid.org/0000-0001-5832-4890",
+			"@type": "Person",
+			"email": "thomas.pause.86@gmail.com",
+			"name": "Thomas Pause",
+			"affiliation": "Leipzig University"
+		},
+		{
+			"@id": "",
+			"@type": "Person",
+			"email": "",
+			"name": "Anna Brakemeier",
+			"affiliation": "Leipzig University"
+		}
+	],
+	"identifier": "",
+	"codeRepository": "https://github.com/snikproject/snik-graph/",
+	"datePublished": "2022-02-03",
+	"dateModified": "2022-02-03",
+	"dateCreated": "2022-02-03",
+	"description": "Visualization of a Medical Informatics Ontology",
+	"keywords": "semantic web, information management, hospital information management, visualization, javascript",
+	"license": "MIT",
+	"title": "SNIK Graph",
+	"version": "3.1.0"
+}

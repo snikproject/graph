@@ -89,32 +89,5 @@ Create a local web server and test it on localhost using `npm run dev`.
 
 - add, commit and push the release commit
 - create the release on GitHub, attach package-lock.json to the assets
-- ssh bruchtal
-- `cd /var/www/html/snik_prod`
-- go into the graph and pgraph source folders
-- fulfill the code preparations
-- perform the unit tests
-- (first time) link the dist folder of the graph and pgraph source folders to "graph" and "pgraph" folders
-- npm run build
-- replace "/assets" with "assets" in dist/index.html
-
-## Bruchtal configuration
-
-The server belongs to Sebastian Stäubert.
-If you are cleared for access, give him your public SSH key.
-Due to firewall changes, you can only access bruchtal through a proxy jump over star.
-To pull from GitHub over SSH, you need agent forwarding.
-All in all, you need the following .ssh/config entries:
-
-    Host bruchtal
-    Hostname bruchtal.imise.uni-leipzig.de
-    ProxyJump star
-    ForwardAgent yes
-    User snik
-
-    Host star
-    Hostname star.imise.uni-leipzig.de
-    User insertusernamehere
-
-Then you can simply connect via `ssh bruchtal`.
-Be careful and don't mess with the other services running on the server.
+- ssh into the server
+- check out the gh-pages branch

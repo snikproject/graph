@@ -1,28 +1,40 @@
 # SNIK Graph
+
+![build](https://github.com/snikproject/snik-graph/actions/workflows/build.yml/badge.svg)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
 Visualization of the SNIK ontology using the Cytoscape.js graph library.
-Can also be used to generate Cytoscape Desktop graph files.
 Live at <https://www.snik.eu/graph> and <https://snikproject.github.io/snik-graph/index.html>.
 <!--Browse the code documentation [here](https://snikproject.github.io/snik-graph/index.html)!-->
 
+## Installation and Preview
+
+### Node
+
+	git clone https://github.com/snikproject/snik-graph.git
+    npm install
+    cp js/config.dist.js js/config.js
+    npm run preview
+
+Open <http://localhost:3000/> in a browser.
+
+### Docker
+
+	git clone https://github.com/snikproject/snik-graph.git
+    docker build . -t snik-graph
+	docker run --network="host" snik-graph
+	
+Open <http://localhost:8043/> in a browser.
+
 ## Usage Requirements
-Optimized for PC with mouse, does not work well on mobile devices. Internet Explorer is not supported.
+Optimized for PC with mouse, does not work well on mobile devices.
+Requires a browser with [ES6 module support](https://caniuse.com/es6-module).
 
 ### index.html
-This is the development version where you can just edit the JavaScript files and see the changes directly on page reload.
-This version is deployed at http://www.snik.eu/graph/index.html and sometimes at http://www.snik.eu/pgraph (including experimental changes).
-Requires a browser with ES6 module support:
-
-* Firefox [54-59] with `dom.moduleScripts.enabled=true` in `about:config`, Firefox 60+ otherwise
-* Safari 10.1
-* Chrome 61
-* Edge 16
 
 ## Development
 
 ### Setup
-1. `git clone` this repository
-2. `npm install`
-3. copy `js/config.dist.js` to `js/config.js`
 
 If the website and the SPARQL endpoint are on different domains, you may need to bypass CORS.
 
@@ -75,5 +87,4 @@ While the main part is written generally, there .
 SNIK Graph has a noncommercial license with copyleft, the *Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International*, see LICENCE for details.
 We want to encourage reuse, modification, derivation and distribution as much as possible, so if that license is a problem for you please contact [Prof. Winter](www.people.imise.uni-leipzig.de/alfred.winter) and we try our best to find a solution.
 
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
