@@ -16,8 +16,8 @@ authors:
   - name: Franziska Jahn
     orcid: 0000-0002-7687-8544}
     affiliation: 1
-  - name: Anna Brakemeier
-    affiliation: 1
+#  - name: Anna Brakemeier
+#    affiliation: 1
   - name: Alfred Winter
     orcid: 0000-0003-0179-954X
     affiliation: 1
@@ -86,25 +86,12 @@ This question is visually answered by the "role use" feature, which arranges rol
     caption{\emph{Role Use} of {bb}{ProjectManager}. Outermost layer ommitted due to space limitiations.}\label{fig:classuse}
 
 
-##{Search}
-    search.pdf
-    caption{Visual search results for "Chief Information Officer" in a part of SNIK.}\label{fig:search}
+## Search
 
 Due to the large amount of resources, exploration often begins with a search.
-The search index is populated from the target SPARQL endpoint and is implemented using the Fuse.js library that is based on the Baeza-Yates--Gonnet algorithm [@textsearching].
-Fuse.js\footnotemark{} is a light-weight, purely client side JavaScript library and presents an alternative to backend-driven indexes like Lucene.%
-\footnotetext{\url{https://fusejs.io/}, \url{https://github.com/krisk/Fuse}}
-This enables fast fuzzy search on any dataset loaded via SPARQL endpoint but requires waiting for index initialization on the first search of each user session.
-Search results presented to the user are color coded in three categories: visible (green), invisible (yellow)%
-\footnote{The resource is either \emph{filtered} or \emph{hidden}.}% \autoref{sec:visibility}
- and not loaded (red)%
-\footnote{The resource is included in the search index built from the SPARQL endpoint but either deleted in the graph or not loaded in the first place, such as due to configuration.}.
-Each search entry of a class contains the label values of {rdfs}{label} (long form) and {skos}{altLabel} (short and alternative forms) with a weight of 0.7.
-Textbook definitions are included with a weight of 0.3.
-Labels of resources connected via {skos}{closeMatch} interlinks in either direction are included as well, because those resources are defined as semantically close, so we assume their labels are synonyms.
-Fuzzy matching is enabled with a threshold of 0.25.
-The resource {bb}{ChiefInformationOfficer} can thus be found by entering either "CIO" (alternative label), "vice president" (part of the definition) or "Leiter des Rechenzentrums" (German alternative label of {ob}{ChiefInformationOfficer}).
-Search results are then selected in the graph, see~\autoref{fig:search}, which allows further exploration by chaining the path and neighbourhood operations described in following.
+The search index is populated from the target SPARQL endpoint and is implemented using the Fuse.js [@fuse] client-side library based on the Baeza-Yates--Gonnet algorithm [@textsearching].
+This enables fuzzy search on any dataset loaded via SPARQL endpoint without needing a backend search index like Elasticsearch but requires waiting for index initialization on the first search of each user session.
+
 
 ![The shortest non-trivial path between Chief Information Officer and Planning of Staff.\label{fig:path}](img/path.png)
 
