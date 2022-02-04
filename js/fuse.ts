@@ -34,7 +34,7 @@ const options = {
 /** Create fulltext index from SPARQL endpoint.
 @return {Promise<Array<object>>} the index items for testing*/
 export async function createIndex() {
-	console.groupCollapsed("Create Fuse.js index");
+	if (typeof window !== "undefined") console.groupCollapsed("Create Fuse.js index");
 	const indexTimer = timer("Create Fuse search index");
 
 	log.debug("Create Fuse Search Index with searchCloseMatch = " + config.searchCloseMatch);
@@ -70,7 +70,7 @@ export async function createIndex() {
 	}
 	index = new Fuse(items, options);
 	indexTimer.stop(items.length + " items");
-	console.groupEnd();
+	if (typeof window !== "undefined") console.groupEnd();
 	return items; // for testing
 }
 

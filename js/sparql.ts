@@ -26,7 +26,7 @@ export async function select(query, graph?: string, endpoint: string = config.sp
 		const json = await response.json();
 		const bindings = json.results.bindings;
 
-		console.groupCollapsed("SPARQL " + query.split("\n", 1)[0] + "...");
+		if (typeof window !== "undefined") console.groupCollapsed("SPARQL " + query.split("\n", 1)[0] + "...");
 		//is never entered on our data with limitation to 99
 		if (bindings.length < 100) {
 			console.table(
@@ -40,7 +40,7 @@ export async function select(query, graph?: string, endpoint: string = config.sp
 		}
 		log.debug(query);
 		log.debug(url);
-		console.groupEnd();
+		if (typeof window !== "undefined") console.groupEnd();
 
 		return bindings;
 	} catch (err) {
