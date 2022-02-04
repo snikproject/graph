@@ -17,6 +17,7 @@ ASK queries should also work but better use {@link ask} instead as it is more co
 @return {Promise<object[]>} A promise of a set of SPARQL select result bindings.
 */
 export async function select(query, graph?: string, endpoint: string = config.sparql.endpoint) {
+	const browser = typeof window !== "undefined";
 	let url = endpoint + "?query=" + encodeURIComponent(query) + "&format=json";
 	if (graph) {
 		url += "&default-graph-uri=" + encodeURIComponent(graph);
@@ -26,9 +27,9 @@ export async function select(query, graph?: string, endpoint: string = config.sp
 		const json = await response.json();
 		const bindings = json.results.bindings;
 
-		if (typeof window !== "undefined") console.groupCollapsed("SPARQL " + query.split("\n", 1)[0] + "...");
+		if (browser) console.groupCollapsed("SPARQL " + query.split("\n", 1)[0] + "...");
 		//is never entered on our data with limitation to 99
-		if (bindings.length < 100) {
+		if (browser && bindings.length < 100) {
 			console.table(
 				bindings.map((b) =>
 					Object.keys(b).reduce((result, key) => {
@@ -40,7 +41,7 @@ export async function select(query, graph?: string, endpoint: string = config.sp
 		}
 		log.debug(query);
 		log.debug(url);
-		if (typeof window !== "undefined") console.groupEnd();
+		if (browser) console.groupEnd();
 
 		return bindings;
 	} catch (err) {
