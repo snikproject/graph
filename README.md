@@ -1,7 +1,7 @@
 # SNIK Graph
 
 ![build](https://github.com/snikproject/snik-graph/actions/workflows/build.yml/badge.svg)
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![License: GNU GPLv3](https://img.shields.io/badge/license-GPL-blue)](LICENSE)
 
 Visualization of the SNIK ontology using the Cytoscape.js graph library.
 Live at <https://www.snik.eu/graph> and <https://snikproject.github.io/snik-graph/index.html>.
