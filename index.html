@@ -3,7 +3,9 @@
   <h1>SNIK Graph</h1>
 </a>
 <p><img src="https://github.com/snikproject/snik-graph/actions/workflows/build.yml/badge.svg" alt="build">
-<a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL-blue" alt="License: GNU GPLv3"></a></p>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL-blue" alt="License: GNU GPLv3"></a>
+<img src="https://badges.aleen42.com/src/typescript.svg" alt="TypeScript">
+<a href="https://vitejs.dev/"><img src="https://badges.aleen42.com/src/vitejs.svg" alt="Vite"></a></p>
 <p>Visualization of the SNIK ontology using the Cytoscape.js graph library.
 Live at <a href="https://www.snik.eu/graph">https://www.snik.eu/graph</a> and <a href="https://snikproject.github.io/snik-graph/index.html">https://snikproject.github.io/snik-graph/index.html</a>.</p>
 <!--Browse the code documentation [here](https://snikproject.github.io/snik-graph/index.html)!-->
@@ -16,7 +18,7 @@ Live at <a href="https://www.snik.eu/graph">https://www.snik.eu/graph</a> and <a
 <a href="#node" id="node" style="color: inherit; text-decoration: none;">
   <h3>Node</h3>
 </a>
-<pre><code><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-0">clone</span><span class="hl-1"> </span><span class="hl-2">https</span><span class="hl-1">:</span><span class="hl-3">//github.com/snikproject/snik-graph.git</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-0">install</span><br/><span class="hl-0">cp</span><span class="hl-1"> </span><span class="hl-0">js</span><span class="hl-1">/</span><span class="hl-0">config</span><span class="hl-1">.</span><span class="hl-0">dist</span><span class="hl-1">.</span><span class="hl-0">js</span><span class="hl-1"> </span><span class="hl-0">js</span><span class="hl-1">/</span><span class="hl-0">config</span><span class="hl-1">.</span><span class="hl-0">js</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-0">run</span><span class="hl-1"> </span><span class="hl-0">preview</span>
+<pre><code><span class="hl-0">git</span><span class="hl-1"> </span><span class="hl-0">clone</span><span class="hl-1"> </span><span class="hl-2">https</span><span class="hl-1">:</span><span class="hl-3">//github.com/snikproject/snik-graph.git</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-0">install</span><br/><span class="hl-0">cp</span><span class="hl-1"> </span><span class="hl-0">js</span><span class="hl-1">/</span><span class="hl-0">config</span><span class="hl-1">.</span><span class="hl-0">dist</span><span class="hl-1">.</span><span class="hl-0">ts</span><span class="hl-1"> </span><span class="hl-0">js</span><span class="hl-1">/</span><span class="hl-0">config</span><span class="hl-1">.</span><span class="hl-0">ts</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-0">run</span><span class="hl-1"> </span><span class="hl-0">preview</span>
 </code></pre>
 <p>Open <a href="http://localhost:3000/">http://localhost:3000/</a> in a browser.</p>
 
@@ -33,9 +35,16 @@ Live at <a href="https://www.snik.eu/graph">https://www.snik.eu/graph</a> and <a
 <p>Optimized for PC with mouse, does not work well on mobile devices.
 Requires a browser with <a href="https://caniuse.com/es6-module">ES6 module support</a>.</p>
 
-<a href="#indexhtml" id="indexhtml" style="color: inherit; text-decoration: none;">
-  <h3>index.html</h3>
+<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
+  <h2>Documentation</h2>
 </a>
+<ul>
+<li><a href="https://www.snik.eu/graph/html/manual.html">User Manual</a></li>
+<li><a href="https://www.snik.eu/graph/html/layoutHelp.html">Layout Help</a></li>
+<li><a href="https://www.snik.eu/graph/html/troubleshooting.html">Troubleshooting</a></li>
+<li><a href="https://www.snik.eu/">SNIK Project Homepage</a></li>
+<li>generate API documentation in the <code>docs</code> folder with <code>npm run doc</code></li>
+</ul>
 
 <a href="#development" id="development" style="color: inherit; text-decoration: none;">
   <h2>Development</h2>
@@ -46,19 +55,11 @@ Requires a browser with <a href="https://caniuse.com/es6-module">ES6 module supp
 </a>
 <p>If the website and the SPARQL endpoint are on different domains, you may need to bypass CORS.</p>
 
-<a href="#browser-settings" id="browser-settings" style="color: inherit; text-decoration: none;">
-  <h3>Browser Settings</h3>
-</a>
-<p>These are only needed if you access index.html locally over the file prototocol, that is without using a web server, for example as <code>file:///home/konrad/projekte/snik/cytoscape/index.html</code>.</p>
-<ul>
-<li>Firefox needs <code>security.fileuri.strict_origin_policy;false</code> in <code>about:config</code></li>
-<li>Chrome needs the &quot;--allow-file-access-from-files&quot; parameter to load modules locally but still fails to load them from files in version 69.0.3497.100, so for developing with Chrome you need a local web server, for example via <code>python -m http.server</code>.</li>
-</ul>
-
 <a href="#publish" id="publish" style="color: inherit; text-decoration: none;">
   <h3>Publish</h3>
 </a>
-<p>Execute the setup step one but use <code>npm install --only=prod</code>.
+<p>SNIK Graph is automatically built from the master branch using a GitHub action.
+Build locally with <code>npm run build</code>.
 If you want the newest changes from the GitHub repository, follow the master branch. The newest version may be unstable, however, so for production it is safer to check out the newest release.</p>
 
 <a href="#update" id="update" style="color: inherit; text-decoration: none;">
@@ -74,15 +75,8 @@ If you want the newest changes from the GitHub repository, follow the master bra
 <a href="#code-style" id="code-style" style="color: inherit; text-decoration: none;">
   <h3>Code Style</h3>
 </a>
-<p>Specified in the ESlint config file <code>.eslintrc.json</code>.
-Use the <a href="http://js.cytoscape.org/#notation/functions">Cytoscape.js notation</a> for JSDoc types and generic parameters, such as &quot;ele&quot; for &quot;a collection of a single element (node or edge)&quot;.
-Instead of &quot;eles&quot;, &quot;cy.collection&quot; may be used as JSDoc type.</p>
-
-<a href="#typescript" id="typescript" style="color: inherit; text-decoration: none;">
-  <h3>TypeScript</h3>
-</a>
-<p>The code is vanilla ES6 JavaScript, only the JSDoc comments contain TypeScript types.
-Use the <code>typecheck</code> script to use TypeScript as a static type checker.</p>
+<p>Specified in the <a href=".eslintrc.json">ESlint</a> and <a href=".prettierrc">Prettier</a> configuration files.
+Husky will apply Prettier formating on every commit.</p>
 
 <a href="#scripts" id="scripts" style="color: inherit; text-decoration: none;">
   <h3>Scripts</h3>
