@@ -1,6 +1,6 @@
 # SNIK Graph
 
-![build](https://github.com/snikproject/snik-graph/actions/workflows/build.yml/badge.svg)
+[![build](https://github.com/snikproject/snik-graph/actions/workflows/build.yml/badge.svg)](https://github.com/snikproject/snik-graph/actions/workflows/build.yml)
 [![License: GNU GPLv3](https://img.shields.io/badge/license-GPL-blue)](LICENSE)
 ![TypeScript](https://badges.aleen42.com/src/typescript.svg)
 [![Vite](https://badges.aleen42.com/src/vitejs.svg)](https://vitejs.dev/)
