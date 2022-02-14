@@ -2,6 +2,8 @@
 
 ![build](https://github.com/snikproject/snik-graph/actions/workflows/build.yml/badge.svg)
 [![License: GNU GPLv3](https://img.shields.io/badge/license-GPL-blue)](LICENSE)
+![TypeScript](https://badges.aleen42.com/src/typescript.svg)
+[![Vite](https://badges.aleen42.com/src/vitejs.svg)](https://vitejs.dev/)
 
 Visualization of the SNIK ontology using the Cytoscape.js graph library.
 Live at <https://www.snik.eu/graph> and <https://snikproject.github.io/snik-graph/index.html>.
@@ -13,7 +15,7 @@ Live at <https://www.snik.eu/graph> and <https://snikproject.github.io/snik-grap
 
 	git clone https://github.com/snikproject/snik-graph.git
     npm install
-    cp js/config.dist.js js/config.js
+    cp js/config.dist.ts js/config.ts
     npm run preview
 
 Open <http://localhost:3000/> in a browser.
@@ -30,7 +32,13 @@ Open <http://localhost:8043/> in a browser.
 Optimized for PC with mouse, does not work well on mobile devices.
 Requires a browser with [ES6 module support](https://caniuse.com/es6-module).
 
-### index.html
+## Documentation
+
+* [User Manual](https://www.snik.eu/graph/html/manual.html)
+* [Layout Help](https://www.snik.eu/graph/html/layoutHelp.html)
+* [Troubleshooting](https://www.snik.eu/graph/html/troubleshooting.html)
+* [SNIK Project Homepage](https://www.snik.eu/)
+* generate API documentation in the `docs` folder with `npm run doc`
 
 ## Development
 
@@ -38,15 +46,10 @@ Requires a browser with [ES6 module support](https://caniuse.com/es6-module).
 
 If the website and the SPARQL endpoint are on different domains, you may need to bypass CORS.
 
-### Browser Settings 
-These are only needed if you access index.html locally over the file prototocol, that is without using a web server, for example as `file:///home/konrad/projekte/snik/cytoscape/index.html`.
-
-* Firefox needs `security.fileuri.strict_origin_policy;false` in `about:config`
-* Chrome needs the "--allow-file-access-from-files" parameter to load modules locally but still fails to load them from files in version 69.0.3497.100, so for developing with Chrome you need a local web server, for example via `python -m http.server`.
-
 ### Publish
 
-Execute the setup step one but use `npm install --only=prod`.
+SNIK Graph is automatically built from the master branch using a GitHub action.
+Build locally with `npm run build`.
 If you want the newest changes from the GitHub repository, follow the master branch. The newest version may be unstable, however, so for production it is safer to check out the newest release.
 
 ### Update
@@ -58,14 +61,8 @@ If you want the newest changes from the GitHub repository, follow the master bra
 Make sure it runs locally before updating on the server, see releasechecklist.md.
 
 ### Code Style
-Specified in the ESlint config file `.eslintrc.json`.
-Use the [Cytoscape.js notation](http://js.cytoscape.org/#notation/functions) for JSDoc types and generic parameters, such as "ele" for "a collection of a single element (node or edge)".
-Instead of "eles", "cy.collection" may be used as JSDoc type.
-
-### TypeScript
-
-The code is vanilla ES6 JavaScript, only the JSDoc comments contain TypeScript types.
-Use the `typecheck` script to use TypeScript as a static type checker.
+Specified in the [ESlint](.eslintrc.json) and [Prettier](.prettierrc) configuration files.
+Husky will apply Prettier formating on every commit.
 
 ### Scripts
 * `npm run test` runs the mocha tests
