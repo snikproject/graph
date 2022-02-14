@@ -7,7 +7,7 @@ import Fuse from "fuse.js";
 import log from "loglevel";
 import timer from "./timer";
 
-interface Item {
+export interface Item {
 	uri: string;
 	l: Array<string>;
 	def?: string;

@@ -203,7 +203,7 @@ export async function presetLayout(cy, pos) {
 	return status;
 }
 
-interface LayoutConfig {
+export interface LayoutConfig {
 	name: string;
 }
 

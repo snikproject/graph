@@ -7,7 +7,7 @@ export const state = {
 	version: VERSION,
 };
 
-interface StateJson {
+export interface StateJson {
 	filters;
 	options;
 }

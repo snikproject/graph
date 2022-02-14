@@ -170,17 +170,17 @@ export class Graph {
       @param {boolean} [changeLayout=false] arrange the given node and its close matches in the center and the connected nodes in a circle around them.
       @param {Direction} [only] show edges that originate from node, not those that end in it. Optional and defaults to false.
       @return {function} show star function applied to multiple nodes  */
-	showStarMultiplexed(changeLayout: boolean = false, direction: Direction) {
+	showStarMultiplexed(changeLayout: boolean = false, direction?: Direction) {
 		return this.multiplex((x) => this.showStar(x, changeLayout, direction), undefined, true);
 	}
 	/** Multiplex star operations into a new view.
       @param {boolean} [changeLayout=false] arrange the given node and its close matches in the center and the connected nodes in a circle around them.
       @param {boolean} [direction=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.
       @return {function} show star function applied to multiple nodes  */
-	async showStarMultiplexedNew(changeLayout, direction) {
+	async showStarMultiplexedNew(changeLayout: boolean, direction: Direction) {
 		const graph = await this.newGraph();
-		const f = () => {
-			graph.multiplex((x) => graph.showStar(graph.assimilate(x), changeLayout, direction), graph.assimilate(this.cy.nodes(":selected")), true)();
+		const f = (eles) => {
+			graph.multiplex((eles) => graph.showStar(graph.assimilate(eles), changeLayout, direction), graph.assimilate(this.cy.nodes(":selected")), true)();
 			return graph;
 		};
 		return f;

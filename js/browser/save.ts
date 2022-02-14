@@ -111,8 +111,9 @@ export function saveGraph(graph) {
 	saveJson(json, "snik.json");
 }
 
-interface TabContent {
+export interface TabContent {
 	title: string;
+	/** Cytoscape.js graph as JSON */
 	graph: any;
 }
 
