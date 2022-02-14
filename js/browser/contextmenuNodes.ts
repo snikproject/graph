@@ -124,7 +124,8 @@ export default function nodeCommands(graph: Graph): Array<MenuItem> {
 			selector: "node",
 			//select: ()=>graph.newGraph("Star").showStarMultiplexed(false)(),
 			onClickFunction: async (event) => {
-				(await graph.showStarMultiplexedNew(false, Direction.BOTH))(event.target);
+				const newGraph = (await graph.showStarMultiplexedNew(false, Direction.BOTH))(event.target);
+				newGraph.cy.elements(":selected").unselect(); // fit bug workaround
 			},
 		},
 		{

@@ -179,8 +179,10 @@ export class Graph {
       @return {function} show star function applied to multiple nodes  */
 	async showStarMultiplexedNew(changeLayout, direction) {
 		const graph = await this.newGraph();
-		const f = graph.multiplex((x) => graph.showStar(graph.assimilate(x), changeLayout, direction), graph.assimilate(this.cy.nodes(":selected")), true);
-		//graph.cy.fit(graph.cy.elements(":visible")); // doesn't work correctly
+		const f = () => {
+			graph.multiplex((x) => graph.showStar(graph.assimilate(x), changeLayout, direction), graph.assimilate(this.cy.nodes(":selected")), true)();
+			return graph;
+		};
 		return f;
 	}
 	/** Highlight the give node and all its directly connected nodes (in both directions).
