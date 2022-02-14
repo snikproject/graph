@@ -196,14 +196,14 @@ export function savePng(graph, dayMode, full, highRes) {
 
 /**
 Save the graph as a SVG (vector format).
-@param {Graph} graph the graph to save as PNG
+@param {Graph} graph the graph to save as SVG
 @param {boolean} dayMode whether day mode is active
 @param {boolean} full Iff true, include the whole graph, otherwise only include what is inside the canvas boundaries.
 @return {void}
 */
 export function saveSvg(graph, dayMode, full = true) {
 	const options = {
-		full: full, // default to full
+		full,
 		scale: 1,
 		bg: dayMode ? "white" : "black", // background according to color mode
 	};
