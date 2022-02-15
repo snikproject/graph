@@ -231,7 +231,7 @@ export class Menu {
 					["html/manual.html", "Manual"],
 					//["https://www.snik.eu/sites/www.snik.eu/files/files/uploads/Einfuehrung/snik-tutorial.pdf", "Tutorial"], // todo: fix link and uncomment
 					["html/layoutHelp.html", "Layout Help"],
-					//["https://imise.github.io/snik-cytoscape.js/", "Developer Documentation"], // todo: fix link and uncomment
+					["doc/index.html", "Developer Documentation"],
 					//["https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured", "YouTube Channel"],
 					["html/troubleshooting.html", "Troubleshooting"],
 					["html/contribute.html", "Contribute"],

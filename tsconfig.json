@@ -19,7 +19,8 @@
 	"typedocOptions": {
 		"entryPoints": ["./js"],
 		"entryPointStrategy": "expand",
-		"out": "docs"
+		"exclude": "js/config.ts",
+		"out": "doc"
 	},
 	"include": ["js/**/*", "globals.d.ts"],
 	"exclude": ["node_modules"]

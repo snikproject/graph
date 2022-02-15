@@ -1,4 +1,6 @@
-/** @module */
+/** Configuration template with default values.
+Copy to js/config.ts after checkout and adapt to your preferences.
+@module */
 
 import { LogLevelDesc } from "loglevel";
 

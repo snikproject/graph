@@ -38,6 +38,12 @@ jobs:
           cp -r html dist
           cp -r img dist
 
+      - name: Doc
+        run: |
+          npm install typedoc
+          npm run doc
+          cp -r doc dist 
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:

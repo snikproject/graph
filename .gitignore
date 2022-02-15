@@ -16,5 +16,6 @@ test.js
 test.html
 data/snik.json
 package-lock.json
-docs
+doc
 tsout
+paper/paper.pdf
