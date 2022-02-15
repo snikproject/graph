@@ -6,6 +6,7 @@
 		"lib": ["es2020", "dom", "dom.iterable", "esnext"],
 		"target": "esnext",
 		"allowSyntheticDefaultImports": true,
+		"isolatedModules": true,
 		"typeRoots": ["./node_modules/@types"],
 		"types": ["vite/client", "jest", "node"],
 		"module": "esnext",

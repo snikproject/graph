@@ -28,7 +28,6 @@ jobs:
 
       - name: Test
         run: |
-          npm install jest ts-jest # the only dev dependencies we need
           npm run test
 
       - name: Build
@@ -40,7 +39,6 @@ jobs:
 
       - name: Doc
         run: |
-          npm install typedoc
           npm run doc
           cp -r doc dist 
 

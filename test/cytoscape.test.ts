@@ -5,8 +5,6 @@ import cytoscape from "cytoscape";
 import euler from "cytoscape-euler";
 import "isomorphic-fetch";
 cytoscape.use(euler);
-//import {LocalStorage} from 'node-localstorage';
-//global.localStorage = new LocalStorage('./scratch');
 import chai from "chai";
 const assert = chai.assert;
 
