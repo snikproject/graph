@@ -39,6 +39,7 @@ Requires a browser with <a href="https://caniuse.com/es6-module">ES6 module supp
   <h2>Documentation</h2>
 </a>
 <ul>
+<li><a href="https://snikproject.github.io/snik-graph/doc">Developer Documentation</a></li>
 <li><a href="https://www.snik.eu/graph/html/manual.html">User Manual</a></li>
 <li><a href="https://www.snik.eu/graph/html/layoutHelp.html">Layout Help</a></li>
 <li><a href="https://www.snik.eu/graph/html/troubleshooting.html">Troubleshooting</a></li>
@@ -53,7 +54,6 @@ Requires a browser with <a href="https://caniuse.com/es6-module">ES6 module supp
 <a href="#setup" id="setup" style="color: inherit; text-decoration: none;">
   <h3>Setup</h3>
 </a>
-<p>If the website and the SPARQL endpoint are on different domains, you may need to bypass CORS.</p>
 
 <a href="#publish" id="publish" style="color: inherit; text-decoration: none;">
   <h3>Publish</h3>
@@ -82,8 +82,11 @@ Husky will apply Prettier formating on every commit.</p>
   <h3>Scripts</h3>
 </a>
 <ul>
-<li><code>npm run test</code> runs the mocha tests</li>
-<li><code>npm run jsdoc</code> generates the API documentation</li>
+<li><code>npm run dev</code> start the the local development server</li>
+<li><code>npm run build</code> build into the <code>dist</code> folder</li>
+<li><code>npm run test</code> run the unit tests</li>
+<li><code>npm run doc</code> generate the API documentation</li>
+<li><code>npm run prepare</code> is automatically run on <code>npm install</code>, prepare Husky code format commit hook</li>
 </ul>
 
 <a href="#loglevels" id="loglevels" style="color: inherit; text-decoration: none;">
@@ -101,7 +104,7 @@ Husky will apply Prettier formating on every commit.</p>
   <h2>Adaptation</h2>
 </a>
 <p>If you like SNIK Graph and want to use it with different data, please open an issue.
-While the main part is written generally, there .</p>
+If the website and the SPARQL endpoint are on different domains, you may need to <a href="http://vos.openlinksw.com/owiki/wiki/VOS/VirtTipsAndTricksCORsEnableSPARQLURLs">enable CORS in the SPARQL endpoint</a>.</p>
 
 <a href="#license" id="license" style="color: inherit; text-decoration: none;">
   <h2>License</h2>
