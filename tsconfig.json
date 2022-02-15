@@ -8,7 +8,7 @@
 		"allowSyntheticDefaultImports": true,
 		"isolatedModules": true,
 		"typeRoots": ["./node_modules/@types"],
-		"types": ["vite/client", "jest", "node"],
+		"types": ["vite/client", "node"],
 		"module": "esnext",
 		"moduleResolution": "node",
 		"esModuleInterop": true,
