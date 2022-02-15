@@ -51,16 +51,17 @@ Requires a browser with <a href="https://caniuse.com/es6-module">ES6 module supp
   <h2>Development</h2>
 </a>
 
-<a href="#setup" id="setup" style="color: inherit; text-decoration: none;">
-  <h3>Setup</h3>
+<a href="#scripts" id="scripts" style="color: inherit; text-decoration: none;">
+  <h3>Scripts</h3>
 </a>
-
-<a href="#publish" id="publish" style="color: inherit; text-decoration: none;">
-  <h3>Publish</h3>
-</a>
-<p>SNIK Graph is automatically built from the master branch using a GitHub action.
-Build locally with <code>npm run build</code>.
-If you want the newest changes from the GitHub repository, follow the master branch. The newest version may be unstable, however, so for production it is safer to check out the newest release.</p>
+<ul>
+<li><code>npm run dev</code> dev server</li>
+<li><code>npm run build</code> build into <code>dist</code></li>
+<li><code>npm run preview</code> serve the <code>dist</code> folder</li>
+<li><code>npm run test</code> run unit tests</li>
+<li><code>npm run doc</code> generate API documentation</li>
+<li><code>npm run prepare</code> automatically run on <code>npm install</code>, prepare Husky Prettier commit hook</li>
+</ul>
 
 <a href="#update" id="update" style="color: inherit; text-decoration: none;">
   <h3>Update</h3>
@@ -77,17 +78,6 @@ If you want the newest changes from the GitHub repository, follow the master bra
 </a>
 <p>Specified in the <a href=".eslintrc.json">ESlint</a> and <a href=".prettierrc">Prettier</a> configuration files.
 Husky will apply Prettier formating on every commit.</p>
-
-<a href="#scripts" id="scripts" style="color: inherit; text-decoration: none;">
-  <h3>Scripts</h3>
-</a>
-<ul>
-<li><code>npm run dev</code> start the the local development server</li>
-<li><code>npm run build</code> build into the <code>dist</code> folder</li>
-<li><code>npm run test</code> run the unit tests</li>
-<li><code>npm run doc</code> generate the API documentation</li>
-<li><code>npm run prepare</code> is automatically run on <code>npm install</code>, prepare Husky code format commit hook</li>
-</ul>
 
 <a href="#loglevels" id="loglevels" style="color: inherit; text-decoration: none;">
   <h3>LogLevels</h3>
