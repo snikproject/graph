@@ -34,7 +34,6 @@ jobs:
         run: |
           npm run build
           sed -i "s|/assets|./assets|" dist/index.html
-          cp -r html dist
           cp -r img dist
 
       - name: Doc
