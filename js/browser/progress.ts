@@ -1,6 +1,4 @@
-/**
-Loading animation for long processes, such as layouting.
-@module */
+/** Loading animation for long processes, such as layouting.*/
 import { Spinner } from "spin.js";
 import "spin.js/spin.css";
 
@@ -32,7 +30,7 @@ let active = 0;
 /**
  * Not thread safe but javascript is single threaded for now.
  * @param  {function} func any function that should have its progress displayed while it is running
- * @return {void}
+ * @returns {void}
  */
 export default async function (func) {
 	if (!window) {

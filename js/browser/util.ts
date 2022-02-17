@@ -1,6 +1,4 @@
-/**
-Various utility methods.s
-@module */
+/** Various utility methods. */
 
 // update manually on release
 export const VERSION = "3.0.0";
@@ -8,7 +6,7 @@ const LOG_LIMIT = 500;
 
 /** getElementById with exception handling.
  * @param {string} id an HTML DOM id
- * @return {HTMLElement} the element with the given id */
+ * @returns {HTMLElement} the element with the given id */
 export function getElementById(id) {
 	const el = document.getElementById(id);
 	if (!el) {
@@ -21,13 +19,13 @@ export const REPO_APPLICATION = "https://github.com/snikproject/snik-graph";
 export const REPO_ONTOLOGY = "https://github.com/snikproject/ontology";
 
 /** Open a new issue on the GitHub repository.
-@param {string} repo GIT repository URL
-@param {string} title issue title
-@param {string} body issue body text
-@param {array} logs optional array of github markdown formatted log strings
-@return {void}
+@param repo - GIT repository URL
+@param title - issue title
+@param body - issue body text
+@param logs - optional array of github markdown formatted log strings
+@returns
 */
-export function createGitHubIssue(repo: string, title: string, body: string, logs?: Array<string>) {
+export function createGitHubIssue(repo: string, title: string, body: string, logs?: Array<string>): void {
 	//shorten the front end to avoid 414 Error URI too large
 	// let encodedBody = encodeURIComponent(body);
 	// if (encodedBody.length > LOG_LIMIT)

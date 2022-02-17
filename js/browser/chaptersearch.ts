@@ -1,6 +1,4 @@
-/**
-Search classes by chapter.
-@module */
+/** Search classes by chapter.*/
 import * as sparql from "../sparql";
 import * as util from "./util";
 import * as language from "../lang/language";
@@ -14,7 +12,7 @@ const labels = new Map();
 const selectedChapters = new Set();
 
 /**
-@return {Promise<Set<string>>} classes the set of classes in that chapter
+@returns {Promise<Set<string>>} classes the set of classes in that chapter
 @param {string} sub subontology, such as "bb" or "ob"
 @param {string} chapter the chapter string value exactly as in the SPARQL triples, such as "5.3".
 */
@@ -39,7 +37,11 @@ async function getClasses(sub, chapter): Promise<Set<string>> {
   }
   ORDER BY ASC(?class)`;
 
-	const bindings = await sparql.select(query);
+	interface ClassBinding {
+		class: { value: string };
+		label: { value: string };
+	}
+	const bindings = (await sparql.select(query)) as Array<ClassBinding>;
 	bindings.forEach((b) => {
 		labels.set(b.class.value, b.label.value);
 	});
@@ -97,7 +99,7 @@ async function showClasses(graph: Graph, classes: Set<string>) {
 /** Populate and show the chapter search modal.
 @param {Graph} graph the graph that is searched
 @param {string} sub subontology, such as "bb" or "ob"
-@return {Promise<void>} void promise just for waiting*/
+@returns {Promise<void>} void promise just for waiting*/
 export async function showChapterSearch(graph: Graph, sub: string): Promise<void> {
 	MicroModal.show("chapter-search");
 
@@ -134,7 +136,11 @@ export async function showChapterSearch(graph: Graph, sub: string): Promise<void
     ?c meta:chapter/meta:subChapterOf* ?ch.
   } ORDER BY ASC(?ch)`;
 
-	const bindings = await sparql.select(chapterSizeQuery);
+	interface ChapterBinding {
+		ch: { value: string };
+		count: { value: string };
+	}
+	const bindings = (await sparql.select(chapterSizeQuery)) as Array<ChapterBinding>;
 	for (const binding of bindings) {
 		const chapter = binding.ch.value;
 

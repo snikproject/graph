@@ -1,18 +1,24 @@
-/**
-Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.
-@module */
+/**Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.*/
 import * as sparql from "./sparql";
 import timer from "./timer";
 import config from "./config";
 import log from "loglevel";
 import cytoscape, { ElementDefinition } from "cytoscape";
 
+interface ClassBinding {
+	src: { value: string };
+	c: { value: string };
+	l: { value: string };
+	st: { value: string };
+	inst: { value: boolean };
+}
+
 /**
  * Query for classes from the endpoint
- * @param  {string} from SPARQL from clause
- * @return {Promise<JSON>}      SPARQL JSON result
+ * @param  from - SPARQL from clause
+ * @returns SPARQL JSON result
  */
-async function selectClasses(from) {
+async function selectClasses(from: string): Promise<Array<ClassBinding>> {
 	const sparqlClassesTimer = timer("sparql-classes");
 
 	const classQuerySimple = `
@@ -46,15 +52,15 @@ async function selectClasses(from) {
   }`;
 
 	const classQuery = config.sparql.endpoint.includes("snik.eu/sparql") ? classQuerySnik : classQuerySimple;
-	const json = await sparql.select(classQuery);
-	sparqlClassesTimer.stop(json.length + " classes");
-	return json;
+	const bindings = (await sparql.select(classQuery)) as Array<ClassBinding>;
+	sparqlClassesTimer.stop(bindings.length + " classes");
+	return bindings;
 }
 
 /** Parse "|"-separated labels with language tag into the SNIK graph label structure.
-@param {string} s a string containing "|"-separated parts
-@return {object} an object containing different language labels keyed by language tag */
-function parseLabels(s) {
+@param s - a string containing "|"-separated parts
+@returns an object containing different language labels keyed by language tag */
+function parseLabels(s: string): object {
 	const labels = s.split("|");
 	const l = {};
 	for (const label of labels) {
@@ -74,18 +80,18 @@ function parseLabels(s) {
 
 /**
  *  Creates cytoscape nodes for the classes
- * @param  {string} from a SPARQL FROM clause defining where to load the classes from
- * @return {Promise<Array.<cytoscape.ElementDefinition>>} nodes representing the classes
+ * @param   from - a SPARQL FROM clause defining where to load the classes from
+ * @returns nodes - representing the classes
  */
-async function createClassNodes(from: string) {
-	const json = await selectClasses(from);
+async function createClassNodes(from: string): Promise<Array<cytoscape.ElementDefinition>> {
+	const bindings = await selectClasses(from);
 
 	const nodes: Array<ElementDefinition> = [];
 	const sources = new Set<string>();
-	for (let i = 0; i < json.length; i++) {
+	for (let i = 0; i < bindings.length; i++) {
 		let source;
-		if (json[i].src) {
-			source = json[i].src.value;
+		if (bindings[i].src) {
+			source = bindings[i].src.value;
 			if (source.includes("http://www.snik.eu/ontology/")) {
 				source = source.replace("http://www.snik.eu/ontology/", "");
 			} // abbreviate snik
@@ -94,11 +100,11 @@ async function createClassNodes(from: string) {
 		nodes.push({
 			group: "nodes",
 			data: {
-				id: json[i].c.value,
-				l: parseLabels(json[i].l.value),
-				...(json[i].st && { st: json[i].st.value.replace("http://www.snik.eu/ontology/meta/", "").substring(0, 1) }),
+				id: bindings[i].c.value,
+				l: parseLabels(bindings[i].l.value),
+				...(bindings[i].st && { st: bindings[i].st.value.replace("http://www.snik.eu/ontology/meta/", "").substring(0, 1) }),
 				...(source && { source: source }),
-				...(json[i].inst && { inst: true }), // has at least one instance
+				...(bindings[i].inst && { inst: true }), // has at least one instance
 			},
 		});
 	}
@@ -112,14 +118,14 @@ async function createClassNodes(from: string) {
 		}
 	}
 
-	log.debug(json.length + " Nodes loaded from SPARQL");
+	log.debug(bindings.length + " Nodes loaded from SPARQL");
 	return nodes;
 }
 
 /** Query for instances from the endpoint
-* @param  {string} from a SPARQL FROM clause defining where to load the instances from
- @return {Promise<JSON>}      SPARQL JSON result */
-async function selectInstances(from) {
+* @param from - a SPARQL FROM clause defining where to load the instances from
+ @returns SPARQL JSON result */
+async function selectInstances(from: string): Promise<Array<object>> {
 	const sparqlInstancesTimer = timer("sparql-classes");
 	const instanceQuery = `SELECT
   DISTINCT(?i)
@@ -136,9 +142,9 @@ async function selectInstances(from) {
 }
 
 /** Create cytoscape nodes for the instances.
-* @param  {string} from a SPARQL FROM clause defining where to load the instances from
- @return {Promise<Array<object>>} cytoscape nodes for the instances */
-async function createInstanceNodes(from: string) {
+* @param  from - a SPARQL FROM clause defining where to load the instances from
+ @returns cytoscape nodes for the instances */
+async function createInstanceNodes(from: string): Promise<Array<object>> {
 	const json = await selectInstances(from);
 	/** @type{cytoscape.ElementDefinition[]} */
 	const nodes: Array<cytoscape.ElementDefinition> = [];
@@ -146,8 +152,8 @@ async function createInstanceNodes(from: string) {
 		nodes.push({
 			group: "nodes",
 			data: {
-				id: json[i].i.value,
-				l: parseLabels(json[i].l.value),
+				id: json[i]["i"].value,
+				l: parseLabels(json[i]["l"].value),
 				instance: true,
 			},
 		});
@@ -157,13 +163,13 @@ async function createInstanceNodes(from: string) {
 
 /**
  * Query for triples between resources in the SPARQL endpoint
- * @param  {string} from      SPARQL from clause
- * @param  {string} fromNamed SPARQL from named clause
- * @param  {boolean} instances whether to load instances as well
- * @param  {boolean} virtual   whether to select virtual triples from domain and range statements
- * @return {Promise<JSON>}           SPARQL query result object
+ * @param  from - SPARQL from clause
+ * @param  fromNamed - SPARQL from named clause
+ * @param  instances - whether to load instances as well
+ * @param  virtual - whether to select virtual triples from domain and range statements
+ * @returns SPARQL query result object
  */
-async function selectTriples(from, fromNamed, instances, virtual) {
+async function selectTriples(from: string, fromNamed: string, instances: boolean, virtual: boolean): Promise<Array<object>> {
 	const sparqlPropertiesTimer = timer("sparql-properties");
 	const tripleQuerySimple = `
     select  ?c ?p ?d
@@ -199,26 +205,26 @@ async function selectTriples(from, fromNamed, instances, virtual) {
 }
 
 /**  Creates cytoscape edges for the resources in the SPARQL endpoint
- * @param  {string} from      SPARQL from clause
- * @param  {string} fromNamed SPARQL from named clause
- * @param  {boolean} instances whether to load instances as well
- * @param  {boolean} virtual   whether to select virtual triples from domain and range statements
- * @return {Promise<JSON>}           SPARQL query result object
+ * @param  from      - SPARQL from clause
+ * @param  fromNamed - SPARQL from named clause
+ * @param  instances - whether to load instances as well
+ * @param  virtual   - whether to select virtual triples from domain and range statements
+ * @returns {Promise<JSON>}           SPARQL query result object
  */
-async function createEdges(from, fromNamed, instances, virtual) {
+async function createEdges(from: string, fromNamed: string, instances: boolean, virtual: boolean): Promise<Array<cytoscape.ElementDefinition>> {
 	const json = await selectTriples(from, fromNamed, instances, virtual);
 	const edges: Array<ElementDefinition> = [];
 	for (let i = 0; i < json.length; i++) {
 		edges.push({
 			group: "edges",
 			data: {
-				source: json[i].c.value,
-				target: json[i].d.value,
+				source: json[i]["c"].value,
+				target: json[i]["d"].value,
 				id: String(i),
-				p: json[i].p.value,
-				pl: json[i].p.value.replace(/.*[#/]/, ""),
-				...(json[i].g && { g: json[i].g.value }), // don't add null/undefined values, see https://stackoverflow.com/a/40560953/398963
-				...(json[i].ax && { ax: json[i].ax.value }), // in case of virtual triples: the URI of the axiom
+				p: json[i]["p"].value,
+				pl: json[i]["p"].value.replace(/.*[#/]/, ""),
+				...(json[i]["g"] && { g: json[i]["g"].value }), // don't add null/undefined values, see https://stackoverflow.com/a/40560953/398963
+				...(json[i]["ax"] && { ax: json[i]["ax"].value }), // in case of virtual triples: the URI of the axiom
 			},
 			//position: { x: 200, y: 200 }
 		});
@@ -229,28 +235,34 @@ async function createEdges(from, fromNamed, instances, virtual) {
 
 /**
  * Create cytoscape nodes for classes and optionally also instances.
- * @param  {string} from      a SPARQL from clause
- * @param  {boolean} instances whether to load instances in addition to the classes
- * @return {Promise<Array>} an array of nodes
+ * @param from -      a SPARQL from clause
+ * @param instances - whether to load instances in addition to the classes
+ * @returns an array of nodes
  */
-async function createNodes(from, instances) {
+async function createNodes(from: string, instances: boolean): Promise<Array<cytoscape.ElementDefinition>> {
 	if (!instances) {
 		return createClassNodes(from);
 	}
 	const [classNodes, instanceNodes] = await Promise.all([createClassNodes(from), createInstanceNodes(from)]);
+	// @ts-expect-error
 	return classNodes.concat(instanceNodes);
 }
 
 /** Clears the given graph and loads a set of subontologies. Data from RDF helper graphs is loaded as well, such as virtual triples.
-  * @param{cytoscape.Core} cy the cytoscape graph to clear and to load the data into
-  * @param{string[]} graphs subontologies to load.
-  * @param  {boolean} instances whether to load instances as well
-  * @param  {boolean} virtual   whether to select virtual triples from domain and range statements
-  * @return {Promise<void>} nothing
+  * @param cy - the cytoscape graph to clear and to load the data into
+  * @param graphs - subontologies to load.
+  * @param instances - whether to load instances as well
+  * @param virtual - whether to select virtual triples from domain and range statements
+  * @returns nothing
   @example
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
-export default async function loadGraphFromSparql(cy, graphs, instances = false, virtual = false) {
+export default async function loadGraphFromSparql(
+	cy: cytoscape.Core,
+	graphs: Array<string>,
+	instances: boolean = false,
+	virtual: boolean = false
+): Promise<void> {
 	log.debug(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
 	const from = graphs.map((g) => `FROM <${g}>`).reduce((a, b) => a + "\n" + b, "");
 	const fromNamed = from.replace(/FROM/g, "FROM NAMED");

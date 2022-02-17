@@ -1,6 +1,4 @@
-/**
-Helper functions for RDF properties.
-@module */
+/**Helper functions for RDF properties.*/
 import * as rdf from "./rdf";
 import * as NODE from "./node";
 import log from "loglevel";
@@ -57,11 +55,11 @@ for (const a of propertyData) {
 
 /**
  * Possible properties between two nodes in the graph.
- * @param  {cytoscape.NodeSingular} subjectNode node representing a resource in subject position
- * @param  {cytoscape.NodeSingular} objectNode  node representing a resource in object position
- * @return {Array<Property>}                    all properties that are allowed between the given subject and object node
+ * @param  subjectNode - node representing a resource in subject position
+ * @param  objectNode - node representing a resource in object position
+ * @returns all properties that are allowed between the given subject and object node
  */
-export function possible(subjectNode, objectNode): Array<Property> {
+export function possible(subjectNode: cytoscape.NodeSingular, objectNode: cytoscape.NodeSingular): Array<Property> {
 	const possibleProperties = properties.filter((property) => {
 		return (
 			(!property.domain || property.domain === subjectNode.data(NODE.SUBTOP)) && // domain

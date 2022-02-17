@@ -1,11 +1,10 @@
-/** @module*/
 import config from "../config";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import log from "loglevel";
 
 /** Record log statements and show some to the user via overlays.
- *  @return {void} */
+ *  @returns {void} */
 export default function initLog() {
 	const notyf = new Notyf({
 		duration: 10000,
@@ -60,13 +59,10 @@ export default function initLog() {
 		) => {
 			tmp(message); // execute the saved original function, which writes to console
 			if (value[level] <= value[config.logLevelMemory]) {
-				// @ts-expect-error
-				if (!log.logs) {
-					//@ts-expect-error
-					log.logs = [];
+				if (!log["logs"]) {
+					log["logs"] = [];
 				}
-				// @ts-expect-error
-				log.logs.push(message);
+				log["logs"].push(message);
 			}
 			if (value[level] <= value[config.logLevelDisplay]) {
 				notyf.open({ type: level, message: message });

@@ -1,6 +1,5 @@
 /** Provides constants for node data attributes.
-Not to be confused with the Node.js JavaScript runtime.
-@module */
+Not to be confused with the Node.js JavaScript runtime.*/
 
 export const ID = "id";
 export const LABEL = "l";

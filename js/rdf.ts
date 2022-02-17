@@ -1,7 +1,6 @@
-/**
+/** @module
 RDF helper functions.
-@module */
-/** Order important! substrings of other prefixes must come later. */
+Order important! substrings of other prefixes must come later. */
 const prefixes = [
 	["meta", "http://www.snik.eu/ontology/meta/"],
 	["bb", "http://www.snik.eu/ontology/bb/"],
@@ -16,10 +15,10 @@ const prefixes = [
 ];
 
 /**
- * @param  {string} uri any URI
- * @return {String} the prefix part of a URI if it is defined in this file.
+ * @param  uri - any URI
+ * @returns the prefix part of a URI if it is defined in this file.
  */
-export function longPrefix(uri) {
+export function longPrefix(uri: string) {
 	for (const prefix of prefixes) {
 		if (uri.startsWith(prefix[1])) {
 			return prefix[1].replace(/\/$/, "");
@@ -29,10 +28,10 @@ export function longPrefix(uri) {
 }
 
 /** Shortens a URI if possible using SNIK prefixes defined in this file.
- * @param  {String} uri a URI, for example "http://www.snik.eu/ontology/meta/Function".
- * @return {String} the shortened URI, for example "meta:Function". If no prefix applies, return the input as is.
+ * @param  uri - a URI, for example "http://www.snik.eu/ontology/meta/Function".
+ * @returns the shortened URI, for example "meta:Function". If no prefix applies, return the input as is.
  */
-export function short(uri) {
+export function short(uri: string): string {
 	for (const prefix of prefixes) {
 		uri = uri.replace(prefix[1], prefix[0] + ":");
 	}
@@ -40,10 +39,10 @@ export function short(uri) {
 }
 
 /** Restores a URI if possible that is shortened using a SNIK prefix to its usual form using prefixes defined in this file.
- * @param  {String} uri a prefixed URI, for example "meta:Function".
- * @return {String} the restored URI, for example "http://www.snik.eu/ontology/meta/Function".  If no prefix applies, return the input as is.
+ * @param  uri - a prefixed URI, for example "meta:Function".
+ * @returns the restored URI, for example "http://www.snik.eu/ontology/meta/Function".  If no prefix applies, return the input as is.
  */
-export function long(uri) {
+export function long(uri: string): string {
 	for (const prefix of prefixes) {
 		uri = uri.replace(prefix[0] + ":", prefix[1]);
 	}
@@ -52,10 +51,10 @@ export function long(uri) {
 
 /**
  * Returns the subontology a SNIK uri belongs to.
- * @param  {string} uri a SNIK URI
- * @return {string}     the subontology of the URI
+ * @param  uri - a SNIK URI
+ * @returns     the subontology of the URI
  */
-export function sub(uri) {
+export function sub(uri: string): string {
 	if (uri.startsWith("http://www.snik.eu/ontology/")) {
 		return uri.replace(/\/[^/]*$/, "");
 	}

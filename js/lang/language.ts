@@ -1,6 +1,4 @@
-/**
-Language dependend strings.
-@module */
+/** Language dependend strings.*/
 
 import en from "./en";
 import de from "./de";
@@ -15,10 +13,10 @@ const strings = {
 let language = "en";
 
 /** Sets the user interface language if it exists.
-@param {string} lang the language tag that the user interface should switch to
+@param lang - the language tag that the user interface should switch to
 @return {boolean} whether the language exists
 */
-export function setLanguage(lang) {
+export function setLanguage(lang: string): boolean {
 	log.debug(`Set language from ${language} to ${lang}.`);
 	if (!strings[lang]) {
 		log.warn(`Language ${lang} not found. Keeping language ${language}.`);
@@ -31,15 +29,15 @@ export function setLanguage(lang) {
 /**
 @return {string} the active language code, such as "en" or "de"
 */
-export function getLanguage() {
+export function getLanguage(): string {
 	return language;
 }
 
 /**
- * @param {string} key langauge independent key
- * @return {string} language dependend string
+ * @param key - langauge independent key
+ * @return language dependend string
  */
-export function getString(key) {
+export function getString(key: string): string {
 	const ss = strings[language];
 	if (!ss.all) {
 		ss.all = { ...ss.idStrings, ...ss.messageStrings };
@@ -51,9 +49,9 @@ export function getString(key) {
 
 /**
  * returns the id strings for the active language
- * @return {string}  description
+ * @return description
  */
-export function getIdStrings() {
+export function getIdStrings(): Array<string> {
 	return strings[language].idStrings;
 }
 

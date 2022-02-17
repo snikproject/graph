@@ -1,6 +1,4 @@
 /** Populates the menu bar on the top and initializes the context menu.*/
-/**
-@module */
 import * as save from "./save";
 import * as layout from "../layout";
 import * as NODE from "../node";
@@ -34,16 +32,17 @@ export class Menu {
 		this.addMenu();
 		menu = this;
 	}
-	/** @return {boolean} whether subontologies are to be displayed separately. */
-	separateSubs() {
+
+	/** @returns hether subontologies are to be displayed separately. */
+	separateSubs(): boolean {
 		return this.separateSubsBox.checked;
 	}
-	///** @return {boolean} whether star operations should be shown in a new view. */
+	///** @returns {boolean} whether star operations should be shown in a new view. */
 	// starNewView() {return this.starNewViewBox.checked;}
 	/** Sets the preferred node label language attribute. Use the values from node.js.
 	 * @param {string} lang the language to set
-	 * @return {void} */
-	setLanguage(lang) {
+	 * @returns */
+	setLanguage(lang: string): void {
 		if (!language.setLanguage(lang)) {
 			return;
 		}
@@ -58,24 +57,23 @@ export class Menu {
 		}
 	}
 	/** Notifies the user of the program version so that errors can be properly reported.
-	 * @return {void} */
-	static about() {
+	 * @returns nothing */
+	static about(): void {
 		window.alert("SNIK Graph version " + util.VERSION);
 	}
 	/** Creates a GitHub issue for the visualization.
-	 *  @return {void} */
-	static visualizationFeedback() {
+	 *  @returns nothing */
+	static visualizationFeedback(): void {
 		util.createGitHubIssue(
 			util.REPO_APPLICATION,
 			"",
 			"Please type your issue here:\n\n\n\n" + "!!Please do not delete the following text, because its the log for developers!!\n\n",
-			// @ts-expect-error
-			log.logs
+			log["logs"]
 		);
 	}
 	/** Show all nodes that are connected via close matches to visible nodes.
-	 *  @return {void} */
-	showCloseMatches() {
+	 *  @returns nothing */
+	showCloseMatches(): void {
 		log.debug("show close matches start");
 		const visible = activeState().graph.cy.elements(".unfiltered").not(".hidden");
 		//const closeMatchEdges = this.graph.cy.edges('[pl="closeMatch"]');
@@ -93,9 +91,9 @@ export class Menu {
   entries is an array of arrays of size two.
   entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed.
   entries[i][1] is a label as a string.
-  * @return {Object} the array of menu elements.
+  * @returns the array of menu elements.
   */
-	menuData() {
+	menuData(): Array<any> {
 		return [
 			{
 				label: "File",
@@ -247,7 +245,7 @@ export class Menu {
 	/**
 	 * Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.
 	 * @param {Array<HTMLAnchorElement>} as an empty array that will be filled with the anchor elements
-	 * @return {void} */
+	 * @returns {void} */
 	addOptions(as: Array<HTMLAnchorElement>) {
 		const optionsContent = util.getElementById("options-menu-content");
 		const names = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode"]; // ,"starNewView"
@@ -304,7 +302,7 @@ export class Menu {
 		});
 	}
 	/** Adds the menu to the graph parent DOM element and sets up the event listeners.
-	 *  @return {void} */
+	 *  @returns {void} */
 	addMenu() {
 		console.groupCollapsed("Add menu");
 		//const frag = new DocumentFragment();
@@ -426,7 +424,7 @@ export class Menu {
 	}
 	/** Close the dropdown if the user clicks outside of the menu.
 	 *  @param {Event} e a click event
-	 *  @return {void} */
+	 *  @returns {void} */
 	static closeListener(e) {
 		if (
 			e &&
@@ -442,7 +440,7 @@ export class Menu {
 		}
 	}
 	/** Save session-based options (not user preferences) to JSON.
-	 *  @return {void} */
+	 *  @returns {void} */
 	optionsToJSON() {
 		const sessionOptions = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode"];
 		const options = {};
@@ -453,7 +451,7 @@ export class Menu {
 	}
 	/** Restore session-based options from the output of toJSON().
 	 *  @param {object} json an option object
-	 *  @return {void} */
+	 *  @returns {void} */
 	optionsFromJSON(json) {
 		const currentOptions = this.optionsToJSON();
 		for (const [name, checked] of Object.entries(json)) {

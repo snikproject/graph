@@ -1,4 +1,3 @@
-/** @module */
 import * as util from "./util";
 import { View, mainView } from "./view";
 import * as layout from "../layout";
@@ -9,7 +8,7 @@ import "golden-layout/src/css/goldenlayout-dark-theme.css";
 import "../../css/goldenlayout.css";
 
 /** Create, configure and return a GoldenLayout instance.
- *  @return {GoldenLayout} the created GoldenLayout instance */
+ *  @returns {GoldenLayout} the created GoldenLayout instance */
 export function goldenLayout() {
 	const layoutConfig = {
 		settings: { selectionEnabled: true },
@@ -21,7 +20,6 @@ export function goldenLayout() {
 		],
 	};
 
-	// //@ts-expect-error This expression is not constructable
 	const viewLayout = new GoldenLayout(layoutConfig);
 	// TODO: update stack on focus change
 

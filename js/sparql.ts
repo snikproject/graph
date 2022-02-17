@@ -1,6 +1,4 @@
-/**
-Functions for querying the SNIK SPARQL endpoint.
-@module */
+/** Functions for querying the SNIK SPARQL endpoint. */
 import config from "./config";
 import log from "loglevel";
 
@@ -11,21 +9,21 @@ export const SPARQL_LIMIT = 100;
 
 /** Query public SNIK SPARQL endpoint with a SELECT query.
 ASK queries should also work but better use {@link ask} instead as it is more convenient.
-@param {string} query A valid SPARQL query.
-@param {string} graph An optional SPARQL graph.
-@param {string} endpoint An optional SPARQL endpoint. May override FROM statements.
-@return {Promise<object[]>} A promise of a set of SPARQL select result bindings.
+@param query - A valid SPARQL query.
+@param graph - An optional SPARQL graph.
+@param endpoint - An optional SPARQL endpoint. May override FROM statements.
+@returns A promise of a set of SPARQL select result bindings.
 */
-export async function select(query, graph?: string, endpoint: string = config.sparql.endpoint) {
+export async function select(query: string, graph?: string, endpoint: string = config.sparql.endpoint): Promise<Array<object>> {
 	const browser = typeof window !== "undefined";
 	let url = endpoint + "?query=" + encodeURIComponent(query) + "&format=json";
 	if (graph) {
 		url += "&default-graph-uri=" + encodeURIComponent(graph);
 	}
 	try {
-		const response = await fetch(url);
-		const json = await response.json();
-		const bindings = json.results.bindings;
+		const response: Response = await fetch(url);
+		const json: JSON = await response.json();
+		const bindings: Array<object> = json["results"].bindings;
 
 		if (browser) console.groupCollapsed("SPARQL " + query.split("\n", 1)[0] + "...");
 		//is never entered on our data with limitation to 99
@@ -52,11 +50,11 @@ export async function select(query, graph?: string, endpoint: string = config.sp
 }
 
 /** Query public SNIK SPARQL endpoint with an ASK (boolean) query.
-@param {string} query A valid SPARQL ask query.
-@param {string} graphOpt An optional SPARQL graph.
-@return {Promise<boolean>} A promise of the boolean SPARQL ask result.
+@param query - A valid SPARQL ask query.
+@param graphOpt - An optional SPARQL graph.
+@returns A promise of the boolean SPARQL ask result.
 */
-export function ask(query, graphOpt) {
+export function ask(query: string, graphOpt?: string): Promise<boolean> {
 	//if (!graphOpt){ graphOpt = SPARQL_GRAPH; }//to ensure that dbpedia matches are not shown
 	const url =
 		config.sparql.endpoint + "?query=" + encodeURIComponent(query) + "&format=json" + (graphOpt ? "&default-graph-uri=" + encodeURIComponent(graphOpt) : "");
@@ -70,11 +68,11 @@ export function ask(query, graphOpt) {
 }
 
 /** Query the public SNIK SPARQL endpoint with a describe query, which describes a single resource.
-@param {string} uri A resource URI
-@param {string} [graphOpt] An optional SPARQL graph.
-@return {Promise<string>} A promise of the SPARQL describe result as text.
+@param uri - A resource URI
+@param graphOpt - An optional SPARQL graph.
+@returns A promise of the SPARQL describe result as text.
 */
-export function describe(uri, graphOpt?: string): Promise<string> {
+export function describe(uri: string, graphOpt?: string): Promise<string> {
 	const query = "describe <" + uri + ">";
 	const url =
 		config.sparql.endpoint + "?query=" + encodeURIComponent(query) + "&format=text" + (graphOpt ? "&default-graph-uri=" + encodeURIComponent(graphOpt) : "");

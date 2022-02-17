@@ -1,6 +1,4 @@
-/**
-Show the environment of a single node using a special layout.
-@module */
+/** Show the environment of a single node using a special layout.*/
 import * as sparql from "../sparql";
 import * as NODE from "../node";
 import { Graph } from "./graph";
@@ -15,7 +13,7 @@ Hides all other nodes. Resetting the view unhides the other nodes but keeps the 
 Recalculate the layout to place those nodes in relation to the whole graph again.
 @param {string} clazz The URI of the class.
 @param {string} subTop The sub top letter of the class (R,F or E)
-@return {void}
+@returns {void}
 */
 export default async function classUse(clazz, subTop) {
 	// preparation and check
@@ -58,20 +56,26 @@ export default async function classUse(clazz, subTop) {
       }
     }`;
 
-	const json = await sparql.select(query);
+	interface ClassUseBinding {
+		inner: { value: string };
+		middle: { value: string };
+		outer: { value: string };
+		outerx: { value: string };
+	}
+	const bindings = (await sparql.select(query)) as Array<ClassUseBinding>;
 
 	const [inner, middle, outer, outerx] = [...new Array(4)].map(() => new Set());
 
-	for (let i = 0; i < json.length; i++) {
-		inner.add(json[i].inner.value);
-		if (json[i].middle) {
-			middle.add(json[i].middle.value);
+	for (let i = 0; i < bindings.length; i++) {
+		inner.add(bindings[i].inner.value);
+		if (bindings[i].middle) {
+			middle.add(bindings[i].middle.value);
 		}
-		if (json[i].outer) {
-			outer.add(json[i].outer.value);
+		if (bindings[i].outer) {
+			outer.add(bindings[i].outer.value);
 		}
-		if (json[i].outerx) {
-			outerx.add(json[i].outerx.value);
+		if (bindings[i].outerx) {
+			outerx.add(bindings[i].outerx.value);
 		}
 	}
 	if (middle.size === 0) {

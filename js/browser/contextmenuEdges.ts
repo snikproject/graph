@@ -11,7 +11,7 @@ import log from "loglevel";
 
 /** Creates a human readable string of the triple that an edge represents.
  *  @param {cytoscape.EdgeSingular} edge the edge, whose label is determined
- *  @return {string} a human readable string of the triple that an edge represents. */
+ *  @returns {string} a human readable string of the triple that an edge represents. */
 function edgeLabel(edge) {
 	return rdf.short(edge.data(EDGE.SOURCE)) + " " + rdf.short(edge.data(EDGE.PROPERTY)) + " " + rdf.short(edge.data(EDGE.TARGET));
 }

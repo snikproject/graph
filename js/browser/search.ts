@@ -1,6 +1,4 @@
-/**
-Textual node search.
-@module */
+/** Textual node search.*/
 import * as sparql from "../sparql";
 import * as util from "./util";
 import * as fuse from "../fuse";
@@ -16,7 +14,7 @@ export default class Search {
 	resultNodes = [];
 	/** Add search functionality to the form.
 	 *  @param {HTMLFormElement} form a form with a search field named "query"
-	 *  @return {void} */
+	 *  @returns {void} */
 	constructor(form) {
 		form.addEventListener("submit", (event) => {
 			event.preventDefault();
@@ -25,11 +23,11 @@ export default class Search {
 		log.debug("search initialized");
 	}
 	/**
-	 * @param  {String} query The user query.
+	 * @param  {string} query The user query.
 	 * @param  {Array<String>} uris An array of OWL class URIs
-	 * @return {Boolean} Whether the search results are nonempty.
+	 * @returns {Boolean} Whether the search results are nonempty.
 	 */
-	showSearchResults(query: string, uris: string[]): boolean {
+	showSearchResults(query: string, uris: Array<string>): boolean {
 		this.resultNodes = [];
 		/** @type{HTMLTableElement} */
 		const table = util.getElementById("tab:search-results") as HTMLTableElement;
@@ -112,10 +110,10 @@ export default class Search {
 	/** Searches the SPARQL endpoint for classes with the given label.
       Case and space insensitive when not using bif:contains. Can be used by node.js.
       @deprecated Old search without fuse index. Not used anymore.
-      @param {string} userQuery the search query as given by the user
-      @return {Promise<Array<String>>} A promise with an array of class URIs.
+      @param userQuery - the search query as given by the user
+      @returns A promise with an array of class URIs.
       */
-	async search(userQuery) {
+	async search(userQuery: string): Promise<Array<string>> {
 		// prevent invalid SPARQL query and injection by keeping only alphanumeric English and German characters
 		// if other languages with other characters are to be supported, extend the regular expression
 		// remove space to make queries space insensitive, as people might search for URI suffixes which can be similar to the label so we get more recall
@@ -134,13 +132,13 @@ export default class Search {
         {?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l),"[ -]","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
 		log.debug(sparqlQuery);
 		const bindings = await sparql.select(sparqlQuery);
-		return bindings.map((b) => b.s.value);
+		return bindings.map((b) => b["s"].value);
 		//		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
 		//filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
 	}
 	/** Search the class labels and display the result to the user.
-	 *  @param {string} userQuery the search query as given by the user
-	 *  @return {Promise<false>} false to prevent page reload triggered by submit.*/
+	 *  @param userQuery - the search query as given by the user
+	 *  @returns {Promise<false>} false to prevent page reload triggered by submit.*/
 	async showSearch(userQuery) {
 		MicroModal.show("search-results");
 		// fuse returns results ordered by increasing score, where a low score is a better match than a high score

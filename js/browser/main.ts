@@ -1,6 +1,4 @@
-/**
-Entry point.
-@module */
+/** Entry point.*/
 import loadGraphFromSparql from "../loadGraphFromSparql";
 import { Menu } from "./menu";
 import Search from "./search";
@@ -19,7 +17,7 @@ import MicroModal from "micromodal";
 import log from "loglevel";
 
 /** Parse browser URL POST parameters.
-@return {void}
+@returns {void}
 */
 function parseParams() {
 	const url = new URL(window.location.href);
@@ -46,7 +44,7 @@ function parseParams() {
  * Apply parameters.
 @param {Graph} graph the graph to apply the params to
 @param {params} params parameter object
-@return {void}
+@returns {void}
  */
 async function applyParams(graph, params) {
 	try {
@@ -133,7 +131,7 @@ async function applyParams(graph, params) {
 
 /** Fill the initial Graph based on the URL GET parameters.
 @param {Graph} graph the initial graph
-@return {void}
+@returns {void}
 */
 export async function fillInitialGraph(graph) {
 	await progress(async () => {
@@ -149,7 +147,7 @@ export async function fillInitialGraph(graph) {
 const clipboard: string[] = [];
 
 /** Relegate keypresses to the active view.
-@return {void}
+@returns {void}
 */
 function initKeyListener() {
 	document.documentElement.addEventListener("keydown", (e: KeyboardEvent) => {
@@ -202,7 +200,7 @@ function initKeyListener() {
 }
 
 /** Entry point. Is run when DOM is loaded.
-@return {void}
+@returns {void}
 */
 async function main() {
 	//@ts-ignore

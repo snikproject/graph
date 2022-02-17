@@ -1,7 +1,4 @@
-/**
-Provides graph operations such as initialization, wayfinding and highlighting.
-
-@module graph*/
+/** Provides graph operations such as initialization, wayfinding and highlighting.*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
 import { style } from "./style";
 import { colorschemenight } from "./colorschemenight";
@@ -66,7 +63,7 @@ export class Graph {
 		initTimer.stop();
 	}
 	/** Returns, whether cumulative search is activated.
-	 *  @return {boolean} whether cumulative search is activated. */
+	 *  @returns {boolean} whether cumulative search is activated. */
 	cumulativeSearch() {
 		return ((document.getElementById("cumulativeSearchBox") || {}) as any).checked; // menu may not be initialized yet
 	}
@@ -75,7 +72,7 @@ export class Graph {
     Does not unhide filtered elements on its own.
     @param {cytoscape.Collection} eles the elements to hide
     @param {boolean} visible Whether to show or hide the nodes. Defaults to the sometimes implied value of true.
-    @return {void} */
+    @returns {void} */
 	static setVisible(eles, visible = true) {
 		if (visible) {
 			eles.removeClass("hidden");
@@ -89,7 +86,7 @@ export class Graph {
 	}
 	/**
     @param {cytoscape.Collection} eles the elements to assign the star mode css class to
-    @return {void}
+    @returns {void}
     */
 	static starStyle(eles) {
 		eles.removeClass("hidden");
@@ -97,7 +94,7 @@ export class Graph {
 		eles.select();
 	}
 	/** Removes all highlighting (except selection) and shows all hidden nodes.
-    @return {void} */
+    @returns {void} */
 	resetStyle() {
 		this.starMode = false;
 		this.cy.startBatch();
@@ -117,11 +114,11 @@ export class Graph {
     Hide all other nodes except when in star mode.
     @param {cytoscape.NodeSingular} to path target node
     @param {boolean} starPath whether to show the star around all nodes on the path
-    @return {function} a function that given a source node shows that path if possible and returns whether a path could be found
+    @returns {function} a function that given a source node shows that path if possible and returns whether a path could be found
     */
 	showPath(to, starPath?: boolean) {
 		/** @param {cytoscape.NodeSingular} from path source node
-		 * @return {boolean} whether a path could be found */
+		 * @returns {boolean} whether a path could be found */
 		return (from) => {
 			if (!from) {
 				log.error("No path source.");
@@ -169,14 +166,14 @@ export class Graph {
 	/** Multiplex star operations.
       @param {boolean} [changeLayout=false] arrange the given node and its close matches in the center and the connected nodes in a circle around them.
       @param {Direction} [only] show edges that originate from node, not those that end in it. Optional and defaults to false.
-      @return {function} show star function applied to multiple nodes  */
+      @returns {function} show star function applied to multiple nodes  */
 	showStarMultiplexed(changeLayout: boolean = false, direction?: Direction) {
 		return this.multiplex((x) => this.showStar(x, changeLayout, direction), undefined, true);
 	}
 	/** Multiplex star operations into a new view.
       @param {boolean} [changeLayout=false] arrange the given node and its close matches in the center and the connected nodes in a circle around them.
       @param {boolean} [direction=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.
-      @return {function} show star function applied to multiple nodes  */
+      @returns {function} show star function applied to multiple nodes  */
 	async showStarMultiplexedNew(changeLayout: boolean, direction: Direction) {
 		const graph = await this.newGraph();
 		const f = (eles) => {
@@ -190,7 +187,7 @@ export class Graph {
       @param {cytoscape.Collection} center node or collection of nodes. center of the star
       @param {boolean} [changeLayout=false] arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
       @param {Direction} direction only show edges that originate from node, not those that end in it. Optional and defaults to false.
-      @return {void}
+      @returns {void}
       */
 	showStar(center, changeLayout: boolean = false, direction?: Direction) {
 		console.log("center", center);
@@ -284,7 +281,7 @@ export class Graph {
 	/** Show a "spider worm" between two nodes, which combines a star around "from " with a shortest path to "to".
       Hide all other nodes except when in star mode.
       @param {cytoscape.NodeSingular} to path target node, gets a "star" around it as well
-      @return {boolean} whether a path could be found
+      @returns {boolean} whether a path could be found
       */
 	showWorm(to) {
 		if (this.showPath(to)) {
@@ -296,7 +293,7 @@ export class Graph {
 	/** Highlight the given two nodes, directly connected nodes (in both directions) of both of them and a shortest path between the two.
       Hide all other nodes except when in star mode.
       @param {cytoscape.NodeSingular} to path target node
-      @return {void} whether a path could be found
+      @returns {void} whether a path could be found
       */
 	showDoubleStar(to) {
 		const from = this.getSource();
@@ -310,12 +307,12 @@ export class Graph {
 	}
 	/** Get the equivalent elements in this graph of the given elements from another graph.
 	 * @param {cytoscape.Collection} eles elements from another graph
-	 * @return {cytoscape.Collection} equivalent elements that exist in this graph */
+	 * @returns {cytoscape.Collection} equivalent elements that exist in this graph */
 	assimilate(eles) {
 		return this.getElementsByIds(eles.map((ele) => ele.id()));
 	}
 	/** @param {Array<string>} ids iterable of cytoscape ids
-	 * @return {cytoscape.Collection} cytoscape collection of elements with those ids */
+	 * @returns {cytoscape.Collection} cytoscape collection of elements with those ids */
 	getElementsByIds(ids) {
 		const own = this.cy.collection();
 		for (const id of ids) {
@@ -325,7 +322,7 @@ export class Graph {
 		return own;
 	}
 	/** Returns the start node for all path operations
-      @return {?cytoscape.NodeSingular} the start node for all path operations, or null if none exists. */
+      @returns {?cytoscape.NodeSingular} the start node for all path operations, or null if none exists. */
 	getSource() {
 		if (this.pathSource) {
 			return this.pathSource;
@@ -338,7 +335,7 @@ export class Graph {
 	}
 	/** Set the given node as source for all path operations.
       @param {cytoscape.NodeSingular} node the new source
-      @return {void} whether node is not null
+      @returns {void} whether node is not null
       */
 	setSource(node) {
 		log.debug("Setting path source to " + node.data(NODE.ID));
@@ -366,7 +363,7 @@ export class Graph {
 	}
 	/** Inverts the screen colors in the canvas for day mode. Uses an inverted node js style file to keep node colors.
       @param {boolean} enabled whether the canvas colors should be inverted
-      @return {void}
+      @returns {void}
       */
 	invert(enabled) {
 		if (enabled) {
@@ -381,7 +378,7 @@ export class Graph {
 	}
 	/** Center and highlight the given URI.
       @param {string} uri The URI of a class in the graph.
-      @return {boolean} whether presenting the URI succeeded */
+      @returns {boolean} whether presenting the URI succeeded */
 	presentUri(uri) {
 		this.cy.zoom(0.6);
 		const nodes = this.cy.elements().nodes().filter(`node[id= "${uri}"]`);
@@ -410,7 +407,7 @@ export class Graph {
 	/** Center and highlight the given URIs.
 	 * @param  {Array<string>} uris the URIs to present
 	 * @param   hideOthers whether to hide the other nodes
-	 * @return {boolean} whether presenting the URIs succeeded */
+	 * @returns {boolean} whether presenting the URIs succeeded */
 	presentUris(uris, hideOthers: boolean = false) {
 		if (uris.length < 1) {
 			log.warn("All search results are only available on the SPARQL endpoint but not in the graph.");
@@ -448,7 +445,7 @@ export class Graph {
 	 * @param {nodeFunction} f a function that accepts a single node
 	 * @param {cytoscape.NodeCollection} nodes The nodes, each of which will be passed as parameter to a separate call of the given function. Can be null or undefined,
 	 * @param {boolean} direct whether the input is a cytoscape collection that can be passed directly into the function without looping, which can be much faster if possible.
-	 * @return {void} */
+	 * @returns {void} */
 	multiplex(f: (node?: NodeSingular | NodeCollection) => void, nodes?: NodeCollection, direct?: boolean) {
 		return (ele?: NodeSingular) => {
 			const selected = this.cy.nodes(":selected");
@@ -476,7 +473,7 @@ export class Graph {
 	}
 	/** Open an issue on GitHub to remove the given node.
 	 * @param {cytoscape.NodeSingular} node the node representing the resource that should be removed
-	 * @return {void}*/
+	 * @returns {void}*/
 	createRemoveIssue(node) {
 		this.cy.remove(node);
 		const clazzShort = rdf.short(node.data(NODE.ID));
@@ -510,7 +507,7 @@ export class Graph {
 	}
 	/** Move all matching nodes together.
 	 * @param {number} distance the distance between them
-	 * @return {void} */
+	 * @returns {void} */
 	moveAllMatches(distance: number) {
 		for (let i = 0; i < this.matchComponents.length; i++) {
 			const comp = this.matchComponents[i];
@@ -524,7 +521,7 @@ export class Graph {
 	 * position in a circle around the first node
 	 * @param  {cytoscape.NodeCollection} nodes the nodes to position
 	 * @param  {number} distance the radius of the circle
-	 * @return {void}
+	 * @returns {void}
 	 */
 	moveNodes(nodes, distance) {
 		nodes.positions(nodes[0].position());
@@ -534,7 +531,7 @@ export class Graph {
 	}
 	/** Sets whether close matches are grouped in compound nodes.
 	 * @param {boolean} enabled Whether to activate or deactivate combine match mode.
-	 * @return {Promise<void>} **/
+	 * @returns {Promise<void>} **/
 	async combineMatch(enabled) {
 		await progress(() => {
 			if (!enabled) {
@@ -599,7 +596,7 @@ export class Graph {
 	}
 	/**Show close matches of the given nodes.
 	 * @param {cytoscape.NodeCollection} nodes the nodes whose close matches are shown
-	 * @return {void} */
+	 * @returns {void} */
 	showCloseMatch(nodes) {
 		const edges = nodes.connectedEdges(".unfiltered").filter('[pl="closeMatch"]'); // ,[pl="narrowMatch"],[pl="narrowMatch"]
 		const matches = edges.connectedNodes(".unfiltered");
@@ -611,7 +608,7 @@ export class Graph {
 		Graph.starStyle(eles);
 	}
 	/** Shows how any two subontologies are interconnected. The user chooses two subontologies and gets shown all pairs between them.
-	 * @return {void} */
+	 * @returns {void} */
 	subOntologyConnectivity() {
 		MicroModal.show("subontology-connectivity");
 		const form = document.getElementById("subontology-connectivity-form") as HTMLFormElement;
@@ -654,7 +651,7 @@ export class Graph {
 	}
 	/** Create and return a new graph if the option is set to create star operations in a new view.
 	 *  @param {string} title optional view title
-	 *  @return {Graph} this iff the option to create stars in a new view is unset, a new view's graph if it is set */
+	 *  @returns {Graph} this iff the option to create stars in a new view is unset, a new view's graph if it is set */
 	async newGraph(title?: string) {
 		//if(!mainView.state.graph.menu.starNewView()) {return this;} // using the menu option to determine whether to create a new graph
 		if (this !== mainView.state.graph) {

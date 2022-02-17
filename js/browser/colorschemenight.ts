@@ -1,6 +1,4 @@
-/** Standard dark mode Cytoscape color scheme.
-@module
-*/
+/** Standard dark mode Cytoscape color scheme.*/
 import * as EDGE from "../edge";
 
 const colorschemenight = [

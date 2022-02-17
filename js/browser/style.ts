@@ -2,7 +2,7 @@
 Cytoscape style file, excluding color information, which is contained in the color schemes.
 @see colorSchemeDay
 @see colorSchemeNight
-@module */
+*/
 import * as NODE from "../node";
 import * as EDGE from "../edge";
 import * as language from "../lang/language";

@@ -1,11 +1,9 @@
-/**
-Lets the user save files generated from the loaded graph.
-@module */
-import * as layout from "../layout";
+/** Lets the user save files generated from the loaded graph. */
 import config from "../config";
 import { toJSON } from "./state";
 import { mainView, partViews, View } from "./view";
 import { VERSION } from "./util";
+import { Graph } from "./graph";
 import log from "loglevel";
 import c from "cytoscape";
 import svg from "cytoscape-svg";
@@ -15,68 +13,14 @@ const a = document.createElement("a"); // reused for all saving, not visible to 
 document.body.appendChild(a);
 a.style.display = "none";
 
-/** JSON.stringify analogue with excluded values to save space. Can only be used on objects.
-@param {object} object a JSON object
-@param {string[]} exclude key to be excluded from prettification
-@param {string} space A String that's used to insert white space into the output JSON string for readability purposes. Like the space parameter for JSON.stringify but cannot be a Number.
-@returns {string} a string representation of the given object
-Source: https://stackoverflow.com/a/64222534/398963 */
-function stringify(object, exclude, space) {
-	const recur = (obj, spacing, inarray) => {
-		let txt = "";
-
-		if (inarray) {
-			if (Array.isArray(obj)) {
-				txt += "[";
-				for (let i = 0; i < obj.length; i++) {
-					txt += recur(obj[i], spacing + space, true);
-				}
-				txt = txt.replace(/,$/, "");
-				txt = txt + "]";
-			} else if (typeof obj === "object" && obj !== null) {
-				txt += "{" + recur(obj, spacing + space, false) + "\n" + spacing + "}";
-			} else if (typeof obj === "string") {
-				txt += obj.replaceAll(/"/g, '\\"') + '"';
-			} else {
-				txt += obj;
-			}
-			return txt + ", ";
-		} else {
-			for (const key of Object.keys(obj)) {
-				if (exclude === key) {
-					txt += "\n" + spacing + '"' + key + '": ' + JSON.stringify(obj[key]);
-				} else if (Array.isArray(obj[key])) {
-					txt += "\n" + spacing + '"' + key + '": [';
-					for (let i = 0; i < obj[key].length; i++) {
-						txt += recur(obj[key][i], spacing + space, true);
-					}
-					txt = txt.replace(/,$/, "");
-					txt = txt + "]";
-				} else if (typeof obj[key] === "object" && obj[key] !== null) {
-					txt += "\n" + spacing + '"' + key + '": {' + recur(obj[key], spacing + space, false) + "\n" + spacing + "}";
-				} else if (typeof obj[key] === "string") {
-					txt += "\n" + spacing + '"' + key + '": "' + obj[key].replaceAll(/"/g, '\\"') + '"';
-				} else {
-					txt += "\n" + spacing + '"' + key + '": ' + obj[key];
-				}
-				txt += ",";
-			}
-			txt = txt.replace(/,$/, "");
-			return txt;
-		}
-	};
-	return Array.isArray(object) ? "[" + recur(object, space, true) + "\n" + "]" : "{" + recur(object, space, false) + "\n" + "}";
-}
-
 /**
 Create a JSON file out of a JSON data string and lets the user save it.
 Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
-@param data a JSON object
-@param {string} fileName the name of the saved file
-@return {void}
+@param data - a JSON object
+@param fileName - the name of the saved file
+@returns {void}
 */
-export function saveJson(data: any, fileName: string) {
-	//const json = stringify(data,"graph",'\t'); // partially prettified variant not working correctly
+export function saveJson(data: object, fileName: string) {
 	const json = JSON.stringify(data); // unprettified variant
 	const blob = new Blob([json], { type: "application/json" });
 	const url = window.URL.createObjectURL(blob);
@@ -90,11 +34,11 @@ export function saveJson(data: any, fileName: string) {
 /**
 Lets the user save a file.
 Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
-@param {string} url a URL that resolves to a file
-@param {string} fileName the name of the saved file
-@return {void}
+@param url - a URL that resolves to a file
+@param fileName - the name of the saved file
+@returns {void}
 */
-export function saveUrl(url, fileName) {
+export function saveUrl(url: string, fileName: string): void {
 	a.href = url;
 	a.download = fileName;
 	a.click();
@@ -103,8 +47,8 @@ export function saveUrl(url, fileName) {
 }
 
 /** Saves the whole layouted graph as a Cytoscape JSON file.
- *  @param {Graph} graph the graph to save
- *  @return {void} */
+ *  @param graph - the graph to save
+ *  @returns {void} */
 export function saveGraph(graph) {
 	const json = graph.cy.json();
 	delete json.style; // the style gets corrupted on export due to including functions, the default style will be used instead
@@ -124,7 +68,7 @@ export interface Session {
 }
 
 /** Saves the contents of all views as a custom JSON file.
- *  @return {void} */
+ *  @returns {void} */
 export function saveSession(options) {
 	const mainGraph = {
 		title: mainView.state.title,
@@ -154,8 +98,8 @@ export interface ViewJson {
 
 /** Saves the contents of the current view as a custom JSON file.
  *  @param view a GoldenLayout view
- *  @return {void} */
-export function saveView(view: View) {
+ *  @returns nothing */
+export function saveView(view: View): void {
 	const json: ViewJson = {
 		version: VERSION,
 		title: view.state.title,
@@ -168,14 +112,14 @@ export function saveView(view: View) {
 
 /**
 Save the graph as a PNG (lossless compression).
-@param {Graph} graph the graph to save as PNG
-@param {boolean} dayMode whether day mode is active
-@param {boolean} full Iff true, include the whole graph, otherwise only include what is inside the canvas boundaries.
-@param {boolean} highRes Iff true, generate a high resolution picture using the maximum width and height from config.js.
+@param graph - the graph to save as PNG
+@param dayMode - whether day mode is active
+@param full - Iff true, include the whole graph, otherwise only include what is inside the canvas boundaries.
+@param highRes - Iff true, generate a high resolution picture using the maximum width and height from config.js.
 Otherwise, either use the native resolution of the canvas (full=false) or the standard resolution (full=true) from config.js.
-@return {void}
+@returns nothing
 */
-export function savePng(graph, dayMode, full, highRes) {
+export function savePng(graph: Graph, dayMode: boolean, full: boolean, highRes: boolean): void {
 	const options = {
 		bg: dayMode ? "white" : "black", // background according to color mode
 		full: full,
@@ -197,12 +141,12 @@ export function savePng(graph, dayMode, full, highRes) {
 
 /**
 Save the graph as a SVG (vector format).
-@param {Graph} graph the graph to save as SVG
-@param {boolean} dayMode whether day mode is active
-@param {boolean} full Iff true, include the whole graph, otherwise only include what is inside the canvas boundaries.
-@return {void}
+@param graph - the graph to save as SVG
+@param dayMode - whether day mode is active
+@param full - Iff true, include the whole graph, otherwise only include what is inside the canvas boundaries.
+@returns nothing
 */
-export function saveSvg(graph, dayMode, full = true) {
+export function saveSvg(graph: Graph, dayMode: boolean, full: boolean = true): void {
 	const options = {
 		full,
 		scale: 1,

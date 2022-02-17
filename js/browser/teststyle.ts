@@ -1,6 +1,4 @@
-/**
-Test style for error detection.
-@module */
+/** Test style for error detection.*/
 const style = {
 	style: [
 		{

@@ -1,7 +1,5 @@
-/**
-Creates the circular context menu that can be opened on top of a node/edge.
-Needs to be initialized before it can be used via the default export function.
-@module */
+/** Creates the circular context menu that can be opened on top of a node/edge.
+Needs to be initialized before it can be used via the default export function.*/
 import nodeCommands from "./contextmenuNodes";
 import edgeCommands from "./contextmenuEdges";
 import { flatHelp } from "../help";
@@ -45,7 +43,7 @@ export class ContextMenu {
 	/** Clears existing context menus of this menu and create anew the different context menus depending on whether dev and ext mode are active.
   @param {boolean} dev whether developer mode menu entries are shown
   @param {boolean} ext whether extended mode menu entries are shown
-   * @return {void} */
+   * @returns {void} */
 	/*
 	populate(dev, ext) {
 		this.reset();
@@ -56,7 +54,7 @@ export class ContextMenu {
 
 	/** Add tooltips to all menu entries.
 	 *  @param {object} cxtMenu a context menu without tooltips
-	 *  @return {void} */
+	 *  @returns {void} */
 	static addTippy(cxtMenu) {
 		cxtMenu.commands.forEach((c) => {
 			if (c.tippy) {
@@ -80,7 +78,7 @@ export class ContextMenu {
  * Add a logging wrapper to a context menu command.
  * @param  {object} cmd            the context menu command to wrap if it isn't already wrapped
  * @param  {function} messageFunction a function that describes the element
- * @return {void}
+ * @returns {void}
  */
 export function logWrap(cmd, messageFunction) {
 	if (!cmd.onClickFunction || cmd.onClickFunction.wrapped) {

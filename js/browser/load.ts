@@ -1,5 +1,4 @@
-/** Module for loading files both locally from the server and via upload from the client.
-@module */
+/** Module for loading files both locally from the server and via upload from the client.*/
 import { View, reset, activeView } from "./view";
 import { ViewJson, Session } from "./save";
 import config from "../config";
@@ -11,7 +10,7 @@ import log from "loglevel";
 Uploads a JSON file from the user.
 @param {Event} event a file input change event
 @param callback the code to execute, receives a JSON object
-@return {void}
+@returns {void}
 */
 function uploadJson(event: Event, callback: (o: JSON) => any) {
 	const file = (event.target as HTMLInputElement).files[0];
@@ -24,7 +23,7 @@ function uploadJson(event: Event, callback: (o: JSON) => any) {
  * Clear the graph and load the contents of the Cytoscape.js JSON file in it.
  * @param  {Graph} graph the graph instance to load into
  * @param  {object} json Cytoscape.js/Cytoscape JSON format graph object
- * @return {void}
+ * @returns {void}
  */
 function loadGraphFromJson(graph, json) {
 	graph.cy.elements().remove();
@@ -46,7 +45,7 @@ function loadGraphFromJson(graph, json) {
 Curried function.
 Load a layouted graph from the JSON file specified by the given file input change event.
 @param {object} graph the graph to load the file into
-@return {function(Event)} a function that loads the graph from a file input change event
+@returns {function(Event)} a function that loads the graph from a file input change event
 */
 export const loadGraphFromJsonFile = (graph) => (event) => {
 	uploadJson(event, (json) => {
@@ -55,7 +54,7 @@ export const loadGraphFromJsonFile = (graph) => (event) => {
 };
 /** Loads the contents of all views from a JSON file.
 @param {Event} event a file input change event
-@return {void}
+@returns {void}
 */
 export async function loadSessionFromJsonFile(event) {
 	if (config.multiview.warnOnSessionLoad && !confirm("This will override the current session. Continue?")) {
@@ -89,7 +88,7 @@ export async function loadSessionFromJsonFile(event) {
 }
 /** Loads a stored view from a JSON file.
 @param {Event} event a file input change event
-@return {void}
+@returns {void}
 */
 export function loadView(event) {
 	//@ts-ignore
@@ -114,7 +113,7 @@ Add an upload entry to the file menu.
 @param func the function to be executed when the user clicks on the menu entry
 @param {Array<HTMLAnchorElement>} as the file menu in the form of anchor elements that get styled by CSS
 //@param optionsFromJson a function that loads session options, such as whether day mode is activated
-@return {void}
+@returns {void}
 */
 function addLoadEntry(parent: Element, i18n: string, description: string, func: EventListener, as: Array<HTMLAnchorElement> /*, optionsFromJson: Function*/) {
 	const a = document.createElement("a");
@@ -142,7 +141,7 @@ Cannot use the simpler default menu creation method because file upload only wor
 @param  {Graph} graph the graph instance to load into
 @param {Element} parent the parent element of the menu
 @param {Array<HTMLAnchorElement>} as the file menu in the form of anchor elements that get styled by CSS
-@return {void}
+@returns {void}
 */
 export function addFileLoadEntries(graph, parent, as) {
 	addLoadEntry(parent, "load-view", "Load Partial Graph into Session", loadView, as);

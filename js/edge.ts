@@ -1,5 +1,4 @@
-/** Provides constants for node edge attributes.
-@module */
+/** Provides constants for node edge attributes.*/
 
 export const SOURCE = "source";
 export const TARGET = "target";

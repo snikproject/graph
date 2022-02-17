@@ -1,6 +1,4 @@
-/**
-Fuzzy search with fuse.js.
-@module */
+/** Fuzzy search with fuse.js.*/
 import * as sparql from "./sparql";
 import config from "./config";
 import Fuse from "fuse.js";
@@ -31,8 +29,14 @@ const options = {
 	],
 };
 
+interface IndexBinding {
+	uri: { value: string };
+	l: { value: string };
+	def: { value: string };
+}
+
 /** Create fulltext index from SPARQL endpoint.
-@return {Promise<Array<object>>} the index items for testing*/
+@returns {Promise<Array<object>>} the index items for testing*/
 export async function createIndex() {
 	if (typeof window !== "undefined") console.groupCollapsed("Create Fuse.js index");
 	const indexTimer = timer("Create Fuse search index");
@@ -53,7 +57,7 @@ export async function createIndex() {
     ${config.searchCloseMatch ? "UNION {?c skos:closeMatch|^skos:closeMatch ?cm. ?cm rdfs:label|skos:altLabel ?l.}" : ""}
     OPTIONAL {?c skos:definition ?def.}
   }`;
-	const bindings = await sparql.select(sparqlQuery);
+	const bindings = (await sparql.select(sparqlQuery)) as Array<IndexBinding>;
 	const items: Array<Item> = [];
 	for (const b of bindings) {
 		const suffix = b.uri.value.replace(/.*\//, "");
@@ -76,7 +80,7 @@ export async function createIndex() {
 
 /** Searches the Fuse index for resources with a similar label.
 @param {string} userQuery search query as given by a user
-@return {Promise<string[]>} the class URIs found.
+@returns {Promise<string[]>} the class URIs found.
 */
 export async function search(userQuery) {
 	if (!index) {

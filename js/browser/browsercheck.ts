@@ -27,7 +27,7 @@ const sayswho = (function () {
 /* eslint no-unused-vars: 0 */ // included from index
 /** Alerts the user if the browser version is so old, that even the transpiled and polyfilled version is not guaranteed to work.
 Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly.
-@return {void} */
+@returns {void} */
 export function browserCheckTranspiled() {
 	if ((sayswho.name === "Firefox" && sayswho.version < 50) || sayswho.name === "Internet Explorer" || (sayswho.name === "Chrome" && sayswho.version < 54)) {
 		alert(`Your browser ${sayswho.name} version ${sayswho.version} may be outdated. Graph may not work properly.`);
@@ -38,7 +38,7 @@ export function browserCheckTranspiled() {
 /* eslint no-unused-vars: 0 */ // included from index
 /**Alerts the user if the browser cannot run the nontranspiled code, which uses ES6 modules.
 Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly.
-@return {void} */
+@returns {void} */
 export function browserCheckNonTranspiled() {
 	if ((sayswho.name === "Firefox" && sayswho.version < 60) || sayswho.name === "Internet Explorer" || (sayswho.name === "Chrome" && sayswho.version < 61)) {
 		const warning = `Your browser ${sayswho.name} version ${sayswho.version} may be outdated for the development build. Graph may not work properly. Try using the transpiled production build.`;

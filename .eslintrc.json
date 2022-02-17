@@ -2,13 +2,14 @@
 	"root": true,
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
+		"project": "./tsconfig.json",
 		"ecmaVersion": 2020,
 		"sourceType": "module",
 		"ecmaFeatures": {
 			"impliedStrict": true
 		}
 	},
-	"plugins": ["@typescript-eslint"],
+	"plugins": ["@typescript-eslint/eslint-plugin", "eslint-plugin-tsdoc"],
 	"env": {
 		"browser": true,
 		"es2020": true,
@@ -37,7 +38,7 @@
 		"no-shadow": ["warn"],
 		"no-console": ["off"],
 		"no-duplicate-imports": ["error"],
-		"dot-notation": ["error"],
+		"dot-notation": ["off"],
 		"eqeqeq": ["error"],
 		"eol-last": ["error"],
 		"max-len": ["warn", 240],
@@ -46,6 +47,7 @@
 		"array-bracket-spacing": ["error"],
 		"no-unneeded-ternary": ["error"],
 		"no-unexpected-multiline": ["off"],
+		"@typescript-eslint/no-explicit-any": ["off"],
 		"no-var": ["error"],
 		"no-control-regex": ["off"],
 		"curly": ["warn"],
@@ -55,18 +57,8 @@
 		"comma-style": ["error", "last"],
 		"class-methods-use-this": ["off"],
 		"no-trailing-spaces": "error",
-		"require-jsdoc": [
-			"warn",
-			{
-				"require": {
-					"FunctionDeclaration": true,
-					"MethodDefinition": true,
-					"ClassDeclaration": false,
-					"ArrowFunctionExpression": false
-				}
-			}
-		],
-		"valid-jsdoc": "warn"
+		"tsdoc/syntax": "warn",
+		"tsdoc-undefined-tag": "off"
 	},
 	"settings": {
 		"import/resolver": {

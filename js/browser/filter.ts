@@ -3,8 +3,6 @@ Filters let the user toggle groups of graph elements, for example all nodes from
 Filters use the Cytoscape.js "display" attribute, while star operations (see graph.js) and reset style use the visibility attribute.
 This ensures that filters and star operations interact properly, for example that resetting the style does not show filtered nodes.
 See http://js.cytoscape.org/#style/visibility.
-
-@module
 */
 import * as NODE from "../node";
 import { checkboxKeydownListener, checkboxClickableDiv } from "./util";
@@ -85,7 +83,7 @@ class Filter {
 	}
 
 	/** label
-	 * @return {string} the label*/
+	 * @returns {string} the label*/
 	toString() {
 		return this.label;
 	}
@@ -93,7 +91,7 @@ class Filter {
 	/**
   Set the visibility of the nodes selected by the filter.
   @param {boolean} visible whether the nodes should be visible
-  @return {void}
+  @returns {void}
   */
 	setVisible(visible) {
 		if (this.visible === visible) {
@@ -129,7 +127,7 @@ class Filter {
 Add filter entries to the filter menu.
 @param {HTMLElement} parent the parent element to attach the entries to
 @param {array} as an empty array of HTML anchors to be filled
-@return {void}
+@returns {void}
 */
 export function addFilterEntries(parent, as) {
 	for (const datum of filterData) {
@@ -140,7 +138,7 @@ export function addFilterEntries(parent, as) {
 }
 
 /** Saves the visibility values of all filters.
-@return {object} JSON representation of all filters */
+@returns {object} JSON representation of all filters */
 export function toJSON() {
 	const json = {};
 	for (const filter of filters) {
@@ -151,7 +149,7 @@ export function toJSON() {
 
 /** Loads the visibility values and applies it to all filters.
 @param {object} json JSON representation of all filters
-@return {void}
+@returns {void}
 */
 export function fromJSON(json) {
 	for (const filter of filters) {

@@ -1,14 +1,14 @@
-/**  Add an overlay with performance statistics such as FPS and number of classes.
-@module */
+/**  Add an overlay with performance statistics such as FPS and number of classes.*/
 import Stats from "stats.js";
+
 /**
  * Show the performance overlay.
  * @param {cytoscape.Core} cy The core to add the overlay to.
- * @return {void}
+ * @returns {void}
  */
 export function addOverlay(cy: cytoscape.Core) {
 	const statss: Array<Stats> = [];
-	const basics = self.performance && (self.performance as any).memory ? 3 : 2;
+	const basics = 2;
 	for (let i = 0; i < basics + 2; i++) {
 		const stats = new Stats();
 		(stats as any).domElement.style.cssText = `position:absolute;top:0px;right:${100 * i}px;`;
