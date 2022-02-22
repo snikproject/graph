@@ -3,10 +3,8 @@ import Stats from "stats.js";
 
 /**
  * Show the performance overlay.
- * @param {cytoscape.Core} cy The core to add the overlay to.
- * @returns {void}
- */
-export function addOverlay(cy: cytoscape.Core) {
+ * @param cy - The core to add the overlay to. */
+export function addOverlay(cy: cytoscape.Core): void {
 	const statss: Array<Stats> = [];
 	const basics = 2;
 	for (let i = 0; i < basics + 2; i++) {

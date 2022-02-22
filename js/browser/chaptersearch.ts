@@ -5,18 +5,17 @@ import * as language from "../lang/language";
 import { Graph } from "./graph";
 import MicroModal from "micromodal";
 
-/** @type {Map<String,Array<string>>} */
-const chapters = new Map();
+const chapters: Map<string, Array<string>> = new Map();
 const labels = new Map();
 
 const selectedChapters = new Set();
 
 /**
-@returns {Promise<Set<string>>} classes the set of classes in that chapter
-@param {string} sub subontology, such as "bb" or "ob"
-@param {string} chapter the chapter string value exactly as in the SPARQL triples, such as "5.3".
+@returns classes the set of classes in that chapter
+@param sub - subontology, such as "bb" or "ob"
+@param chapter - the chapter string value exactly as in the SPARQL triples, such as "5.3".
 */
-async function getClasses(sub, chapter): Promise<Set<string>> {
+async function getClasses(sub: string, chapter: string): Promise<Set<string>> {
 	// Using .../meta:subChapterOf* does not work for unknown reasons, maybe because of the old Virtuoso version we need for the OntoWiki.
 	// See https://stackoverflow.com/questions/58322216/sparql-property-paths-x-y-yields-different-result-than-x-union-x-y
 	const query = `SELECT DISTINCT(?class) ?label
@@ -52,10 +51,10 @@ async function getClasses(sub, chapter): Promise<Set<string>> {
 }
 
 /** Show the classes of a chapter in the class table
-@param {Graph} graph the graph that contains the nodes with the given URIs
-@param {Set<string>} classes resource URIs
-@returns {Promise<void>} Void promise, just for waiting. */
-async function showClasses(graph: Graph, classes: Set<string>) {
+@param graph - the graph that contains the nodes with the given URIs
+@param classes - resource URIs
+@returns Void promise, just for waiting. */
+async function showClasses(graph: Graph, classes: Set<string>): Promise<void> {
 	const table = util.getElementById("tab:chapter-search-classes") as HTMLTableElement;
 	while (table.rows.length > 0) {
 		table.deleteRow(0);
@@ -70,7 +69,7 @@ async function showClasses(graph: Graph, classes: Set<string>) {
 		showClassesInGraphLink.addEventListener("click", () => {
 			MicroModal.close("chapter-search");
 			graph.resetStyle();
-			graph.presentUris(classes, hideOthers);
+			graph.presentUris(Array.from(classes), hideOthers);
 		});
 	};
 
@@ -97,9 +96,9 @@ async function showClasses(graph: Graph, classes: Set<string>) {
 }
 
 /** Populate and show the chapter search modal.
-@param {Graph} graph the graph that is searched
-@param {string} sub subontology, such as "bb" or "ob"
-@returns {Promise<void>} void promise just for waiting*/
+@param graph - the graph that is searched
+@param sub - subontology, such as "bb" or "ob"
+@returns void promise just for waiting*/
 export async function showChapterSearch(graph: Graph, sub: string): Promise<void> {
 	MicroModal.show("chapter-search");
 
@@ -173,7 +172,7 @@ export async function showChapterSearch(graph: Graph, sub: string): Promise<void
 				graph,
 				new Set(
 					[...selectedChapters]
-						.map((ch) => chapters.get(ch))
+						.map((ch: string) => chapters.get(ch))
 						.flat()
 						.sort()
 				)

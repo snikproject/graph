@@ -1,9 +1,8 @@
 import log from "loglevel";
 
 /** Browser version checking to warn the user if the browser may not be able to display SNIK graph properly.
-Imprecise, just to cover the majority of cases.
-@type{object} */
-const sayswho = (function () {
+Imprecise, just to cover the majority of cases.  */
+const sayswho: any = (function () {
 	const ua = navigator.userAgent;
 	let tem,
 		M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
@@ -26,9 +25,8 @@ const sayswho = (function () {
 
 /* eslint no-unused-vars: 0 */ // included from index
 /** Alerts the user if the browser version is so old, that even the transpiled and polyfilled version is not guaranteed to work.
-Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly.
-@returns {void} */
-export function browserCheckTranspiled() {
+Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly.  */
+export function browserCheckTranspiled(): void {
 	if ((sayswho.name === "Firefox" && sayswho.version < 50) || sayswho.name === "Internet Explorer" || (sayswho.name === "Chrome" && sayswho.version < 54)) {
 		alert(`Your browser ${sayswho.name} version ${sayswho.version} may be outdated. Graph may not work properly.`);
 		log.warn("Browser outdated. Graph may not work properly.");
@@ -37,9 +35,8 @@ export function browserCheckTranspiled() {
 
 /* eslint no-unused-vars: 0 */ // included from index
 /**Alerts the user if the browser cannot run the nontranspiled code, which uses ES6 modules.
-Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly.
-@returns {void} */
-export function browserCheckNonTranspiled() {
+Only an approximation: Using some browser name and versions, may fail to warn or warn incorrectly. */
+export function browserCheckNonTranspiled(): void {
 	if ((sayswho.name === "Firefox" && sayswho.version < 60) || sayswho.name === "Internet Explorer" || (sayswho.name === "Chrome" && sayswho.version < 61)) {
 		const warning = `Your browser ${sayswho.name} version ${sayswho.version} may be outdated for the development build. Graph may not work properly. Try using the transpiled production build.`;
 		alert(warning);

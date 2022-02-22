@@ -5,14 +5,13 @@ import config from "../config";
 import { fromJSON } from "./state";
 import { VERSION } from "./util";
 import log from "loglevel";
+import type { Graph } from "./graph";
 
 /**
 Uploads a JSON file from the user.
-@param {Event} event a file input change event
-@param callback the code to execute, receives a JSON object
-@returns {void}
-*/
-function uploadJson(event: Event, callback: (o: JSON) => any) {
+@param event - a file input change event
+@param callback - the code to execute */
+function uploadJson(event: Event, callback: (_o: object) => any): void {
 	const file = (event.target as HTMLInputElement).files[0];
 	const reader = new FileReader();
 
@@ -21,14 +20,14 @@ function uploadJson(event: Event, callback: (o: JSON) => any) {
 }
 /**
  * Clear the graph and load the contents of the Cytoscape.js JSON file in it.
- * @param  {Graph} graph the graph instance to load into
- * @param  {object} json Cytoscape.js/Cytoscape JSON format graph object
- * @returns {void}
+ * @param graph - the graph instance to load into
+ * @param json - Cytoscape.js/Cytoscape JSON format graph object
  */
-function loadGraphFromJson(graph, json) {
-	graph.cy.elements().remove();
-	graph.cy.json(json);
-	graph.cy.elements().addClass("unfiltered");
+function loadGraphFromJson(graph: Graph, json): void {
+	const cy = graph.cy;
+	cy.elements().remove();
+	cy.json(json);
+	cy.elements().addClass("unfiltered");
 	const visibleFraction = (1.0 * graph.cy.elements(":visible").size()) / graph.cy.elements().size();
 	const starMode = visibleFraction < 0.8;
 	log.debug("Load Graph from File: Visible fraction: " + visibleFraction + " set star mode to " + starMode);
@@ -36,31 +35,32 @@ function loadGraphFromJson(graph, json) {
 		(document.getElementById("combineMatchModeBox") as any).checked = true;
 	}
 	graph.starMode = starMode;
-	graph.cy.center(":visible");
-	graph.cy.fit(":visible");
-	graph.cy.elements().removeClass("highlighted");
-	graph.cy.elements().removeClass("source");
+	const visible = cy.nodes(":visible");
+	cy.center(visible);
+	cy.fit(visible);
+	cy.elements().removeClass("highlighted");
+	cy.elements().removeClass("source");
 }
+
 /**
 Curried function.
 Load a layouted graph from the JSON file specified by the given file input change event.
-@param {object} graph the graph to load the file into
-@returns {function(Event)} a function that loads the graph from a file input change event
+@param graph - the graph to load the file into
+@returns a function that loads the graph from a file input change event
 */
-export const loadGraphFromJsonFile = (graph) => (event) => {
+export const loadGraphFromJsonFile = (graph: Graph) => (event: Event) => {
 	uploadJson(event, (json) => {
 		loadGraphFromJson(graph, json);
 	});
 };
+
 /** Loads the contents of all views from a JSON file.
-@param {Event} event a file input change event
-@returns {void}
+@param event - a file input change event
 */
-export async function loadSessionFromJsonFile(event) {
+export async function loadSessionFromJsonFile(event: Event): Promise<void> {
 	if (config.multiview.warnOnSessionLoad && !confirm("This will override the current session. Continue?")) {
 		return;
 	}
-	//@ts-ignore
 	uploadJson(event, async (json: Session) => {
 		// compare versions of file and package.json and warn if deprecated
 		if (
@@ -86,12 +86,10 @@ export async function loadSessionFromJsonFile(event) {
 		fromJSON(json.state); // update changed values, keep existing values that don't exist in the save file
 	});
 }
+
 /** Loads a stored view from a JSON file.
-@param {Event} event a file input change event
-@returns {void}
-*/
-export function loadView(event) {
-	//@ts-ignore
+@param event - a file input change event */
+export function loadView(event: Event): void {
 	uploadJson(event, (json: ViewJson) => {
 		// compare versions of file and package.json and warn if deprecated
 		if (
@@ -107,15 +105,14 @@ export function loadView(event) {
 }
 /**
 Add an upload entry to the file menu.
-@param {Element} parent the parent element of the menu
-@param {string} i18n internationalization key
-@param {string} description the text of the menu item
-@param func the function to be executed when the user clicks on the menu entry
-@param {Array<HTMLAnchorElement>} as the file menu in the form of anchor elements that get styled by CSS
-//@param optionsFromJson a function that loads session options, such as whether day mode is activated
-@returns {void}
+@param parent - the parent element of the menu
+@param i18n - internationalization key
+@param description - the text of the menu item
+@param func - the function to be executed when the user clicks on the menu entry
+@param as - the file menu in the form of anchor elements that get styled by CSS
+//param optionsFromJson a function that loads session options, such as whether day mode is activated
 */
-function addLoadEntry(parent: Element, i18n: string, description: string, func: EventListener, as: Array<HTMLAnchorElement> /*, optionsFromJson: Function*/) {
+function addLoadEntry(parent: Element, i18n: string, description: string, func: EventListener, as: Array<HTMLAnchorElement>): void {
 	const a = document.createElement("a");
 	as.push(a);
 	a.classList.add("dropdown-entry");
@@ -135,15 +132,14 @@ function addLoadEntry(parent: Element, i18n: string, description: string, func: 
 	input.addEventListener("change", func);
 	// TODO: use optionsFromJson
 }
+
 /**
 Add upload entries to the file menu.
 Cannot use the simpler default menu creation method because file upload only works with an input.
-@param  {Graph} graph the graph instance to load into
-@param {Element} parent the parent element of the menu
-@param {Array<HTMLAnchorElement>} as the file menu in the form of anchor elements that get styled by CSS
-@returns {void}
-*/
-export function addFileLoadEntries(graph, parent, as) {
+@param graph - the graph instance to load into
+@param parent - the parent element of the menu
+@param as - the file menu in the form of anchor elements that get styled by CSS */
+export function addFileLoadEntries(graph: Graph, parent: HTMLElement, as: Array<HTMLAnchorElement>): void {
 	addLoadEntry(parent, "load-view", "Load Partial Graph into Session", loadView, as);
 	addLoadEntry(parent, "load-session", "Load Session", loadSessionFromJsonFile, as);
 }

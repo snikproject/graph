@@ -3,9 +3,8 @@ import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import log from "loglevel";
 
-/** Record log statements and show some to the user via overlays.
- *  @returns {void} */
-export default function initLog() {
+/** Record log statements and show some to the user via overlays. */
+export default function initLog(): void {
 	const notyf = new Notyf({
 		duration: 10000,
 		types: [

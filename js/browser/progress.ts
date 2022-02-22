@@ -27,12 +27,11 @@ const opts = {
 let spinner = null;
 let active = 0;
 
+/* eslint-disable @typescript-eslint/ban-types */
 /**
  * Not thread safe but javascript is single threaded for now.
- * @param  {function} func any function that should have its progress displayed while it is running
- * @returns {void}
- */
-export default async function (func) {
+ * @param func - any function that should have its progress displayed while it is running */
+export default async function (func: Function): Promise<void> {
 	if (!window) {
 		return;
 	} // ignore when running in nodejs
@@ -51,3 +50,4 @@ export default async function (func) {
 		spinner.stop();
 	}
 }
+/* eslint-enable */

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /**
 Cytoscape style file, excluding color information, which is contained in the color schemes.
 @see colorSchemeDay
@@ -9,7 +10,6 @@ import * as language from "../lang/language";
 import config from "../config";
 // see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing
 
-/** @type{object} */
 const style = {
 	format_version: "1.0",
 	generated_by: "cytoscape-3.4.0",

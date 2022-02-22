@@ -146,7 +146,6 @@ async function selectInstances(from: string): Promise<Array<object>> {
  @returns cytoscape nodes for the instances */
 async function createInstanceNodes(from: string): Promise<Array<object>> {
 	const json = await selectInstances(from);
-	/** @type{cytoscape.ElementDefinition[]} */
 	const nodes: Array<cytoscape.ElementDefinition> = [];
 	for (let i = 0; i < json.length; i++) {
 		nodes.push({
@@ -209,7 +208,7 @@ async function selectTriples(from: string, fromNamed: string, instances: boolean
  * @param  fromNamed - SPARQL from named clause
  * @param  instances - whether to load instances as well
  * @param  virtual   - whether to select virtual triples from domain and range statements
- * @returns {Promise<JSON>}           SPARQL query result object
+ * @returns SPARQL query result object
  */
 async function createEdges(from: string, fromNamed: string, instances: boolean, virtual: boolean): Promise<Array<cytoscape.ElementDefinition>> {
 	const json = await selectTriples(from, fromNamed, instances, virtual);
@@ -244,7 +243,7 @@ async function createNodes(from: string, instances: boolean): Promise<Array<cyto
 		return createClassNodes(from);
 	}
 	const [classNodes, instanceNodes] = await Promise.all([createClassNodes(from), createInstanceNodes(from)]);
-	// @ts-expect-error
+	// @ts-expect-error concat types
 	return classNodes.concat(instanceNodes);
 }
 

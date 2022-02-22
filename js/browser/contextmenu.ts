@@ -3,8 +3,10 @@ Needs to be initialized before it can be used via the default export function.*/
 import nodeCommands from "./contextmenuNodes";
 import edgeCommands from "./contextmenuEdges";
 import { flatHelp } from "../help";
-import cytoscape, { Collection, EdgeSingular, NodeSingular, SingularElementReturnValue } from "cytoscape";
+import cytoscape from "cytoscape";
+//{ Collection, EdgeSingular, NodeSingular, SingularElementReturnValue } from "cytoscape";
 import contextMenus from "cytoscape-context-menus";
+import type { Graph } from "./graph";
 cytoscape.use(contextMenus);
 import "cytoscape-context-menus/cytoscape-context-menus.css";
 import "cytoscape-context-menus/assets/submenu-indicator-default.svg";
@@ -24,38 +26,26 @@ const config = { menuItems: [] as Array<MenuItem> };
 
 /** context menu for nodes and edges */
 export class ContextMenu {
-	graph: cytoscape.Core;
+	graph: Graph;
 	cxtMenus: Array<Record<string, unknown>>;
 
 	/** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
   The extension itself is already registered through the plain HTML/JS import in index.html,
   which makes available cy.contextMenus().
-  @param {Graph}  graph the graph that the context menu applies to */
-	constructor(graph) {
+  @param graph - the graph that the context menu applies to */
+	constructor(graph: Graph) {
 		this.graph = graph;
 		log.debug("Register Context Menu.");
 		//console.log(config);
 		config.menuItems = [...nodeCommands(graph), ...edgeCommands(graph)];
+		// @ts-expect-error provided by cytoscape-context-menus
 		graph.cy.contextMenus(config);
 		this.cxtMenus = [];
 	}
 
-	/** Clears existing context menus of this menu and create anew the different context menus depending on whether dev and ext mode are active.
-  @param {boolean} dev whether developer mode menu entries are shown
-  @param {boolean} ext whether extended mode menu entries are shown
-   * @returns {void} */
-	/*
-	populate(dev, ext) {
-		this.reset();
-				[...nodeMenus(this.graph, dev, ext), ...new ContextMenuEdges(this.graph, dev).menus].forEach((ctxMenu) => {
-			this.cxtmenus.push(this.graph.cy.cxtmenu(ContextMenu.addTippy(ctxMenu)));
-		});
-	}*/
-
 	/** Add tooltips to all menu entries.
-	 *  @param {object} cxtMenu a context menu without tooltips
-	 *  @returns {void} */
-	static addTippy(cxtMenu) {
+	 *  @param cxtMenu - a context menu without tooltips */
+	static addTippy(cxtMenu: any): void {
 		cxtMenu.commands.forEach((c) => {
 			if (c.tippy) {
 				return;
@@ -70,23 +60,20 @@ export class ContextMenu {
 			}
 			c.content = `<img src onerror="tippy('span')"><span data-tippy-content="${tooltip}" style="padding:3em;">${c.content}</span>`;
 		});
-		return cxtMenu;
 	}
 }
 
 /**
  * Add a logging wrapper to a context menu command.
- * @param  {object} cmd            the context menu command to wrap if it isn't already wrapped
- * @param  {function} messageFunction a function that describes the element
- * @returns {void}
- */
-export function logWrap(cmd, messageFunction) {
+ * @param  cmd - the context menu command to wrap if it isn't already wrapped
+ * @param  messageFunction - a function that describes the element */
+export function logWrap(cmd: { onClickFunction; content }, messageFunction: (ele: Element) => any): void {
 	if (!cmd.onClickFunction || cmd.onClickFunction.wrapped) {
 		return;
 	}
 
 	const tmp = cmd.onClickFunction;
-	cmd.onClickFunction = (ele) => {
+	cmd.onClickFunction = (ele: Element) => {
 		log.debug("Context Menu: Operation " + cmd.content + " on " + messageFunction(ele));
 		tmp(ele);
 	};

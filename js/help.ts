@@ -130,10 +130,10 @@ export const help = {
 
 /**
  * Transforms key-string pairs of arbitrary depth to a flat object. Empty keys are descriptions of their parents.
- * @param  {object} o an object containing key-string pairs of arbitrary depth
- * @returns {object}   a flattened version of the given object
+ * @param o - an object containing key-string pairs of arbitrary depth
+ * @returns a flattened version of the given object
  */
-function flatten(o) {
+function flatten(o: object): object {
 	const flat = {};
 	for (const key in o) {
 		if (key === "") {
@@ -157,9 +157,8 @@ function flatten(o) {
 
 export const flatHelp = flatten(help);
 
-/** Add event listenerers for popups.
- *  @returns {void} */
-export function init() {
+/** Add event listenerers for popups. */
+export function init(): void {
 	for (const key in flatHelp) {
 		const value = flatHelp[key];
 		if (typeof value !== "string") {

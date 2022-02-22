@@ -25,7 +25,9 @@ export async function select(query: string, graph?: string, endpoint: string = c
 		const json: JSON = await response.json();
 		const bindings: Array<object> = json["results"].bindings;
 
-		if (browser) console.groupCollapsed("SPARQL " + query.split("\n", 1)[0] + "...");
+		if (browser) {
+			console.groupCollapsed("SPARQL " + query.split("\n", 1)[0] + "...");
+		}
 		//is never entered on our data with limitation to 99
 		if (browser && bindings.length < 100) {
 			console.table(
@@ -39,7 +41,9 @@ export async function select(query: string, graph?: string, endpoint: string = c
 		}
 		log.debug(query);
 		log.debug(url);
-		if (browser) console.groupEnd();
+		if (browser) {
+			console.groupEnd();
+		}
 
 		return bindings;
 	} catch (err) {

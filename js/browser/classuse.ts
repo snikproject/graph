@@ -11,11 +11,9 @@ let count = 0;
 /** Centers a class and shows directly and indirectly connected roles, functions and entity types in a concentric layout.
 Hides all other nodes. Resetting the view unhides the other nodes but keeps the layout of those shown before.
 Recalculate the layout to place those nodes in relation to the whole graph again.
-@param {string} clazz The URI of the class.
-@param {string} subTop The sub top letter of the class (R,F or E)
-@returns {void}
-*/
-export default async function classUse(clazz, subTop) {
+@param clazz - The URI of the class.
+@param subTop - The sub top letter of the class (R,F or E) */
+export default async function classUse(clazz: string, subTop: string): Promise<void> {
 	// preparation and check
 
 	const types = {

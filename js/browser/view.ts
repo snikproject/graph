@@ -14,14 +14,14 @@ let firstFinished = null; // following instances need to wait for the first to l
 let viewLayout = goldenLayout();
 
 /** Returns the state of the active (focussed) view.
-@returns {State} The state of the active (focussed) view. */
+@returns The state of the active (focussed) view. */
 export function activeState(): State {
 	return (viewLayout as any).selectedItem?.getActiveContentItem()?.config?.componentState;
 }
 
 /** Returns the active (focussed) view.
-@returns {object} The active (focussed) view. */
-export function activeView() {
+@returns The active (focussed) view. */
+export function activeView(): any {
 	return (viewLayout as any).selectedItem?.getActiveContentItem();
 }
 
@@ -39,9 +39,8 @@ export class View {
 	element: HTMLElement;
 	cxtMenu: ContextMenu;
 
-	/** Fill the initial graph or copy over from the main view if it is not the first.
-	 * @returns {void} */
-	async fill() {
+	/** Fill the initial graph or copy over from the main view if it is not the first. */
+	async fill(): Promise<void> {
 		const graph = this.state.graph;
 		if (mainView === null) {
 			mainView = this;
@@ -68,8 +67,8 @@ export class View {
 
 	/**
 	 * Create an empty graph and add it to the state of this view along with its Cytoscape.js instance.
-	 * @param  initialize - if initialize is true or not given, the graph is copied from the main view or, if that doesn't exist, from the SPARQL endpoint
-	 * @param  - title             optional view title
+	 * @param initialize - if initialize is true or not given, the graph is copied from the main view or, if that doesn't exist, from the SPARQL endpoint
+	 * @param title - optional view title
 	 */
 	constructor(initialize: boolean = true, title?: string) {
 		//find initial title of the new View
@@ -116,8 +115,7 @@ export class View {
 
 /** Helper function that traverses the component tree.
  *  @param x - the component to traverse
- *  @param depth - recursive depth
- *  @returns {Array<ContentItem>}*/
+ *  @param depth - recursive depth */
 function traverse(x: ContentItem, depth: number): Array<ContentItem> {
 	const removeTabsArray: Array<ContentItem> = [];
 	if (x.type === "component") {
@@ -132,9 +130,8 @@ function traverse(x: ContentItem, depth: number): Array<ContentItem> {
 	}
 	return removeTabsArray;
 }
-/** Close all tabs except the first one.
- *  @returns {void} */
-export function reset() {
+/** Close all tabs except the first one. */
+export function reset(): void {
 	const removeTabsArray = traverse(viewLayout.root, 0);
 	for (const content of removeTabsArray) {
 		content.remove();

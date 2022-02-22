@@ -1,24 +1,23 @@
-/**
-Creates the circular context menu that can be opened on top of an edge.
-@module */
+/** Creates the circular context menu that can be opened on top of an edge.*/
 import * as rdf from "../rdf";
 import * as util from "./util";
 import * as EDGE from "../edge";
 import * as language from "../lang/language";
 import { Graph } from "./graph";
-import { logWrap, ontoWikiUrl, MenuItem } from "./contextmenu";
+import { ontoWikiUrl, MenuItem } from "./contextmenu";
 import log from "loglevel";
+import { EdgeSingular } from "cytoscape";
 
 /** Creates a human readable string of the triple that an edge represents.
- *  @param {cytoscape.EdgeSingular} edge the edge, whose label is determined
- *  @returns {string} a human readable string of the triple that an edge represents. */
-function edgeLabel(edge) {
+ *  @param edge - the edge, whose label is determined
+ *  @returns a human readable string of the triple that an edge represents. */
+function edgeLabel(edge: EdgeSingular): string {
 	return rdf.short(edge.data(EDGE.SOURCE)) + " " + rdf.short(edge.data(EDGE.PROPERTY)) + " " + rdf.short(edge.data(EDGE.TARGET));
 }
 
 /** Register modular edge context menu.
-@param {Graph} graph the graph that the context menu operates on
-@returns {Array} an array of commands
+@param graph - the graph that the context menu operates on
+@returns an array of commands
 */
 export default function edgeCommands(graph: Graph): Array<MenuItem> {
 	const commands: Array<MenuItem> = [

@@ -42,7 +42,7 @@ export class Property {
 	restriction: boolean;
 
 	/** Sets up the property from an array.
-	 * @param {Array} array Contains 6 propertys: [uri,label,domain,range,interontology,restriction]. */
+	 * @param array - Contains 6 propertys: [uri,label,domain,range,interontology,restriction]. */
 	constructor(array: Array<any>) {
 		[this.uri, this.label, this.domain, this.range, this.interontology, this.restriction] = array;
 		this.uri = rdf.long(this.uri);

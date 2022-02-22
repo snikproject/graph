@@ -1,5 +1,4 @@
-/** @module
-RDF helper functions.
+/** RDF helper functions.
 Order important! substrings of other prefixes must come later. */
 const prefixes = [
 	["meta", "http://www.snik.eu/ontology/meta/"],

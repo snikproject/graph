@@ -52,11 +52,11 @@ class Filter {
 
 	/**
   Creates filter with HTML elements, filter functionality and listeners.
-  @param {string} selector a Cytoscape.js selector, see {@link http://js.cytoscape.org/#selectors}
-  @param {string} label the menu entry label
-  @param {string} i18n internationalization key
+  @param selector - a Cytoscape.js selector, see {@link http://js.cytoscape.org/#selectors}
+  @param label - the menu entry label
+  @param i18n - internationalization key
   */
-	constructor(selector, label, i18n) {
+	constructor(selector: string, label: string, i18n: string) {
 		this.selector = selector;
 		//let input = document.createRange().createContextualFragment('<input type="checkbox" class="filterbox" autocomplete="off" checked="true">'); // can't attach events to fragments
 		const input = document.createElement("input");
@@ -83,17 +83,15 @@ class Filter {
 	}
 
 	/** label
-	 * @returns {string} the label*/
-	toString() {
+	 * @returns the label*/
+	toString(): string {
 		return this.label;
 	}
 
 	/**
   Set the visibility of the nodes selected by the filter.
-  @param {boolean} visible whether the nodes should be visible
-  @returns {void}
-  */
-	setVisible(visible) {
+  visible whether the nodes should be visible */
+	setVisible(visible: boolean): void {
 		if (this.visible === visible) {
 			return;
 		}
@@ -125,11 +123,9 @@ class Filter {
 
 /**
 Add filter entries to the filter menu.
-@param {HTMLElement} parent the parent element to attach the entries to
-@param {array} as an empty array of HTML anchors to be filled
-@returns {void}
-*/
-export function addFilterEntries(parent, as) {
+@param parent - the parent element to attach the entries to
+@param as - an empty array of HTML anchors to be filled */
+export function addFilterEntries(parent: HTMLElement, as: Array<HTMLAnchorElement>): void {
 	for (const datum of filterData) {
 		const filter = new Filter(datum[0], datum[1], datum[2]);
 		parent.appendChild(filter.a);
@@ -138,8 +134,8 @@ export function addFilterEntries(parent, as) {
 }
 
 /** Saves the visibility values of all filters.
-@returns {object} JSON representation of all filters */
-export function toJSON() {
+@returns JSON representation of all filters */
+export function toJSON(): object {
 	const json = {};
 	for (const filter of filters) {
 		json[filter.label] = filter.visible;
@@ -148,10 +144,8 @@ export function toJSON() {
 }
 
 /** Loads the visibility values and applies it to all filters.
-@param {object} json JSON representation of all filters
-@returns {void}
-*/
-export function fromJSON(json) {
+@param json - JSON representation of all filters */
+export function fromJSON(json: object): void {
 	for (const filter of filters) {
 		filter.checkbox.checked = json[filter.label];
 		filter.visible = json[filter.label];

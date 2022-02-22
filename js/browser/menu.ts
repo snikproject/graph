@@ -17,6 +17,13 @@ import hotkeys from "hotkeys-js";
 
 export let menu: Menu | null = null;
 
+export interface MenuElement {
+	label: string;
+	i18n: string;
+	id?: string;
+	entries: Array<any>;
+}
+
 /** main menu bar */
 export class Menu {
 	separateSubsBox;
@@ -40,8 +47,7 @@ export class Menu {
 	///** @returns {boolean} whether star operations should be shown in a new view. */
 	// starNewView() {return this.starNewViewBox.checked;}
 	/** Sets the preferred node label language attribute. Use the values from node.js.
-	 * @param {string} lang the language to set
-	 * @returns */
+	 * @param lang - the language to set */
 	setLanguage(lang: string): void {
 		if (!language.setLanguage(lang)) {
 			return;
@@ -56,8 +62,7 @@ export class Menu {
 			elements.restore();
 		}
 	}
-	/** Notifies the user of the program version so that errors can be properly reported.
-	 * @returns nothing */
+	/** Notifies the user of the program version so that errors can be properly reported. */
 	static about(): void {
 		window.alert("SNIK Graph version " + util.VERSION);
 	}
@@ -71,8 +76,7 @@ export class Menu {
 			log["logs"]
 		);
 	}
-	/** Show all nodes that are connected via close matches to visible nodes.
-	 *  @returns nothing */
+	/** Show all nodes that are connected via close matches to visible nodes. */
 	showCloseMatches(): void {
 		log.debug("show close matches start");
 		const visible = activeState().graph.cy.elements(".unfiltered").not(".hidden");
@@ -84,6 +88,7 @@ export class Menu {
 		//closeMatchEdges.connectedNodes();
 		//".unfiltered";
 	}
+
 	/**
   Creates and returns the menus for the top menu bar.
   The format is an array of menu elements.
@@ -93,7 +98,7 @@ export class Menu {
   entries[i][1] is a label as a string.
   * @returns the array of menu elements.
   */
-	menuData(): Array<any> {
+	menuData(): Array<MenuElement> {
 		return [
 			{
 				label: "File",
@@ -244,9 +249,8 @@ export class Menu {
 	}
 	/**
 	 * Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.
-	 * @param {Array<HTMLAnchorElement>} as an empty array that will be filled with the anchor elements
-	 * @returns {void} */
-	addOptions(as: Array<HTMLAnchorElement>) {
+	 * @param as - an empty array that will be filled with the anchor elements */
+	addOptions(as: Array<HTMLAnchorElement>): void {
 		const optionsContent = util.getElementById("options-menu-content");
 		const names = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode"]; // ,"starNewView"
 		(this as any).optionBoxes = {};
@@ -283,13 +287,12 @@ export class Menu {
 		if (config.activeOptions.includes("day")) {
 			this.dayModeBox.click();
 		}
-		/** @type {HTMLInputElement} */
 		// is only used by the main tab
-		(this as any).cumulativeSearchBox.addEventListener("change", () => {
+		((this as any).cumulativeSearchBox as HTMLInputElement).addEventListener("change", () => {
 			log.debug("Set cumulative search to " + (this as any).cumulativeSearchBox.checked);
 		});
-		/** @type {HTMLInputElement} */
-		(this as any).combineMatchModeBox.addEventListener("change", () => {
+
+		((this as any).combineMatchModeBox as HTMLInputElement).addEventListener("change", () => {
 			// Combine matches is *not* active in a new tab if the user first copies, then turns combine matches on and finally pastes.
 			// In this case, "combine matches" needs to be deactivated and activated again to take effect on the paste result.
 			log.debug("Set combine match mode to " + (this as any).combineMatchModeBox.checked);
@@ -301,8 +304,7 @@ export class Menu {
 			}, 10);
 		});
 	}
-	/** Adds the menu to the graph parent DOM element and sets up the event listeners.
-	 *  @returns {void} */
+	/** Adds the menu to the graph parent DOM element and sets up the event listeners. */
 	addMenu() {
 		console.groupCollapsed("Add menu");
 		//const frag = new DocumentFragment();
@@ -422,10 +424,10 @@ export class Menu {
 		log.debug("Menu added");
 		console.groupEnd();
 	}
+
 	/** Close the dropdown if the user clicks outside of the menu.
-	 *  @param {Event} e a click event
-	 *  @returns {void} */
-	static closeListener(e) {
+	 *  @param e - a click event */
+	static closeListener(e: any): void {
 		if (
 			e &&
 			e.target &&
@@ -439,9 +441,8 @@ export class Menu {
 			Array.from(dropdowns).forEach((d) => d.classList.remove("show"));
 		}
 	}
-	/** Save session-based options (not user preferences) to JSON.
-	 *  @returns {void} */
-	optionsToJSON() {
+	/** Save session-based options (not user preferences) to JSON. */
+	optionsToJSON(): object {
 		const sessionOptions = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode"];
 		const options = {};
 		for (const option of sessionOptions) {
@@ -450,9 +451,8 @@ export class Menu {
 		return options;
 	}
 	/** Restore session-based options from the output of toJSON().
-	 *  @param {object} json an option object
-	 *  @returns {void} */
-	optionsFromJSON(json) {
+	 *  @param json - an option object */
+	optionsFromJSON(json): void {
 		const currentOptions = this.optionsToJSON();
 		for (const [name, checked] of Object.entries(json)) {
 			if (currentOptions[name] !== checked) {

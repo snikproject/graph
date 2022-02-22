@@ -13,23 +13,22 @@ import log from "loglevel";
 export default class Search {
 	resultNodes = [];
 	/** Add search functionality to the form.
-	 *  @param {HTMLFormElement} form a form with a search field named "query"
-	 *  @returns {void} */
-	constructor(form) {
-		form.addEventListener("submit", (event) => {
+	 *  @param form - a form with a search field named "query" */
+	constructor(form: HTMLFormElement) {
+		form.addEventListener("submit", (event: Event) => {
 			event.preventDefault();
+			// @ts-expect-error event target is the form itself
 			progress(() => this.showSearch(event.target.children.query.value));
 		});
 		log.debug("search initialized");
 	}
 	/**
-	 * @param  {string} query The user query.
-	 * @param  {Array<String>} uris An array of OWL class URIs
-	 * @returns {Boolean} Whether the search results are nonempty.
+	 * @param query - The user query.
+	 * @param uris - An array of OWL class URIs
+	 * @returns whether the search results are nonempty.
 	 */
 	showSearchResults(query: string, uris: Array<string>): boolean {
 		this.resultNodes = [];
-		/** @type{HTMLTableElement} */
 		const table = util.getElementById("tab:search-results") as HTMLTableElement;
 		// clear leftovers from last time
 		while (table.rows.length > 0) {
@@ -64,7 +63,7 @@ export default class Search {
 				uriType[uri] = 3;
 			}
 		});
-		const selected = new Set();
+		const selected: Set<string> = new Set();
 		// JavaScript search implementation is up to the browser but most should have a stable array search, which means that URIs within a URI type should keep their relative ranking
 		uris.sort((a, b) => uriType[a] - uriType[b]);
 		uris.forEach((uri) => {
@@ -138,8 +137,8 @@ export default class Search {
 	}
 	/** Search the class labels and display the result to the user.
 	 *  @param userQuery - the search query as given by the user
-	 *  @returns {Promise<false>} false to prevent page reload triggered by submit.*/
-	async showSearch(userQuery) {
+	 *  @returns false to prevent page reload triggered by submit.*/
+	async showSearch(userQuery): Promise<false> {
 		MicroModal.show("search-results");
 		// fuse returns results ordered by increasing score, where a low score is a better match than a high score
 		const items = await fuse.search(userQuery);

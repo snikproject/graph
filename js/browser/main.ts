@@ -15,11 +15,22 @@ import * as help from "../help";
 import { View, activeState } from "./view";
 import MicroModal from "micromodal";
 import log from "loglevel";
+import type { NodeCollection } from "cytoscape";
 
-/** Parse browser URL POST parameters.
-@returns {void}
-*/
-function parseParams() {
+interface Params {
+	empty: boolean;
+	clazz: string;
+	jsonUrl: string;
+	endpoint: string;
+	instances: boolean;
+	virtual: boolean;
+	rdfGraph: string;
+	sub: string;
+	benchmark: boolean;
+}
+
+/** Parse browser URL POST parameters. */
+function parseParams(): Params {
 	const url = new URL(window.location.href);
 	const defaults = {
 		endpoint: config.sparql.endpoint,
@@ -42,11 +53,9 @@ function parseParams() {
 
 /**
  * Apply parameters.
-@param {Graph} graph the graph to apply the params to
-@param {params} params parameter object
-@returns {void}
- */
-async function applyParams(graph, params) {
+@param graph - the graph to apply the params to
+@param params - parameter object */
+async function applyParams(graph: Graph, params: Params): Promise<void> {
 	try {
 		if (params.benchmark) {
 			addOverlay(graph.cy);
@@ -54,14 +63,14 @@ async function applyParams(graph, params) {
 
 		if (params.empty) {
 			log.info(`Parameter "empty" detected. Skip loading and display file load prompt.`);
-			const loadArea = document.getElementById("loadarea")!;
+			const loadArea = document.getElementById("loadarea");
 			const center = document.createElement("center");
 			loadArea.appendChild(center);
 			center.innerHTML += `<button id="load-button" style="font-size:10vh;margin-top:20vh">Datei Laden
       <input id="load-input" type="file" style="display:none"></input>
       </button>`;
-			const loadInput = document.getElementById("load-input")!;
-			const button = document.getElementById("load-button")!;
+			const loadInput = document.getElementById("load-input");
+			const button = document.getElementById("load-button");
 			button.onclick = () => {
 				loadInput.click();
 			};
@@ -130,15 +139,13 @@ async function applyParams(graph, params) {
 }
 
 /** Fill the initial Graph based on the URL GET parameters.
-@param {Graph} graph the initial graph
-@returns {void}
-*/
-export async function fillInitialGraph(graph) {
+@param graph - the initial graph */
+export async function fillInitialGraph(graph: Graph): Promise<void> {
 	await progress(async () => {
 		const params = parseParams();
 		await applyParams(graph, params);
 		graph.menu = new Menu();
-		new Search(util.getElementById("search"));
+		new Search(util.getElementById("search") as HTMLFormElement);
 		help.init();
 	});
 	help.init();
@@ -146,10 +153,8 @@ export async function fillInitialGraph(graph) {
 
 const clipboard: string[] = [];
 
-/** Relegate keypresses to the active view.
-@returns {void}
-*/
-function initKeyListener() {
+/** Relegate keypresses to the active view. */
+function initKeyListener(): void {
 	document.documentElement.addEventListener("keydown", (e: KeyboardEvent) => {
 		// prevent keydown listener from firing on input fields
 		// See https://stackoverflow.com/questions/40876422/jquery-disable-keydown-in-input-and-textareas
@@ -181,7 +186,7 @@ function initKeyListener() {
 		if (e.code === "KeyP" || e.code === "KeyV") {
 			layoutState.cy.startBatch();
 			layoutState.cy.elements().unselect();
-			const nodes = layoutState.graph.getElementsByIds(clipboard);
+			const nodes = layoutState.graph.getElementsByIds(clipboard) as unknown as NodeCollection;
 			Graph.setVisible(nodes, true);
 
 			layoutState.cy.endBatch();
@@ -199,16 +204,14 @@ function initKeyListener() {
 	});
 }
 
-/** Entry point. Is run when DOM is loaded.
-@returns {void}
-*/
-async function main() {
-	//@ts-ignore
+/** Entry point. Is run when DOM is loaded. */
+async function main(): Promise<void> {
+	//@ts-expect-error mainCalled manually added
 	if (window.mainCalled) {
 		log.warn("main() is called multiple times for unknown reasons. Ignoring.");
 		return;
 	}
-	//@ts-ignore
+	//@ts-expect-error mainCalled manually added
 	window.mainCalled = true;
 	console.groupCollapsed("Initializing");
 	console.time("Initializing");

@@ -64,7 +64,7 @@ function center(nodes: cytoscape.NodeCollection): cytoscape.Position {
 	return c;
 }
 
-/** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it (use {@link module:layout.runCached} for that).
+/** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it, use {@link layout.runCached} for that.
 @param cy - the Cytoscape.js graph to run the layout on
 @param layoutConfig - the layout configuration, which includes the layout name and options
 @param  subs - Set of subontologies. If the subs are not given the layout still works but it is not saved.
@@ -72,7 +72,9 @@ function center(nodes: cytoscape.NodeCollection): cytoscape.Position {
 @param  save - Whether to save the layout on local storage.
 @returns whether the layout could successfully be applied. Does not indicate success of saving to cache.
 @example
+```
 run(cy,{"name":"grid"},new Set(["meta","ciox"]))
+```
 */
 export async function run(
 	cy: cytoscape.Core,
@@ -87,9 +89,7 @@ export async function run(
 	}
 	const layoutTimer = timer("layout");
 	if (separateSubs) {
-		/** @type{cytoscape.ElementDefinition[]} */
-		const sources = new Set();
-		/** @type{cytoscape.ElementDefinition[]} */
+		const sources: Set<cytoscape.ElementDefinition> = new Set();
 		const virtualEdges: Array<ElementDefinition> = [];
 
 		const nodes = cy.nodes();
@@ -110,9 +110,7 @@ export async function run(
 	} else {
 		log.debug("Separate subontologies unchecked");
 	}
-	if (activeLayout) {
-		activeLayout!.stop();
-	}
+	activeLayout && activeLayout.stop();
 
 	let elements;
 	let partLayout; // only change the positions of the selected nodes, keep the other ones in place
@@ -164,12 +162,11 @@ export async function run(
 }
 
 /** Applies a preset layout matching the node id's to the first element of each subarray in pos. Nodes without matching entry
-in pos are set to position {x:0,y:0}, positions without matching node id are ignored.
+in pos are set to position `{x:0,y:0}`, positions without matching node id are ignored.
 @param cy - the Cytoscape.js graph to apply the positions on, node id's need to match those in the given positions
 @param pos - an array of arrays, each of which contains the positions for a node id
 @returns whether the layout could be successfully applied
-@example
-presetLayout(cy,[["http://www.snik.eu...",{"x":0,"y":0}],...]);
+@example `presetLayout(cy,[["http://www.snik.eu...",{"x":0,"y":0}],...]);`
 */
 export async function presetLayout(cy: cytoscape.Core, pos: Array<cytoscape.Position>): Promise<boolean> {
 	const map = new Map(pos as any);
@@ -214,7 +211,7 @@ export interface LayoutConfig {
 	name: string;
 }
 
-/** Cached version of {@link module:layout.run}.
+/** Cached version of {@link layout.run}.
 @param cy - the Cytoscape.js graph to run the layout on
 @param layoutConfig - the layout configuration, which includes the layout name and options
 @param subs - Set of subontologies. If the subs are not given the layout still works but it is not cached.
@@ -253,10 +250,10 @@ export async function runCached(cy: cytoscape.Core, layoutConfig: any, subs: Arr
 export const grid = { name: "grid" };
 
 /**
- *  @param {cytoscape.EdgeSingular} edge any edge
+ *  @param edge -- any edge
  *  @returns  the preferred spring length of an edge
  */
-function springLength(edge) {
+function springLength(edge: cytoscape.EdgeSingular) {
 	const len = edge.data("springLength");
 	if (len) {
 		return len;

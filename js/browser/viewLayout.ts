@@ -8,8 +8,8 @@ import "golden-layout/src/css/goldenlayout-dark-theme.css";
 import "../../css/goldenlayout.css";
 
 /** Create, configure and return a GoldenLayout instance.
- *  @returns {GoldenLayout} the created GoldenLayout instance */
-export function goldenLayout() {
+ *  @returns the created GoldenLayout instance */
+export function goldenLayout(): GoldenLayout {
 	const layoutConfig = {
 		settings: { selectionEnabled: true },
 		content: [

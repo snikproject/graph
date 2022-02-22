@@ -18,9 +18,8 @@ Create a JSON file out of a JSON data string and lets the user save it.
 Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
 @param data - a JSON object
 @param fileName - the name of the saved file
-@returns {void}
 */
-export function saveJson(data: object, fileName: string) {
+export function saveJson(data: object, fileName: string): void {
 	const json = JSON.stringify(data); // unprettified variant
 	const blob = new Blob([json], { type: "application/json" });
 	const url = window.URL.createObjectURL(blob);
@@ -36,7 +35,6 @@ Lets the user save a file.
 Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
 @param url - a URL that resolves to a file
 @param fileName - the name of the saved file
-@returns {void}
 */
 export function saveUrl(url: string, fileName: string): void {
 	a.href = url;
@@ -47,9 +45,8 @@ export function saveUrl(url: string, fileName: string): void {
 }
 
 /** Saves the whole layouted graph as a Cytoscape JSON file.
- *  @param graph - the graph to save
- *  @returns {void} */
-export function saveGraph(graph) {
+ *  @param graph - the graph to save */
+export function saveGraph(graph): void {
 	const json = graph.cy.json();
 	delete json.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 	saveJson(json, "snik.json");
@@ -67,9 +64,8 @@ export interface Session {
 	mainGraph: any;
 }
 
-/** Saves the contents of all views as a custom JSON file.
- *  @returns {void} */
-export function saveSession(options) {
+/** Saves the contents of all views as a custom JSON file. */
+export function saveSession(options): void {
 	const mainGraph = {
 		title: mainView.state.title,
 		graph: mainView.state.cy.json(),
@@ -97,15 +93,14 @@ export interface ViewJson {
 }
 
 /** Saves the contents of the current view as a custom JSON file.
- *  @param view a GoldenLayout view
- *  @returns nothing */
+ *  @param view - a GoldenLayout view */
 export function saveView(view: View): void {
 	const json: ViewJson = {
 		version: VERSION,
 		title: view.state.title,
 		graph: view.state.cy.json(),
 	};
-	//@ts-ignore
+	//@ts-expect-error compiler doesnt know graph.style
 	delete json.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 	saveJson(json, "snik-view.json");
 }
@@ -152,6 +147,7 @@ export function saveSvg(graph: Graph, dayMode: boolean, full: boolean = true): v
 		scale: 1,
 		bg: dayMode ? "white" : "black", // background according to color mode
 	};
+	// @ts-expect-error provided by cytoscape-svg
 	const data = graph.cy.svg(options);
 	const blob = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
 	const url = window.URL.createObjectURL(blob);

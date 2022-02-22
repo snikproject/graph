@@ -11,9 +11,8 @@ import * as language from "../lang/language";
 const eventify = (f) => (event) => f(event.target); // simplify multiplex expressions on event.target
 
 /** Menu entries
-@param {Graph} graph the graph that the commands should apply to, if any
-@returns {Array<object>} the base commands
-*/
+@param graph - the graph that the commands should apply to, if any
+@returns the base commands */
 export default function nodeCommands(graph: Graph): Array<MenuItem> {
 	return [
 		{

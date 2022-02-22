@@ -36,13 +36,13 @@ interface IndexBinding {
 }
 
 /** Create fulltext index from SPARQL endpoint.
-@returns {Promise<Array<object>>} the index items for testing*/
-export async function createIndex() {
-	if (typeof window !== "undefined") console.groupCollapsed("Create Fuse.js index");
+@returns the index items for testing*/
+export async function createIndex(): Promise<Array<object>> {
+	if (typeof window !== "undefined") {
+		console.groupCollapsed("Create Fuse.js index");
+	}
 	const indexTimer = timer("Create Fuse search index");
-
 	log.debug("Create Fuse Search Index with searchCloseMatch = " + config.searchCloseMatch);
-	const graphs = [...config.allSubOntologies, ...config.helperGraphs];
 	const sparqlQuery = `select
   ?c as ?uri
   group_concat(distinct(str(?l));separator="|") as ?l
@@ -74,15 +74,17 @@ export async function createIndex() {
 	}
 	index = new Fuse(items, options);
 	indexTimer.stop(items.length + " items");
-	if (typeof window !== "undefined") console.groupEnd();
+	if (typeof window !== "undefined") {
+		console.groupEnd();
+	}
 	return items; // for testing
 }
 
 /** Searches the Fuse index for resources with a similar label.
-@param {string} userQuery search query as given by a user
-@returns {Promise<string[]>} the class URIs found.
+@param userQuery - search query as given by a user
+@returns the class URIs found.
 */
-export async function search(userQuery) {
+export async function search(userQuery: string): Promise<Array<Fuse.FuseResult<Item>>> {
 	if (!index) {
 		await createIndex();
 	}

@@ -5,9 +5,9 @@ export const VERSION = "3.0.0";
 const LOG_LIMIT = 500;
 
 /** getElementById with exception handling.
- * @param {string} id an HTML DOM id
- * @returns {HTMLElement} the element with the given id */
-export function getElementById(id) {
+ * @param id - an HTML DOM id
+ * @returns the element with the given id */
+export function getElementById(id: string): HTMLElement {
 	const el = document.getElementById(id);
 	if (!el) {
 		throw new Error(`Element with id ${id} does not exist.`);
@@ -23,7 +23,6 @@ export const REPO_ONTOLOGY = "https://github.com/snikproject/ontology";
 @param title - issue title
 @param body - issue body text
 @param logs - optional array of github markdown formatted log strings
-@returns
 */
 export function createGitHubIssue(repo: string, title: string, body: string, logs?: Array<string>): void {
 	//shorten the front end to avoid 414 Error URI too large
@@ -57,12 +56,12 @@ export const checkboxKeydownListener = (box) => (e) => {
 };
 
 /** Creates a new div element with the given text that triggers the given check box.
-@param {HTMLInputElement} box the checkbox that should be triggered when the div is clicked
-@param {string}text the text of the div
-@param {string}i18n optional internationalization key
-@returns {HTMLElement} the created div element
+@param box - the checkbox that should be triggered when the div is clicked
+@param text - the text of the div
+@param i18n - optional internationalization key
+@returns the created div element
 */
-export function checkboxClickableDiv(box, text, i18n) {
+export function checkboxClickableDiv(box: HTMLInputElement, text: string, i18n: string): HTMLElement {
 	const div = document.createElement("div");
 	div.classList.add("dropdown-entry-checkboxtext"); // extend clickable area beyond short texts
 	div.innerText = text;

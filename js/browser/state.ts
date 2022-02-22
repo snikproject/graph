@@ -12,7 +12,7 @@ export interface StateJson {
 }
 
 /** Saves the visibility values of all filters.
- * @returns {object} the JSON representation of the state */
+ * @returns the JSON representation of the state */
 export function toJSON(): StateJson {
 	const json: StateJson = { filters: filter.toJSON(), options: menu.optionsToJSON() };
 	Object.assign(json, state);
@@ -20,9 +20,8 @@ export function toJSON(): StateJson {
 }
 
 /** Loads the visibility values and apllies it to all filters.
- * @param {object} json the JSON representation of the state
- * @returns {void} */
-export function fromJSON(json) {
+ * @param json - the JSON representation of the state */
+export function fromJSON(json: StateJson): void {
 	filter.fromJSON(json.filters);
 	menu.optionsFromJSON(json.options);
 }
