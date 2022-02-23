@@ -1,5 +1,5 @@
 import * as util from "./util";
-import { View, mainView } from "./view";
+import { View } from "./view";
 import * as layout from "../layout";
 import GoldenLayout from "golden-layout";
 import log from "loglevel";
@@ -45,7 +45,7 @@ export function goldenLayout(): GoldenLayout {
 		const stackState = () => (stack as any).getActiveContentItem().config.componentState;
 		const cy = () => stackState().cy;
 		const controls = (stack as any).header.controlsContainer[0];
-		const separateSubs = () => mainView.state.graph.menu.separateSubs() && !stackState().graph.starMode;
+		const separateSubs = () => View.mainView.state.graph.menu.separateSubs() && !stackState().graph.starMode;
 		const data = [
 			[
 				".plussign",

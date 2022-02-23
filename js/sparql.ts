@@ -2,10 +2,11 @@
 import config from "./config";
 import log from "loglevel";
 
-export const SNIK_GRAPH_BB = "http://www.snik.eu/ontology/bb";
-export const SNIK_PREFIX = "http://www.snik.eu/ontology/"; //problem: different prefixes for different partial ontologies
-export const SNIK_ENDPOINT = "https://www.snik.eu/sparql";
-export const SPARQL_LIMIT = 100;
+export const SNIK = {
+	GRAPH_BB: "http://www.snik.eu/ontology/bb",
+	PREFIX: "http://www.snik.eu/ontology/", //problem: different prefixes for different partial ontologie,
+	ENDPOINT: "https://www.snik.eu/sparql",
+};
 
 /** Query public SNIK SPARQL endpoint with a SELECT query.
 ASK queries should also work but better use {@link ask} instead as it is more convenient.
@@ -53,37 +54,20 @@ export async function select(query: string, graph?: string, endpoint: string = c
 	}
 }
 
-/** Query public SNIK SPARQL endpoint with an ASK (boolean) query.
-@param query - A valid SPARQL ask query.
-@param graphOpt - An optional SPARQL graph.
-@returns A promise of the boolean SPARQL ask result.
-*/
-export function ask(query: string, graphOpt?: string): Promise<boolean> {
-	//if (!graphOpt){ graphOpt = SPARQL_GRAPH; }//to ensure that dbpedia matches are not shown
-	const url =
-		config.sparql.endpoint + "?query=" + encodeURIComponent(query) + "&format=json" + (graphOpt ? "&default-graph-uri=" + encodeURIComponent(graphOpt) : "");
-	return fetch(url)
-		.then((response) => {
-			return response.json();
-		})
-		.then((json) => {
-			return json.boolean;
-		});
-}
-
 /** Query the public SNIK SPARQL endpoint with a describe query, which describes a single resource.
 @param uri - A resource URI
 @param graphOpt - An optional SPARQL graph.
 @returns A promise of the SPARQL describe result as text.
 */
-export function describe(uri: string, graphOpt?: string): Promise<string> {
+export async function describe(uri: string, graphOpt?: string): Promise<string> {
 	const query = "describe <" + uri + ">";
 	const url =
 		config.sparql.endpoint + "?query=" + encodeURIComponent(query) + "&format=text" + (graphOpt ? "&default-graph-uri=" + encodeURIComponent(graphOpt) : "");
 
-	return fetch(url)
-		.then((response) => response.text())
-		.catch((err) => {
-			throw new Error(`Error executing SPARQL query ${query}: ${err}`);
-		});
+	try {
+		const response = await fetch(url);
+		return await response.text();
+	} catch (err) {
+		throw new Error(`Error executing SPARQL query ${query}: ${err}`);
+	}
 }

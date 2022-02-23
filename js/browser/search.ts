@@ -3,13 +3,15 @@ import * as sparql from "../sparql";
 import * as util from "./util";
 import * as fuse from "../fuse";
 import progress from "./progress";
-import { activeState } from "./view";
+import { View } from "./view";
 import MicroModal from "micromodal";
 
 import log from "loglevel";
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
 // const USE_BIF_CONTAINS = false;
+const SEARCH_LIMIT = 100;
+
 export default class Search {
 	resultNodes = [];
 	/** Add search functionality to the form.
@@ -40,18 +42,18 @@ export default class Search {
 		}
 		if (uris.length === 1) {
 			MicroModal.close("search-results");
-			activeState().graph.presentUri(uris[0]);
+			View.activeState().graph.presentUri(uris[0]);
 			return true;
 		}
-		if (uris.length === sparql.SPARQL_LIMIT) {
-			util.getElementById("h2:search-results").innerHTML = `First ${sparql.SPARQL_LIMIT} Search Results for "${query}"`;
+		if (uris.length === SEARCH_LIMIT) {
+			util.getElementById("h2:search-results").innerHTML = `First ${SEARCH_LIMIT} Search Results for "${query}"`;
 		} else {
 			util.getElementById("h2:search-results").innerHTML = `${uris.length} Search Results for "${query}"`;
 		}
 		// Preprocessing: Classify URIs as (0) in graph and visible, (1) in graph and hidden but not filtered, (2) in graph and filtered and (3) not in the graph.
 		const uriType = {};
 		uris.forEach((uri) => {
-			const node = activeState().cy.getElementById(uri)[0];
+			const node = View.activeState().cy.getElementById(uri)[0];
 			if (node) {
 				uriType[uri] = 0;
 				if (node.hasClass("hidden") && !node.hasClass("filtered")) {
@@ -77,10 +79,10 @@ export default class Search {
 			});
 			const locateCell = row.insertCell();
 			const lodLiveCell = row.insertCell();
-			(window as any).presentUri = activeState().graph.presentUri;
+			(window as any).presentUri = View.activeState().graph.presentUri;
 			// todo: listener to add to selected uris
 			locateCell.innerHTML = `<a class="search-class${uriType[uri]}" href="javascript:MicroModal.close('search-results');window.presentUri('${uri}');void(0)">
-          ${uri.replace(sparql.SNIK_PREFIX, "")}</a>`;
+          ${uri.replace(sparql.SNIK.PREFIX, "")}</a>`;
 			const html = `<a class="search-class${uriType[uri]}" href="${uri}" target="_blank">Description</a>`;
 			lodLiveCell.innerHTML = html;
 		});
@@ -91,7 +93,7 @@ export default class Search {
 			cell.innerHTML = "<a href='#'>Highlight All</a>";
 			cell.addEventListener("click", (e) => {
 				MicroModal.close("search-results");
-				activeState().graph.presentUris(uris);
+				View.activeState().graph.presentUris(uris);
 				e.preventDefault();
 			});
 		}
@@ -100,7 +102,7 @@ export default class Search {
 			cell.innerHTML = "<a href='#'>Highlight Selected</a>";
 			cell.addEventListener("click", (e) => {
 				MicroModal.close("search-results");
-				activeState().graph.presentUris([...selected]);
+				View.activeState().graph.presentUris([...selected]);
 				e.preventDefault();
 			});
 		}
@@ -128,7 +130,7 @@ export default class Search {
 		const searchQuery = userQuery.replace(/[\x22\x27\x5C\x0A\x0D -]/g, "");
 		// use this when labels are available, URIs are not searched
 		const sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
-        {?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l),"[ -]","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
+        {?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l),"[ -]","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${SEARCH_LIMIT}`;
 		log.debug(sparqlQuery);
 		const bindings = await sparql.select(sparqlQuery);
 		return bindings.map((b) => b["s"].value);

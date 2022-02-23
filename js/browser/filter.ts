@@ -4,9 +4,9 @@ Filters use the Cytoscape.js "display" attribute, while star operations (see gra
 This ensures that filters and star operations interact properly, for example that resetting the style does not show filtered nodes.
 See http://js.cytoscape.org/#style/visibility.
 */
-import * as NODE from "../node";
+import NODE from "../node";
 import { checkboxKeydownListener, checkboxClickableDiv } from "./util";
-import { View, views } from "./view";
+import { View } from "./view";
 import log from "loglevel";
 
 const filterData = [
@@ -35,19 +35,19 @@ const GRAPH_GETS_ADDITIONS = true;
 
 // apply a function to all cytoscape cores in all tabs
 const multicy = (f: (cy: cytoscape.Core) => any) =>
-	views()
+	View.views()
 		.map((v: View) => v.state.cy)
 		.forEach((cy) => f(cy));
 
 /**
 Toggles the visibility of a set of nodes defined by a selector.
 */
-class Filter {
-	selector: string;
-	label: string;
-	checkbox: HTMLInputElement;
-	a: HTMLAnchorElement;
-	cssClass: string;
+export class Filter {
+	readonly selector: string;
+	readonly label: string;
+	readonly checkbox: HTMLInputElement;
+	readonly a: HTMLAnchorElement;
+	readonly cssClass: string;
 	visible: boolean;
 
 	/**
@@ -119,35 +119,35 @@ class Filter {
 			log.debug("filter " + hiddenSelector + " triggered");
 		}
 	}
-}
 
-/**
+	/**
 Add filter entries to the filter menu.
 @param parent - the parent element to attach the entries to
 @param as - an empty array of HTML anchors to be filled */
-export function addFilterEntries(parent: HTMLElement, as: Array<HTMLAnchorElement>): void {
-	for (const datum of filterData) {
-		const filter = new Filter(datum[0], datum[1], datum[2]);
-		parent.appendChild(filter.a);
-		as.push(filter.a);
+	static addFilterEntries(parent: HTMLElement, as: Array<HTMLAnchorElement>): void {
+		for (const datum of filterData) {
+			const filter = new Filter(datum[0], datum[1], datum[2]);
+			parent.appendChild(filter.a);
+			as.push(filter.a);
+		}
 	}
-}
 
-/** Saves the visibility values of all filters.
+	/** Saves the visibility values of all filters.
 @returns JSON representation of all filters */
-export function toJSON(): object {
-	const json = {};
-	for (const filter of filters) {
-		json[filter.label] = filter.visible;
+	static toJSON(): object {
+		const json = {};
+		for (const filter of filters) {
+			json[filter.label] = filter.visible;
+		}
+		return json;
 	}
-	return json;
-}
 
-/** Loads the visibility values and applies it to all filters.
+	/** Loads the visibility values and applies it to all filters.
 @param json - JSON representation of all filters */
-export function fromJSON(json: object): void {
-	for (const filter of filters) {
-		filter.checkbox.checked = json[filter.label];
-		filter.visible = json[filter.label];
+	static fromJSON(json: object): void {
+		for (const filter of filters) {
+			filter.checkbox.checked = json[filter.label];
+			filter.visible = json[filter.label];
+		}
 	}
 }

@@ -1,17 +1,16 @@
-/** Populates the menu bar on the top and initializes the context menu.*/
 import * as save from "./save";
 import * as layout from "../layout";
-import * as NODE from "../node";
+import NODE from "../node";
 import loadGraphFromSparql from "../loadGraphFromSparql";
 import * as language from "../lang/language";
 import * as util from "./util";
 import config from "../config";
 import progress from "./progress";
 import { showChapterSearch } from "./chaptersearch";
-import { addFilterEntries } from "./filter";
+import { Filter } from "./filter";
 import * as load from "./load";
 import { Graph } from "./graph";
-import { activeState, activeView, mainView, views } from "./view";
+import { View } from "./view";
 import log from "loglevel";
 import hotkeys from "hotkeys-js";
 
@@ -24,7 +23,7 @@ export interface MenuElement {
 	entries: Array<any>;
 }
 
-/** main menu bar */
+/** Populates the menu bar on the top and initializes the context menu.*/
 export class Menu {
 	separateSubsBox;
 	dayModeBox;
@@ -56,7 +55,7 @@ export class Menu {
 		// this.graph.cy.style(style); // does not display the style correctly and doesn't update the labels
 		// this.graph.cy.forceRender(); // does not update the labels either
 		// the nuclear option works
-		for (const view of views()) {
+		for (const view of View.views()) {
 			const elements = view.state.graph.cy.elements();
 			view.state.graph.cy.remove(elements);
 			elements.restore();
@@ -79,7 +78,7 @@ export class Menu {
 	/** Show all nodes that are connected via close matches to visible nodes. */
 	showCloseMatches(): void {
 		log.debug("show close matches start");
-		const visible = activeState().graph.cy.elements(".unfiltered").not(".hidden");
+		const visible = View.activeState().graph.cy.elements(".unfiltered").not(".hidden");
 		//const closeMatchEdges = this.graph.cy.edges('[pl="closeMatch"]');
 		const newEdges = visible.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
 		Graph.setVisible(newEdges, true);
@@ -115,29 +114,29 @@ export class Menu {
 					],
 
 					[() => save.saveSession(this.optionsToJSON()), "Save Session", "save-session"],
-					[() => save.saveGraph(activeState().graph), "Save the full SNIK Graph", "save-snik-graph"],
-					[() => save.saveView(activeView()), "Save currently active view (partial graph)", "save-view"],
+					[() => save.saveGraph(View.activeState().graph), "Save the full SNIK Graph", "save-snik-graph"],
+					[() => save.saveView(View.activeView()), "Save currently active view (partial graph)", "save-view"],
 					[
 						() => {
-							progress(() => layout.run(activeState().cy, layout.euler, config.defaultSubOntologies, this.separateSubs(), true));
+							progress(() => layout.run(View.activeState().cy, layout.euler, config.defaultSubOntologies, this.separateSubs(), true));
 						},
 						"Recalculate Layout and Replace in Browser Cache",
 						"recalculate-layout-replace",
 					],
-					[() => save.savePng(activeState().graph, this.dayModeBox.checked, false, false), "Save PNG Image of Current View", "save-image-current-view"],
-					[() => save.savePng(activeState().graph, this.dayModeBox.checked, true, false), "Save PNG Image of Whole Graph", "save-image-whole-graph"],
+					[() => save.savePng(View.activeState().graph, this.dayModeBox.checked, false, false), "Save PNG Image of Current View", "save-image-current-view"],
+					[() => save.savePng(View.activeState().graph, this.dayModeBox.checked, true, false), "Save PNG Image of Whole Graph", "save-image-whole-graph"],
 					[
-						() => save.savePng(activeState().graph, this.dayModeBox.checked, false, true),
+						() => save.savePng(View.activeState().graph, this.dayModeBox.checked, false, true),
 						"Save PNG Image of Current View (high res)",
 						"save-image-current-view-high-res",
 					],
 					[
-						() => save.savePng(activeState().graph, this.dayModeBox.checked, true, true),
+						() => save.savePng(View.activeState().graph, this.dayModeBox.checked, true, true),
 						"Save PNG Image of Whole Graph (high res)",
 						"save-image-whole-graph-high-res",
 					],
-					[() => save.saveSvg(activeState().graph, this.dayModeBox.checked, false), "Save SVG Image of Current View"],
-					[() => save.saveSvg(activeState().graph, this.dayModeBox.checked, true), "Save SVG Image of Whole Graph"],
+					[() => save.saveSvg(View.activeState().graph, this.dayModeBox.checked, false), "Save SVG Image of Current View"],
+					[() => save.saveSvg(View.activeState().graph, this.dayModeBox.checked, true), "Save SVG Image of Whole Graph"],
 				],
 			},
 			{
@@ -159,7 +158,13 @@ export class Menu {
 					[this.showCloseMatches, "show close matches", "show-close-matches"],
 					[
 						() => {
-							layout.run(activeState().graph.cy, layout.euler, config.defaultSubOntologies, this.separateSubs() && !activeState().graph.starMode, true);
+							layout.run(
+								View.activeState().graph.cy,
+								layout.euler,
+								config.defaultSubOntologies,
+								this.separateSubs() && !View.activeState().graph.starMode,
+								true
+							);
 						},
 						"recalculate layout",
 						"recalculate-layout",
@@ -167,7 +172,13 @@ export class Menu {
 					],
 					[
 						() => {
-							layout.run(activeState().graph.cy, layout.eulerTight, config.defaultSubOntologies, this.separateSubs() && !activeState().graph.starMode, false);
+							layout.run(
+								View.activeState().graph.cy,
+								layout.eulerTight,
+								config.defaultSubOntologies,
+								this.separateSubs() && !View.activeState().graph.starMode,
+								false
+							);
 						},
 						"tight layout",
 						"tight-layout",
@@ -175,34 +186,40 @@ export class Menu {
 					],
 					[
 						() => {
-							layout.run(activeState().graph.cy, layout.cose, config.defaultSubOntologies, this.separateSubs() && !activeState().graph.starMode, false);
+							layout.run(
+								View.activeState().graph.cy,
+								layout.cose,
+								config.defaultSubOntologies,
+								this.separateSubs() && !View.activeState().graph.starMode,
+								false
+							);
 						},
 						"compound layout",
 						"compound-layout",
 						"ctrl+alt+c",
 					],
-					[() => activeState().graph.moveAllMatches(0), "move matches on top of each other", "move-match-on-top"],
-					[() => activeState().graph.moveAllMatches(100), "move matches nearby", "move-match-nearby"],
+					[() => View.activeState().graph.moveAllMatches(0), "move matches on top of each other", "move-match-on-top"],
+					[() => View.activeState().graph.moveAllMatches(100), "move matches nearby", "move-match-nearby"],
 					[
 						() => {
-							showChapterSearch(activeState().graph, "bb");
+							showChapterSearch(View.activeState().graph, "bb");
 						},
 						"BB chapter search",
 						"bb-chapter-search",
 					],
 					[
 						() => {
-							showChapterSearch(activeState().graph, "ob");
+							showChapterSearch(View.activeState().graph, "ob");
 						},
 						"OB chapter search",
 						"ob-chapter-search",
 					],
-					[activeState().graph.subOntologyConnectivity, "subontology connectivity", "subontology-connectivity"],
-					[mainView.state.graph.resetStyle, "reset main view", "reset-view", "ctrl+alt+r"],
+					[View.activeState().graph.subOntologyConnectivity, "subontology connectivity", "subontology-connectivity"],
+					[View.mainView.state.graph.resetStyle, "reset main view", "reset-view", "ctrl+alt+r"],
 					[
 						() => {
-							activeView().setTitle(prompt("Rename: " + activeView().config.title) || activeView().config.title);
-							activeState().title = activeView().config.title;
+							View.activeView().setTitle(prompt("Rename: " + View.activeView().config.title) || View.activeView().config.title);
+							View.activeState().title = View.activeView().config.title;
 						},
 						"change title of active View",
 						"change-title",
@@ -275,7 +292,7 @@ export class Menu {
 			log.debug("Set separate Subontologies to " + this.separateSubsBox.checked);
 		});
 		this.dayModeBox.addEventListener("change", () => {
-			for (const view of views()) {
+			for (const view of View.views()) {
 				view.state.graph.invert(this.dayModeBox.checked);
 			}
 			log.debug("Set dayMode to " + this.dayModeBox.checked);
@@ -298,7 +315,7 @@ export class Menu {
 			log.debug("Set combine match mode to " + (this as any).combineMatchModeBox.checked);
 			// give the browser time to update the checkbox, see https://stackoverflow.com/questions/64442639/how-to-give-instant-user-feedback-on-slow-checkbox-listeners-in-javascript?noredirect=1#comment113950377_64442639
 			setTimeout(() => {
-				views()
+				View.views()
 					.map((v) => v.state.graph)
 					.forEach((graph) => graph.combineMatch((this as any).combineMatchModeBox.checked));
 			}, 10);
@@ -391,9 +408,9 @@ export class Menu {
 			});
 		}
 
-		load.addFileLoadEntries(activeState().graph, util.getElementById("file-menu-content"), aas[0] /*, this.optionsFromJSON*/); // update index when "File" position changes in the menu
+		load.addFileLoadEntries(View.activeState().graph, util.getElementById("file-menu-content"), aas[0] /*, this.optionsFromJSON*/); // update index when "File" position changes in the menu
 		log.debug("fileLoadEntries added");
-		addFilterEntries(util.getElementById("filter-menu-content"), aas[1]); // update index when "Filter" position changes in the menu
+		Filter.addFilterEntries(util.getElementById("filter-menu-content"), aas[1]); // update index when "Filter" position changes in the menu
 		log.debug("filter entries added");
 		this.addOptions(aas[2]); // update index when "Options" position changes in the menu
 		for (let i = 0; i < aas.length; i++) {

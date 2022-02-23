@@ -6,23 +6,27 @@ import { toJSON } from "./state";
 import log from "loglevel";
 import { ComponentConfig, ContentItem } from "golden-layout";
 
-let viewCount: number = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
-export let mainView = null;
-export const partViews = new Set<View>();
-export const views: () => Array<View> = () => [mainView, ...partViews];
+let viewCount: number = 0; // only used for the name, don't decrement on destroy to prevent name conflicts
+
 let firstFinished = null; // following instances need to wait for the first to load
 let viewLayout = goldenLayout();
 
-/** Returns the state of the active (focussed) view.
-@returns The state of the active (focussed) view. */
-export function activeState(): State {
-	return (viewLayout as any).selectedItem?.getActiveContentItem()?.config?.componentState;
-}
-
-/** Returns the active (focussed) view.
-@returns The active (focussed) view. */
-export function activeView(): any {
-	return (viewLayout as any).selectedItem?.getActiveContentItem();
+/** Helper function that traverses the component tree.
+ *  @param x - the component to traverse
+ *  @param depth - recursive depth */
+function traverse(x: ContentItem, depth: number): Array<ContentItem> {
+	const removeTabsArray: Array<ContentItem> = [];
+	if (x.type === "component") {
+		const config = x as unknown as ComponentConfig;
+		if (config.componentName !== "Gesamtmodell") {
+			removeTabsArray.push(x);
+			return removeTabsArray;
+		}
+	}
+	for (const item of x.contentItems) {
+		removeTabsArray.push(...traverse(item, ++depth));
+	}
+	return removeTabsArray;
 }
 
 export interface State {
@@ -35,29 +39,47 @@ export interface State {
 export class View {
 	initialized: Promise<void>;
 	state: State;
-	cyContainer: HTMLDivElement = document.createElement("div");
+	readonly cyContainer: HTMLDivElement = document.createElement("div");
 	element: HTMLElement;
 	cxtMenu: ContextMenu;
+	static mainView = null;
+	static readonly partViews = new Set<View>();
+
+	static views(): Array<View> {
+		return [this.mainView, ...this.partViews];
+	}
+
+	/** Returns the state of the active (focussed) view.
+	@returns The state of the active (focussed) view. */
+	static activeState(): State {
+		return (viewLayout as any).selectedItem?.getActiveContentItem()?.config?.componentState;
+	}
+
+	/** Returns the active (focussed) view.
+	@returns The active (focussed) view. */
+	static activeView(): any {
+		return (viewLayout as any).selectedItem?.getActiveContentItem();
+	}
 
 	/** Fill the initial graph or copy over from the main view if it is not the first. */
 	async fill(): Promise<void> {
 		const graph = this.state.graph;
-		if (mainView === null) {
-			mainView = this;
+		if (View.mainView === null) {
+			View.mainView = this;
 			firstFinished = fillInitialGraph(graph);
 			await firstFinished;
 			log.debug(`Main view ${this.state.name} loaded with ${graph.cy.elements().size()} elements.`);
 		} else {
 			await firstFinished;
-			graph.cy.add(mainView.state.cy.elements()); // don't load again, copy from first view
-			log.debug(`Create view ${this.state.title} with ${graph.cy.elements().size()} hidden elements copied from ${mainView.state.title}.`);
+			graph.cy.add(View.mainView.state.cy.elements()); // don't load again, copy from first view
+			log.debug(`Create view ${this.state.title} with ${graph.cy.elements().size()} hidden elements copied from ${View.mainView.state.title}.`);
 			const elements = graph.cy.elements();
 			Graph.setVisible(elements, false);
 			Graph.setVisible(elements.edgesWith(elements), false);
 			elements.removeClass("source"); // discard path source highlighting from the old graph
 			graph.starMode = true;
 			/*
-      const source = mainView.state.graph.getSource();
+      const source = this.mainView.state.graph.getSource();
       console.log(source);
       console.log(graph.assimilate(source));
       if(source) {graph.setSource(graph.assimilate(source));}
@@ -81,19 +103,19 @@ export class View {
 			type: "component",
 			componentName: title,
 			componentState: this.state,
-			isClosable: mainView !== null,
+			isClosable: View.mainView !== null,
 		};
 
 		const thisView = this; // supply this to callback
-		if (mainView !== null) {
-			partViews.add(this);
+		if (View.mainView !== null) {
+			View.partViews.add(this);
 		}
 		viewLayout.registerComponent(title, function (container) {
 			//thisView.cyContainer = document.createElement("div");
 			thisView.element = container.getElement()[0];
 			container.getElement()[0].appendChild(thisView.cyContainer);
 			container.on("destroy", () => {
-				partViews.delete(thisView);
+				View.partViews.delete(thisView);
 			});
 		});
 
@@ -111,33 +133,16 @@ export class View {
 			this.cxtMenu = new ContextMenu(this.state.graph);
 		});
 	}
-}
 
-/** Helper function that traverses the component tree.
- *  @param x - the component to traverse
- *  @param depth - recursive depth */
-function traverse(x: ContentItem, depth: number): Array<ContentItem> {
-	const removeTabsArray: Array<ContentItem> = [];
-	if (x.type === "component") {
-		const config = x as unknown as ComponentConfig;
-		if (config.componentName !== "Gesamtmodell") {
-			removeTabsArray.push(x);
-			return removeTabsArray;
+	/** Close all tabs except the first one. */
+	static reset(): void {
+		const removeTabsArray = traverse(viewLayout.root, 0);
+		for (const content of removeTabsArray) {
+			content.remove();
 		}
+		View.partViews.clear();
+		viewCount = 0;
+		viewLayout.destroy();
+		viewLayout = goldenLayout();
 	}
-	for (const item of x.contentItems) {
-		removeTabsArray.push(...traverse(item, ++depth));
-	}
-	return removeTabsArray;
-}
-/** Close all tabs except the first one. */
-export function reset(): void {
-	const removeTabsArray = traverse(viewLayout.root, 0);
-	for (const content of removeTabsArray) {
-		content.remove();
-	}
-	partViews.clear();
-	viewCount = 0;
-	viewLayout.destroy();
-	viewLayout = goldenLayout();
 }

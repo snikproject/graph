@@ -4,7 +4,7 @@ After the first time, the layout is cached and reused, until major changes occur
 If a breakthrough occurs in JavaScript graph layouting, update here and possibly remove cache.
 */
 import timer from "./timer";
-import * as NODE from "./node";
+import NODE from "./node";
 import config from "./config";
 import log from "loglevel";
 import cytoscape, { ElementDefinition, NodeCollection } from "cytoscape";

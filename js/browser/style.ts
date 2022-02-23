@@ -4,13 +4,13 @@ Cytoscape style file, excluding color information, which is contained in the col
 @see colorSchemeDay
 @see colorSchemeNight
 */
-import * as NODE from "../node";
-import * as EDGE from "../edge";
+import NODE from "../node";
+import EDGE from "../edge";
 import * as language from "../lang/language";
 import config from "../config";
 // see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing
 
-const style = {
+export const style = {
 	format_version: "1.0",
 	generated_by: "cytoscape-3.4.0",
 	target_cytoscapejs_version: "~2.1",
@@ -216,4 +216,3 @@ const style = {
 		},
 	],
 };
-export { style };

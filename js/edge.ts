@@ -1,9 +1,11 @@
 /** Provides constants for node edge attributes.*/
-
-export const SOURCE = "source";
-export const TARGET = "target";
-export const ID = "id";
-export const PROPERTY = "p";
-export const PROPERTY_LABEL = "pl";
-export const GRAPH = "g";
-export const AXIOM = "ax";
+const EDGE = {
+	SOURCE: "source",
+	TARGET: "target",
+	ID: "id",
+	PROPERTY: "p",
+	PROPERTY_LABEL: "pl",
+	GRAPH: "g",
+	AXIOM: "ax",
+};
+export default EDGE;

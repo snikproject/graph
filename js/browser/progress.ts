@@ -31,7 +31,7 @@ let active = 0;
 /**
  * Not thread safe but javascript is single threaded for now.
  * @param func - any function that should have its progress displayed while it is running */
-export default async function (func: Function): Promise<void> {
+async function progress(func: Function): Promise<void> {
 	if (!window) {
 		return;
 	} // ignore when running in nodejs
@@ -51,3 +51,4 @@ export default async function (func: Function): Promise<void> {
 	}
 }
 /* eslint-enable */
+export default progress;

@@ -1,6 +1,6 @@
 import * as layout from "../js/layout";
 import loadGraphFromSparql from "../js/loadGraphFromSparql";
-import { SNIK_PREFIX } from "../js/sparql";
+import { SNIK } from "../js/sparql";
 import cytoscape from "cytoscape";
 import euler from "cytoscape-euler";
 import "isomorphic-fetch";
@@ -11,7 +11,7 @@ const assert = chai.assert;
 describe("cytoscape", function () {
 	let cy;
 	const subs = ["meta", "bb"];
-	const graphs = subs.map((s) => SNIK_PREFIX + s);
+	const graphs = subs.map((s) => SNIK.PREFIX + s);
 	test("create empty graph", function () {
 		cy = cytoscape({});
 		assert(cy);

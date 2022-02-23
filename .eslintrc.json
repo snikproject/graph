@@ -43,6 +43,7 @@
 		"dot-notation": ["off"],
 		"eqeqeq": ["error"],
 		"eol-last": ["error"],
+		"import/no-default-export": ["warn"],
 		"max-len": ["warn", 245],
 		"padded-blocks": ["error", "never"],
 		"space-in-parens": ["error"],

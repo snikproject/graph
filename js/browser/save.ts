@@ -1,7 +1,7 @@
 /** Lets the user save files generated from the loaded graph. */
 import config from "../config";
 import { toJSON } from "./state";
-import { mainView, partViews, View } from "./view";
+import { View } from "./view";
 import { VERSION } from "./util";
 import { Graph } from "./graph";
 import log from "loglevel";
@@ -67,15 +67,15 @@ export interface Session {
 /** Saves the contents of all views as a custom JSON file. */
 export function saveSession(options): void {
 	const mainGraph = {
-		title: mainView.state.title,
-		graph: mainView.state.cy.json(),
+		title: View.mainView.state.title,
+		graph: View.mainView.state.cy.json(),
 		options,
 	};
 	delete mainGraph.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 
 	const session: Session = { tabs: [], state: toJSON(), mainGraph };
 
-	for (const view of partViews) {
+	for (const view of View.partViews) {
 		const tabContent = {
 			title: view.state.title,
 			graph: view.state.cy.json() as { style },

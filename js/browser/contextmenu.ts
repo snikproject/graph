@@ -1,7 +1,7 @@
 /** Creates the circular context menu that can be opened on top of a node/edge.
 Needs to be initialized before it can be used via the default export function.*/
-import nodeCommands from "./contextmenuNodes";
-import edgeCommands from "./contextmenuEdges";
+import { nodeCommands } from "./contextmenuNodes";
+import { edgeCommands } from "./contextmenuEdges";
 import { flatHelp } from "../help";
 import cytoscape from "cytoscape";
 //{ Collection, EdgeSingular, NodeSingular, SingularElementReturnValue } from "cytoscape";
@@ -28,6 +28,27 @@ const config = { menuItems: [] as Array<MenuItem> };
 export class ContextMenu {
 	graph: Graph;
 	cxtMenus: Array<Record<string, unknown>>;
+
+	/**
+	 * Add a logging wrapper to a context menu command.
+	 * @param  cmd - the context menu command to wrap if it isn't already wrapped
+	 * @param  messageFunction - a function that describes the element */
+	static logWrap(cmd: { onClickFunction; content }, messageFunction: (ele: Element) => any): void {
+		if (!cmd.onClickFunction || cmd.onClickFunction.wrapped) {
+			return;
+		}
+
+		const tmp = cmd.onClickFunction;
+		cmd.onClickFunction = (ele: Element) => {
+			log.debug("Context Menu: Operation " + cmd.content + " on " + messageFunction(ele));
+			tmp(ele);
+		};
+		cmd.onClickFunction.wrapped = true;
+	}
+
+	static ontoWikiUrl(uri) {
+		return "https://www.snik.eu/ontowiki/view/?r=" + uri + "&m=" + sub(uri);
+	}
 
 	/** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
   The extension itself is already registered through the plain HTML/JS import in index.html,
@@ -62,22 +83,3 @@ export class ContextMenu {
 		});
 	}
 }
-
-/**
- * Add a logging wrapper to a context menu command.
- * @param  cmd - the context menu command to wrap if it isn't already wrapped
- * @param  messageFunction - a function that describes the element */
-export function logWrap(cmd: { onClickFunction; content }, messageFunction: (ele: Element) => any): void {
-	if (!cmd.onClickFunction || cmd.onClickFunction.wrapped) {
-		return;
-	}
-
-	const tmp = cmd.onClickFunction;
-	cmd.onClickFunction = (ele: Element) => {
-		log.debug("Context Menu: Operation " + cmd.content + " on " + messageFunction(ele));
-		tmp(ele);
-	};
-	cmd.onClickFunction.wrapped = true;
-}
-
-export const ontoWikiUrl = (uri) => "https://www.snik.eu/ontowiki/view/?r=" + uri + "&m=" + sub(uri);

@@ -1,4 +1,5 @@
-/** String handling helper methods.*/
+/** @packageDocumentation
+ * String handling helper methods.*/
 
 /**
  * Limit the input string to the maximum length. If it is longer, it will get cut and have two dots appended to exactly achieve the maximum length.

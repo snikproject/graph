@@ -1,8 +1,8 @@
 /** Show the environment of a single node using a special layout.*/
 import * as sparql from "../sparql";
-import * as NODE from "../node";
+import NODE from "../node";
 import { Graph } from "./graph";
-import { View, mainView } from "./view";
+import { View } from "./view";
 import { short } from "../rdf";
 import log from "loglevel";
 
@@ -13,7 +13,7 @@ Hides all other nodes. Resetting the view unhides the other nodes but keeps the 
 Recalculate the layout to place those nodes in relation to the whole graph again.
 @param clazz - The URI of the class.
 @param subTop - The sub top letter of the class (R,F or E) */
-export default async function classUse(clazz: string, subTop: string): Promise<void> {
+export async function classUse(clazz: string, subTop: string): Promise<void> {
 	// preparation and check
 
 	const types = {
@@ -88,7 +88,7 @@ export default async function classUse(clazz: string, subTop: string): Promise<v
 	const box = document.getElementById("combineMatchModeBox") as HTMLInputElement;
 	const combineMatch = box.checked;
 	if (combineMatch) {
-		mainView.state.graph.combineMatch(false);
+		View.mainView.state.graph.combineMatch(false);
 	}
 
 	// Create new tab. See https://github.com/IMISE/snik-cytoscape.js/issues/341
@@ -157,7 +157,7 @@ export default async function classUse(clazz: string, subTop: string): Promise<v
 
 	Graph.setVisible(selectedElements, true);
 	if (combineMatch) {
-		[mainView, view].forEach((v) => v.state.graph.combineMatch(true));
+		[View.mainView, view].forEach((v) => v.state.graph.combineMatch(true));
 	} // enable combine match for the main view again and for the new view
 
 	const centerNode = graph.cy.nodes(`node[id='${clazz}']`);

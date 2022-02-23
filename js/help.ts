@@ -1,7 +1,7 @@
 import tippy from "tippy.js";
 import log from "loglevel";
 
-export const help = {
+const help = {
 	"SNIK Graph Manual": {
 		img: "graph.png",
 	},
@@ -158,7 +158,7 @@ function flatten(o: object): object {
 export const flatHelp = flatten(help);
 
 /** Add event listenerers for popups. */
-export function init(): void {
+export function initHelp(): void {
 	for (const key in flatHelp) {
 		const value = flatHelp[key];
 		if (typeof value !== "string") {

@@ -1,5 +1,5 @@
 /** Module for loading files both locally from the server and via upload from the client.*/
-import { View, reset, activeView } from "./view";
+import { View } from "./view";
 import { ViewJson, Session } from "./save";
 import config from "../config";
 import { fromJSON } from "./state";
@@ -69,18 +69,18 @@ export async function loadSessionFromJsonFile(event: Event): Promise<void> {
 		) {
 			return;
 		}
-		reset();
+		View.reset();
 		const mainView = new View(false);
 		const promises = [mainView.initialized];
 
 		// First graph is an instance of Graph from graph.js; the second one is the graph attribute from the Cytoscape JSON format.
 		loadGraphFromJson(mainView.state.graph, json.mainGraph.graph);
-		activeView().setTitle(json.mainGraph.title);
+		View.activeView().setTitle(json.mainGraph.title);
 		for (let i = 0; i < json.tabs.length; i++) {
 			const view = new View(false);
 			promises.push(view.initialized);
 			loadGraphFromJson(view.state.graph, json.tabs[i].graph);
-			activeView().setTitle(json.tabs[i].title);
+			View.activeView().setTitle(json.tabs[i].title);
 		}
 		await Promise.all(promises);
 		fromJSON(json.state); // update changed values, keep existing values that don't exist in the save file
@@ -100,7 +100,7 @@ export function loadView(event: Event): void {
 		}
 		const view = new View(false);
 		loadGraphFromJson(view.state.graph, json.graph);
-		activeView().setTitle(json.title);
+		View.activeView().setTitle(json.title);
 	});
 }
 /**

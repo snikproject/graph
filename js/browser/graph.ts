@@ -4,12 +4,12 @@ import { style } from "./style";
 import { colorschemenight } from "./colorschemenight";
 import { colorschemeday } from "./colorschemeday";
 import timer from "../timer";
-import * as NODE from "../node";
+import NODE from "../node";
 import * as sparql from "../sparql";
 import * as rdf from "../rdf";
 import * as language from "../lang/language";
 import progress from "./progress";
-import { mainView, View } from "./view";
+import { View } from "./view";
 import MicroModal from "micromodal";
 import cytoscape, { Collection, NodeCollection, EdgeCollection, NodeSingular } from "cytoscape";
 import type { Menu } from "./menu";
@@ -657,7 +657,7 @@ export class Graph {
 	 *  @returns this iff the option to create stars in a new view is unset, a new view's graph if it is set */
 	async newGraph(title?: string): Promise<Graph> {
 		//if(!mainView.state.graph.menu.starNewView()) {return this;} // using the menu option to determine whether to create a new graph
-		if (this !== mainView.state.graph) {
+		if (this !== View.mainView.state.graph) {
 			return this;
 		} // span new views only from the main view
 		const view = new View(true, title);

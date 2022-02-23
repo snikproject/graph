@@ -1,10 +1,10 @@
 /** Creates the circular context menu that can be opened on top of a node.*/
-import classUse from "./classuse";
+import { classUse } from "./classuse";
 import * as rdf from "../rdf";
-import * as NODE from "../node";
+import NODE from "../node";
 import * as util from "./util";
 import { Graph, Direction } from "./graph";
-import { ontoWikiUrl, MenuItem } from "./contextmenu";
+import { ContextMenu, MenuItem } from "./contextmenu";
 import * as sparql from "../sparql";
 import * as language from "../lang/language";
 
@@ -13,7 +13,7 @@ const eventify = (f) => (event) => f(event.target); // simplify multiplex expres
 /** Menu entries
 @param graph - the graph that the commands should apply to, if any
 @returns the base commands */
-export default function nodeCommands(graph: Graph): Array<MenuItem> {
+export function nodeCommands(graph: Graph): Array<MenuItem> {
 	return [
 		{
 			content: "compound",
@@ -76,7 +76,7 @@ export default function nodeCommands(graph: Graph): Array<MenuItem> {
 			selector: "node",
 			onClickFunction: (event) => {
 				const node = event.target;
-				const body = `Problem with the class [${rdf.short(node.data(NODE.ID))}](${node.data(NODE.ID)}) ([OntoWiki URL](${ontoWikiUrl(
+				const body = `Problem with the class [${rdf.short(node.data(NODE.ID))}](${node.data(NODE.ID)}) ([OntoWiki URL](${ContextMenu.ontoWikiUrl(
 					node.data(NODE.ID)
 				)})):\n\n`;
 				util.createGitHubIssue(util.REPO_ONTOLOGY, node.data(NODE.ID), body);
@@ -190,7 +190,7 @@ export default function nodeCommands(graph: Graph): Array<MenuItem> {
 					content: "OntoWiki",
 					id: "ontowiki",
 					selector: "node",
-					onClickFunction: (event) => window.open(ontoWikiUrl(event.target.data(NODE.ID))),
+					onClickFunction: (event) => window.open(ContextMenu.ontoWikiUrl(event.target.data(NODE.ID))),
 				},
 				{
 					content: "debug",

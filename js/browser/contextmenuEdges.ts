@@ -1,10 +1,10 @@
 /** Creates the circular context menu that can be opened on top of an edge.*/
 import * as rdf from "../rdf";
 import * as util from "./util";
-import * as EDGE from "../edge";
+import EDGE from "../edge";
 import * as language from "../lang/language";
 import { Graph } from "./graph";
-import { ontoWikiUrl, MenuItem } from "./contextmenu";
+import { ContextMenu, MenuItem } from "./contextmenu";
 import log from "loglevel";
 import { EdgeSingular } from "cytoscape";
 
@@ -19,7 +19,7 @@ function edgeLabel(edge: EdgeSingular): string {
 @param graph - the graph that the context menu operates on
 @returns an array of commands
 */
-export default function edgeCommands(graph: Graph): Array<MenuItem> {
+export function edgeCommands(graph: Graph): Array<MenuItem> {
 	const commands: Array<MenuItem> = [
 		{
 			content: "edit / report",
@@ -27,7 +27,9 @@ export default function edgeCommands(graph: Graph): Array<MenuItem> {
 			selector: "edge",
 			onClickFunction: (event) => {
 				const edge = event.target;
-				const body = `Problem with the edge [${edgeLabel(edge)}](${edge.data(EDGE.SOURCE)}) ([OntoWiki URL](${ontoWikiUrl(edge.data(EDGE.SOURCE))})):\n\n`;
+				const body = `Problem with the edge [${edgeLabel(edge)}](${edge.data(EDGE.SOURCE)}) ([OntoWiki URL](${ContextMenu.ontoWikiUrl(
+					edge.data(EDGE.SOURCE)
+				)})):\n\n`;
 				util.createGitHubIssue(util.REPO_ONTOLOGY, edgeLabel(edge), body);
 			},
 		},
@@ -113,7 +115,7 @@ export default function edgeCommands(graph: Graph): Array<MenuItem> {
 					content: "OntoWiki",
 					id: "edge-ontowiki",
 					onClickFunction: (event) => {
-						window.open(ontoWikiUrl(event.target.data(EDGE.SOURCE)));
+						window.open(ContextMenu.ontoWikiUrl(event.target.data(EDGE.SOURCE)));
 					},
 				},
 				{

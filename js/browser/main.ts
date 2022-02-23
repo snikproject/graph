@@ -10,9 +10,9 @@ import progress from "./progress";
 import config from "../config";
 import initLog from "./log";
 import * as util from "./util";
-import { addOverlay } from "./benchmark";
-import * as help from "../help";
-import { View, activeState } from "./view";
+import { addBenchmarkOverlay } from "./benchmark";
+import { initHelp } from "../help";
+import { View } from "./view";
 import MicroModal from "micromodal";
 import log from "loglevel";
 import type { NodeCollection } from "cytoscape";
@@ -58,7 +58,7 @@ function parseParams(): Params {
 async function applyParams(graph: Graph, params: Params): Promise<void> {
 	try {
 		if (params.benchmark) {
-			addOverlay(graph.cy);
+			addBenchmarkOverlay(graph.cy);
 		}
 
 		if (params.empty) {
@@ -91,7 +91,7 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 		log.debug("Loading from SPARQL Endpoint " + params.endpoint);
 		config.sparql.endpoint = params.endpoint; // loadGraphFromSparql loads from config.sparql.endpoint
 		const graphs: string[] = [];
-		if (params.endpoint === sparql.SNIK_ENDPOINT) {
+		if (params.endpoint === sparql.SNIK.ENDPOINT) {
 			let subs: string[] = [];
 			if (params.sub) {
 				subs = params.sub.split(",");
@@ -100,7 +100,7 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 				// either not present or empty value
 				subs = [...config.helperGraphs, ...config.defaultSubOntologies];
 			}
-			graphs.push(...subs.map((g) => sparql.SNIK_PREFIX + g));
+			graphs.push(...subs.map((g) => sparql.SNIK.PREFIX + g));
 		} else if (params.rdfGraph) {
 			graphs.push(params.rdfGraph);
 			config.sparql.graph = params.rdfGraph;
@@ -110,7 +110,7 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 			await loadGraphFromSparql(graph.cy, graphs, params.instances, params.virtual);
 		}
 		graph.instancesLoaded = params.instances;
-		if (params.endpoint === sparql.SNIK_ENDPOINT) {
+		if (params.endpoint === sparql.SNIK.ENDPOINT) {
 			await layout.runCached(graph.cy, layout.euler, config.defaultSubOntologies, false); // todo: use the correct subs
 			Graph.setVisible(graph.cy.elements(), false);
 			// restrict visible nodes at start to improve performance
@@ -146,9 +146,9 @@ export async function fillInitialGraph(graph: Graph): Promise<void> {
 		await applyParams(graph, params);
 		graph.menu = new Menu();
 		new Search(util.getElementById("search") as HTMLFormElement);
-		help.init();
+		initHelp();
 	});
-	help.init();
+	initHelp();
 }
 
 const clipboard: string[] = [];
@@ -163,7 +163,7 @@ function initKeyListener(): void {
 			return;
 		}
 
-		const layoutState = activeState();
+		const layoutState = View.activeState();
 		if (!layoutState) {
 			return;
 		}

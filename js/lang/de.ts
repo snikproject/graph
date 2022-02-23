@@ -1,4 +1,4 @@
-export default {
+const de = {
 	idStrings: {
 		// menu *******************************************************************
 		// file **********************************************
@@ -70,3 +70,4 @@ export default {
 			"Bitte hier nur Feedback zur Ontologie hinterlassen! Bitte prüfen Sie vorher, ob es schon eine Issue mit diesem Thema gibt. Wenn nicht, bearbeiten wir Ihr Feedback so schnell wie möglich.",
 	},
 };
+export default de;
