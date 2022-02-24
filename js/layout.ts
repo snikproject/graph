@@ -273,7 +273,7 @@ export const euler = {
 	timeStep: 80,
 	randomize: true,
 	movementThreshold: 1,
-	fit: true, // center and zoom after so that it fits in the view
+	fit: false, // center and zoom after so that it fits in the view
 	mass: (node) => (node.data("mass") ? node.data("mass") : 40),
 };
 
@@ -289,7 +289,7 @@ export const eulerTight = {
 	refresh: 50,
 	randomize: false,
 	movementThreshold: 1,
-	fit: true,
+	fit: false,
 	mass: 40,
 };
 

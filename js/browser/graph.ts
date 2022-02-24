@@ -282,6 +282,7 @@ export class Graph {
 			this.cy.fit(visible, 100);
 		}
 	}
+
 	/** Show a "spider worm" between two nodes, which combines a star around "from " with a shortest path to "to".
       Hide all other nodes except when in star mode.
       @param to - path target node, gets a "star" around it as well
