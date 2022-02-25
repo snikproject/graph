@@ -7,7 +7,6 @@ dist
 test
 test.*
 jest.config.js
-globals.d.ts
 LICENSE
 data/snik.json
 typecheck
