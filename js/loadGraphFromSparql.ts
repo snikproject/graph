@@ -46,12 +46,12 @@ async function selectClasses(from: string): Promise<Array<ClassBinding>> {
   {
     ?c a owl:Class.
     OPTIONAL {?src ov:defines ?c.}
-    OPTIONAL {?c meta:subTopClass ?st.}
+    OPTIONAL {?c rdf:type ?st. FILTER(?st!=owl:Class)}
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?inst a ?c.}
   }`;
 
-	const classQuery = config.sparql.endpoint.includes("snik.eu/sparql") ? classQuerySnik : classQuerySimple;
+	const classQuery = config.sparql.isSnik ? classQuerySnik : classQuerySimple;
 	const bindings = (await sparql.select(classQuery)) as Array<ClassBinding>;
 	sparqlClassesTimer.stop(bindings.length + " classes");
 	return bindings;
@@ -188,7 +188,7 @@ async function selectTriples(from: string, fromNamed: string, instances: boolean
       filter(?g!=sniko:)
       {?c a owl:Class.} ${instances ? " UNION {?c a [a owl:Class]}" : ""}
       {?d a owl:Class.} ${instances ? " UNION {?d a [a owl:Class]}" : ""}
-      filter(?p!=meta:subTopClass)
+      filter(?p!=rdf:type)
       OPTIONAL
       {
         ?ax a owl:Axiom;

@@ -37,6 +37,7 @@ const config = {
 		endpoint: "https://www.snik.eu/sparql",
 		graph: "http://www.snik.eu/ontology",
 		instances: false,
+		isSnik: true,
 	},
 	multiview: {
 		initialTabs: 1,

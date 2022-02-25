@@ -33,22 +33,22 @@ export async function classUse(clazz: string, subTop: string): Promise<void> {
 		`select distinct ?inner ?middle ?outer ?outerx
     {
       <${clazz}> (rdfs:subClassOf|skos:closeMatch|^skos:closeMatch)* ?inner.
-      ?inner meta:subTopClass ${innerType}.
+      ?inner rdf:type ${innerType}.
       OPTIONAL
       {
         ?inner ?p ?middle.
-        ?middle meta:subTopClass ${middleType}.` +
+        ?middle rdf:type ${middleType}.` +
 		//    ?role ?p ?f.
-		//    ?f meta:subTopClass meta:Function.
+		//    ?f rdf:type meta:Function.
 		//    ?f (skos:closeMatch|^skos:closeMatch|^rdfs:subClassOf)* ?function.
 		`
         OPTIONAL
         {` +
 		//        #?function ?q ?et
-		//        #?et meta:subTopClass meta:EntityType.
+		//        #?et rdf:type meta:EntityType.
 		`
           ?middle ?q ?outer.
-          ?outer meta:subTopClass ${outerType}.
+          ?outer rdf:type ${outerType}.
           OPTIONAL {?outer (skos:closeMatch|^skos:closeMatch|^rdfs:subClassOf)+ ?outerx.}
         }
       }

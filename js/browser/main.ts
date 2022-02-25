@@ -91,7 +91,7 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 		log.debug("Loading from SPARQL Endpoint " + params.endpoint);
 		config.sparql.endpoint = params.endpoint; // loadGraphFromSparql loads from config.sparql.endpoint
 		const graphs: string[] = [];
-		if (params.endpoint === sparql.SNIK.ENDPOINT) {
+		if (config.sparql.isSnik) {
 			let subs: string[] = [];
 			if (params.sub) {
 				subs = params.sub.split(",");
@@ -110,7 +110,7 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 			await loadGraphFromSparql(graph.cy, graphs, params.instances, params.virtual);
 		}
 		graph.instancesLoaded = params.instances;
-		if (params.endpoint === sparql.SNIK.ENDPOINT) {
+		if (config.sparql.isSnik) {
 			await layout.runCached(graph.cy, layout.euler, config.defaultSubOntologies, false); // todo: use the correct subs
 			Graph.setVisible(graph.cy.elements(), false);
 			// restrict visible nodes at start to improve performance
