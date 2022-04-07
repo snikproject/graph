@@ -6,7 +6,7 @@
 [![Vite](https://badges.aleen42.com/src/vitejs.svg)](https://vitejs.dev/)
 
 Visualization of the SNIK ontology using the Cytoscape.js graph library.
-Live at <https://www.snik.eu/graph> and <https://snikproject.github.io/snik-graph/index.html>.
+Live at <https://www.snik.eu/graph> (stable) and <https://snikproject.github.io/snik-graph/index.html> (master branch).
 <!--Browse the code documentation [here](https://snikproject.github.io/snik-graph/index.html)!-->
 
 ## Installation and Preview
