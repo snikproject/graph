@@ -1,10 +1,10 @@
 import { Graph } from "./graph";
 import { fillInitialGraph } from "./main";
 import { ContextMenu } from "./contextmenu";
-import { goldenLayout } from "./viewLayout";
+import { goldenLayout, ViewComponent } from "./viewLayout";
 import { toJSON } from "./state";
 import log from "loglevel";
-import { ComponentConfig, ContentItem } from "golden-layout";
+import { ComponentItemConfig, ContentItem, LayoutConfig, ComponentContainer } from "golden-layout";
 
 let viewCount: number = 0; // only used for the name, don't decrement on destroy to prevent name conflicts
 
@@ -17,7 +17,7 @@ let viewLayout = goldenLayout();
 function traverse(x: ContentItem, depth: number): Array<ContentItem> {
 	const removeTabsArray: Array<ContentItem> = [];
 	if (x.type === "component") {
-		const config = x as unknown as ComponentConfig;
+		const config = x as unknown as ComponentItemConfig;
 		if (config.componentName !== "Gesamtmodell") {
 			removeTabsArray.push(x);
 			return removeTabsArray;
@@ -98,10 +98,11 @@ export class View {
 		// @ts-expect-error is be completed later
 		this.state = { title, name: "unnamed" };
 
-		const itemConfig = {
+		const itemConfig: ComponentItemConfig = {
 			title: title,
 			type: "component",
 			componentName: title,
+			componentType: "ViewComponent",
 			componentState: this.state,
 			isClosable: View.mainView !== null,
 		};
@@ -136,13 +137,13 @@ export class View {
 
 	/** Close all tabs except the first one. */
 	static reset(): void {
-		const removeTabsArray = traverse(viewLayout.root, 0);
+		/*		const removeTabsArray = traverse(viewLayout.root, 0);
 		for (const content of removeTabsArray) {
 			content.remove();
 		}
 		View.partViews.clear();
 		viewCount = 0;
 		viewLayout.destroy();
-		viewLayout = goldenLayout();
+		viewLayout = goldenLayout();*/
 	}
 }

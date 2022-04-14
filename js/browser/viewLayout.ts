@@ -1,26 +1,49 @@
 import * as util from "./util";
 import { View } from "./view";
 import * as layout from "../layout";
-import GoldenLayout from "golden-layout";
+import { GoldenLayout, LayoutConfig, ComponentItemConfig, ComponentContainer } from "golden-layout";
 import log from "loglevel";
-import "golden-layout/src/css/goldenlayout-base.css";
-import "golden-layout/src/css/goldenlayout-dark-theme.css";
+import "golden-layout/dist/css/goldenlayout-base.css";
+import "golden-layout/dist/css/themes/goldenlayout-dark-theme.css";
 import "../../css/goldenlayout.css";
+
+export class ViewComponent {
+	rootElement: HTMLElement;
+
+	constructor(public container: ComponentContainer) {
+		this.rootElement = container.element;
+		this.rootElement.innerHTML = "<div></div>";
+		this.resizeWithContainerAutomatically = true;
+	}
+}
 
 /** Create, configure and return a GoldenLayout instance.
  *  @returns the created GoldenLayout instance */
 export function goldenLayout(): GoldenLayout {
-	const layoutConfig = {
-		settings: { selectionEnabled: true },
-		content: [
-			{
-				type: "stack",
-				content: [],
-			},
-		],
+	const layoutConfig: LayoutConfig = {
+		//		settings: { selectionEnabled: true },
+		root: {
+			type: "row",
+			content: [
+				{
+					title: "My Component 1",
+					type: "component",
+					componentType: "ViewComponent",
+					width: 50,
+				} as ComponentItemConfig,
+				{
+					title: "My Component 2",
+					type: "component",
+					componentType: "ViewComponent",
+					// componentState: { text: 'Component 2' }
+				} as ComponentItemConfig,
+			],
+		},
 	};
 
-	const viewLayout = new GoldenLayout(layoutConfig);
+	const viewLayout: GoldenLayout = new GoldenLayout(layoutConfig);
+	viewLayout.registerComponent("ViewComponent", ViewComponent);
+
 	// TODO: update stack on focus change
 
 	viewLayout.on("selectionChanged ", (event) => {
@@ -29,22 +52,28 @@ export function goldenLayout(): GoldenLayout {
 		log.info(event);
 	});
 
-	viewLayout.on("stackCreated", function (stack) {
-		(viewLayout as any).selectItem(stack);
+	viewLayout.on("itemCreated", function (e) {
+		if (!e.target.isStack) {
+			return;
+		}
+		const stack = e.target;
+		console.log("Creating a stack", stack);
+		//(viewLayout as any).selectItem(stack); // doesnt work with goldenlayout2
 		const template = util.getElementById("goldenlayout-header");
 		const zoomButtons = document.importNode((template as any).content, true);
 		// Add the zoomButtons to the header
-		(stack as any).header.controlsContainer.prepend(zoomButtons);
+		console.log(stack.header.controlsContainerElement);
+		//(stack as any).header.controlsContainerElement.childNodes.prepend(zoomButtons); // stack.header undefined with goldenlayout2
 		// When a tab is selected then select its stack. For unknown reasons this is not default behaviour of GoldenLayout.
 		// What happens when a tab is moved out of a stack? Testing showed no problems but this should be investigated for potential bugs.
-
+		/*
 		(stack as any).on("activeContentItemChanged", () => {
 			(viewLayout as any).selectItem(stack);
 		});
-
+*/
 		const stackState = () => (stack as any).getActiveContentItem().config.componentState;
 		const cy = () => stackState().cy;
-		const controls = (stack as any).header.controlsContainer[0];
+		//		const controls = (stack as any).header.controlsContainer[0];
 		const separateSubs = () => View.mainView.state.graph.menu.separateSubs() && !stackState().graph.starMode;
 		const data = [
 			[
@@ -85,9 +114,9 @@ export function goldenLayout(): GoldenLayout {
 				},
 			],
 		];
-		for (const datum of data) {
+		/*for (const datum of data) {
 			controls.querySelector(datum[0]).addEventListener("click", datum[1]);
-		}
+		}*/
 	});
 	viewLayout.init();
 	return viewLayout;
