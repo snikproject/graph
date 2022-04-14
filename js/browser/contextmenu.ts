@@ -22,7 +22,7 @@ export interface MenuItem {
 	onClickFunction?(event: Event | { target: any }): void;
 }
 
-const config = { menuItems: [] as Array<MenuItem> };
+const config = { menuItems: [] as Array<MenuItem>, evtType: "cxttap taphold" };
 
 /** context menu for nodes and edges */
 export class ContextMenu {
