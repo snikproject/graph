@@ -1,7 +1,7 @@
 /** Various utility methods. */
 
-// update manually on release
-export const VERSION = "3.0.0";
+import * as packageInfo from "../../package.json";
+export const VERSION = packageInfo.version;
 const LOG_LIMIT = 500;
 
 /** getElementById with exception handling.
