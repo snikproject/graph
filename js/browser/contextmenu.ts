@@ -27,7 +27,6 @@ const config = { menuItems: [] as Array<MenuItem>, evtType: "cxttap taphold" };
 /** context menu for nodes and edges */
 export class ContextMenu {
 	graph: Graph;
-	cxtMenus: Array<Record<string, unknown>>;
 
 	/**
 	 * Add a logging wrapper to a context menu command.
@@ -57,29 +56,16 @@ export class ContextMenu {
 	constructor(graph: Graph) {
 		this.graph = graph;
 		log.debug("Register Context Menu.");
-		//console.log(config);
 		config.menuItems = [...nodeCommands(graph), ...edgeCommands(graph)];
+		config.menuItems.forEach((menu) => ContextMenu.addTooltip(menu));
 		// @ts-expect-error provided by cytoscape-context-menus
 		graph.cy.contextMenus(config);
-		this.cxtMenus = [];
 	}
 
 	/** Add tooltips to all menu entries.
 	 *  @param cxtMenu - a context menu without tooltips */
-	static addTippy(cxtMenu: any): void {
-		cxtMenu.commands.forEach((c) => {
-			if (c.tippy) {
-				return;
-			}
-			c.tippy = true; // some commands are shared by multiple menus
-			const tooltip = flatHelp[c.id];
-			if (!tooltip) {
-				return;
-			}
-			{
-				c.contentStyle = { "pointer-eve": "all" };
-			}
-			c.content = `<img src onerror="tippy('span')"><span data-tippy-content="${tooltip}" style="padding:3em;">${c.content}</span>`;
-		});
+	static addTooltip(cxtMenu: any): void {
+		(cxtMenu.submenu ?? []).forEach(ContextMenu.addTooltip);
+		cxtMenu.tooltipText = flatHelp[cxtMenu.id] || flatHelp[cxtMenu.id.replace("edge-", "")]; // may be undefined
 	}
 }

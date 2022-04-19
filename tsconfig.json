@@ -15,6 +15,7 @@
 		"noImplicitAny": false,
 		"noEmitOnError": false,
 		"noEmit": false,
+		"resolveJsonModule": true,
 		"strict": false
 	},
 	"typedocOptions": {
