@@ -44,7 +44,7 @@ async function selectClasses(from: string): Promise<Array<ClassBinding>> {
   SAMPLE(?inst) AS ?inst
   ${from}
   {
-    ?c a owl:Class.
+    ?c a [rdfs:subClassOf meta:Top].
     OPTIONAL {?src ov:defines ?c.}
     OPTIONAL {?c rdf:type ?st. FILTER(?st!=owl:Class)}
     OPTIONAL {?c rdfs:label ?l.}
@@ -186,8 +186,8 @@ async function selectTriples(from: string, fromNamed: string, instances: boolean
     {
       graph ?g {?c ?p ?d.}
       filter(?g!=sniko:)
-      {?c a owl:Class.} ${instances ? " UNION {?c a [a owl:Class]}" : ""}
-      {?d a owl:Class.} ${instances ? " UNION {?d a [a owl:Class]}" : ""}
+      {?c a [rdfs:subClassOf meta:Top].} ${instances ? " UNION {?c a [a [rdfs:subClassOf meta:Top]]}" : ""}
+      {?d a [rdfs:subClassOf meta:Top].} ${instances ? " UNION {?d a [a [rdfs:subClassOf meta:Top]]}" : ""}
       filter(?p!=rdf:type)
       OPTIONAL
       {
