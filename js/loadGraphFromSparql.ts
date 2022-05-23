@@ -21,20 +21,20 @@ interface ClassBinding {
 async function selectClasses(from: string): Promise<Array<ClassBinding>> {
 	const sparqlClassesTimer = timer("sparql-classes");
 
-	const classQuerySimple = `
+	const nodeQuerySimple = `
   PREFIX ov: <http://open.vocab.org/terms/>
   SELECT ?c
   GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") as ?l
   ?src
   ${from}
   {
-    ?c a owl:Class.
+    ?c a ?type.
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?src ov:defines ?c.}
   }
   `;
 
-	const classQuerySnik = `
+	const nodeQuerySnik = `
   PREFIX ov: <http://open.vocab.org/terms/>
   PREFIX meta: <http://www.snik.eu/ontology/meta/>
   SELECT DISTINCT(?c)
@@ -51,9 +51,9 @@ async function selectClasses(from: string): Promise<Array<ClassBinding>> {
     OPTIONAL {?inst a ?c.}
   }`;
 
-	const classQuery = config.sparql.isSnik ? classQuerySnik : classQuerySimple;
-	const bindings = (await sparql.select(classQuery)) as Array<ClassBinding>;
-	sparqlClassesTimer.stop(bindings.length + " classes");
+	const nodeQuery = config.sparql.isSnik ? nodeQuerySnik : nodeQuerySimple;
+	const bindings = (await sparql.select(nodeQuery)) as Array<ClassBinding>;
+	sparqlClassesTimer.stop(bindings.length + " classes using " + (config.sparql.isSnik ? "SNIK query" : "default query"));
 	return bindings;
 }
 
@@ -197,9 +197,9 @@ async function selectTriples(from: string, fromNamed: string, instances: boolean
         owl:annotatedTarget ?d.
       }
     }`;
-	const tripleQuery = config.sparql.endpoint.includes("snik.eu/sparql") ? tripleQuerySnik : tripleQuerySimple;
+	const tripleQuery = config.sparql.isSnik ? tripleQuerySnik : tripleQuerySimple;
 	const json = await sparql.select(tripleQuery);
-	sparqlPropertiesTimer.stop(json.length + " properties");
+	sparqlPropertiesTimer.stop(json.length + " properties using " + (config.sparql.isSnik ? "SNIK query" : "default query"));
 	return json;
 }
 
