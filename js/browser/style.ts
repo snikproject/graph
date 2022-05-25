@@ -150,7 +150,7 @@ export const style = {
 					}
 					return "triangle";
 				},
-				/* 'edge-text-rotation': 'autorotate',*/ // temporarily disabled due to SVG export bug, see https://github.com/kinimesi/cytoscape-svg/issues/7
+				"edge-text-rotation": "autorotate",
 				"text-margin-y": "-1em",
 				"min-zoomed-font-size": 5,
 				"font-size": 11,
