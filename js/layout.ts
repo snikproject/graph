@@ -274,7 +274,7 @@ export const euler = {
 	randomize: true,
 	movementThreshold: 1,
 	fit: false, // center and zoom after so that it fits in the view
-	mass: (node) => (node.data("mass") ? node.data("mass") : 40),
+	mass: (node) => node.data("mass") | 40,
 };
 
 /**Fastest (but still slow) force directed Cytoscape.js layout found.*/
