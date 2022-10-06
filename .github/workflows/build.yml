@@ -33,8 +33,6 @@ jobs:
       - name: Build
         run: |
           npm run build
-          sed -i "s|/assets|./assets|"  dist/index.html
-          sed -i "s|/assets|../assets|" dist/html/*.html
           cp -r img dist
 
       - name: Doc
