@@ -1,6 +1,6 @@
 {
 	"name": "snikgraph",
-	"version": "22.05",
+	"version": "22.10",
 	"description": "SNIK Graph",
 	"main": "js/browser/main.ts",
 	"type": "module",
