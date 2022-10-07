@@ -73,6 +73,13 @@ Husky will apply Prettier formating on every commit.
 If you like SNIK Graph and want to use it with different data, please open an issue.
 If the website and the SPARQL endpoint are on different domains, you may need to [enable CORS in the SPARQL endpoint](http://vos.openlinksw.com/owiki/wiki/VOS/VirtTipsAndTricksCORsEnableSPARQLURLs).
 
+## FAQ
+
+### The devs told me a bug was fixed but it still occurs
+Browsers may hold an old version of SNIK Graph in the cache.
+Go to "Help" -> "About SNIK Graph" to see if you have the newest version and if not delete your browser cache.
+If it still occurs, please update the issue if one already exists, if not please file an new issue using "Help" -> "Submit Feedback about the Visualization".
+
 ## License
 SNIK Graph has a license with copyleft, the [GPLv3](LICENSE) for details.
 We want to encourage reuse, modification, derivation and distribution as much as possible, so if that license is a problem for you please contact [Prof. Winter](https://www.people.imise.uni-leipzig.de/alfred.winter) and we try our best to find a solution.

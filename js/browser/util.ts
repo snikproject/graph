@@ -33,7 +33,7 @@ export function createGitHubIssue(repo: string, title: string, body: string, log
 	//
 	let encodedBody = encodeURIComponent(body);
 	if (logs) {
-		const encodedLogs = logs.map((l) => encodeURIComponent(l));
+		const encodedLogs = logs.map((l) => encodeURIComponent(l.trim()));
 		let encodedLog = encodedLogs.reduce((a, b) => a + "%0A" + b);
 
 		while (encodedLog.length > LOG_LIMIT) {
@@ -41,7 +41,7 @@ export function createGitHubIssue(repo: string, title: string, body: string, log
 			encodedLogs.shift();
 			encodedLog = encodedLogs.reduce((a, b) => a + "%0A" + b, "");
 		}
-		encodedBody += "%0A%60%60%60%0A" + encodedLog + "%0A%60%60%60";
+		encodedBody += "%0A%0A%23%23%20Log%0A" + "%60%60%60" + encodedLog + "%0A%60%60%60";
 	}
 	window.open(`${repo}/issues/new?title=${encodeURIComponent(title)}&body=${encodedBody}`);
 }

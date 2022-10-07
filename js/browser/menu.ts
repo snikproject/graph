@@ -61,17 +61,25 @@ export class Menu {
 			elements.restore();
 		}
 	}
+	static gitInfo(): string {
+		return `SNIK Graph version ${util.VERSION}
+commit date ${import.meta.env.VITE_GIT_COMMIT_DATE}
+${import.meta.env.VITE_GIT_LAST_COMMIT_MESSAGE}
+${import.meta.env.VITE_GIT_BRANCH_NAME}/${import.meta.env.VITE_GIT_COMMIT_HASH}`;
+	}
 	/** Notifies the user of the program version so that errors can be properly reported. */
 	static about(): void {
-		window.alert("SNIK Graph version " + util.VERSION);
+		window.alert(Menu.gitInfo());
 	}
-	/** Creates a GitHub issue for the visualization.
-	 *  @returns nothing */
+	/** Creates a GitHub issue for the visualization. */
 	static visualizationFeedback(): void {
 		util.createGitHubIssue(
 			util.REPO_APPLICATION,
 			"",
-			"Please type your issue here:\n\n\n\n" + "!!Please do not delete the following text, because its the log for developers!!\n\n",
+			`## Issue
+
+## Version Info
+${Menu.gitInfo()}`,
 			log["logs"]
 		);
 	}
