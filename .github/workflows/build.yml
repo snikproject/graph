@@ -32,7 +32,7 @@ jobs:
 
       - name: Build
         run: |
-          npm run build --sourcemap true
+          npm run build
           cp -r img dist
 
       - name: Doc
