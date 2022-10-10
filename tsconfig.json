@@ -16,6 +16,7 @@
 		"noEmitOnError": false,
 		"noEmit": false,
 		"resolveJsonModule": true,
+		"sourceMap": true,
 		"strict": false
 	},
 	"typedocOptions": {
