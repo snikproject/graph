@@ -1,6 +1,6 @@
 /** Provides graph operations such as initialization, wayfinding and highlighting.*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
-import { style } from "./style";
+import { coloredEdgeStyle, style } from "./style";
 import { colorschemenight } from "./colorschemenight";
 import { colorschemeday } from "./colorschemeday";
 import timer from "../timer";
@@ -375,17 +375,23 @@ export class Graph {
 		return true;
 	}
 	/** Inverts the screen colors in the canvas for day mode. Uses an inverted node js style file to keep node colors.
-      @param enabled - whether the canvas colors should be inverted */
-	invert(enabled: boolean): void {
-		if (enabled) {
+	 * @param dayScheme - whether the canvas colors should be inverted.
+	 * @param coloredEdges Give every edge-type a certain color.
+	 */
+	applyStyle(dayScheme: boolean, coloredEdges: boolean): void {
+		let baseStyle = style.style as any;
+		if (dayScheme) {
 			this.container.style.backgroundColor = "white";
-			// @ts-expect-error fromJson not known to compiler
-			this.cy.style().fromJson(style.style.concat(colorschemeday)).update();
+			baseStyle = baseStyle.concat(colorschemeday);
 		} else {
 			this.container.style.backgroundColor = "black";
-			// @ts-expect-error fromJson not known to compiler
-			this.cy.style().fromJson(style.style.concat(colorschemenight)).update();
+			baseStyle = baseStyle.concat(colorschemenight);
 		}
+		if (coloredEdges) {
+			baseStyle = baseStyle.concat(coloredEdgeStyle);
+		}
+		// @ts-expect-error fromJson not known to compiler
+		this.cy.style().fromJson(baseStyle).update();
 	}
 	/** Center and highlight the given URI.
       @param uri - The URI of a class in the graph.

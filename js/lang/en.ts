@@ -22,6 +22,7 @@ const en = {
 		cumulativeSearch: "cumulative search",
 		grid: "show grid",
 		dayMode: "day mode",
+		coloredEdges: "Colorize edges by type",
 		devMode: "developer mode",
 		extMode: "extended mode",
 		combineMatchMode: "Combine Matches",

@@ -22,6 +22,7 @@ const de = {
 		cumulativeSearch: "Kumulative Suche",
 		grid: "Raster anzeigen",
 		dayMode: "Tag-Modus",
+		coloredEdges: "Kanten nach Typ einfärben",
 		devMode: "Entwickler-Modus",
 		extMode: "Erweiterter Modus",
 		combineMatchMode: "Übereinstimmungen zusammenfassen",
