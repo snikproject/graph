@@ -8,6 +8,7 @@ import NODE from "../node";
 import EDGE from "../edge";
 import * as language from "../lang/language";
 import config from "../config";
+import { stringToColor } from "./util";
 // see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing
 
 export const style = {
@@ -216,3 +217,16 @@ export const style = {
 		},
 	],
 };
+
+export const coloredEdgeStyle = [
+	{
+		selector: "edge:unselected",
+		css: {
+			"line-color": function (edge) {
+				const edgeType = edge.data(EDGE.PROPERTY);
+				const color = stringToColor(edgeType);
+				return color;
+			},
+		},
+	},
+];

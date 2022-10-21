@@ -7,7 +7,7 @@ import timer from "./timer";
 import NODE from "./node";
 import config from "./config";
 import log from "loglevel";
-import cytoscape, { ElementDefinition, NodeCollection } from "cytoscape";
+import cytoscape, { BoundingBox12, BoundingBoxWH, ElementDefinition, GridLayoutOptions, LayoutOptions, NodeCollection } from "cytoscape";
 import cytoscapeeuler from "cytoscape-euler";
 cytoscape.use(cytoscapeeuler);
 
@@ -53,6 +53,7 @@ export function positions(nodes: NodeCollection): Array<Array<number>> {
 /** @param nodes - the nodes whose center is returned
 @returns the center point of the nodes */
 function center(nodes: cytoscape.NodeCollection): cytoscape.Position {
+	// consider using nodes.boundingBox() here
 	const c = { x: 0.0, y: 0.0 };
 	for (let i = 0; i < nodes.length; i++) {
 		const pos = nodes[i].position();
@@ -78,7 +79,7 @@ run(cy,{"name":"grid"},new Set(["meta","ciox"]))
 */
 export async function run(
 	cy: cytoscape.Core,
-	layoutConfig: LayoutConfig,
+	layoutConfig: LayoutOptions,
 	subs?: Array<string>,
 	separateSubs: boolean = false,
 	save: boolean = false
@@ -112,7 +113,7 @@ export async function run(
 	}
 	activeLayout && activeLayout.stop();
 
-	let nodes;
+	let nodes: NodeCollection;
 	let partLayout; // only change the positions of the selected nodes, keep the other ones in place
 	if (cy.nodes(":selected").size() > 1) {
 		nodes = cy.nodes(":selected");
@@ -126,6 +127,11 @@ export async function run(
 	if (partLayout) {
 		oldCenter = center(nodes);
 	}
+	if (layoutConfig.name === "grid") {
+		const edgeLength = Math.sqrt(nodes.length);
+		(layoutConfig as GridLayoutOptions).cols = edgeLength;
+		(layoutConfig as GridLayoutOptions).rows = edgeLength;
+	}
 
 	const animate = nodes.size() > ANIMATE_THRESHOLD && typeof window !== "undefined"; // can't animate from node
 	const configCopy = { ...layoutConfig, animate };
@@ -137,6 +143,9 @@ export async function run(
 			const newCenter = center(nodes);
 			// move the nodes so that the center is at the same spot as before
 			nodes.shift({ x: oldCenter.x - newCenter.x, y: oldCenter.y - newCenter.y });
+		}
+		if (configCopy.name === "grid") {
+			cy.center(nodes); // center to the selected nodes
 		}
 		layoutTimer.stop();
 		if (subs && separateSubs) {
@@ -218,7 +227,7 @@ export interface LayoutConfig {
 @param separateSubs - Whether to separate the graph based on the subontologies.
 @returns whether the layout could successfully be applied. Does not indicate success of loading from cache, in which case it is calculated anew.
 */
-export async function runCached(cy: cytoscape.Core, layoutConfig: any, subs: Array<string>, separateSubs: boolean = false): Promise<boolean> {
+export async function runCached(cy: cytoscape.Core, layoutConfig: cytoscape.LayoutOptions, subs: Array<string>, separateSubs: boolean = false): Promise<boolean> {
 	if (typeof localStorage === "undefined") {
 		log.error("Web storage not available, could not access browser-based cache.");
 		return run(cy, layoutConfig, subs, separateSubs, false);
@@ -313,13 +322,14 @@ export function eulerVariable(len)
 */
 
 /** Layout for compound graphs */
-export const cose = {
-	name: "cose",
+export const cose : cytoscape.LayoutOptions = {
+	name: "grid",
 	animate: true,
 	refresh: 50,
 	numIter: 500,
 	initialTemp: 1000,
 	nestingFactor: 1.01,
 	randomize: false,
-	fit: true,
+	fit: true
+	// avoidOverlap: true,
 };
