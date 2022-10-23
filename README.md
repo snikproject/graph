@@ -13,19 +13,27 @@ Live at <https://www.snik.eu/graph> (stable) and <https://snikproject.github.io/
 
 ### Node
 
-	git clone https://github.com/snikproject/snik-graph.git
+    git clone https://github.com/snikproject/snik-graph.git
     npm install
     cp js/config.dist.ts js/config.ts
     npm run preview
 
-Open <http://localhost:3000/> in a browser.
+Open the displayed local link in a browser.
+
+### Develping On Windows
+
+Developing on Windows is not recommended but possible with the following adaptions:
+
+* Instead of `cp js/config.dist.ts js/config.ts`, do `copy js\config.dist.ts js\config.ts` or use the Explorer to copy the file.
+* There is [a bug in the underlying libraries](https://github.com/vitejs/vite/issues/10580) that prevents building SNIK Graph with Windows CRLF file endings. If your Git configuration automatically uses CRLF line endings on Windows you must currently convert them to LF.
+* lint-staged fails on Windows with "Current directory is not a git directory!". Skip the Husky commit hook with `git commit --no-verify`.
 
 ### Docker
 
-	git clone https://github.com/snikproject/snik-graph.git
+    git clone https://github.com/snikproject/snik-graph.git
     docker build . -t snik-graph
-	docker run --network="host" snik-graph
-	
+    docker run --network="host" snik-graph
+
 Open <http://localhost:8043/> in a browser.
 
 ## Usage Requirements
@@ -63,7 +71,7 @@ Specified in the [ESlint](.eslintrc.json) and [Prettier](.prettierrc) configurat
 Husky will apply Prettier formating on every commit.
 
 ### LogLevels
-* `trace`: very verbose information for debugging  
+* `trace`: very verbose information for debugging
 * `debug`: information for debugging
 * `info`: generally useful information, not only for developers (default)
 * `warn`: for problems that are recoverable

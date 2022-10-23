@@ -27,6 +27,7 @@ export interface MenuElement {
 export class Menu {
 	separateSubsBox;
 	dayModeBox;
+	coloredEdgesBox;
 	/** Construct the main menu bar. */
 	constructor() {
 		if (menu) {
@@ -43,6 +44,14 @@ export class Menu {
 	separateSubs(): boolean {
 		return this.separateSubsBox.checked;
 	}
+
+	/**
+	 * @returns if edges should get different colors by type.
+	 */
+	coloredEdges(): boolean {
+		return this.coloredEdgesBox.checked;
+	}
+
 	///** @returns {boolean} whether star operations should be shown in a new view. */
 	// starNewView() {return this.starNewViewBox.checked;}
 	/** Sets the preferred node label language attribute. Use the values from node.js.
@@ -277,7 +286,7 @@ ${Menu.gitInfo()}`,
 	 * @param as - an empty array that will be filled with the anchor elements */
 	addOptions(as: Array<HTMLAnchorElement>): void {
 		const optionsContent = util.getElementById("options-menu-content");
-		const names = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode"]; // ,"starNewView"
+		const names = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges"]; // ,"starNewView"
 		(this as any).optionBoxes = {};
 		for (const name of names) {
 			log.trace("Add option " + name);
@@ -301,7 +310,7 @@ ${Menu.gitInfo()}`,
 		});
 		this.dayModeBox.addEventListener("change", () => {
 			for (const view of View.views()) {
-				view.state.graph.invert(this.dayModeBox.checked);
+				view.state.graph.applyStyle(this.dayModeBox.checked, this.coloredEdgesBox.checked);
 			}
 			log.debug("Set dayMode to " + this.dayModeBox.checked);
 		});
@@ -328,6 +337,20 @@ ${Menu.gitInfo()}`,
 					.forEach((graph) => graph.combineMatch((this as any).combineMatchModeBox.checked));
 			}, 10);
 		});
+
+		// colorize edges dependent on tpye
+		((this as any).coloredEdgesBox as HTMLInputElement).addEventListener("change", () => {
+			const colorize = (this as any).coloredEdgesBox.checked;
+			log.debug("Set coloredEdges to " + colorize);
+			(config as any).edgesColorized = colorize;
+			// redraw all canvas
+			for (const view of View.views()) {
+				view.state.graph.applyStyle(this.dayModeBox.checked, this.coloredEdgesBox.checked);
+			}
+		});
+		if (config.activeOptions.includes("edgecolor")) {
+			setTimeout(() => this.coloredEdgesBox.click(), 100); // checks box but does not apply without delay
+		}
 	}
 	/** Adds the menu to the graph parent DOM element and sets up the event listeners. */
 	addMenu() {
@@ -468,7 +491,7 @@ ${Menu.gitInfo()}`,
 	}
 	/** Save session-based options (not user preferences) to JSON. */
 	optionsToJSON(): object {
-		const sessionOptions = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode"];
+		const sessionOptions = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges"];
 		const options = {};
 		for (const option of sessionOptions) {
 			options[option] = (this as any).optionBoxes[option].checked;

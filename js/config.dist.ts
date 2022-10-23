@@ -18,7 +18,7 @@ const config = {
 	]),
 	nodeSize: 39,
 	helperGraphs: ["limes-exact", "match"],
-	activeOptions: [], // initially active options, choose a subset of: ["dev", "ext","day"]
+	activeOptions: ["edgecolor"], // initially active options, choose a subset of: ["dev", "ext","day", "edgecolor"]
 	searchCloseMatch: true, // true is rejected because of the high estimated time by the SPARQL endpoint because of too many optional clauses
 	// only used for mobile, desktop will always use cxttapstart
 	logLevelConsole: "debug" as LogLevelDesc,

@@ -7,7 +7,7 @@ import timer from "./timer";
 import NODE from "./node";
 import config from "./config";
 import log from "loglevel";
-import cytoscape, { ElementDefinition, NodeCollection } from "cytoscape";
+import cytoscape, { ElementDefinition, LayoutOptions, NodeCollection } from "cytoscape";
 import cytoscapeeuler from "cytoscape-euler";
 cytoscape.use(cytoscapeeuler);
 
@@ -78,7 +78,7 @@ run(cy,{"name":"grid"},new Set(["meta","ciox"]))
 */
 export async function run(
 	cy: cytoscape.Core,
-	layoutConfig: LayoutConfig,
+	layoutConfig: LayoutOptions,
 	subs?: Array<string>,
 	separateSubs: boolean = false,
 	save: boolean = false
@@ -112,7 +112,7 @@ export async function run(
 	}
 	activeLayout && activeLayout.stop();
 
-	let nodes;
+	let nodes: NodeCollection;
 	let partLayout; // only change the positions of the selected nodes, keep the other ones in place
 	if (cy.nodes(":selected").size() > 1) {
 		nodes = cy.nodes(":selected");
@@ -218,7 +218,12 @@ export interface LayoutConfig {
 @param separateSubs - Whether to separate the graph based on the subontologies.
 @returns whether the layout could successfully be applied. Does not indicate success of loading from cache, in which case it is calculated anew.
 */
-export async function runCached(cy: cytoscape.Core, layoutConfig: any, subs: Array<string>, separateSubs: boolean = false): Promise<boolean> {
+export async function runCached(
+	cy: cytoscape.Core,
+	layoutConfig: cytoscape.LayoutOptions,
+	subs: Array<string>,
+	separateSubs: boolean = false
+): Promise<boolean> {
 	if (typeof localStorage === "undefined") {
 		log.error("Web storage not available, could not access browser-based cache.");
 		return run(cy, layoutConfig, subs, separateSubs, false);
@@ -313,7 +318,7 @@ export function eulerVariable(len)
 */
 
 /** Layout for compound graphs */
-export const cose = {
+export const cose: cytoscape.LayoutOptions = {
 	name: "cose",
 	animate: true,
 	refresh: 50,
