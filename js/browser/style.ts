@@ -224,7 +224,7 @@ export const coloredEdgeStyle = [
 		css: {
 			"line-color": function (edge) {
 				const edgeType = edge.data(EDGE.PROPERTY);
-				const color = stringToColor(edgeType);
+				const color = stringToColor(edgeType);  // maybe adjust the v of the hsv color for day mode
 				return color;
 			},
 		},
