@@ -2,5 +2,6 @@
 	"useTabs": true,
 	"singleQuote": false,
 	"trailingComma": "es5",
+	"htmlWhitespaceSensitivity": "ignore",
 	"printWidth": 160
 }
