@@ -75,24 +75,6 @@ export function checkboxClickableDiv(box: HTMLInputElement, text: string, i18n: 
 }
 
 /**
- * Converts a string to a color depending on the hash value of the string.
- * So we get pseudo-randomized colors for different strings.
- * @param str The string to get a color for.
- * @returns A # leaded rgb hex color depending on the input string.
- */
-export function stringToColor(str: string): string {
-	let hash = 0;
-	// generate hash
-	for (let i = 0; i < str.length; i++) {
-		hash = str.charCodeAt(i) + ((hash << 5) - hash);
-	}
-	// normalize
-	hash = (hash % 180) / 360.0; // keep resolution
-	hash += 0.5; // note % resolves also to negative values, so we use one half from negative and the other from the positive
-	return hsvToHexColor(hash, 1, 1);
-}
-
-/**
  * Converts a color from hsv to a hex rgb value.
  * @param hue The hue in the range of 0 to 1.
  * @param saturation The saturation in the range 0 to 1.
@@ -126,11 +108,29 @@ export function hsvToHexColor(hue: number, saturation: number, value: number): s
 			(r = value), (g = p), (b = q);
 			break;
 	}
-	let color = "#";
+	const color = "#";
 	return (
 		color +
 		("00" + (r * 255).toString(16)).slice(-2) + // .substr() is deprecated on some browser
 		("00" + (g * 255).toString(16)).slice(-2) +
 		("00" + (b * 255).toString(16)).slice(-2)
 	);
+}
+
+/**
+ * Converts a string to a color depending on the hash value of the string.
+ * So we get pseudo-randomized colors for different strings.
+ * @param str The string to get a color for.
+ * @returns A # leaded rgb hex color depending on the input string.
+ */
+export function stringToColor(str: string): string {
+	let hash = 0;
+	// generate hash
+	for (let i = 0; i < str.length; i++) {
+		hash = str.charCodeAt(i) + ((hash << 5) - hash);
+	}
+	// normalize
+	hash = (hash % 180) / 360.0; // keep resolution
+	hash += 0.5; // note % resolves also to negative values, so we use one half from negative and the other from the positive
+	return hsvToHexColor(hash, 1, 1);
 }
