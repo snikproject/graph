@@ -21,6 +21,7 @@
 		"golden-layout": "^1.5.9",
 		"hotkeys-js": "^3.10.0",
 		"isomorphic-fetch": "^3.0.0",
+		"jquery": "^3.6.1",
 		"loglevel": "^1.8.0",
 		"micromodal": "^0.4.10",
 		"notyf": "^3.10.0",

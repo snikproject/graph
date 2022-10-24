@@ -9,11 +9,10 @@
 		<link rel="stylesheet" type="text/css" href="./css/style.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="./css/overlay.css" media="screen" />
 		<!--for golden layout-->
-		<script
-			src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-			integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
-			crossorigin="anonymous"
-		></script>
+		<script type="module">
+			import $ from "jquery";
+			window.jQuery = window.$ = $;
+		</script>
 		<script type="module" src="./js/browser/main.ts"></script>
 	</head>
 
@@ -25,6 +24,7 @@
 				to view site.
 			</h1>
 		</noscript>
+
 		<div id="top">
 			<form id="search" method="post">
 				<input type="text" name="query" id="search-field" list="matches" placeholder="🔍 Class Name" />
