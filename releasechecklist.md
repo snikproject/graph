@@ -15,6 +15,7 @@ Our releases have a major and minor version x.y with a corresponding milestone a
 ### Upgrade major dependency versions
 
 Run `npx npm-upgrade` and upgrade all packages that don't break anything.
+Golden Layout [needs to stay at version 1.x](https://github.com/snikproject/graph/issues/372).
 If something breaks, try to fix it with reasonable effort.
 If that doesn't help, keep the old version.
 

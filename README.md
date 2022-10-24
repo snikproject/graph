@@ -67,8 +67,26 @@ Requires a browser with [ES6 module support](https://caniuse.com/es6-module).
 Make sure it runs locally before updating on the server, see releasechecklist.md.
 
 ### Code Style
-Specified in the [ESlint](.eslintrc.json) and [Prettier](.prettierrc) configuration files.
-Husky will apply Prettier formating on every commit.
+Specified in the [configuration files of ESlint](.eslintrc.json) and [Prettier](.prettierrc).
+
+#### Formatting
+[Prettier](https://prettier.io/) guarantees consistent formatting without time-intensive manual efforts.
+On `npm install`, [Husky](https://github.com/typicode/husky) sets up a Git hook for you to automatically apply Prettier on every commit.
+Staged files are identified by [lint-staged](https://github.com/okonet/lint-staged).
+If the automatic formatting Hook fails, for example currently on Windows, please always manually run `npx prettier js -w --cache` before commiting.
+If you use an IDE you may automate this by applying Prettier on save.
+
+#### Linting
+There should be no errors and as few warnings as possible.
+Can be integrated into IDEs and editors like Atom.
+
+- `npm run lint`
+- Some errors can be fixed automatically via `npx eslint js --fix`.
+
+#### Typechecking
+
+SNIK Graph is written in TypeScript but Vite does not perform any type checking, which you can run manually with `npm run typecheck`.
+This can help uncover some otherwise hard to find bugs.
 
 ### LogLevels
 * `trace`: very verbose information for debugging
