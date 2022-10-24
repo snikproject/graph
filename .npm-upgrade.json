@@ -1,0 +1,8 @@
+{
+	"ignore": {
+		"golden-layout": {
+			"versions": ">1",
+			"reason": "Incompatible"
+		}
+	}
+}
