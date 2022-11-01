@@ -14,9 +14,10 @@ Live at <https://www.snik.eu/graph> (stable) and <https://snikproject.github.io/
 ### Node
 
     git clone https://github.com/snikproject/snik-graph.git
+    cd snik-graph
     npm install
     cp js/config.dist.ts js/config.ts
-    npm run preview
+    npm run dev 
 
 Open the displayed local link in a browser.
 
@@ -31,6 +32,7 @@ Developing on Windows is not recommended but possible with the following adaptio
 ### Docker
 
     git clone https://github.com/snikproject/snik-graph.git
+    cd snik-graph
     docker build . -t snik-graph
     docker run --network="host" snik-graph
 
