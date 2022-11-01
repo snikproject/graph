@@ -1,4 +1,6 @@
 .*
+# vite build uses git information
+!.git
 *~
 node
 node_modules
