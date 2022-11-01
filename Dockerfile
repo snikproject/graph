@@ -1,7 +1,7 @@
 FROM node
 WORKDIR /src
 COPY package.json .
-RUN npm install --ignore-scripts --production --no-audit
+RUN npm install --ignore-scripts --omit=dev --no-audit
 COPY . .
 RUN cp js/config.dist.ts js/config.ts
 ARG SPARQL_ENDPOINT=https://www.snik.eu/sparql
