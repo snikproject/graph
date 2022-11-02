@@ -1,6 +1,6 @@
 # SNIK Graph
 
-[![build](https://github.com/snikproject/snik-graph/actions/workflows/build.yml/badge.svg)](https://github.com/snikproject/snik-graph/actions/workflows/build.yml)
+[![build](https://github.com/snikproject/graph/actions/workflows/build.yml/badge.svg)](https://github.com/snikproject/graph/actions/workflows/build.yml)
 [![License: GNU GPLv3](https://img.shields.io/badge/license-GPL-blue)](LICENSE)
 ![TypeScript](https://badges.aleen42.com/src/typescript.svg)
 [![Vite](https://badges.aleen42.com/src/vitejs.svg)](https://vitejs.dev/)
@@ -13,7 +13,7 @@ Live at <https://www.snik.eu/graph> (stable) and <https://snikproject.github.io/
 
 ### Node
 
-    git clone https://github.com/snikproject/snik-graph.git
+    git clone https://github.com/snikproject/graph.git
     cd snik-graph
     npm install
     cp js/config.dist.ts js/config.ts
@@ -31,7 +31,7 @@ Developing on Windows is not recommended but possible with the following adaptio
 
 ### Docker
 
-    git clone https://github.com/snikproject/snik-graph.git
+    git clone https://github.com/snikproject/graph.git
     cd snik-graph
     docker build . -t snik-graph
     docker run --network="host" snik-graph

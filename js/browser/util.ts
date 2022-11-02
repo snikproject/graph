@@ -15,7 +15,7 @@ export function getElementById(id: string): HTMLElement {
 	return el;
 }
 
-export const REPO_APPLICATION = "https://github.com/snikproject/snik-graph";
+export const REPO_APPLICATION = "https://github.com/snikproject/graph";
 export const REPO_ONTOLOGY = "https://github.com/snikproject/ontology";
 
 /** Open a new issue on the GitHub repository.
