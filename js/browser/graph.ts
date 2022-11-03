@@ -15,9 +15,13 @@ import cytoscape, { Collection, NodeCollection, EdgeCollection, NodeSingular } f
 import type { Menu } from "./menu";
 import log from "loglevel";
 
+/** Specify the direction of edges to show around a given node. */
 export enum Direction {
+	/** show incoming edges only */
 	IN,
+	/** show outgoing edges only */
 	OUT,
+	/** show both incoming and outgoing edges */
 	BOTH,
 }
 
