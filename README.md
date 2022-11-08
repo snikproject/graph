@@ -26,7 +26,6 @@ Open the displayed local link in a browser.
 Developing on Windows is not recommended but possible with the following adaptions:
 
 * Instead of `cp js/config.dist.ts js/config.ts`, do `copy js\config.dist.ts js\config.ts` or use the Explorer to copy the file.
-* There is [a bug in the underlying libraries](https://github.com/vitejs/vite/issues/10580) that prevents building SNIK Graph with Windows CRLF file endings. If your Git configuration automatically uses CRLF line endings on Windows you must currently convert them to LF.
 * lint-staged fails on Windows with "Current directory is not a git directory!". Skip the Husky commit hook with `git commit --no-verify`.
 
 ### Docker
