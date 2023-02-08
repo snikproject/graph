@@ -37,7 +37,7 @@ Each of those sources is modelled according to the SNIK meta model,  which class
 ![The SNIK Meta Model.\label{fig:metamodel}](img/metamodel.pdf){ width=95% }
 
 SNIK Graph is a web-based interactive Linked Data graph visualization of SNIK, which is based on Cytoscape.js [@cytoscapejs], a JavaScript graph visualization and analysis library.
-An installation visualizing SNIK is published at <https://www.snik.eu/graph> and <https://snikproject.github.io/snik-graph>, but other ontologies and knowledge bases can be used as well.
+An installation visualizing SNIK is published at <https://www.snik.eu/graph> and <https://snikproject.github.io/graph>, but other ontologies and knowledge bases can be used as well.
 Due to the large amount of resources, visualizing SNIK as a graph causes overplotting as shown in \autoref{fig:completegraph}.
 SNIK Graph offers several options to select and layout subgraphs in multiple views [@thomasba], for example to show only a specific chapter of a book to prepare a lecture about a specific topic.
 
