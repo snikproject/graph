@@ -53,7 +53,7 @@ Create a local web server and test it on localhost using `npm run dev`.
 
 - clone a fresh copy of SNIK Graph into a temporary folder, see code preparations above
 - run it in different browsers
-- the most important test: it needs to load without errors. Make sure to open the console groups.
+- the most important test: it needs to load without errors. Make sure to open the console groups. `npm run dev` may fail to load the submenu indicator image but that should work with `npm run preview`.
 - clear the cache and local storage and try to load again (press F5)
 - open a new tab
 - copy some nodes in the main tab
