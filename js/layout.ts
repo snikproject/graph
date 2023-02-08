@@ -112,31 +112,31 @@ export async function run(
 	}
 	activeLayout && activeLayout.stop();
 
-	let nodes: NodeCollection;
+	let elements;
 	let partLayout; // only change the positions of the selected nodes, keep the other ones in place
 	if (cy.nodes(":selected").size() > 1) {
-		nodes = cy.nodes(":selected");
+		elements = cy.elements(":selected");
 		partLayout = true;
 	} else {
-		nodes = cy.nodes(":visible");
+		elements = cy.elements(":visible");
 		partLayout = false;
 	}
 	let oldCenter;
 	// Because it is a partial graph, the relation to the whole graph should still be discernable. That is why we preserve the center position of that partial graph and restore it later.
 	if (partLayout) {
-		oldCenter = center(nodes);
+		oldCenter = center(elements.nodes());
 	}
 
-	const animate = nodes.size() > ANIMATE_THRESHOLD && typeof window !== "undefined"; // can't animate from node
+	const animate = elements.size() > ANIMATE_THRESHOLD && typeof window !== "undefined"; // can't animate from node
 	const configCopy = { ...layoutConfig, animate };
 	{
-		activeLayout = nodes.layout(configCopy);
+		activeLayout = elements.layout(configCopy);
 	}
 	activeLayout.on("layoutstop", () => {
 		if (partLayout) {
-			const newCenter = center(nodes);
+			const newCenter = center(elements.nodes());
 			// move the nodes so that the center is at the same spot as before
-			nodes.shift({ x: oldCenter.x - newCenter.x, y: oldCenter.y - newCenter.y });
+			elements.nodes().shift({ x: oldCenter.x - newCenter.x, y: oldCenter.y - newCenter.y });
 		}
 		layoutTimer.stop();
 		if (subs && separateSubs) {
