@@ -108,12 +108,11 @@ export function hsvToHexColor(hue: number, saturation: number, value: number): s
 			(r = value), (g = p), (b = q);
 			break;
 	}
-	const color = "#";
 	return (
-		color +
-		("00" + (r * 255).toString(16)).slice(-2) + // .substr() is deprecated on some browser
-		("00" + (g * 255).toString(16)).slice(-2) +
-		("00" + (b * 255).toString(16)).slice(-2)
+		"#" +
+		("00" + Math.floor(r * 255).toString(16)).slice(-2) + // .substr() is deprecated on some browser
+		("00" + Math.floor(g * 255).toString(16)).slice(-2) +
+		("00" + Math.floor(b * 255).toString(16)).slice(-2)
 	);
 }
 
