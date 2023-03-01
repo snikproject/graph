@@ -1,4 +1,6 @@
 import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+import "../css/tippy.css";
 import log from "loglevel";
 
 const help = {
@@ -70,7 +72,7 @@ const help = {
 			"subontology-connectivity": "Shows the connectivity between chosen Subontologies, i.e. between BB and OB, in a new tab.",
 			img: "subontologyConnectivity.png",
 			"reset-view": "Resets all the layout operations to get you back to the starting point of the visualization.",
-			"change-title": "Opens a propmt to change the title of the currently active view.",
+			"change-title": "Opens a prompt to change the title of the currently active view.",
 		},
 		services: {
 			"": "Other ways to access SNIK.",
@@ -157,8 +159,10 @@ function flatten(o: object): object {
 
 export const flatHelp = flatten(help);
 
-/** Add event listenerers for popups. */
+/** Add event listeners for popups. */
 export function initHelp(): void {
+	const placement = "right-end";
+	const theme = "reddark";
 	for (const key in flatHelp) {
 		const value = flatHelp[key];
 		if (typeof value !== "string") {
@@ -166,12 +170,12 @@ export function initHelp(): void {
 		}
 		const ele = document.getElementById(key);
 		if (ele) {
-			tippy("#" + key, { content: value });
+			tippy("#" + key, { content: value, placement, theme });
 		} else {
 			const selector = `[data-i18n="${key}"]`;
 			const eles = document.querySelectorAll(selector);
 			if (eles.length > 0) {
-				tippy(selector, { content: value });
+				tippy(selector, { content: value, placement, theme });
 			} else {
 				log.trace(`tooltip init: found none of #${key} and [data-i18n="${key}"]`);
 			}
