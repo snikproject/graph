@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM node
 WORKDIR /src
 COPY package.json .
