@@ -19,7 +19,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/node_modules
-          key: cache-${{ hashFiles('**/package-lock.json') }}
+          key: cache-${{ hashFiles('**/package.json') }}
 
       - name: Install
         run: |
