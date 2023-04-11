@@ -2,7 +2,7 @@
 FROM node
 WORKDIR /src
 COPY package.json .
-RUN npm install --ignore-scripts --no-audit
+RUN npm install --no-fund --ignore-scripts --no-audit
 COPY . .
 
 

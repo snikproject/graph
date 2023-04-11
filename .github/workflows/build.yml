@@ -14,17 +14,14 @@ jobs:
         uses: actions/checkout@v3
 
       - uses: actions/setup-node@v3
-
-      - name: Cache node modules
-        uses: actions/cache@v3
         with:
-          path: ~/node_modules
-          key: cache-${{ hashFiles('**/package.json') }}
+          cache: 'npm'
+          cache-dependency-path: '**/package.json'
 
       - name: Install
         run: |
           cp js/config.dist.ts js/config.ts
-          npm install --ignore-scripts --no-audit
+          npm install --no-fund --ignore-scripts --no-audit
 
       - name: Test
         run: |
