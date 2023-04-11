@@ -3,6 +3,10 @@
 		"golden-layout": {
 			"versions": ">1",
 			"reason": "Incompatible"
+		},
+		"typedoc": {
+			"versions": ">0.23",
+			"reason": "Breaks typedoc-plugin-merge-modules 4.0.1"
 		}
 	}
 }

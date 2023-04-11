@@ -24,7 +24,7 @@ jobs:
       - name: Install
         run: |
           cp js/config.dist.ts js/config.ts
-          npm install --ignore-scripts --omit=dev --no-audit
+          npm install --ignore-scripts --no-audit
 
       - name: Test
         run: |

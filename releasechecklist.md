@@ -8,7 +8,7 @@ Our releases have a major and minor version x.y with a corresponding milestone a
 
 - switch to master branch
 - git pull
-- `npm install && npm update`
+- `npm install --include=dev && npm update`
 - `cp js/config.dist.ts js/config.ts`
 - change the version number in package.json and js/browser/util.ts to the new release
 
@@ -53,7 +53,7 @@ Create a local web server and test it on localhost using `npm run dev`.
 
 - clone a fresh copy of SNIK Graph into a temporary folder, see code preparations above
 - run it in different browsers
-- the most important test: it needs to load without errors. Make sure to open the console groups. `npm run dev` may fail to load the submenu indicator image but that should work with `npm run preview`.
+- the most important test: it needs to load without errors. Make sure to open the console groups. `npm run dev` may fail to load the submenu indicator image but that should work with `npm run build && npm run preview`.
 - clear the cache and local storage and try to load again (press F5)
 - open a new tab
 - copy some nodes in the main tab
