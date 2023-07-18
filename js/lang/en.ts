@@ -1,4 +1,4 @@
-const en = {
+export const en = {
 	idStrings: {
 		// menu *******************************************************************
 		// file **********************************************
@@ -72,4 +72,3 @@ const en = {
 			"Please note that this is only for feedback about the ontology! Please check if there is already an issue for your problem. If not, we will consider your feedback ASAP.",
 	},
 };
-export default en;

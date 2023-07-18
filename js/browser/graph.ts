@@ -3,12 +3,12 @@
 import { coloredEdgeStyle, style } from "./style";
 import { colorschemenight } from "./colorschemenight";
 import { colorschemeday } from "./colorschemeday";
-import timer from "../timer";
-import NODE from "../node";
+import { timer } from "../timer";
+import { NODE } from "../node";
 import * as sparql from "../sparql";
 import * as rdf from "../rdf";
 import * as language from "../lang/language";
-import progress from "./progress";
+import { progress } from "./progress";
 import { View } from "./view";
 import MicroModal from "micromodal";
 import cytoscape, { Collection, NodeCollection, EdgeCollection, NodeSingular } from "cytoscape";
@@ -380,7 +380,7 @@ export class Graph {
 	}
 	/** Inverts the screen colors in the canvas for day mode. Uses an inverted node js style file to keep node colors.
 	 * @param dayScheme - whether the canvas colors should be inverted.
-	 * @param coloredEdges Give every edge-type a certain color.
+	 * @param coloredEdges - Give every edge-type a certain color.
 	 */
 	applyStyle(dayScheme: boolean, coloredEdges: boolean): void {
 		let baseStyle = style.style as any;

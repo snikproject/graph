@@ -1,11 +1,11 @@
 import * as save from "./save";
 import * as layout from "../layout";
-import NODE from "../node";
-import loadGraphFromSparql from "../loadGraphFromSparql";
+import { NODE } from "../node";
+import { loadGraphFromSparql } from "../loadGraphFromSparql";
 import * as language from "../lang/language";
 import * as util from "./util";
-import config from "../config";
-import progress from "./progress";
+import { config } from "../config";
+import { progress } from "./progress";
 import { showChapterSearch } from "./chaptersearch";
 import { Filter } from "./filter";
 import * as load from "./load";
@@ -37,6 +37,7 @@ export class Menu {
 		// bind this to the class instance instead of the event source
 		this.showCloseMatches = this.showCloseMatches.bind(this);
 		this.addMenu();
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		menu = this;
 	}
 

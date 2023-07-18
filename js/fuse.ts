@@ -1,9 +1,9 @@
 /** Fuzzy search with fuse.js.*/
 import * as sparql from "./sparql";
-import config from "./config";
+import { config } from "./config";
 import Fuse from "fuse.js";
 import log from "loglevel";
-import timer from "./timer";
+import { timer } from "./timer";
 
 export interface Item {
 	uri: string;

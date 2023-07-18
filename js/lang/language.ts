@@ -1,7 +1,7 @@
 /** Language dependend strings.*/
 
-import en from "./en";
-import de from "./de";
+import { en } from "./en";
+import { de } from "./de";
 import log from "loglevel";
 
 const strings = {

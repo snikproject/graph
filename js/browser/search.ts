@@ -2,7 +2,7 @@
 import * as sparql from "../sparql";
 import * as util from "./util";
 import * as fuse from "../fuse";
-import progress from "./progress";
+import { progress } from "./progress";
 import { View } from "./view";
 import MicroModal from "micromodal";
 
@@ -12,7 +12,7 @@ import log from "loglevel";
 // const USE_BIF_CONTAINS = false;
 const SEARCH_LIMIT = 100;
 
-export default class Search {
+export class Search {
 	resultNodes = [];
 	/** Add search functionality to the form.
 	 *  @param form - a form with a search field named "query" */

@@ -1,5 +1,5 @@
 /** Provides constants for node edge attributes.*/
-const EDGE = {
+export const EDGE = {
 	SOURCE: "source",
 	TARGET: "target",
 	ID: "id",
@@ -8,4 +8,3 @@ const EDGE = {
 	GRAPH: "g",
 	AXIOM: "ax",
 };
-export default EDGE;

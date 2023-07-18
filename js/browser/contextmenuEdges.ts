@@ -1,7 +1,7 @@
 /** Creates the circular context menu that can be opened on top of an edge.*/
 import * as rdf from "../rdf";
 import * as util from "./util";
-import EDGE from "../edge";
+import { EDGE } from "../edge";
 import * as language from "../lang/language";
 import { Graph } from "./graph";
 import { ContextMenu, MenuItem } from "./contextmenu";

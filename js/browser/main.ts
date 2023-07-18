@@ -1,14 +1,14 @@
 /** Entry point.*/
-import loadGraphFromSparql from "../loadGraphFromSparql";
+import { loadGraphFromSparql } from "../loadGraphFromSparql";
 import { Menu } from "./menu";
-import Search from "./search";
+import { Search } from "./search";
 import { loadGraphFromJsonFile } from "./load";
 import { Graph } from "./graph";
 import * as layout from "../layout";
 import * as sparql from "../sparql";
-import progress from "./progress";
-import config from "../config";
-import initLog from "./log";
+import { progress } from "./progress";
+import { config } from "../config";
+import { initLog } from "./log";
 import * as util from "./util";
 import { addBenchmarkOverlay } from "./benchmark";
 import { initHelp } from "../help";

@@ -1,5 +1,5 @@
 /** Lets the user save files generated from the loaded graph. */
-import config from "../config";
+import { config } from "../config";
 import { toJSON } from "./state";
 import { View } from "./view";
 import { VERSION } from "./util";

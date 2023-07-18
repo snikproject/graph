@@ -1,7 +1,7 @@
 /** Creates the circular context menu that can be opened on top of a node.*/
 import { classUse } from "./classuse";
 import * as rdf from "../rdf";
-import NODE from "../node";
+import { NODE } from "../node";
 import * as util from "./util";
 import { Graph, Direction } from "./graph";
 import { ContextMenu, MenuItem } from "./contextmenu";

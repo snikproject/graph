@@ -51,4 +51,4 @@ async function progress(func: Function): Promise<void> {
 	}
 }
 /* eslint-enable */
-export default progress;
+export { progress };

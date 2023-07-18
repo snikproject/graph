@@ -1,5 +1,5 @@
 import * as layout from "../js/layout";
-import loadGraphFromSparql from "../js/loadGraphFromSparql";
+import { loadGraphFromSparql } from "../js/loadGraphFromSparql";
 import { SNIK } from "../js/sparql";
 import cytoscape from "cytoscape";
 import euler from "cytoscape-euler";

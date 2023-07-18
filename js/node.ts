@@ -1,6 +1,6 @@
 /** Provides constants for node data attributes.
 Not to be confused with the Node.js JavaScript runtime.*/
-const NODE = {
+export const NODE = {
 	ID: "id",
 	LABEL: "l",
 	LABEL_GERMAN: "de",
@@ -13,4 +13,3 @@ const NODE = {
 	SUBTOP_ROLE: "R",
 	SUBTOP_FUNCTION: "F",
 };
-export default NODE;

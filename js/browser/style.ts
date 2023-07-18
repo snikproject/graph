@@ -4,10 +4,10 @@ Cytoscape style file, excluding color information, which is contained in the col
 @see colorSchemeDay
 @see colorSchemeNight
 */
-import NODE from "../node";
-import EDGE from "../edge";
+import { NODE } from "../node";
+import { EDGE } from "../edge";
 import * as language from "../lang/language";
-import config from "../config";
+import { config } from "../config";
 import { stringToColor } from "./util";
 // see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing
 
