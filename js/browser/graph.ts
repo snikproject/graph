@@ -287,13 +287,15 @@ export class Graph {
 		}
 	}
 
-	/** Show a "spider worm" between two nodes, which combines a star around "from " with a shortest path to "to".
+	/** Show a "spider worm" between two nodes, which combines a star around "to" with a shortest path from "from" to "to".
       Hide all other nodes except when in star mode.
+      @param from - path source node
       @param to - path target node, gets a "star" around it as well
       @returns whether a path could be found
       */
-	showWorm(to: NodeSingular): boolean {
-		if (this.showPath(to)) {
+	showWorm(from: NodeSingular, to: NodeSingular): boolean {
+		this.starMode = true;
+		if (this.showPath(to)(from)) {
 			this.showStar(to);
 			return true;
 		}
