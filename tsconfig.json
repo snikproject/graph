@@ -7,7 +7,7 @@
 		"target": "esnext",
 		"allowSyntheticDefaultImports": true,
 		"isolatedModules": true,
-		"typeRoots": ["./node_modules/@types"],
+		"typeRoots": ["./node_modules/@types", "./node_modules"],
 		"types": ["vite/client", "node"],
 		"module": "esnext",
 		"moduleResolution": "node",

@@ -394,7 +394,6 @@ export class Graph {
 		if (coloredEdges) {
 			baseStyle = baseStyle.concat(coloredEdgeStyle);
 		}
-		// @ts-expect-error fromJson not known to compiler
 		this.cy.style().fromJson(baseStyle).update();
 	}
 	/** Center and highlight the given URI.
