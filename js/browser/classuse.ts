@@ -1,6 +1,6 @@
 /** Show the environment of a single node using a special layout.*/
 import * as sparql from "../sparql";
-import NODE from "../node";
+import { NODE } from "../node";
 import { Graph } from "./graph";
 import { View } from "./view";
 import { short } from "../rdf";

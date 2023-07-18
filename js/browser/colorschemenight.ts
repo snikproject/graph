@@ -1,5 +1,5 @@
 /** Standard dark mode Cytoscape color scheme.*/
-import EDGE from "../edge";
+import { EDGE } from "../edge";
 
 const colorschemenight = [
 	{

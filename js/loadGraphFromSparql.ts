@@ -1,7 +1,7 @@
 /**Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.*/
 import * as sparql from "./sparql";
-import timer from "./timer";
-import config from "./config";
+import { timer } from "./timer";
+import { config } from "./config";
 import log from "loglevel";
 import cytoscape, { ElementDefinition } from "cytoscape";
 
@@ -256,12 +256,7 @@ async function createNodes(from: string, instances: boolean): Promise<Array<cyto
   @example
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
-export default async function loadGraphFromSparql(
-	cy: cytoscape.Core,
-	graphs: Array<string>,
-	instances: boolean = false,
-	virtual: boolean = false
-): Promise<void> {
+export async function loadGraphFromSparql(cy: cytoscape.Core, graphs: Array<string>, instances: boolean = false, virtual: boolean = false): Promise<void> {
 	log.debug(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
 	const from = graphs.map((g) => `FROM <${g}>`).reduce((a, b) => a + "\n" + b, "");
 	const fromNamed = from.replace(/FROM/g, "FROM NAMED");

@@ -4,7 +4,7 @@ Copy to js/config.ts after checkout and adapt to your preferences.
 
 import { LogLevelDesc } from "loglevel";
 
-const config = {
+export const config = {
 	defaultSubOntologies: ["meta", "bb", "ob", "ciox", "he", "it4it"],
 	allSubOntologies: ["meta", "bb", "ob", "ciox", "he", "he-unconsolidated", "it4it"],
 	color: new Map([
@@ -44,4 +44,3 @@ const config = {
 		warnOnSessionLoad: true,
 	},
 };
-export default config;

@@ -1,6 +1,6 @@
 /**Helper functions for RDF properties.*/
 import * as rdf from "./rdf";
-import NODE from "./node";
+import { NODE } from "./node";
 import log from "loglevel";
 
 const propertyData = [

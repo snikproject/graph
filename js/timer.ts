@@ -6,7 +6,7 @@ Call example: myTimer = timer("egg cooking"); cookEgg(); timer.stop("successfull
  * @param   name - identifies the timer
  * @returns the timer object with the stop(message) function. The message is optional.
  */
-export default function timer(name: string) {
+export function timer(name: string) {
 	const start = new Date();
 	return {
 		stop: function (message?: string) {

@@ -4,7 +4,7 @@ Filters use the Cytoscape.js "display" attribute, while star operations (see gra
 This ensures that filters and star operations interact properly, for example that resetting the style does not show filtered nodes.
 See http://js.cytoscape.org/#style/visibility.
 */
-import NODE from "../node";
+import { NODE } from "../node";
 import { checkboxKeydownListener, checkboxClickableDiv } from "./util";
 import { View } from "./view";
 import log from "loglevel";

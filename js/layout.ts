@@ -3,9 +3,9 @@ Due to JavaScript being a slow mostly single-threaded language with no really fa
 After the first time, the layout is cached and reused, until major changes occur in the graph.
 If a breakthrough occurs in JavaScript graph layouting, update here and possibly remove cache.
 */
-import timer from "./timer";
-import NODE from "./node";
-import config from "./config";
+import { timer } from "./timer";
+import { NODE } from "./node";
+import { config } from "./config";
 import log from "loglevel";
 import cytoscape, { ElementDefinition, LayoutOptions, NodeCollection } from "cytoscape";
 import cytoscapeeuler from "cytoscape-euler";
