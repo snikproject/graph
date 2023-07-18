@@ -153,7 +153,8 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			content: "spiderworm",
 			id: "spiderworm",
 			selector: "node",
-			onClickFunction: eventify(graph.multiplex(graph.showWorm)),
+			// multiplexing spiderworm leads to errors and has not been needed
+			onClickFunction: (event) => graph.showWorm(graph.getSource(), event.target),
 		},
 		// {
 		//   content: 'find neighbours',
