@@ -10,7 +10,7 @@ Our releases have a major and minor version x.y with a corresponding milestone a
 - git pull
 - `npm install --include=dev && npm update`
 - `cp js/config.dist.ts js/config.ts`
-- change the version number in package.json and js/browser/util.ts to the new release
+- change the version number in package.json to the new release
 
 ### Upgrade major dependency versions
 
