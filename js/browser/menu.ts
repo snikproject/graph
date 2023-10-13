@@ -132,7 +132,7 @@ ${Menu.gitInfo()}`,
 					],
 
 					[() => save.saveSession(this.optionsToJSON()), "Save Session", "save-session"],
-					[() => save.saveGraph(View.activeState().graph), "Save the full SNIK Graph", "save-snik-graph"],
+					[() => save.saveGraph(View.activeState().graph), "Export Graph to Cytoscape", "save-snik-graph"],
 					[() => save.saveView(View.activeState()), "Save currently active view (partial graph)", "save-view"],
 					[
 						() => {
