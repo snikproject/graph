@@ -1,7 +1,7 @@
 /** Lets the user save files generated from the loaded graph. */
 import { config } from "../config";
 import { toJSON } from "./state";
-import { View } from "./view";
+import { View, State } from "./view";
 import { VERSION } from "./util";
 import { Graph } from "./graph";
 import log from "loglevel";
@@ -93,12 +93,12 @@ export interface ViewJson {
 }
 
 /** Saves the contents of the current view as a custom JSON file.
- *  @param view - a GoldenLayout view */
-export function saveView(view: View): void {
+ *  @param state - a GoldenLayout view state */
+export function saveView(state: State): void {
 	const json: ViewJson = {
 		version: VERSION,
-		title: view.state.title,
-		graph: view.state.cy.json(),
+		title: state.title,
+		graph: state.cy.json(),
 	};
 	//@ts-expect-error compiler doesnt know graph.style
 	delete json.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
