@@ -133,7 +133,7 @@ ${Menu.gitInfo()}`,
 
 					[() => save.saveSession(this.optionsToJSON()), "Save Session", "save-session"],
 					[() => save.saveGraph(View.activeState().graph), "Save the full SNIK Graph", "save-snik-graph"],
-					[() => save.saveView(View.activeView()), "Save currently active view (partial graph)", "save-view"],
+					[() => save.saveView(View.activeState()), "Save currently active view (partial graph)", "save-view"],
 					[
 						() => {
 							progress(() => layout.run(View.activeState().cy, layout.euler, config.defaultSubOntologies, this.separateSubs(), true));
