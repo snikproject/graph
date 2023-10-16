@@ -1,6 +1,7 @@
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 import { execSync } from "child_process";
+import eslint from "vite-plugin-eslint";
 
 const _dirname = typeof __dirname !== "undefined" ? __dirname : dirname(fileURLToPath(import.meta.url));
 
@@ -31,6 +32,7 @@ export default (_) => {
 				},
 			},
 		},
+		plugins: [eslint()],
 		test: { globals: true },
 	};
 };

@@ -1,7 +1,7 @@
 /** Textual node search.*/
 import * as sparql from "../sparql";
 import * as util from "./util";
-import * as fuse from "../fuse";
+import * as fuse from "../fuseSearch";
 import { progress } from "./progress";
 import { View } from "./view";
 import MicroModal from "micromodal";

@@ -8,7 +8,7 @@ cytoscape.use(euler);
 import chai from "chai";
 const assert = chai.assert;
 
-describe("cytoscape", function () {
+describe("cytoscape", () => {
 	let cy;
 	const subs = ["meta", "bb"];
 	const graphs = subs.map((s) => SNIK.PREFIX + s);
@@ -17,17 +17,18 @@ describe("cytoscape", function () {
 		assert(cy);
 		assert(cy._private.layout === null);
 	});
-	test("load graph from sparql", function () {
-		return loadGraphFromSparql(cy, graphs).then(() => assert.closeTo(cy.nodes().size(), 1134, 100));
+	test("load graph from SPARQL", async () => {
+		await loadGraphFromSparql(cy, graphs);
+		assert.closeTo(cy.nodes().size(), 1134, 100);
 	});
-	test("calculate layout", function () {
+	test("calculate layout", async () => {
 		// Causes "TypeError: Cannot read property 'pos' of undefined"
 		// see https://github.com/cytoscape/cytoscape.js-euler/issues/14
 		//layout.run(cy,layout.euler,subs);
 		// cose is more realistic for SNIK Graph but takes over a minute
 		//assert(layout.run(cy,layout.cose,subs));
 		// use the faster grid layout
-		assert(layout.run(cy, layout.grid, subs));
+		await layout.run(cy, layout.grid, subs);
 
 		const nodes = cy.nodes();
 		for (let i = 0; i < nodes.size(); i++) {
