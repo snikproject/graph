@@ -1,5 +1,5 @@
 import { Graph } from "./graph";
-import { fillInitialGraph } from "./main";
+import { fillInitialGraph } from "./init";
 import { ContextMenu } from "./contextmenu";
 import { goldenLayout } from "./viewLayout";
 import { toJSON } from "./state";

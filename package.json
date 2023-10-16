@@ -43,7 +43,8 @@
 		"prettier": "^3.0.3",
 		"typedoc": "^0.25.2",
 		"typedoc-plugin-merge-modules": "^5.1.0",
-		"typescript": "^5.2.2"
+		"typescript": "^5.2.2",
+		"vite-plugin-eslint": "^1.8.1"
 	},
 	"keywords": [
 		"graph",

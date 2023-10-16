@@ -3,6 +3,7 @@ Needs to be initialized before it can be used via the default export function.*/
 import { nodeCommands } from "./contextmenuNodes";
 import { edgeCommands } from "./contextmenuEdges";
 import { flatHelp } from "../help";
+import { MenuItem } from "../menuItem";
 import cytoscape from "cytoscape";
 //{ Collection, EdgeSingular, NodeSingular, SingularElementReturnValue } from "cytoscape";
 import contextMenus from "cytoscape-context-menus";
@@ -12,15 +13,6 @@ import "cytoscape-context-menus/cytoscape-context-menus.css";
 import "cytoscape-context-menus/assets/submenu-indicator-default.svg";
 import log from "loglevel";
 import { sub } from "../rdf";
-
-// cytoscape-context-menus extension does not have type hints
-export interface MenuItem {
-	content: string;
-	id: string;
-	selector?: "node" | "node:compound" | "edge";
-	submenu?: Array<MenuItem>;
-	onClickFunction?(event: Event | { target: any }): void;
-}
 
 const config = { menuItems: [] as Array<MenuItem>, evtType: "cxttap" };
 

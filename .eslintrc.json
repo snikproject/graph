@@ -27,7 +27,7 @@
 		"GoldenLayout": true,
 		"MicroModal": true
 	},
-	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:import/errors", "plugin:import/warnings"],
+	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:import/errors", "plugin:import/warnings", "plugin:import/typescript"],
 	"rules": {
 		"semi": ["error", "always"],
 		"no-use-before-define": "off",
@@ -44,6 +44,7 @@
 		"eqeqeq": ["error"],
 		"eol-last": ["error"],
 		"import/no-default-export": ["warn"],
+		"import/no-cycle": ["warn"],
 		"max-len": ["warn", 245],
 		"padded-blocks": ["error", "never"],
 		"space-in-parens": ["error"],
@@ -63,6 +64,7 @@
 		"tsdoc-undefined-tag": "off"
 	},
 	"settings": {
+		"cache": false,
 		"import/resolver": {
 			"node": {
 				"extensions": [".js", ".jsx", ".ts", ".tsx"]
