@@ -1,4 +1,5 @@
 /** Lets the user save files generated from the loaded graph. */
+import { ViewJson, Session } from "./interface";
 import { config } from "../config";
 import { toJSON } from "./state";
 import { View, State } from "./view";
@@ -58,12 +59,6 @@ export interface TabContent {
 	graph: any;
 }
 
-export interface Session {
-	tabs: Array<TabContent>;
-	state: any;
-	mainGraph: any;
-}
-
 /** Saves the contents of all views as a custom JSON file. */
 export function saveSession(options): void {
 	const mainGraph = {
@@ -84,12 +79,6 @@ export function saveSession(options): void {
 		session.tabs.push(tabContent);
 	}
 	saveJson(session, "snik-session.json");
-}
-
-export interface ViewJson {
-	version: string;
-	title: string;
-	graph: object;
 }
 
 /** Saves the contents of the current view as a custom JSON file.

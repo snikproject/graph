@@ -1,9 +1,7 @@
 /** Creates the circular context menu that can be opened on top of a node/edge.
 Needs to be initialized before it can be used via the default export function.*/
-import { nodeCommands } from "./contextmenuNodes";
-import { edgeCommands } from "./contextmenuEdges";
 import { flatHelp } from "../help";
-import { MenuItem } from "../menuItem";
+import { MenuItem } from "./menuItem";
 import cytoscape from "cytoscape";
 //{ Collection, EdgeSingular, NodeSingular, SingularElementReturnValue } from "cytoscape";
 import contextMenus from "cytoscape-context-menus";
@@ -45,10 +43,10 @@ export class ContextMenu {
   The extension itself is already registered through the plain HTML/JS import in index.html,
   which makes available cy.contextMenus().
   @param graph - the graph that the context menu applies to */
-	constructor(graph: Graph) {
+	constructor(graph: Graph, menuItems) {
 		this.graph = graph;
 		log.debug("Register Context Menu.");
-		config.menuItems = [...nodeCommands(graph), ...edgeCommands(graph)];
+		config.menuItems = menuItems;
 		config.menuItems.forEach((menu) => ContextMenu.addTooltip(menu));
 		// @ts-expect-error provided by cytoscape-context-menus
 		graph.cy.contextMenus(config);
