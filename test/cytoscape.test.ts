@@ -2,9 +2,7 @@ import * as layout from "../js/layout";
 import { loadGraphFromSparql } from "../js/loadGraphFromSparql";
 import { SNIK } from "../js/sparql";
 import cytoscape from "cytoscape";
-import euler from "cytoscape-euler";
 import "isomorphic-fetch";
-cytoscape.use(euler);
 import chai from "chai";
 const assert = chai.assert;
 
@@ -22,20 +20,18 @@ describe("cytoscape", () => {
 		assert.closeTo(cy.nodes().size(), 1134, 100);
 	});
 	test("calculate layout", async () => {
-		// Causes "TypeError: Cannot read property 'pos' of undefined"
-		// see https://github.com/cytoscape/cytoscape.js-euler/issues/14
-		//layout.run(cy,layout.euler,subs);
+		assert(await layout.run(cy, layout.euler, subs));
 		// cose is more realistic for SNIK Graph but takes over a minute
-		//assert(layout.run(cy,layout.cose,subs));
+		//assert(await layout.run(cy,layout.cose,subs));
 		// use the faster grid layout
-		await layout.run(cy, layout.grid, subs);
+		//await layout.run(cy, layout.grid);
 
 		const nodes = cy.nodes();
 		for (let i = 0; i < nodes.size(); i++) {
 			for (let j = i + 1; j < nodes.size(); j += 10) {
 				assert(
 					JSON.stringify(nodes[i].position()) !== JSON.stringify(nodes[j].position()),
-					"2 nodes at the same position " + JSON.stringify(nodes[i].position())
+					`2 nodes ${i} and ${j} at the same position ` + JSON.stringify(nodes[i].position())
 				);
 			}
 		}

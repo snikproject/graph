@@ -6,7 +6,7 @@ import { edgeCommands } from "./contextmenuEdges";
 import { goldenLayout } from "./viewLayout";
 import { toJSON } from "./state";
 import log from "loglevel";
-import { ComponentConfig, ContentItem } from "golden-layout";
+import type { ComponentConfig, ContentItem } from "golden-layout";
 
 let viewCount: number = 0; // only used for the name, don't decrement on destroy to prevent name conflicts
 
@@ -31,16 +31,17 @@ function traverse(x: ContentItem, depth: number): Array<ContentItem> {
 	return removeTabsArray;
 }
 
-export interface State {
+interface ViewState {
 	title: string;
 	graph: Graph;
 	name: string;
 	cy: cytoscape.Core;
 }
 
+/** Tab that shows a graph. */
 export class View {
 	initialized: Promise<void>;
-	state: State;
+	state: ViewState;
 	readonly cyContainer: HTMLDivElement = document.createElement("div");
 	element: HTMLElement;
 	cxtMenu: ContextMenu;
@@ -53,7 +54,7 @@ export class View {
 
 	/** Returns the state of the active (focussed) view.
 	@returns The state of the active (focussed) view. */
-	static activeState(): State {
+	static activeState(): ViewState {
 		return (viewLayout as any).selectedItem?.getActiveContentItem()?.config?.componentState;
 	}
 

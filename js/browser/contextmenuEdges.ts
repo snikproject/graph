@@ -4,9 +4,9 @@ import * as util from "./util";
 import { EDGE } from "../edge";
 import * as language from "../lang/language";
 import { Graph } from "./graph";
-import { ContextMenu, MenuItem } from "./contextmenu";
+import { type MenuItem, ContextMenu } from "./contextmenu";
 import log from "loglevel";
-import { EdgeSingular } from "cytoscape";
+import type { EdgeSingular } from "cytoscape";
 
 /** Creates a human readable string of the triple that an edge represents.
  *  @param edge - the edge, whose label is determined

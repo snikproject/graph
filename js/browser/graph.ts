@@ -11,7 +11,8 @@ import * as language from "../lang/language";
 import { progress } from "./progress";
 import { View } from "./view";
 import MicroModal from "micromodal";
-import cytoscape, { Collection, NodeCollection, EdgeCollection, NodeSingular } from "cytoscape";
+import type { Core, Collection, NodeCollection, EdgeCollection, NodeSingular } from "cytoscape";
+import cytoscape from "cytoscape"; //eslint-disable-line no-duplicate-imports
 import type { Menu } from "./menu";
 import log from "loglevel";
 
@@ -27,11 +28,11 @@ export enum Direction {
 
 /** Cytoscape.js Graph Class with path operations and styling. */
 export class Graph {
-	cy: cytoscape.Core;
-	selectedNode: cytoscape.NodeSingular | null = null;
+	cy: Core;
+	selectedNode: NodeSingular | null = null;
 	starMode: boolean = false;
-	matchComponents: Array<cytoscape.Collection> = [];
-	pathSource: cytoscape.NodeSingular | null = null;
+	matchComponents: Array<Collection> = [];
+	pathSource: NodeSingular | null = null;
 	container: HTMLElement;
 	instancesLoaded: boolean = false;
 	menu: Menu = null;
@@ -84,7 +85,7 @@ export class Graph {
 	}
 	/**
     @param eles - the elements to assign the star mode css class to */
-	static starStyle(eles: cytoscape.Collection): void {
+	static starStyle(eles: Collection): void {
 		eles.removeClass("hidden");
 		//eles.addClass('starmode');
 		eles.select();
@@ -587,7 +588,7 @@ export class Graph {
 	}
 	/**Show close matches of the given nodes.
 	 * @param nodes - the nodes whose close matches are shown */
-	showCloseMatch(nodes: cytoscape.NodeCollection): void {
+	showCloseMatch(nodes: NodeCollection): void {
 		const edges = nodes.connectedEdges(".unfiltered").filter('[pl="closeMatch"]'); // ,[pl="narrowMatch"],[pl="narrowMatch"]
 		const matches = edges.connectedNodes(".unfiltered");
 		log.debug(
