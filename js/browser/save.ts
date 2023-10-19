@@ -1,10 +1,10 @@
 /** Lets the user save files generated from the loaded graph. */
-import { ViewJson, Session } from "./interface";
+import type { ViewJson, Session } from "./interface";
 import { config } from "../config";
 import { toJSON } from "./state";
-import { View, State } from "./view";
+import { View, type State } from "./view";
 import { VERSION } from "./util";
-import { Graph } from "./graph";
+import type { Graph } from "./graph";
 import log from "loglevel";
 import c from "cytoscape";
 import svg from "cytoscape-svg";

@@ -1,10 +1,5 @@
-import { executionAsyncId } from "async_hooks";
-import { should } from "chai";
 import "isomorphic-fetch";
-import { search, createIndex } from "../js/fuse";
-//import chai from "chai";
-//chai.should();
-//const assert = chai.assert;
+import { search, createIndex } from "../js/fuseSearch";
 console.groupCollapsed;
 
 const SEARCH = {
@@ -22,7 +17,7 @@ describe("fuse#search", () => {
 		for (const key in SEARCH) {
 			const uris = (await search(key)).map((x) => x.item.uri);
 			const expectedUris = SEARCH[key];
-			if (expectedUris.length == 1) {
+			if (expectedUris.length === 1) {
 				expect(uris).toEqual(expectedUris);
 			} else {
 				expect(uris).toEqual(expect.arrayContaining(expectedUris));

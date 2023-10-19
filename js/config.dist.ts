@@ -2,7 +2,7 @@
 Copy to js/config.ts after checkout and adapt to your preferences.
 */
 
-import { LogLevelDesc } from "loglevel";
+import type { LogLevelDesc } from "loglevel";
 
 export const config = {
 	defaultSubOntologies: ["meta", "bb", "ob", "ciox", "he", "it4it"],

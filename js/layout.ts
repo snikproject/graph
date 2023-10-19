@@ -7,13 +7,14 @@ import { timer } from "./timer";
 import { NODE } from "./node";
 import { config } from "./config";
 import log from "loglevel";
-import cytoscape, { ElementDefinition, LayoutOptions, NodeCollection } from "cytoscape";
+import type { ElementDefinition, LayoutOptions, NodeCollection, Layouts, Position } from "cytoscape";
+import cytoscape from "cytoscape"; //eslint-disable-line no-duplicate-imports
 import cytoscapeeuler from "cytoscape-euler";
 cytoscape.use(cytoscapeeuler);
 
 const ANIMATE_THRESHOLD = 500;
 
-let activeLayout: cytoscape.Layouts;
+let activeLayout: Layouts;
 
 /**
 @param layoutName - Cytoscape.js layout name
@@ -52,7 +53,7 @@ export function positions(nodes: NodeCollection): Array<Array<number>> {
 
 /** @param nodes - the nodes whose center is returned
 @returns the center point of the nodes */
-function center(nodes: cytoscape.NodeCollection): cytoscape.Position {
+function center(nodes: NodeCollection): Position {
 	const c = { x: 0.0, y: 0.0 };
 	for (let i = 0; i < nodes.length; i++) {
 		const pos = nodes[i].position();
@@ -76,20 +77,14 @@ function center(nodes: cytoscape.NodeCollection): cytoscape.Position {
 run(cy,{"name":"grid"},new Set(["meta","ciox"]))
 ```
 */
-export async function run(
-	cy: cytoscape.Core,
-	layoutConfig: LayoutOptions,
-	subs?: Array<string>,
-	separateSubs: boolean = false,
-	save: boolean = false
-): Promise<boolean> {
+export async function run(cy: Core, layoutConfig: LayoutOptions, subs?: Array<string>, separateSubs: boolean = false, save: boolean = false): Promise<boolean> {
 	if (cy.nodes().size() === 0) {
 		log.warn("layout.js#run: Graph empty. Nothing to layout.");
 		return false;
 	}
 	const layoutTimer = timer("layout");
 	if (separateSubs) {
-		const sources: Set<cytoscape.ElementDefinition> = new Set();
+		const sources: Set<ElementDefinition> = new Set();
 		const virtualEdges: Array<ElementDefinition> = [];
 
 		const nodes = cy.nodes();
@@ -168,7 +163,7 @@ in pos are set to position `{x:0,y:0}`, positions without matching node id are i
 @returns whether the layout could be successfully applied
 @example `presetLayout(cy,[["http://www.snik.eu...",{"x":0,"y":0}],...]);`
 */
-export async function presetLayout(cy: cytoscape.Core, pos: Array<cytoscape.Position>): Promise<boolean> {
+export async function presetLayout(cy: Core, pos: Array<Position>): Promise<boolean> {
 	const map = new Map(pos as any);
 	let hits = 0;
 	let misses = 0;
@@ -318,7 +313,7 @@ export function eulerVariable(len)
 */
 
 /** Layout for compound graphs */
-export const cose: cytoscape.LayoutOptions = {
+export const cose: LayoutOptions = {
 	name: "cose",
 	animate: true,
 	refresh: 50,

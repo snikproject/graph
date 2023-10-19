@@ -3,7 +3,7 @@ import * as sparql from "./sparql";
 import { timer } from "./timer";
 import { config } from "./config";
 import log from "loglevel";
-import cytoscape, { ElementDefinition } from "cytoscape";
+import type { ElementDefinition, Core } from "cytoscape";
 
 interface ClassBinding {
 	src: { value: string };
@@ -83,7 +83,7 @@ function parseLabels(s: string): object {
  * @param   from - a SPARQL FROM clause defining where to load the classes from
  * @returns nodes - representing the classes
  */
-async function createClassNodes(from: string): Promise<Array<cytoscape.ElementDefinition>> {
+async function createClassNodes(from: string): Promise<Array<ElementDefinition>> {
 	const bindings = await selectClasses(from);
 
 	const nodes: Array<ElementDefinition> = [];
@@ -146,7 +146,7 @@ async function selectInstances(from: string): Promise<Array<object>> {
  @returns cytoscape nodes for the instances */
 async function createInstanceNodes(from: string): Promise<Array<object>> {
 	const json = await selectInstances(from);
-	const nodes: Array<cytoscape.ElementDefinition> = [];
+	const nodes: Array<ElementDefinition> = [];
 	for (let i = 0; i < json.length; i++) {
 		nodes.push({
 			group: "nodes",
@@ -210,7 +210,7 @@ async function selectTriples(from: string, fromNamed: string, instances: boolean
  * @param  virtual   - whether to select virtual triples from domain and range statements
  * @returns SPARQL query result object
  */
-async function createEdges(from: string, fromNamed: string, instances: boolean, virtual: boolean): Promise<Array<cytoscape.ElementDefinition>> {
+async function createEdges(from: string, fromNamed: string, instances: boolean, virtual: boolean): Promise<Array<ElementDefinition>> {
 	const json = await selectTriples(from, fromNamed, instances, virtual);
 	const edges: Array<ElementDefinition> = [];
 	for (let i = 0; i < json.length; i++) {
@@ -238,7 +238,7 @@ async function createEdges(from: string, fromNamed: string, instances: boolean, 
  * @param instances - whether to load instances in addition to the classes
  * @returns an array of nodes
  */
-async function createNodes(from: string, instances: boolean): Promise<Array<cytoscape.ElementDefinition>> {
+async function createNodes(from: string, instances: boolean): Promise<Array<ElementDefinition>> {
 	if (!instances) {
 		return createClassNodes(from);
 	}
@@ -256,7 +256,7 @@ async function createNodes(from: string, instances: boolean): Promise<Array<cyto
   @example
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
-export async function loadGraphFromSparql(cy: cytoscape.Core, graphs: Array<string>, instances: boolean = false, virtual: boolean = false): Promise<void> {
+export async function loadGraphFromSparql(cy: Core, graphs: Array<string>, instances: boolean = false, virtual: boolean = false): Promise<void> {
 	log.debug(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
 	const from = graphs.map((g) => `FROM <${g}>`).reduce((a, b) => a + "\n" + b, "");
 	const fromNamed = from.replace(/FROM/g, "FROM NAMED");

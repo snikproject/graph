@@ -1,7 +1,7 @@
 /** Creates the circular context menu that can be opened on top of a node/edge.
 Needs to be initialized before it can be used via the default export function.*/
 import { flatHelp } from "../help";
-import { MenuItem } from "./menuItem";
+import type { MenuItem } from "./menuItem";
 import cytoscape from "cytoscape";
 //{ Collection, EdgeSingular, NodeSingular, SingularElementReturnValue } from "cytoscape";
 import contextMenus from "cytoscape-context-menus";
