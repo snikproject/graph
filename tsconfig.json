@@ -8,7 +8,7 @@
 		"allowSyntheticDefaultImports": true,
 		"isolatedModules": true,
 		"typeRoots": ["./node_modules/@types", "./node_modules"],
-		"types": ["vite/client", "node"],
+		"types": ["vite/client", "node", "vitest/globals"],
 		"module": "esnext",
 		"moduleResolution": "node",
 		"esModuleInterop": true,
@@ -30,6 +30,6 @@
 		"out": "doc",
 		"readme": "none"
 	},
-	"include": ["js/**/*", "test/**/*", "globals.d.ts"],
+	"include": ["js/**/*", "globals.d.ts"],
 	"exclude": ["node_modules"]
 }
