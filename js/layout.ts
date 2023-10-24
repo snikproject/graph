@@ -7,7 +7,7 @@ import { timer } from "./timer";
 import { NODE } from "./node";
 import { config } from "./config";
 import log from "loglevel";
-import type { ElementDefinition, LayoutOptions, NodeCollection, Layouts, Position } from "cytoscape";
+import type { Core, ElementDefinition, LayoutOptions, NodeCollection, Layouts, Position } from "cytoscape";
 import cytoscape from "cytoscape"; //eslint-disable-line no-duplicate-imports
 import cytoscapeeuler from "cytoscape-euler";
 cytoscape.use(cytoscapeeuler);

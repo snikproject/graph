@@ -10,7 +10,6 @@ import * as rdf from "../rdf";
 import * as language from "../lang/language";
 import { progress } from "./progress";
 import { View } from "./view";
-import MicroModal from "micromodal";
 import type { Core, Collection, NodeCollection, EdgeCollection, NodeSingular } from "cytoscape";
 import cytoscape from "cytoscape"; //eslint-disable-line no-duplicate-imports
 import type { Menu } from "./menu";
@@ -55,7 +54,7 @@ export class Graph {
 			this.selectedNode = event.target;
 		});
 		// bind this to the class instance instead of the event source
-		const binds = ["resetStyle", "presentUri", "showPath", "showStar", "showWorm", "showDoubleStar", "combineMatch", "showCloseMatch"];
+		const binds = ["resetStyle", "presentUri", "showPath", "showStar", "showWorm", "showDoubleStar", "combineMatch", "showCloseMatch", "newGraph"];
 		for (const bind of binds) {
 			this[bind] = this[bind].bind(this);
 		}
@@ -164,6 +163,23 @@ export class Graph {
       @returns show star function applied to multiple nodes  */
 	showStarMultiplexed(changeLayout: boolean = false, direction?: Direction): (_nodes: NodeCollection) => void {
 		return this.multiplex((nodes) => this.showStar(nodes, changeLayout, direction), undefined, true);
+	}
+
+	/** Multiplex star operations into a new view.
+      @param changeLayout - arrange the given node and its close matches in the center and the connected nodes in a circle around them.
+      @param direction - only show edges that originate from node, not those that end in it. Optional and defaults to false.
+      @returns show star function applied to multiple nodes  */
+	async showStarMultiplexedNew(changeLayout: boolean = false, direction: Direction) {
+		const graph = await this.newGraph();
+		const f = (_node: NodeSingular) => {
+			graph.multiplex(
+				(nodes: NodeCollection) => graph.showStar(graph.assimilateNodes(nodes), changeLayout, direction),
+				graph.assimilateNodes(this.cy.nodes(":selected")),
+				true
+			)(_node);
+			return graph;
+		};
+		return f;
 	}
 
 	/** Highlight the give node and all its directly connected nodes (in both directions).
@@ -586,6 +602,7 @@ export class Graph {
 			this.cy.endBatch();
 		});
 	}
+
 	/**Show close matches of the given nodes.
 	 * @param nodes - the nodes whose close matches are shown */
 	showCloseMatch(nodes: NodeCollection): void {
@@ -597,5 +614,18 @@ export class Graph {
 		const eles = matches.union(edges);
 		Graph.setVisible(eles, true);
 		Graph.starStyle(eles);
+	}
+
+	/** Create and return a new graph if the option is set to create star operations in a new view.
+	 *  @param title - optional view title
+	 *  @returns this iff the option to create stars in a new view is unset, a new view's graph if it is set */
+	async newGraph(title?: string): Promise<Graph> {
+		//if(!mainView.state.graph.menu.starNewView()) {return this;} // using the menu option to determine whether to create a new graph
+		if (this !== View.mainView.state.graph) {
+			return this;
+		} // span new views only from the main view
+		const view = new View(true, title);
+		await view.initialized;
+		return view.state.graph;
 	}
 }

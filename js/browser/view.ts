@@ -1,9 +1,10 @@
-import { Graph } from "./graph";
+import { Graph, type Direction } from "./graph";
 import { fillInitialGraph } from "./init";
 import { ContextMenu } from "./contextmenu";
 import { nodeCommands } from "./contextmenuNodes";
 import { edgeCommands } from "./contextmenuEdges";
 import { goldenLayout } from "./viewLayout";
+import type { NodeCollection, NodeSingular } from "cytoscape";
 import { toJSON } from "./state";
 import log from "loglevel";
 import type { ComponentConfig, ContentItem } from "golden-layout";
@@ -31,7 +32,7 @@ function traverse(x: ContentItem, depth: number): Array<ContentItem> {
 	return removeTabsArray;
 }
 
-interface ViewState {
+export interface ViewState {
 	title: string;
 	graph: Graph;
 	name: string;
@@ -148,33 +149,5 @@ export class View {
 		viewCount = 0;
 		viewLayout.destroy();
 		viewLayout = goldenLayout();
-	}
-	/** Create and return a new graph if the option is set to create star operations in a new view.
-	 *  @param title - optional view title
-	 *  @returns this iff the option to create stars in a new view is unset, a new view's graph if it is set */
-	async newGraph(title?: string): Promise<Graph> {
-		//if(!mainView.state.graph.menu.starNewView()) {return this;} // using the menu option to determine whether to create a new graph
-		if (this !== View.mainView.state.graph) {
-			return this;
-		} // span new views only from the main view
-		const view = new View(true, title);
-		await view.initialized;
-		return view.state.graph;
-	}
-	/** Multiplex star operations into a new view.
-      @param changeLayout - arrange the given node and its close matches in the center and the connected nodes in a circle around them.
-      @param direction - only show edges that originate from node, not those that end in it. Optional and defaults to false.
-      @returns show star function applied to multiple nodes  */
-	async showStarMultiplexedNew(changeLayout: boolean = false, direction: Direction) {
-		const graph = await this.newGraph();
-		const f = (_node: NodeSingular) => {
-			graph.multiplex(
-				(nodes: NodeCollection) => graph.showStar(graph.assimilateNodes(nodes), changeLayout, direction),
-				graph.assimilateNodes(this.cy.nodes(":selected")),
-				true
-			)(_node);
-			return graph;
-		};
-		return f;
 	}
 }

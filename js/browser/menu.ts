@@ -4,6 +4,7 @@ import { NODE } from "../node";
 import { loadGraphFromSparql } from "../loadGraphFromSparql";
 import * as language from "../lang/language";
 import * as util from "./util";
+import MicroModal from "micromodal";
 import { config } from "../config";
 import { progress } from "./progress";
 import { showChapterSearch } from "./chaptersearch";

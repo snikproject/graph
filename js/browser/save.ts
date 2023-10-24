@@ -1,14 +1,25 @@
 /** Lets the user save files generated from the loaded graph. */
-import type { ViewJson, Session } from "./interface";
 import { config } from "../config";
 import { toJSON } from "./state";
-import { View, type State } from "./view";
+import { View, type ViewState } from "./view";
 import { VERSION } from "./util";
 import type { Graph } from "./graph";
 import log from "loglevel";
 import c from "cytoscape";
 import svg from "cytoscape-svg";
 c.use(svg);
+
+export interface ViewJson {
+	version: string;
+	title: string;
+	graph: object;
+}
+
+export interface Session {
+	tabs: Array<TabContent>;
+	state: any;
+	mainGraph: any;
+}
 
 const a = document.createElement("a"); // reused for all saving, not visible to the user
 document.body.appendChild(a);
@@ -83,7 +94,7 @@ export function saveSession(options): void {
 
 /** Saves the contents of the current view as a custom JSON file.
  *  @param state - a GoldenLayout view state */
-export function saveView(state: State): void {
+export function saveView(state: ViewState): void {
 	const json: ViewJson = {
 		version: VERSION,
 		title: state.title,

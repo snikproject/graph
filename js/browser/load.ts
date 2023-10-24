@@ -1,6 +1,6 @@
 /** Module for loading files both locally from the server and via upload from the client.*/
 import { View } from "./view";
-import type { ViewJson, Session } from "./interface";
+import type { ViewJson, Session } from "./save";
 import { config } from "../config";
 import { fromJSON } from "./state";
 import { VERSION } from "./util";

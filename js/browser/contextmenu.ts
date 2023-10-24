@@ -1,7 +1,6 @@
 /** Creates the circular context menu that can be opened on top of a node/edge.
 Needs to be initialized before it can be used via the default export function.*/
 import { flatHelp } from "../help";
-import type { MenuItem } from "./menuItem";
 import cytoscape from "cytoscape";
 //{ Collection, EdgeSingular, NodeSingular, SingularElementReturnValue } from "cytoscape";
 import contextMenus from "cytoscape-context-menus";
@@ -13,6 +12,15 @@ import log from "loglevel";
 import { sub } from "../rdf";
 
 const config = { menuItems: [] as Array<MenuItem>, evtType: "cxttap" };
+
+// cytoscape-context-menus extension does not have type hints
+export interface MenuItem {
+	content: string;
+	id: string;
+	selector?: "node" | "node:compound" | "edge";
+	submenu?: Array<MenuItem>;
+	onClickFunction?(event: Event | { target: any }): void;
+}
 
 /** context menu for nodes and edges */
 export class ContextMenu {
