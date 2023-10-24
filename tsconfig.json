@@ -30,6 +30,6 @@
 		"out": "doc",
 		"readme": "none"
 	},
-	"include": ["js/**/*", "globals.d.ts"],
+	"include": ["js/**/*", "test/**/*", "globals.d.ts"],
 	"exclude": ["node_modules"]
 }

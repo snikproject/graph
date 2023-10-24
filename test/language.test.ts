@@ -1,6 +1,6 @@
 import * as language from "../js/lang/language";
 import chai from "chai";
-const assert = chai.assert;
+const assert: Chai.AssertStatic = chai.assert;
 
 describe("language", () => {
 	describe("#getStrings()", () => {

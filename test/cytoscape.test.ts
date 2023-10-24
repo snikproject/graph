@@ -4,7 +4,7 @@ import { SNIK } from "../js/sparql";
 import cytoscape from "cytoscape";
 import "isomorphic-fetch";
 import chai from "chai";
-const assert = chai.assert;
+const assert: Chai.AssertStatic = chai.assert;
 
 describe("cytoscape", () => {
 	let cy;
