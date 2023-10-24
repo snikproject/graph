@@ -8,8 +8,8 @@ export const SNIK = {
 	ENDPOINT: "https://www.snik.eu/sparql",
 };
 
+//ASK queries should also work but better use {@link ask} instead as it is more convenient. // ask does not exist anymore
 /** Query public SNIK SPARQL endpoint with a SELECT query.
-ASK queries should also work but better use {@link ask} instead as it is more convenient.
 @param query - A valid SPARQL query.
 @param graph - An optional SPARQL graph.
 @param endpoint - An optional SPARQL endpoint. May override FROM statements.

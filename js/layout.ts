@@ -65,7 +65,7 @@ function center(nodes: NodeCollection): Position {
 	return c;
 }
 
-/** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it, use {@link layout.runCached} for that.
+/** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it, use {@link runCached} for that.
 @param cy - the Cytoscape.js graph to run the layout on
 @param layoutConfig - the layout configuration, which includes the layout name and options
 @param  subs - Set of subontologies. If the subs are not given the layout still works but it is not saved.
@@ -206,7 +206,7 @@ export interface LayoutConfig {
 	name: string;
 }
 
-/** Cached version of {@link layout.run}.
+/** Cached version of {@link run}.
 @param cy - the Cytoscape.js graph to run the layout on
 @param layoutConfig - the layout configuration, which includes the layout name and options
 @param subs - Set of subontologies. If the subs are not given the layout still works but it is not cached.
