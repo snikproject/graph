@@ -169,8 +169,8 @@ export class Graph {
       @param changeLayout - arrange the given node and its close matches in the center and the connected nodes in a circle around them.
       @param direction - only show edges that originate from node, not those that end in it. Optional and defaults to false.
       @returns show star function applied to multiple nodes  */
-	async showStarMultiplexedNew(changeLayout: boolean = false, direction: Direction) {
-		const graph = await this.newGraph();
+	async showStarMultiplexedNew(changeLayout: boolean = false, direction: Direction = Direction.BOTH, alwaysNew: boolean = false) {
+		const graph = await this.newGraph(alwaysNew);
 		const f = (_node: NodeSingular) => {
 			graph.multiplex(
 				(nodes: NodeCollection) => graph.showStar(graph.assimilateNodes(nodes), changeLayout, direction),
@@ -623,12 +623,13 @@ export class Graph {
 	/** Create and return a new graph if the option is set to create star operations in a new view.
 	 *  @param title - optional view title
 	 *  @returns this iff the option to create stars in a new view is unset, a new view's graph if it is set */
-	async newGraph(title?: string): Promise<Graph> {
-		//if(!mainView.state.graph.menu.starNewView()) {return this;} // using the menu option to determine whether to create a new graph
-		if (this !== View.mainView.state.graph) {
+	//async newGraph(title?: string, alwaysNew: boolean = false): Promise<Graph> {
+	async newGraph(alwaysNew: boolean = false): Promise<Graph> {
+		if (!alwaysNew && this !== View.mainView.state.graph) {
 			return this;
 		} // span new views only from the main view
-		const view = new View(true, title);
+		//const view = new View(true, title);
+		const view = new View(true);
 		await view.initialized;
 		return view.state.graph;
 	}

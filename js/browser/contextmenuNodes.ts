@@ -119,7 +119,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			content: "star",
 			id: "star",
 			selector: "node",
-			//select: ()=>graph.newGraph("Star").showStarMultiplexed(false)(),
 			onClickFunction: async (event) => {
 				(await graph.showStarMultiplexedNew(false, Direction.BOTH))(event.target);
 			},
@@ -128,7 +127,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			content: "incoming star",
 			id: "incoming-star",
 			selector: "node",
-			//select: graph.showStarMultiplexed(false,Direction.IN),
 			onClickFunction: async (event) => {
 				(await graph.showStarMultiplexedNew(false, Direction.IN))(event.target);
 			},
@@ -137,7 +135,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			content: "outgoing star",
 			id: "outgoing-star",
 			selector: "node",
-			//select: graph.showStarMultiplexed(false,Direction.OUT),
 			onClickFunction: async (event) => {
 				(await graph.showStarMultiplexedNew(false, Direction.OUT))(event.target);
 			},
@@ -221,8 +218,9 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 					content: "circle star",
 					id: "circlestar",
 					selector: "node",
-					onClickFunction: (event) => {
-						graph.showStar(event.target, true);
+					// circle star hides all other nodes so we always open it in a new view even if we are not in the main one
+					onClickFunction: async (event) => {
+						(await graph.showStarMultiplexedNew(true, Direction.BOTH, true))(event.target);
 					},
 				},
 				{
