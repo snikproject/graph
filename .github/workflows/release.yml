@@ -1,0 +1,19 @@
+name: Release
+on:
+  push:
+    tags: '[2-9][0-9]\.[0-9][0-9]'
+jobs:
+  create-release:
+    name: Create release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Changelog
+        id: build-changelog
+        uses: mikepenz/release-changelog-builder-action@v4
+        with:
+          commitMode: true
+      - name: Create Release
+        id: create-release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: ${{steps.build-changelog.outputs.changelog}}
