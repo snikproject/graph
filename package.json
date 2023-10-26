@@ -63,7 +63,7 @@
 		"dev": "vite",
 		"build": "vite build --sourcemap true",
 		"preview": "vite preview",
-		"test": "vitest run",
+		"test": "vitest run --no-threads",
 		"vitest": "vitest",
 		"lint": "eslint js test --ext .ts",
 		"typecheck": "tsc --noEmit",
