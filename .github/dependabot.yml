@@ -3,5 +3,9 @@ version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/.github/workflows"
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    assignees: ["KonradHoeffner"]
     schedule:
       interval: "daily"
