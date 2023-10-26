@@ -221,8 +221,8 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 					content: "circle star",
 					id: "circlestar",
 					selector: "node",
-					onClickFunction: (event) => {
-						graph.showStar(event.target, true);
+					onClickFunction: async (event) => {
+						(await graph.showStarMultiplexedNew(true, Direction.BOTH))(event.target);
 					},
 				},
 				{
