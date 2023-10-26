@@ -28,6 +28,12 @@ const colorschemeday = [
 		},
 	},
 	{
+		selector: "edge",
+		css: {
+			color: "black", // label color
+		},
+	},
+	{
 		selector: "edge[!selected]",
 		css: {
 			"line-color": function (edge) {

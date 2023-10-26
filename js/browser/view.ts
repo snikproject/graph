@@ -133,7 +133,8 @@ export class View {
 
 		this.initialized = initialize ? this.fill() : Promise.resolve();
 		this.initialized.then(() => {
-			this.state.graph.applyStyle(toJSON().options.dayMode, toJSON().options.edgesColorized);
+			const options = toJSON().options;
+			this.state.graph.applyStyle(options.dayMode, options.edgesColorized, options.showProperty);
 			const menuItems = [...nodeCommands(graph), ...edgeCommands(graph)];
 			this.cxtMenu = new ContextMenu(this.state.graph, menuItems);
 		});

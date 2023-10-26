@@ -133,6 +133,10 @@ export const style = {
 				"z-compound-depth": "bottom",
 				width: 2.0,
 				opacity: 0.22,
+				"edge-text-rotation": "autorotate",
+				"text-margin-y": "-1em",
+				"min-zoomed-font-size": 5,
+				"font-size": 11,
 			},
 		},
 		{
@@ -151,10 +155,6 @@ export const style = {
 					}
 					return "triangle";
 				},
-				"edge-text-rotation": "autorotate",
-				"text-margin-y": "-1em",
-				"min-zoomed-font-size": 5,
-				"font-size": 11,
 				label: function (edge) {
 					let label = edge.data(EDGE.PROPERTY_LABEL);
 					const SHOW_QUALITY = true;
@@ -218,14 +218,38 @@ export const style = {
 	],
 };
 
+function edgeColor(edge) {
+	const edgeType = edge.data(EDGE.PROPERTY);
+	const color = stringToColor(edgeType); // maybe adjust the v of the hsv color for day mode
+	return color;
+}
+
 export const coloredEdgeStyle = [
+	{
+		selector: "edge",
+		css: {
+			color: edgeColor,
+		},
+	},
 	{
 		selector: "edge:unselected",
 		css: {
-			"line-color": function (edge) {
-				const edgeType = edge.data(EDGE.PROPERTY);
-				const color = stringToColor(edgeType); // maybe adjust the v of the hsv color for day mode
-				return color;
+			"line-color": edgeColor,
+		},
+	},
+];
+
+export const showPropertyStyle = [
+	{
+		selector: "edge",
+		css: {
+			label: function (edge) {
+				let label = edge.data(EDGE.PROPERTY_LABEL);
+				const SHOW_QUALITY = true;
+				if (SHOW_QUALITY && edge.data(EDGE.GRAPH) === "http://www.snik.eu/ontology/limes-exact") {
+					label += " \u26A0";
+				}
+				return label;
 			},
 		},
 	},

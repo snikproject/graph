@@ -70,6 +70,7 @@ export class Menu {
 	separateSubsBox;
 	dayModeBox;
 	coloredEdgesBox;
+	showPropertyBox;
 	/** Construct the main menu bar. */
 	constructor() {
 		if (menu) {
@@ -83,7 +84,7 @@ export class Menu {
 		menu = this;
 	}
 
-	/** @returns hether subontologies are to be displayed separately. */
+	/** @returns whether subontologies are to be displayed separately. */
 	separateSubs(): boolean {
 		return this.separateSubsBox.checked;
 	}
@@ -93,6 +94,13 @@ export class Menu {
 	 */
 	coloredEdges(): boolean {
 		return this.coloredEdgesBox.checked;
+	}
+
+	/**
+	 * @returns if edge labels with the property names should always be shown
+	 */
+	showProperty(): boolean {
+		return this.showPropertyBox.checked;
 	}
 
 	///** @returns {boolean} whether star operations should be shown in a new view. */
@@ -329,7 +337,7 @@ ${Menu.gitInfo()}`,
 	 * @param as - an empty array that will be filled with the anchor elements */
 	addOptions(as: Array<HTMLAnchorElement>): void {
 		const optionsContent = util.getElementById("options-menu-content");
-		const names = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges"]; // ,"starNewView"
+		const names = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges", "showProperty"]; // ,"starNewView"
 		(this as any).optionBoxes = {};
 		for (const name of names) {
 			log.trace("Add option " + name);
@@ -353,9 +361,15 @@ ${Menu.gitInfo()}`,
 		});
 		this.dayModeBox.addEventListener("change", () => {
 			for (const view of View.views()) {
-				view.state.graph.applyStyle(this.dayModeBox.checked, this.coloredEdgesBox.checked);
+				view.state.graph.applyStyle(this.dayModeBox.checked, this.coloredEdgesBox.checked, this.showPropertyBox.checked);
 			}
 			log.debug("Set dayMode to " + this.dayModeBox.checked);
+		});
+		this.showPropertyBox.addEventListener("change", () => {
+			for (const view of View.views()) {
+				view.state.graph.applyStyle(this.dayModeBox.checked, this.coloredEdgesBox.checked, this.showPropertyBox.checked);
+			}
+			log.debug("Set showProperty to " + this.showPropertyBox.checked);
 		});
 		(this as any).gridBox.addEventListener("change", () => {
 			document.body.classList[(this as any).gridBox.checked ? "add" : "remove"]("grid");
@@ -363,6 +377,9 @@ ${Menu.gitInfo()}`,
 		});
 		if (config.activeOptions.includes("day")) {
 			this.dayModeBox.click();
+		}
+		if (config.activeOptions.includes("showproperty")) {
+			this.showPropertyBox.click();
 		}
 		// is only used by the main tab
 		((this as any).cumulativeSearchBox as HTMLInputElement).addEventListener("change", () => {
@@ -388,7 +405,7 @@ ${Menu.gitInfo()}`,
 			(config as any).edgesColorized = colorize;
 			// redraw all canvas
 			for (const view of View.views()) {
-				view.state.graph.applyStyle(this.dayModeBox.checked, this.coloredEdgesBox.checked);
+				view.state.graph.applyStyle(this.dayModeBox.checked, this.coloredEdgesBox.checked, this.showPropertyBox.checked);
 			}
 		});
 		if (config.activeOptions.includes("edgecolor")) {

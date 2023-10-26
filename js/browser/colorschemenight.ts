@@ -22,6 +22,12 @@ const colorschemenight = [
 		css: { "border-color": "rgb(255,90,90)" },
 	},
 	{
+		selector: "edge",
+		css: {
+			color: "white", // label color
+		},
+	},
+	{
 		selector: "edge:unselected",
 		css: {
 			"line-color": function (edge) {

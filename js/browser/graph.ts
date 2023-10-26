@@ -1,6 +1,6 @@
 /** Provides graph operations such as initialization, wayfinding and highlighting.*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
-import { coloredEdgeStyle, style } from "./style";
+import { coloredEdgeStyle, showPropertyStyle, style } from "./style";
 import { colorschemenight } from "./colorschemenight";
 import { colorschemeday } from "./colorschemeday";
 import { timer } from "../timer";
@@ -373,8 +373,9 @@ export class Graph {
 	/** Inverts the screen colors in the canvas for day mode. Uses an inverted node js style file to keep node colors.
 	 * @param dayScheme - whether the canvas colors should be inverted.
 	 * @param coloredEdges - Give every edge-type a certain color.
+	 * @param showProperty - Show the property as edge label even on all edges, else only show edge labels on unselected edges.
 	 */
-	applyStyle(dayScheme: boolean, coloredEdges: boolean): void {
+	applyStyle(dayScheme: boolean, coloredEdges: boolean, showProperty: boolean): void {
 		let baseStyle = style.style as any;
 		if (dayScheme) {
 			this.container.style.backgroundColor = "white";
@@ -385,6 +386,9 @@ export class Graph {
 		}
 		if (coloredEdges) {
 			baseStyle = baseStyle.concat(coloredEdgeStyle);
+		}
+		if (showProperty) {
+			baseStyle = baseStyle.concat(showPropertyStyle);
 		}
 		this.cy.style().fromJson(baseStyle).update();
 	}
