@@ -12,6 +12,11 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v4
         with:
           commitMode: true
+          configurationJson: |
+            {
+              "pr_template": "- #{{TITLE}}",
+              "template": "#{{UNCATEGORIZED}}"
+            }
       - name: Create Release
         id: create-release
         uses: softprops/action-gh-release@v1
