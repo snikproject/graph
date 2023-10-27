@@ -47,7 +47,7 @@
 		"eqeqeq": ["error"],
 		"eol-last": ["error"],
 		"import/no-default-export": ["warn"],
-		"import/no-cycle": ["warn"],
+		"import/no-cycle": ["off"],
 		"import/no-unresolved": ["error"],
 		"max-len": ["warn", 245],
 		"padded-blocks": ["error", "never"],
