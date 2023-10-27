@@ -1,7 +1,7 @@
 /** Fuzzy search with fuse.js.*/
 import * as sparql from "./sparql";
 import { config } from "./config";
-import Fuse from "fuse.js";
+import Fuse, { type FuseResult } from "fuse.js";
 import log from "loglevel";
 import { timer } from "./timer";
 
@@ -84,7 +84,7 @@ export async function createIndex(): Promise<Array<object>> {
 @param userQuery - search query as given by a user
 @returns the class URIs found.
 */
-export async function search(userQuery: string): Promise<Array<Fuse.FuseResult<Item>>> {
+export async function search(userQuery: string): Promise<Array<FuseResult<Item>>> {
 	if (!index) {
 		await createIndex();
 	}

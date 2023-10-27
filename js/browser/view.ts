@@ -1,10 +1,9 @@
-import { Graph, type Direction } from "./graph";
+import { Graph } from "./graph";
 import { fillInitialGraph } from "./init";
 import { ContextMenu } from "./contextmenu";
 import { nodeCommands } from "./contextmenuNodes";
 import { edgeCommands } from "./contextmenuEdges";
 import { goldenLayout } from "./viewLayout";
-import type { NodeCollection, NodeSingular } from "cytoscape";
 import { toJSON } from "./state";
 import log from "loglevel";
 import type { ComponentConfig, ContentItem } from "golden-layout";
