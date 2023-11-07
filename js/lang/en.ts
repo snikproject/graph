@@ -23,7 +23,7 @@ export const en = {
 		grid: "show grid",
 		dayMode: "day mode",
 		coloredEdges: "Colorize edges by type",
-		showProperty: "Always show properties",
+		showProperty: "Always show relation descriptions",
 		devMode: "developer mode",
 		extMode: "extended mode",
 		combineMatchMode: "Combine Matches",
