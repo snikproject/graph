@@ -5,6 +5,17 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '.dockerignore'
+      - '.github/dependabot.yml'
+      - '.github/workflows/release.yml'
+      - 'Dockerfile'
+      - 'Dockerfile.submodule'
+      - 'LICENSE'
+      - 'README.md'
+      - 'paper'
+      - '.eslintrc.json'
+      - '.eslintignore'
 
 jobs:
   build:
