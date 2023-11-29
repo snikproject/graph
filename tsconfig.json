@@ -10,7 +10,7 @@
 		"typeRoots": ["./node_modules/@types", "./node_modules"],
 		"types": ["vite/client", "node", "vitest/globals"],
 		"module": "esnext",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"esModuleInterop": true,
 		"noImplicitAny": false,
 		"noEmitOnError": false,
