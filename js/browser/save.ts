@@ -12,13 +12,27 @@ c.use(svg);
 export interface ViewJson {
 	version: string;
 	title: string;
+	type: ViewJsonType;
 	graph: object;
+}
+
+export interface NodeLayout {
+	uri: string;
+	position: {
+		x: number;
+		y: number;
+	};
 }
 
 export interface Session {
 	tabs: Array<TabContent>;
 	state: any;
 	mainGraph: any;
+}
+
+export enum ViewJsonType {
+	VIEW,
+	LAYOUT,
 }
 
 const a = document.createElement("a"); // reused for all saving, not visible to the user
@@ -98,11 +112,31 @@ export function saveView(state: ViewState): void {
 	const json: ViewJson = {
 		version: VERSION,
 		title: state.title,
+		type: ViewJsonType.VIEW,
 		graph: state.cy.json(),
 	};
 	//@ts-expect-error compiler doesnt know graph.style
 	delete json.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 	saveJson(json, "snik-view.json");
+}
+
+/** Saves the locations and URIs of the nodes of the current view as a custom JSON file.
+ *  @param state - a GoldenLayout view state */
+export function saveLayout(state: ViewState): void {
+	const view = state.cy.json();
+
+	//@ts-expect-error compiler doesn't know JSON objects
+	const layout = state.cy.nodes(":hidden").map((node) => [node.data.id, node.position]);
+
+	const json: ViewJson = {
+		version: VERSION,
+		title: state.title,
+		type: ViewJsonType.LAYOUT,
+		graph: layout,
+	};
+
+	// no need to delete style because we didn't copy it
+	saveJson(json, "snik-layout.json");
 }
 
 /**

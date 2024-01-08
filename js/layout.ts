@@ -159,11 +159,11 @@ export async function run(cy: Core, layoutConfig: LayoutOptions, subs?: Array<st
 /** Applies a preset layout matching the node id's to the first element of each subarray in pos. Nodes without matching entry
 in pos are set to position `{x:0,y:0}`, positions without matching node id are ignored.
 @param cy - the Cytoscape.js graph to apply the positions on, node id's need to match those in the given positions
-@param pos - an array of arrays, each of which contains the positions for a node id
+@param pos - an array of arrays, each of which contains a node id and the positions for a node id (as a cytoscape Position object) in this order
 @returns whether the layout could be successfully applied
 @example `presetLayout(cy,[["http://www.snik.eu...",{"x":0,"y":0}],...]);`
 */
-export async function presetLayout(cy: Core, pos: Array<Position>): Promise<boolean> {
+export async function presetLayout(cy: Core, pos: Array<Array<object>>): Promise<boolean> {
 	const map = new Map(pos as any);
 	let hits = 0;
 	let misses = 0;

@@ -1,6 +1,7 @@
 /** Module for loading files both locally from the server and via upload from the client.*/
 import { View } from "./view";
 import type { ViewJson, Session } from "./save";
+import { ViewJsonType } from "./save"; //eslint-disable-line no-duplicate-imports
 import { config } from "../config";
 import { fromJSON } from "./state";
 import { VERSION } from "./util";
@@ -87,6 +88,10 @@ export async function loadSessionFromJsonFile(event: Event): Promise<void> {
 	});
 }
 
+function checkVersion(type: ViewJsonType) {
+	// TODO implement
+}
+
 /** Loads a stored view from a JSON file.
 @param event - a file input change event */
 export function loadView(event: Event): void {
@@ -97,12 +102,48 @@ export function loadView(event: Event): void {
 			!confirm(`Your file was saved in version ${json.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`)
 		) {
 			return;
+		} else if (json.type === undefined) {
+			alert(`Unknown file format, aborting.`);
+			return;
+		} else if (json.type !== ViewJsonType.VIEW) {
+			alert(`Your file was saved as ${json.type}, but you are trying to load a Partial View, aborting.`);
+			return;
 		}
 		const view = new View(false);
 		loadGraphFromJson(view.state.graph, json.graph);
 		View.activeView().setTitle(json.title);
 	});
 }
+
+/** Loads a stored layout from a JSON file.
+@param event - a file input change event */
+export function loadLayout(event: Event): void {
+	uploadJson(event, (json: ViewJson) => {
+		// compare versions of file and package.json and warn if deprecated
+		if (
+			json.version !== VERSION &&
+			!confirm(`Your file was saved in version ${json.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`)
+		) {
+			return;
+		} else if (json.type === null) {
+			alert(`Unknown file format, aborting.`);
+			return;
+		} else if (json.type !== ViewJsonType.LAYOUT) {
+			alert(`Your file was saved as ${json.type}, but you are trying to load a Layout, aborting.`);
+			return;
+		}
+		const view = new View(false);
+
+		//@ts-expect-error compiler doesnt know JSON objects
+		json.graph.forEach((node) => {
+			console.log(node.position);
+		});
+
+		loadGraphFromJson(view.state.graph, json.graph);
+		View.activeView().setTitle(json.title);
+	});
+}
+
 /**
 Add an upload entry to the file menu.
 @param parent - the parent element of the menu
@@ -141,5 +182,6 @@ Cannot use the simpler default menu creation method because file upload only wor
 @param as - the file menu in the form of anchor elements that get styled by CSS */
 export function addFileLoadEntries(graph: Graph, parent: HTMLElement, as: Array<HTMLAnchorElement>): void {
 	addLoadEntry(parent, "load-view", "Load Partial Graph into Session", loadView, as);
+	addLoadEntry(parent, "load-layout", "Load Layout of Partial Graph into Session", loadLayout, as);
 	addLoadEntry(parent, "load-session", "Load Session", loadSessionFromJsonFile, as);
 }
