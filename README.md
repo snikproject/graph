@@ -6,22 +6,22 @@
 [![Vite](https://badges.aleen42.com/src/vitejs.svg)](https://vitejs.dev/)
 
 Visualization of the SNIK ontology using the Cytoscape.js graph library.
-Live at <https://www.snik.eu/graph> (stable) and <https://snikproject.github.io/snik-graph/index.html> (master branch).
-<!--Browse the code documentation [here](https://snikproject.github.io/snik-graph/index.html)!-->
+Live at <https://www.snik.eu/graph> (stable) and <https://snikproject.github.io/graph/index.html> (master branch).
+<!--Browse the code documentation [here](https://snikproject.github.io/graph/index.html)!-->
 
 ## Installation and Preview
 
 ### Node
 
     git clone https://github.com/snikproject/graph.git
-    cd snik-graph
+    cd graph
     npm install
     cp js/config.dist.ts js/config.ts
     npm run dev 
 
 Open the displayed local link in a browser.
 
-### Develping On Windows
+### Developing On Windows
 
 Developing on Windows is not recommended but possible with the following adaptions:
 
@@ -31,7 +31,7 @@ Developing on Windows is not recommended but possible with the following adaptio
 ### Docker
 
     git clone https://github.com/snikproject/graph.git
-    cd snik-graph
+    cd graph
     docker build . -t snik-graph
     docker run --network="host" snik-graph
 
@@ -45,7 +45,7 @@ Requires a browser with [ES6 module support](https://caniuse.com/es6-module).
 
 ## Documentation
 
-* [Developer Documentation](https://snikproject.github.io/snik-graph/doc)
+* [Developer Documentation](https://snikproject.github.io/graph/doc)
 * [User Manual](https://www.snik.eu/graph/html/manual.html)
 * [Layout Help](https://www.snik.eu/graph/html/layoutHelp.html)
 * [Troubleshooting](https://www.snik.eu/graph/html/troubleshooting.html)
