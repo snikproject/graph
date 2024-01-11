@@ -87,9 +87,27 @@ export async function loadSessionFromJsonFile(event: Event): Promise<void> {
 		fromJSON(json.state); // update changed values, keep existing values that don't exist in the save file
 	});
 }
-
-function checkVersion(type: ViewJsonType) {
-	// TODO implement
+/**
+ * Checks prerequisites for loading a view or layout to avoid redundancy in the respective functions.
+ * @param type - what format the input data should be in
+ * @param json - the input data
+ * @returns - version and type of input correct
+ */
+function checkVersion(type: ViewJsonType, json: any): boolean {
+	let ok: boolean = true;
+	if (
+		json.version !== VERSION &&
+		!confirm(`Your file was saved in version ${json.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`)
+	) {
+		ok = false;
+	} else if (json.type === undefined) {
+		alert(`Unknown file format, aborting.`);
+		ok = false;
+	} else if (json.type !== ViewJsonType.VIEW) {
+		alert(`Your file was saved as ${json.type}, but you are trying to load a Partial View, aborting.`);
+		ok = false;
+	}
+	return ok;
 }
 
 /** Loads a stored view from a JSON file.
@@ -97,18 +115,10 @@ function checkVersion(type: ViewJsonType) {
 export function loadView(event: Event): void {
 	uploadJson(event, (json: ViewJson) => {
 		// compare versions of file and package.json and warn if deprecated
-		if (
-			json.version !== VERSION &&
-			!confirm(`Your file was saved in version ${json.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`)
-		) {
-			return;
-		} else if (json.type === undefined) {
-			alert(`Unknown file format, aborting.`);
-			return;
-		} else if (json.type !== ViewJsonType.VIEW) {
-			alert(`Your file was saved as ${json.type}, but you are trying to load a Partial View, aborting.`);
+		if (!checkVersion(ViewJsonType.VIEW, json)) {
 			return;
 		}
+
 		const view = new View(false);
 		loadGraphFromJson(view.state.graph, json.graph);
 		View.activeView().setTitle(json.title);
@@ -120,18 +130,10 @@ export function loadView(event: Event): void {
 export function loadLayout(event: Event): void {
 	uploadJson(event, (json: ViewJson) => {
 		// compare versions of file and package.json and warn if deprecated
-		if (
-			json.version !== VERSION &&
-			!confirm(`Your file was saved in version ${json.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`)
-		) {
-			return;
-		} else if (json.type === null) {
-			alert(`Unknown file format, aborting.`);
-			return;
-		} else if (json.type !== ViewJsonType.LAYOUT) {
-			alert(`Your file was saved as ${json.type}, but you are trying to load a Layout, aborting.`);
+		if (!checkVersion(ViewJsonType.LAYOUT, json)) {
 			return;
 		}
+
 		const view = new View(false);
 
 		//@ts-expect-error compiler doesnt know JSON objects
