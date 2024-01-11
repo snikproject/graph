@@ -7,6 +7,7 @@ import type { Graph } from "./graph";
 import log from "loglevel";
 import c from "cytoscape";
 import svg from "cytoscape-svg";
+import { NODE } from "../node";
 c.use(svg);
 
 export interface ViewJson {
@@ -125,8 +126,7 @@ export function saveView(state: ViewState): void {
 export function saveLayout(state: ViewState): void {
 	const view = state.cy.json();
 
-	//@ts-expect-error compiler doesn't know JSON objects
-	const layout = state.cy.nodes(":hidden").map((node) => [node.data.id, node.position]);
+	const layout = state.cy.nodes(":visible").map((node) => [node.data(NODE.ID), node.position()]);
 
 	const json: ViewJson = {
 		version: VERSION,
