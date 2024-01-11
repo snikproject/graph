@@ -124,8 +124,6 @@ export function saveView(state: ViewState): void {
 /** Saves the locations and URIs of the nodes of the current view as a custom JSON file.
  *  @param state - a GoldenLayout view state */
 export function saveLayout(state: ViewState): void {
-	const view = state.cy.json();
-
 	const layout = state.cy.nodes(":visible").map((node) => [node.data(NODE.ID), node.position()]);
 
 	const json: ViewJson = {
