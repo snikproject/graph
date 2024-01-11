@@ -1,6 +1,6 @@
 import { config } from "../config";
 import { loadGraphFromSparql } from "../loadGraphFromSparql";
-import { loadGraphFromJsonFile } from "./load";
+import { loadGraphFromJsonFile, loadLayoutFromJsonObject } from "./load";
 import { Menu } from "./menu";
 import { Search } from "./search";
 import * as layout from "../layout";
@@ -11,6 +11,8 @@ import * as util from "./util";
 import { initHelp } from "../help";
 import { addBenchmarkOverlay } from "./benchmark";
 import { Graph } from "./graph";
+import initialViewJson from "./init.json" assert { type: "json" };
+import type { ViewJson } from "./save.ts";
 
 interface Params {
 	empty: boolean;
@@ -109,13 +111,25 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 			await layout.runCached(graph.cy, layout.euler, config.defaultSubOntologies, false); // todo: use the correct subs
 			Graph.setVisible(graph.cy.elements(), false);
 			// restrict visible nodes at start to improve performance
-			const start = graph.cy.nodes("node[id='http://www.snik.eu/ontology/bb/ChiefInformationOfficer']");
-			graph.showStar(start);
-			await layout.run(graph.cy, layout.eulerTight);
-			graph.cy.elements().unselect();
-			graph.cy.center(start);
-			graph.cy.fit(graph.cy.elements(":visible"));
-			Graph.setVisible(start, true);
+			// layout is loaded here
+			if (config.loadJsonLayoutAsInitialView) {
+				const json: ViewJson = {
+					version: initialViewJson.version,
+					title: initialViewJson.title,
+					type: initialViewJson.type,
+					graph: initialViewJson.graph,
+				};
+				loadLayoutFromJsonObject(json);
+			} else {
+				// use default: star around bb:ChiefInformationOfficer
+				const start = graph.cy.nodes("node[id='http://www.snik.eu/ontology/bb/ChiefInformationOfficer']");
+				graph.showStar(start);
+				await layout.run(graph.cy, layout.eulerTight);
+				graph.cy.elements().unselect();
+				graph.cy.center(start);
+				graph.cy.fit(graph.cy.elements(":visible"));
+				Graph.setVisible(start, true);
+			}
 
 			graph.starMode = true;
 		} else {

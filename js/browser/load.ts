@@ -6,7 +6,8 @@ import { config } from "../config";
 import { fromJSON } from "./state";
 import { VERSION } from "./util";
 import log from "loglevel";
-import type { Graph } from "./graph";
+import { Graph } from "./graph";
+import type { Position } from "cytoscape";
 
 /**
 Uploads a JSON file from the user.
@@ -103,8 +104,8 @@ function checkVersion(type: ViewJsonType, json: any): boolean {
 	} else if (json.type === undefined) {
 		alert(`Unknown file format, aborting.`);
 		ok = false;
-	} else if (json.type !== ViewJsonType.VIEW) {
-		alert(`Your file was saved as ${json.type}, but you are trying to load a Partial View, aborting.`);
+	} else if (json.type !== type) {
+		alert(`Your file was saved as ${json.type}, but you are trying to load a ${type}, aborting.`);
 		ok = false;
 	}
 	return ok;
@@ -125,24 +126,34 @@ export function loadView(event: Event): void {
 	});
 }
 
+export function loadLayoutFromJsonObject(json: ViewJson) {
+	// compare versions of file and package.json and warn if deprecated
+	if (!checkVersion(ViewJsonType.LAYOUT, json)) {
+		return;
+	}
+
+	//@ts-expect-error compiler doesnt know JSON objects
+	json.graph.forEach((jsonNode) => {
+		const position: Position = {
+			x: jsonNode[1].x,
+			y: jsonNode[1].y,
+		};
+		const cytoNode = View.activeState()
+			.cy.nodes("node[id='" + jsonNode[0] + "']")
+			.first();
+		cytoNode.lock();
+		cytoNode.position(position);
+		cytoNode.unlock();
+		Graph.setVisible(cytoNode);
+	});
+	View.activeView().setTitle(json.title);
+}
+
 /** Loads a stored layout from a JSON file.
 @param event - a file input change event */
 export function loadLayout(event: Event): void {
 	uploadJson(event, (json: ViewJson) => {
-		// compare versions of file and package.json and warn if deprecated
-		if (!checkVersion(ViewJsonType.LAYOUT, json)) {
-			return;
-		}
-
-		const view = new View(false);
-
-		//@ts-expect-error compiler doesnt know JSON objects
-		json.graph.forEach((node) => {
-			console.log(node.position);
-		});
-
-		loadGraphFromJson(view.state.graph, json.graph);
-		View.activeView().setTitle(json.title);
+		loadLayoutFromJsonObject(json);
 	});
 }
 

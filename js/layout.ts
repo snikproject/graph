@@ -42,7 +42,7 @@ function storageName(layoutName: string, subs: Array<string>, separateSubs: bool
 // returns [["http://www.snik.eu...",\{"x":0,"y":0\}],...]
 positions(cy.nodes());
 */
-export function positions(nodes: NodeCollection): Array<Array<number>> {
+export function positions(nodes: NodeCollection): Array<Array<any>> {
 	const pos: Array<Array<any>> = [];
 	for (let i = 0; i < nodes.size(); i++) {
 		const node = nodes[i];

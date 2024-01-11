@@ -7,6 +7,7 @@ import type { LogLevelDesc } from "loglevel";
 export const config = {
 	defaultSubOntologies: ["meta", "bb", "ob", "ciox", "he", "it4it"],
 	allSubOntologies: ["meta", "bb", "ob", "ciox", "he", "he-unconsolidated", "it4it"],
+	loadJsonLayoutAsInitialView: true, // ViewJson of type ViewJsonType.LAYOUT located in js/initialLayout.json
 	color: new Map([
 		["ciox", "rgb(80,255,250)"],
 		["meta", "rgb(255,80,80)"],
