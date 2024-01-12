@@ -7,7 +7,7 @@ import { fromJSON } from "./state";
 import { VERSION } from "./util";
 import log from "loglevel";
 import { Graph } from "./graph";
-import type { Position } from "cytoscape";
+import type { NodeCollection, NodeSingular, Position } from "cytoscape";
 
 /**
 Uploads a JSON file from the user.
@@ -132,6 +132,7 @@ export function loadLayoutFromJsonObject(json: ViewJson) {
 		return;
 	}
 
+	const nodes = [];
 	//@ts-expect-error compiler doesnt know JSON objects
 	json.graph.forEach((jsonNode) => {
 		const position: Position = {
@@ -141,12 +142,23 @@ export function loadLayoutFromJsonObject(json: ViewJson) {
 		const cytoNode = View.activeState()
 			.cy.nodes("node[id='" + jsonNode[0] + "']")
 			.first();
-		cytoNode.lock();
-		cytoNode.position(position);
+
 		cytoNode.unlock();
-		Graph.setVisible(cytoNode);
+		cytoNode.position(position);
+		cytoNode.lock();
+
+		nodes.push(cytoNode);
 	});
+	const cy = View.activeState().cy;
+	const toHide: NodeCollection = cy.nodes().filter((node: NodeSingular) => {
+		return !nodes.includes(node);
+	});
+	Graph.setVisible(toHide, false);
+
 	View.activeView().setTitle(json.title);
+	// todo: unlock nodes again (stop them being relocated later in execution of init)
+	// todo: fit view to visible elements, not make it so large
+	// todo: performance
 }
 
 /** Loads a stored layout from a JSON file.
