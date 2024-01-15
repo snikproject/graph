@@ -96,8 +96,19 @@ export class View {
 	 * @param title - optional view title
 	 */
 	constructor(initialize: boolean = true, title?: string) {
+		// if custom name, check for and prevent duplication
+		if (title !== "undefined" && viewCount > 0) {
+			View.views().forEach((part: View) => {
+				if (part.state.title === title) {
+					title = "Teilmodell " + View.views().length;
+					return;
+				}
+			});
+		}
+
 		//find initial title of the new View
-		title = title ?? (viewCount++ === 0 ? "Gesamtmodell" : "Teilmodell " + (viewCount - 1));
+		title = title ?? (viewCount === 0 ? "Gesamtmodell" : "Teilmodell " + viewCount);
+		viewCount++;
 		// @ts-expect-error is be completed later
 		this.state = { title, name: "unnamed" };
 
