@@ -135,8 +135,8 @@ export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph) {
 	const cy = graph.cy;
 	cy.batch(() => {
 		const nodes: NodeCollection = cy.collection();
-		//@ts-expect-error compiler doesnt know JSON objects
 		nodes.merge(
+			//@ts-expect-error compiler doesnt know JSON objects
 			json.graph.flatMap((jsonNode: Array<any>) => {
 				const position: Position = {
 					x: jsonNode[1].x,
