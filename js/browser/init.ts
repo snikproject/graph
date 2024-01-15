@@ -109,7 +109,6 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 		}
 		graph.instancesLoaded = params.instances;
 		if (config.sparql.isSnik) {
-			await layout.runCached(graph.cy, layout.euler, config.defaultSubOntologies, false); // todo: use the correct subs
 			// layout is loaded here
 			if (config.loadJsonLayoutAsInitialView) {
 				const json: ViewJson = {
@@ -120,6 +119,7 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 				};
 				loadLayoutFromJsonObject(json, View.activeState().graph);
 			} else {
+				await layout.runCached(graph.cy, layout.euler, config.defaultSubOntologies, false); // todo: use the correct subs
 				Graph.setVisible(graph.cy.elements(), false);
 				// restrict visible nodes at start to improve performance
 				// use default: star around bb:ChiefInformationOfficer

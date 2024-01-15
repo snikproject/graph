@@ -145,7 +145,7 @@ export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph) {
 				const cytoNode: NodeSingular = cy.nodes("node[id='" + jsonNode[0] + "']").first();
 				cytoNode.unlock();
 				cytoNode.position(position);
-				cytoNode.lock();
+				//cytoNode.lock();
 
 				return cytoNode;
 			})
@@ -160,7 +160,6 @@ export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph) {
 		cy.fit(nodes);
 		console.log("Loaded %d visible nodes into the graph. Hid %d nodes.", nodes.size(), toHide.size());
 	});
-	// todo: unlock nodes again (stop them being relocated later in initialization) layout.ts#130
 	// todo: fit view to visible elements, not make it so far away
 	// todo: check performance
 	// todo: make it working when manually loading a file, not only on init
