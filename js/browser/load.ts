@@ -126,47 +126,56 @@ export function loadView(event: Event): void {
 	});
 }
 
-export function loadLayoutFromJsonObject(json: ViewJson) {
+export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph) {
 	// compare versions of file and package.json and warn if deprecated
 	if (!checkVersion(ViewJsonType.LAYOUT, json)) {
 		return;
 	}
 
-	const nodes = [];
-	//@ts-expect-error compiler doesnt know JSON objects
-	json.graph.forEach((jsonNode) => {
-		const position: Position = {
-			x: jsonNode[1].x,
-			y: jsonNode[1].y,
-		};
-		const cytoNode = View.activeState()
-			.cy.nodes("node[id='" + jsonNode[0] + "']")
-			.first();
+	const cy = graph.cy;
+	cy.batch(() => {
+		const nodes: NodeCollection = cy.collection();
+		//@ts-expect-error compiler doesnt know JSON objects
+		nodes.merge(
+			json.graph.flatMap((jsonNode: Array<any>) => {
+				const position: Position = {
+					x: jsonNode[1].x,
+					y: jsonNode[1].y,
+				};
+				const cytoNode: NodeSingular = cy.nodes("node[id='" + jsonNode[0] + "']").first();
+				cytoNode.unlock();
+				cytoNode.position(position);
+				cytoNode.lock();
 
-		cytoNode.unlock();
-		cytoNode.position(position);
-		cytoNode.lock();
-
-		nodes.push(cytoNode);
+				return cytoNode;
+			})
+		);
+		// hide all nodes and edges except the nodes (and edges between them) included in the file
+		const toHide: NodeCollection = cy.nodes().unmerge(nodes);
+		const elements = nodes.union(nodes.edges());
+		Graph.setVisible(elements, true);
+		Graph.setVisible(toHide, false);
+		cy.elements().unselect();
+		cy.center(nodes);
+		cy.fit(nodes);
+		console.log("Loaded %d visible nodes into the graph. Hid %d nodes.", nodes.size(), toHide.size());
 	});
-	const cy = View.activeState().cy;
-	const toHide: NodeCollection = cy.nodes().filter((node: NodeSingular) => {
-		return !nodes.includes(node);
-	});
-	Graph.setVisible(toHide, false);
-
-	View.activeView().setTitle(json.title);
-	// todo: unlock nodes again (stop them being relocated later in execution of init)
-	// todo: fit view to visible elements, not make it so large
-	// todo: performance
+	// todo: unlock nodes again (stop them being relocated later in initialization) layout.ts#130
+	// todo: fit view to visible elements, not make it so far away
+	// todo: check performance
+	// todo: make it working when manually loading a file, not only on init
 }
 
 /** Loads a stored layout from a JSON file.
 @param event - a file input change event */
 export function loadLayout(event: Event): void {
+	console.groupCollapsed("Loading JSON Layout file into View.");
 	uploadJson(event, (json: ViewJson) => {
-		loadLayoutFromJsonObject(json);
+		const view: View = new View(true, json.title);
+		loadLayoutFromJsonObject(json, view.state.graph);
 	});
+	console.info("Finished loading layout from file.");
+	console.groupEnd();
 }
 
 /**

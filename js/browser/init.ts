@@ -13,6 +13,7 @@ import { addBenchmarkOverlay } from "./benchmark";
 import { Graph } from "./graph";
 import initialViewJson from "./init.json" assert { type: "json" };
 import type { ViewJson } from "./save.ts";
+import { View } from "./view";
 
 interface Params {
 	empty: boolean;
@@ -117,7 +118,7 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 					type: initialViewJson.type,
 					graph: initialViewJson.graph,
 				};
-				loadLayoutFromJsonObject(json);
+				loadLayoutFromJsonObject(json, View.activeState().graph);
 			} else {
 				Graph.setVisible(graph.cy.elements(), false);
 				// restrict visible nodes at start to improve performance
