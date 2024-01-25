@@ -18,7 +18,7 @@ describe("cytoscape", () => {
 	test("load graph from SPARQL", async () => {
 		await loadGraphFromSparql(cy, graphs);
 		assert.closeTo(cy.nodes().size(), 1134, 100);
-	});
+	}, 10000);
 	test("calculate layout", async () => {
 		assert(await layout.run(cy, layout.euler, subs));
 		// cose is more realistic for SNIK Graph but takes over a minute
