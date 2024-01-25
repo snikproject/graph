@@ -14,8 +14,9 @@ Our releases have the form YY.MM with a corresponding milestone and git tag.
 
 ### Upgrade major dependency versions
 
-Run `npx npm-upgrade` and upgrade all packages that don't break anything.
+Run `npx npm-upgrade && npm install` and upgrade all packages that don't break anything.
 Golden Layout [needs to stay at version 1.x](https://github.com/snikproject/graph/issues/372).
+Husky [needs to stay at version 8.x](https://github.com/snikproject/graph/issues/410).
 If something breaks, try to fix it with reasonable effort.
 If that doesn't help, keep the old version.
 
@@ -45,6 +46,7 @@ Can be integrated into IDEs and editors like Atom.
 
 Run `npm run typecheck`.
 Static code analysis can help uncover some otherwise hard to find bugs.
+There should not be errors, though in some cases it seems to be unavoidable.
 
 ## Manual tests
 
