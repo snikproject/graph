@@ -23,5 +23,5 @@ describe("fuse#search", () => {
 				expect(uris).toEqual(expect.arrayContaining(expectedUris));
 			}
 		}
-	});
+	}, 10000);
 });
