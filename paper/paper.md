@@ -19,10 +19,12 @@ authors:
   - name: Alfred Winter
     orcid: 0000-0003-0179-954X
     affiliation: 1
+  - name: Hannes Raphael Brunsch 
+    affiliation: 1
 affiliations:
  - name: Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University
    index: 1
-date: 28 March 2022
+date: 31 January 2024
 bibliography: paper.bib
 
 ---

@@ -1,37 +1,44 @@
 {
-	"@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
-	"@type": "Code",
+	"@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+	"@type": "SoftwareSourceCode",
 	"author": [
 		{
 			"@id": " https://orcid.org/0000-0001-7358-3217",
 			"@type": "Person",
 			"email": "konrad.hoeffner@uni-leipzig.de",
 			"name": "Konrad Höffner",
-			"affiliation": "Leipzig University"
+			"affiliation": "https://www.uni-leipzig.de/"
 		},
 		{
 			"@id": "https://orcid.org/0000-0001-5832-4890",
 			"@type": "Person",
 			"email": "thomas.pause.86@gmail.com",
 			"name": "Thomas Pause",
-			"affiliation": "Leipzig University"
+			"affiliation": "https://www.uni-leipzig.de/"
 		},
 		{
 			"@id": "",
 			"@type": "Person",
 			"email": "",
 			"name": "Anna Brakemeier",
-			"affiliation": "Leipzig University"
+			"affiliation": "https://www.uni-leipzig.de/"
+		},
+		{
+			"@id": "",
+			"@type": "Person",
+			"email": "",
+			"name": "Hannes Raphael Brunsch",
+			"affiliation": "https://www.uni-leipzig.de/"
 		}
 	],
 	"identifier": "",
 	"codeRepository": "https://github.com/snikproject/graph/",
 	"datePublished": "2016-07-13",
-	"dateModified": "2023-10-27",
+	"dateModified": "2024-01-31",
 	"dateCreated": "2016-07-13",
 	"description": "Visualization of a Medical Informatics Ontology",
 	"keywords": "semantic web, information management, hospital information management, visualization, javascript",
 	"license": "MIT",
 	"title": "SNIK Graph",
-	"version": "23.10"
+	"version": "24.01"
 }
