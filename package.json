@@ -64,7 +64,7 @@
 		"build": "vite build --sourcemap true",
 		"preview": "vite preview",
 		"test": "vitest run",
-		"vitest": "vitest",
+		"vitest": "vitest --pool=forks",
 		"lint": "eslint js test --ext .ts",
 		"typecheck": "tsc --noEmit",
 		"doc": "typedoc --plugin typedoc-plugin-merge-modules",
