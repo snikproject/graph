@@ -24,9 +24,9 @@
 			"affiliation": "https://www.uni-leipzig.de/"
 		},
 		{
-			"@id": "",
+			"@id": "https://orcid.org/0009-0004-5081-9820",
 			"@type": "Person",
-			"email": "",
+			"email": "hannes_raphael.brunsch@uni-leipzig.de",
 			"name": "Hannes Raphael Brunsch",
 			"affiliation": "https://www.uni-leipzig.de/"
 		}
