@@ -3,8 +3,7 @@ import { loadGraphFromSparql } from "../js/loadGraphFromSparql";
 import { SNIK } from "../js/sparql";
 import cytoscape from "cytoscape";
 import "isomorphic-fetch";
-import chai from "chai";
-const assert: Chai.AssertStatic = chai.assert;
+import { assert } from "chai";
 
 describe("cytoscape", () => {
 	let cy;
