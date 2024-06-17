@@ -20,7 +20,7 @@ function traverse(x: ContentItem, depth: number): Array<ContentItem> {
 	const removeTabsArray: Array<ContentItem> = [];
 	if (x.type === "component") {
 		const config = x as unknown as ComponentConfig;
-		if (config.componentName !== "Gesamtmodell") {
+		if (config.componentName !== "Main Graph") {
 			removeTabsArray.push(x);
 			return removeTabsArray;
 		}
@@ -107,7 +107,7 @@ export class View {
 		}
 
 		//find initial title of the new View
-		title = title ?? (viewCount === 0 ? "Gesamtmodell" : "Teilmodell " + viewCount);
+		title = title ?? (viewCount === 0 ? "Main Graph" : "Partial Graph" + viewCount);
 		viewCount++;
 		// @ts-expect-error is be completed later
 		this.state = { title, name: "unnamed" };

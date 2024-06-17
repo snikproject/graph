@@ -34,7 +34,7 @@ export function getLanguage(): string {
 }
 
 /**
- * @param key - langauge independent key
+ * @param key - language independent key
  * @returns language dependend string
  */
 export function getString(key: string): string {
@@ -42,9 +42,11 @@ export function getString(key: string): string {
 	if (!ss.all) {
 		ss.all = { ...ss.idStrings, ...ss.messageStrings };
 	}
-	{
-		return ss.all[key];
+	const s = ss.all[key];
+	if (!s) {
+		log.error("Internationalization string not found for key " + key);
 	}
+	return s;
 }
 
 /**

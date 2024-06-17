@@ -62,7 +62,15 @@ export interface MenuElement {
 	label: string;
 	i18n: string;
 	id?: string;
-	entries: Array<any>;
+	entries: Array<MenuEntry>;
+}
+
+export interface MenuEntry {
+	/** Action is either a link as a string (will be opened on another tab) or a function that will be executed. */
+	action: string | (() => void);
+	label?: string;
+	i18n: string;
+	hotkey?: string;
 }
 
 /** Populates the menu bar on the top and initializes the context menu.*/
@@ -163,6 +171,8 @@ ${Menu.gitInfo()}`,
   entries is an array of arrays of size two.
   entries[i][0] is either a link as a string (will be opened on another tab) or a function that will be executed.
   entries[i][1] is a label as a string.
+  entries[i][2] is an i18 id.
+  entries[i][3] is an optional hotkey.
   * @returns the array of menu elements.
   */
 	menuData(): Array<MenuElement> {
@@ -172,40 +182,56 @@ ${Menu.gitInfo()}`,
 				i18n: "file",
 				id: "file",
 				entries: [
-					[
-						async () => {
+					{
+						action: async () => {
 							await loadGraphFromSparql(View.activeState().graph.cy, []);
 							progress(async () => await layout.runCached(View.activeState().graph.cy, layout.euler, config.defaultSubOntologies, this.separateSubs()));
 						},
-						"Load from SPARQL Endpoint",
-						"load-sparql",
-					],
+						label: "Load from SPARQL Endpoint",
+						i18n: "load-sparql",
+					},
 
-					[() => save.saveSession(this.optionsToJSON()), "Save Session", "save-session"],
-					[() => save.saveGraph(View.activeState().graph), "Export Graph to Cytoscape", "save-snik-graph"],
-					[() => save.saveView(View.activeState()), "Save currently active view (partial graph)", "save-view"],
-					[() => save.saveLayout(View.activeState()), "Save Layout of Partial Graph", "save-layout"],
-					[
-						() => {
+					{ action: () => save.saveSession(this.optionsToJSON()), label: "Save Session", i18n: "save-session" },
+					{ action: () => save.saveGraph(View.activeState().graph), label: "Export Graph to Cytoscape", i18n: "save-snik-graph" },
+					{ action: () => save.saveView(View.activeState()), label: "Save currently active view (partial graph)", i18n: "save-view" },
+					{ action: () => save.saveLayout(View.activeState()), label: "Save Layout of Partial Graph", i18n: "save-layout" },
+					{
+						action: () => {
 							progress(() => layout.run(View.activeState().cy, layout.euler, config.defaultSubOntologies, this.separateSubs(), true));
 						},
-						"Recalculate Layout and Replace in Browser Cache",
-						"recalculate-layout-replace",
-					],
-					[() => save.savePng(View.activeState().graph, this.dayModeBox.checked, false, false), "Save PNG Image of Current View", "save-image-current-view"],
-					[() => save.savePng(View.activeState().graph, this.dayModeBox.checked, true, false), "Save PNG Image of Whole Graph", "save-image-whole-graph"],
-					[
-						() => save.savePng(View.activeState().graph, this.dayModeBox.checked, false, true),
-						"Save PNG Image of Current View (high res)",
-						"save-image-current-view-high-res",
-					],
-					[
-						() => save.savePng(View.activeState().graph, this.dayModeBox.checked, true, true),
-						"Save PNG Image of Whole Graph (high res)",
-						"save-image-whole-graph-high-res",
-					],
-					[() => save.saveSvg(View.activeState().graph, this.dayModeBox.checked, false), "Save SVG Image of Current View"],
-					[() => save.saveSvg(View.activeState().graph, this.dayModeBox.checked, true), "Save SVG Image of Whole Graph"],
+						label: "Recalculate Layout and Replace in Browser Cache",
+						i18n: "recalculate-layout-replace",
+					},
+					{
+						action: () => save.savePng(View.activeState().graph, this.dayModeBox.checked, false, false),
+						label: "Save PNG Image of Current View",
+						i18n: "save-image-png-visible-region",
+					},
+					{
+						action: () => save.savePng(View.activeState().graph, this.dayModeBox.checked, true, false),
+						label: "Save PNG Image of Whole Graph",
+						i18n: "save-image-png-complete-partial-graph",
+					},
+					{
+						action: () => save.savePng(View.activeState().graph, this.dayModeBox.checked, false, true),
+						label: "Save PNG Image of Current View (high res)",
+						i18n: "save-image-png-visible-region-high-res",
+					},
+					{
+						action: () => save.savePng(View.activeState().graph, this.dayModeBox.checked, true, true),
+						label: "Save PNG Image of Whole Graph (high res)",
+						i18n: "save-image-png-complete-partial-graph-high-res",
+					},
+					{
+						action: () => save.saveSvg(View.activeState().graph, this.dayModeBox.checked, false),
+						label: "Save SVG Image of Current View",
+						i18n: "save-image-svg-visible-region",
+					},
+					{
+						action: () => save.saveSvg(View.activeState().graph, this.dayModeBox.checked, true),
+						label: "Save SVG Image of Whole Graph",
+						i18n: "save-image-svg-complete-partial-graph",
+					},
 				],
 			},
 			{
@@ -224,9 +250,9 @@ ${Menu.gitInfo()}`,
 				label: "Layout",
 				i18n: "layout",
 				entries: [
-					[this.showCloseMatches, "show close matches", "show-close-matches"],
-					[
-						() => {
+					{ action: this.showCloseMatches, label: "show close matches", i18n: "show-close-matches" },
+					{
+						action: () => {
 							layout.run(
 								View.activeState().graph.cy,
 								layout.euler,
@@ -235,12 +261,12 @@ ${Menu.gitInfo()}`,
 								true
 							);
 						},
-						"recalculate layout",
-						"recalculate-layout",
-						"ctrl+alt+l",
-					],
-					[
-						() => {
+						label: "recalculate layout",
+						i18n: "recalculate-layout",
+						hotkey: "ctrl+alt+l",
+					},
+					{
+						action: () => {
 							layout.run(
 								View.activeState().graph.cy,
 								layout.eulerTight,
@@ -249,12 +275,12 @@ ${Menu.gitInfo()}`,
 								false
 							);
 						},
-						"tight layout",
-						"tight-layout",
-						"ctrl+alt+t",
-					],
-					[
-						() => {
+						label: "tight layout",
+						i18n: "tight-layout",
+						hotkey: "ctrl+alt+t",
+					},
+					{
+						action: () => {
 							layout.run(
 								View.activeState().graph.cy,
 								layout.cose,
@@ -263,44 +289,44 @@ ${Menu.gitInfo()}`,
 								false
 							);
 						},
-						"compound layout",
-						"compound-layout",
-						"ctrl+alt+c",
-					],
-					[() => View.activeState().graph.moveAllMatches(0), "move matches on top of each other", "move-match-on-top"],
-					[() => View.activeState().graph.moveAllMatches(100), "move matches nearby", "move-match-nearby"],
-					[
-						() => {
+						label: "compound layout",
+						i18n: "compound-layout",
+						hotkey: "ctrl+alt+c",
+					},
+					{ action: () => View.activeState().graph.moveAllMatches(0), label: "move matches on top of each other", i18n: "move-match-on-top" },
+					{ action: () => View.activeState().graph.moveAllMatches(100), label: "move matches nearby", i18n: "move-match-nearby" },
+					{
+						action: () => {
 							showChapterSearch(View.activeState().graph, "bb");
 						},
-						"BB chapter search",
-						"bb-chapter-search",
-					],
-					[
-						() => {
+						label: "BB chapter search",
+						i18n: "bb-chapter-search",
+					},
+					{
+						action: () => {
 							showChapterSearch(View.activeState().graph, "ob");
 						},
-						"OB chapter search",
-						"ob-chapter-search",
-					],
-					[subOntologyConnectivity, "subontology connectivity", "subontology-connectivity"],
-					[View.mainView.state.graph.resetStyle, "reset main view", "reset-view", "ctrl+alt+r"],
-					[
-						() => {
+						label: "OB chapter search",
+						i18n: "ob-chapter-search",
+					},
+					{ action: subOntologyConnectivity, label: "subontology connectivity", i18n: "subontology-connectivity" },
+					{ action: View.mainView.state.graph.resetStyle, label: "reset main view", i18n: "reset-view", hotkey: "ctrl+alt+r" },
+					{
+						action: () => {
 							View.activeView().setTitle(prompt("Rename: " + View.activeView().config.title) || View.activeView().config.title);
 							View.activeState().title = View.activeView().config.title;
 						},
-						"change title of active View",
-						"change-title",
-					],
+						label: "change title of active View",
+						i18n: "change-title",
+					},
 				],
 			},
 			{
 				label: "Services",
 				i18n: "services",
 				entries: [
-					["http://www.snik.eu/sparql", "SPARQL Endpoint", "sparql-endpoint"],
-					["http://www.snik.eu/ontology", "RDF Browser", "rdf-browser"],
+					{ action: "http://www.snik.eu/sparql", label: "SPARQL Endpoint", i18n: "sparql-endpoint" },
+					{ action: "http://www.snik.eu/ontology", label: "RDF Browser", i18n: "rdf-browser" },
 					//["http://snik.eu/evaluation","Data Quality Evaluation","data-quality-evaluation"],
 				],
 			},
@@ -308,27 +334,27 @@ ${Menu.gitInfo()}`,
 				label: "Language",
 				i18n: "language",
 				entries: [
-					[() => this.setLanguage(NODE.LABEL_ENGLISH), "english", "english"],
-					[() => this.setLanguage(NODE.LABEL_GERMAN), "german", "german"],
-					[() => this.setLanguage(NODE.LABEL_PERSIAN), "persian", "persian"],
+					{ action: () => this.setLanguage(NODE.LABEL_ENGLISH), label: "english", i18n: "english" },
+					{ action: () => this.setLanguage(NODE.LABEL_GERMAN), label: "german", i18n: "german" },
+					{ action: () => this.setLanguage(NODE.LABEL_PERSIAN), label: "persian", i18n: "persian" },
 				],
 			},
 			{
 				label: "Help",
 				i18n: "help",
 				entries: [
-					["html/manual.html", "Manual"],
-					//["https://www.snik.eu/sites/www.snik.eu/files/files/uploads/Einfuehrung/snik-tutorial.pdf", "Tutorial"], // todo: fix link and uncomment
-					["html/layoutHelp.html", "Layout Help"],
-					["doc/index.html", "Developer Documentation"],
-					//["https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured", "YouTube Channel"],
-					["html/troubleshooting.html", "Troubleshooting"],
-					["html/contribute.html", "Contribute"],
-					["https://www.snik.eu/", "Project Homepage"],
-					["https://www.snik.eu/public/SNIK_Metamodell_V10.svg", "SNIK Meta Model"],
-					[Menu.about, "About SNIK Graph"],
-					["https://github.com/snikproject/ontology/issues", "Submit Feedback about the Ontology"],
-					[Menu.visualizationFeedback, "Submit Feedback about the Visualization"],
+					{ action: "html/manual.html", label: "Manual", i18n: "manual" },
+					//{action: "https://www.snik.eu/sites/www.snik.eu/files/files/uploads/Einfuehrung/snik-tutorial.pdf", label: "Tutorial", i18n: "tutorial"}, // todo: fix link and uncomment
+					{ action: "html/layoutHelp.html", label: "Layout Help", i18n: "layout-help" },
+					{ action: "doc/index.html", label: "Developer Documentation", i18n: "developer-doc" },
+					{ action: "https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured", label: "YouTube Channel", i18n: "youtube-channel" },
+					{ action: "html/troubleshooting.html", label: "Troubleshooting", i18n: "troubleshooting" },
+					{ action: "html/contribute.html", label: "Contribute", i18n: "contribute" },
+					{ action: "https://www.snik.eu/", label: "Project Homepage", i18n: "project-homepage" },
+					{ action: "https://www.snik.eu/public/SNIK_Metamodell_V10.svg", label: "SNIK Meta Model", i18n: "meta-model" },
+					{ action: Menu.about, label: "About SNIK Graph", i18n: "about" },
+					{ action: "https://github.com/snikproject/ontology/issues", label: "Submit Feedback about the Ontology", i18n: "feedback-ontology" },
+					{ action: Menu.visualizationFeedback, label: "Submit Feedback about the Visualization", i18n: "feedback-visualization" },
 				],
 			},
 		];
@@ -427,7 +453,7 @@ ${Menu.gitInfo()}`,
 		const spans: Array<HTMLSpanElement> = [];
 		const aas: Array<Array<HTMLAnchorElement>> = []; // 2-dimensional array of anchors
 		for (let i = 0; i < data.length; i++) {
-			const menuDatum = data[i];
+			const menuElement: MenuElement = data[i];
 			const li = document.createElement("li");
 			li.setAttribute("tabindex", "-1");
 			ul.appendChild(li);
@@ -435,15 +461,15 @@ ${Menu.gitInfo()}`,
 			spans.push(span);
 			li.appendChild(span);
 			span.classList.add("dropdown-menu");
-			span.innerText = menuDatum.label;
-			span.setAttribute("data-i18n", menuDatum.i18n);
+			span.innerText = menuElement.label;
+			span.setAttribute("data-i18n", menuElement.i18n);
 			span.setAttribute("tabindex", "-1");
 			const div = document.createElement("div");
 			li.appendChild(div);
 			div.classList.add("dropdown-content");
 			div.setAttribute("tabindex", "-1");
-			if (menuDatum.id) {
-				div.id = menuDatum.id + "-menu-content";
+			if (menuElement.id) {
+				div.id = menuElement.id + "-menu-content";
 			}
 			span.addEventListener("click", () => {
 				for (const otherDiv of document.getElementsByClassName("dropdown-content")) {
@@ -455,32 +481,32 @@ ${Menu.gitInfo()}`,
 			});
 			const as: Array<HTMLAnchorElement> = [];
 			aas.push(as);
-			for (const entry of menuDatum.entries) {
+			for (const entry of menuElement.entries) {
 				const a = document.createElement("a");
 				as.push(a);
 				a.classList.add("dropdown-entry");
-				a.setAttribute("data-i18n", entry[2]);
+				a.setAttribute("data-i18n", entry.i18n);
 				a.setAttribute("tabindex", "-1");
 				div.appendChild(a);
-				a.innerHTML = entry[1];
-				switch (typeof entry[0]) {
+				a.innerHTML = language.getString(entry.i18n);
+				switch (typeof entry.action) {
 					case "string": {
-						a.href = entry[0];
+						a.href = entry.action;
 						a.target = "_blank";
 						break;
 					}
 					case "function": {
-						a.addEventListener("click", entry[0]);
+						a.addEventListener("click", entry.action);
 						// we only use hotkeys for functions
-						const hotkey = entry[3];
+						const hotkey = entry.hotkey;
 						if (hotkey) {
-							hotkeys(hotkey, entry[0]);
+							hotkeys(hotkey, entry.action);
 							a.innerHTML = a.innerHTML + ` (${hotkey.toUpperCase()})`;
 						}
 						break;
 					}
 					default:
-						log.error("unknown menu entry action type: " + typeof entry[0]);
+						log.error("unknown menu entry action type: " + typeof entry.action);
 				}
 			}
 			span.addEventListener("keydown", (event) => {
