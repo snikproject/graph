@@ -24,7 +24,7 @@ authors:
 affiliations:
  - name: Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University
    index: 1
-date: 31 January 2024
+date: 17 June 2024
 bibliography: paper.bib
 
 ---
@@ -54,12 +54,12 @@ Users can also iteratively explore SNIK starting at a single class using neighbo
 Exploration using neighbours, that is the successive uncovering of nodes adjacent to a starting node given by a user, is a common feature of tools such as LodLive [@lodlive] and VizLOD [@vizlod].
 The directed and undirected *star* operations show nodes in the direct neighbourhood of selected nodes.
 The *circle star* also rearranges the nodes using the force-directed layout locally on the currently visible subgraph.
-\autoref{fig:star} shows a mind map of of a topic, created by an undirected star, which can be used by a teacher to prepare a lecture about that topic.
+\autoref{fig:star} shows a mind map of a topic, created by an undirected star, which can be used by a teacher to prepare a lecture about that topic.
 
 ![*Star* of the 3LGM²-S model for service oriented communication.\label{fig:star}](img/star-dark.pdf){ width=70% }
 
 A *spiderworm* is a path from node A to node B combined with a *star* of B.
-\autoref{fig:spiderworm} shows how we use a spiderworm to teach a student how the new concept "quality of data" is connected the the already introduced concept "patient identification number."
+\autoref{fig:spiderworm} shows how we use a spiderworm to teach a student how the new concept "quality of data" is connected the already introduced concept "patient identification number."
 
 ![*Spiderworm* from *Application System* to *Application Component*.\label{fig:spiderworm}](img/spiderworm-crop.png){ width=100% }
 
