@@ -105,6 +105,6 @@ body:
       label: Publish the release
       options:
         - label: add, commit and push the release commit
-        - label: create the release on GitHub, attach package-lock.json to the assets
+        - label: '`git tag YY.MM && git push origin YY.MM`, (replace YY.MM), this will auto create the release on GitHub'
         - label: ssh into the server
         - label: check out the gh-pages branch

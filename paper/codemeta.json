@@ -34,11 +34,11 @@
 	"identifier": "",
 	"codeRepository": "https://github.com/snikproject/graph/",
 	"datePublished": "2016-07-13",
-	"dateModified": "2024-01-31",
+	"dateModified": "2024-06-18",
 	"dateCreated": "2016-07-13",
 	"description": "Visualization of a Medical Informatics Ontology",
 	"keywords": "semantic web, information management, hospital information management, visualization, javascript",
 	"license": "MIT",
 	"title": "SNIK Graph",
-	"version": "24.01"
+	"version": "24.06"
 }
