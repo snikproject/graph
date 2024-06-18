@@ -9,6 +9,7 @@ export const en = {
 		"load-layout": "Load Layout of Partial Graph",
 		"save-session": "Save Session",
 		"save-snik-graph": "Save complete SNIK Graph as Cytoscape File",
+		"new-view": "Open New Partial Graph",
 		"save-view": "Save Current Partial Graph",
 		"save-layout": "Save Layout of Current Partial Graph",
 		"recalculate-layout-replace": "Recalculate Layout and Replace in Browser Cache",

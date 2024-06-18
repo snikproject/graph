@@ -9,6 +9,7 @@ export const de = {
 		"load-layout": "Lade Layout von Teilgraph",
 		"save-session": "Speichere aktuelle Sitzung",
 		"save-snik-graph": "Speichere kompletten SNIK Graph als Cytoscape Datei",
+		"new-view": "Neuen Teilgraph öffnen",
 		"save-view": "Speichere aktuellen Teilgraphen",
 		"save-layout": "Speichere Layout des aktuellen Teilgraphen",
 		"recalculate-layout-replace": "Layout neu berechnen und im Browser Cache platzieren",

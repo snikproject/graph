@@ -107,7 +107,7 @@ export class View {
 		}
 
 		//find initial title of the new View
-		title = title ?? (viewCount === 0 ? "Main Graph" : "Partial Graph" + viewCount);
+		title = title ?? (viewCount === 0 ? "Main Graph" : "Partial Graph " + viewCount);
 		viewCount++;
 		// @ts-expect-error is be completed later
 		this.state = { title, name: "unnamed" };

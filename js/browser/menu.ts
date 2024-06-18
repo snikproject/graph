@@ -232,6 +232,7 @@ ${Menu.gitInfo()}`,
 						label: "Save SVG Image of Whole Graph",
 						i18n: "save-image-svg-complete-partial-graph",
 					},
+					{ action: () => new View(), label: "Open New Partial Graph", i18n: "new-view" },
 				],
 			},
 			{
@@ -359,6 +360,7 @@ ${Menu.gitInfo()}`,
 			},
 		];
 	}
+
 	/**
 	 * Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.
 	 * @param as - an empty array that will be filled with the anchor elements */
