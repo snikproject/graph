@@ -1,0 +1,110 @@
+name: Release
+description: Create a new Release.
+title: Release
+labels: ["release"]
+assignees:
+  - KonradHoeffner
+body:
+  - type: input
+    id: version
+    attributes:
+      label: release version
+      description: YY.MM with a corresponding milestone and git tag.
+    validations:
+      required: true
+  - type: checkboxes
+    id: update
+    attributes:
+      label: Preparations
+      options:
+        - label: switch to master branch
+        - label: git pull
+        - label: '`npm install --include=dev && npm update`'
+        - label: '`cp js/config.dist.ts js/config.ts`'
+        - label: change the version number in `package.json` and `js/browser/init.json` to the new release
+  - type: checkboxes
+    id: dependencies
+    attributes:
+      label: Upgrade major dependency versions.
+      description: Golden Layout [needs to stay at version 1.x](https://github.com/snikproject/graph/issues/372). Husky [needs to stay at version 8.x](https://github.com/snikproject/graph/issues/410). If something breaks, try to fix it with reasonable effort. If that does not help, keep the old version and create an issue.'
+      options:
+        - label: '`npx npm-upgrade && npm install`'
+        - label: upgrade all packages that do not break anything
+  - type: checkboxes
+    id: github
+    attributes:
+      label: GitHub
+      description:
+      options:
+        - label: close all open issues in the milestone or move them to another one
+        - label: close the milestone
+  - type: checkboxes
+    id: unittests
+    attributes:
+      label: Unit Tests
+      description: There must be no errors.
+      options:
+        - label: '`npm run test`'
+  - type: checkboxes
+    id: linting
+    attributes:
+      label: Linting
+      description: 'There must be no errors and as few warnings as possible. Configured in `.eslintrc.json`. Can be integrated into IDEs and editors like Atom.'
+      options:
+        - label: '`npm run lint`'
+        - label: 'Some errors can be fixed automatically via `npx eslint js --fix`.'
+  - type: checkboxes
+    id: typechecking
+    attributes:
+      label: Typechecking
+      description: Static code analysis can help uncover some otherwise hard to find bugs. There should not be errors, though in some cases it seems to be unavoidable.
+      options:
+        - label: '`npm run typecheck`'
+  - type: checkboxes
+    id: manualtests
+    attributes:
+      label: Manual Tests
+      description: All manual tests need to be successfull. Create a local web server and test it on localhost using `npm run dev`.
+      options:
+        - label: clone a fresh copy of SNIK Graph into a temporary folder, see code preparations above
+        - label: run it in different browsers
+        - label: 'the most important test: it needs to load without errors. Make sure to open the console groups. `npm run dev` may fail to load the submenu indicator image but that should work with `npm run build && npm run preview`.'
+        - label: clear the cache and local storage and try to load again (press F5)
+        - label: open a new tab
+        - label: copy some nodes in the main tab
+        - label: paste them in the new tab
+        - label: go back to the main tab
+        - label: test all the filters (by turning them on and off, some subontology filters like meta may have no effect if they aren't set to load in the config)
+        - label: hide inter-ontology relations
+        - label: press recalculate layout
+        - label: all subontologies must be separate now if meta isn't loaded
+        - label: show inter-ontology relations again and recalculate
+        - label: test the day mode (options)
+        - label: test all links (under Services and Help), Developer Documentation won't work locally
+        - label: check if the mouseover tooltips are shown when hovering over menu entries (not all entries have tooltips)
+        - label: '"About SNIK Graph" must be correct'
+        - label: test the zoom elements
+        - label: try if the language switches from English to German and back to English
+        - label: the language switch must apply both to the menu and to many BB classes
+        - label: search for "3lgm2 mentity type"
+        - label: 3LGM² Entity Type from the blue book must be highlighted with a yellow color now.
+        - label: search for "Logical Tool Layer" as well, it must also be highlighted with a yellow color now.
+        - label: select 3LGM² Entity Type
+        - label: click and hold the secondary mouse button on "Logical Tool Layer" and choose path, release the mouse button
+        - label: check if the path is displayed and the labels (on nodes and edges) are existing (scroll to zoom in)
+        - label: reset view
+        - label: choose any two not directly connected nodes and test spiderworm, doublestar and starpath in that order (see the manual for what they should do)
+        - label: reset view again
+        - label: select any node and test star and circlestar
+        - label: reset view yet again
+        - label: hide at least one node and one edge using the contextmenu and del-button
+        - label: check if the description and the other entries in the contextmenu are working
+  - type: checkboxes
+    id: publish
+    attributes:
+      label: Publish the release
+      options:
+        - label: add, commit and push the release commit
+        - label: create the release on GitHub, attach package-lock.json to the assets
+        - label: ssh into the server
+        - label: check out the gh-pages branch
