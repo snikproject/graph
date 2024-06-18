@@ -1,0 +1,39 @@
+name: Bug Report
+description: File a bug report.
+labels: ["bug"]
+assignees:
+  - KonradHoeffner
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: Browsers
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Chromium
+        - Safari
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating systems
+      multiple: true
+      options:
+        - Linux
+        - Windows
+        - MacOS
+        - Android
+        - iIOS
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant console output
+      description: Please copy and paste any relevant console output. For example in Firefox, open the console with CTRL+SHIFT+I. No need for backticks.
+      render: shell
