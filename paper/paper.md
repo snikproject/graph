@@ -19,7 +19,8 @@ authors:
   - name: Alfred Winter
     orcid: 0000-0003-0179-954X
     affiliation: 1
-  - name: Hannes Raphael Brunsch 
+  - name: Hannes Raphael Brunsch
+    orcid: 0009-0004-5081-9820
     affiliation: 1
 affiliations:
  - name: Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University
