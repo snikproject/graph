@@ -1,0 +1,36 @@
+---
+cff-version: 1.2.0
+title: 'SNIK Graph—Visualizing Knowledge about Management of Hospital Information Systems'
+message: If you use this software, please cite our article in the
+  Journal of Open Source Education (soon to be published).
+type: software
+authors:
+  - given-names: Konrad
+    family-names: Höffner
+    email: konrad.hoeffner@uni-leipzig.de
+    affiliation: 'Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University'
+    orcid: 'https://orcid.org/0000-0001-7358-3217'
+  - given-names: Thomas
+    family-names: Pause
+    affiliation: 'Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University'
+    orcid: 'https://orcid.org/0000-0001-5832-4890'
+  - given-names: Franziska
+    family-names: Jahn
+    affiliation: 'Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University'
+    orcid: 'https://orcid.org/0000-0002-7687-8544'
+  - given-names: Alfred
+    family-names: Winter
+    affiliation: 'Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University'
+    orcid: 'https://orcid.org/0000-0003-0179-954X'
+  - given-names: Hannes Raphael
+    family-names: Brunsch
+    affiliation: 'Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University'
+    orcid: 'https://orcid.org/0009-0004-5081-9820'
+repository-code: 'https://github.com/snikproject/graph'
+url: 'https://crates.io/crates/hdt'
+keywords:
+  - information management
+  - hospital information system
+  - visualization
+  - linked data
+license: GPL-3.0
