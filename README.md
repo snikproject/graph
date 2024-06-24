@@ -4,6 +4,7 @@
 [![License: GNU GPLv3](https://img.shields.io/badge/license-GPL-blue)](LICENSE)
 ![TypeScript](https://badges.aleen42.com/src/typescript.svg)
 [![Vite](https://badges.aleen42.com/src/vitejs.svg)](https://vitejs.dev/)
+[![Zenodo record](https://zenodo.org/badge/DOI/10.5281/zenodo.11997333.svg)](https://doi.org/10.5281/zenodo.11997333)
 
 Visualization of the SNIK ontology using the Cytoscape.js graph library.
 Live at <https://www.snik.eu/graph> (stable) and <https://snikproject.github.io/graph/index.html> (master branch).
@@ -101,6 +102,11 @@ This can help uncover some otherwise hard to find bugs.
 ## Adaptation
 If you like SNIK Graph and want to use it with different data, please open an issue.
 If the website and the SPARQL endpoint are on different domains, you may need to [enable CORS in the SPARQL endpoint](http://vos.openlinksw.com/owiki/wiki/VOS/VirtTipsAndTricksCORsEnableSPARQLURLs).
+
+## Citation information, meta data and archiving
+
+If you want to cite SNIK Graph, please refer to the journal publication (currently under review).
+Citation info and meta data is documented in CITATION.cff, which is also used by Zenodo to populate the metadata of the [Zenodo record](https://doi.org/10.5281/zenodo.11997333) for each SNIK Graph release.
 
 ## FAQ
 
