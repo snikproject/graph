@@ -75,12 +75,16 @@ export function updateHtml(): void {
 		}
 		for (const element of elements) {
 			const s = idstrings[key];
+			let hotkey = null;
+			if (element !== null) {
+				hotkey = element.getAttribute("hotkey");
+			}
 			switch (element.tagName) {
 				case "A":
 				case "BUTTON":
 				case "DIV":
 				case "SPAN":
-					element.textContent = s;
+					element.textContent = hotkey === null ? s : s + ` (${hotkey.toUpperCase()})`;
 					break;
 				default:
 					log.warn(`Cannot assign text "${s}" to element with i18n key ${key} because its tag type ${element.tagName} is unsupported.`);

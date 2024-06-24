@@ -335,9 +335,9 @@ ${Menu.gitInfo()}`,
 				label: "Language",
 				i18n: "language",
 				entries: [
-					{ action: () => this.setLanguage(NODE.LABEL_ENGLISH), label: "english", i18n: "english" },
-					{ action: () => this.setLanguage(NODE.LABEL_GERMAN), label: "german", i18n: "german" },
-					{ action: () => this.setLanguage(NODE.LABEL_PERSIAN), label: "persian", i18n: "persian" },
+					{ action: () => this.setLanguage(NODE.LABEL_ENGLISH), label: "English", i18n: "english" },
+					{ action: () => this.setLanguage(NODE.LABEL_GERMAN), label: "German", i18n: "german" },
+					{ action: () => this.setLanguage(NODE.LABEL_PERSIAN), label: "Persian", i18n: "persian" },
 				],
 			},
 			{
@@ -488,6 +488,7 @@ ${Menu.gitInfo()}`,
 				as.push(a);
 				a.classList.add("dropdown-entry");
 				a.setAttribute("data-i18n", entry.i18n);
+				a.setAttribute("hotkey", entry.hotkey);
 				a.setAttribute("tabindex", "-1");
 				div.appendChild(a);
 				a.innerHTML = language.getString(entry.i18n);
