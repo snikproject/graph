@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 	<head>
 		<meta charset="utf-8" />
@@ -12,17 +12,24 @@
 		<h3>Show close matches</h3>
 		Shows all nodes that are connected via close matches to visible nodes.
 		<h3>Recalculate Layout</h3>
-		<i>Shortkey: Ctrl+Alt+L</i><br />
-		Loads the layout new. Can last a while if there are many visible nodes.
+		<i>Hotkey: Ctrl+Alt+L</i>
+		<br />
+		Reloads the layout. Recalculates the position of all selected nodes, or all visible nodes if there are not at least two selected nodes. Can take a while if
+		there are many visible nodes.
 		<h3>Tight Layout</h3>
-		<i>Shortkey: Ctrl+Alt+T</i><br />
+		<i>Hotkey: Ctrl+Alt+T</i>
+		<br />
 		You can use this for a more narrow view.
 		<h3>Compound Layout</h3>
-		<i>Shortkey: Ctrl+Alt+C</i><br />
-		This uses Cytoscape's cose (Compond Spring Embedder) layout, which implements a physiscs simulation to lay out graphs. Here it knows combined matches.
+		<i>Hotkey: Ctrl+Alt+C</i>
+		<br />
+		Layout that tries to places strongly related resources next to each other. This uses Cytoscape's CoSE (Compound Spring Embedder) layout, which implements a
+		physiscs simulation to lay out graphs.
 		<h3>Reset View</h3>
-		<i>Shortkey: Ctrl+Alt+R</i><br />
-		Resets all the layout operations to get you back to the starting point of the visualization.
+		<i>Hotkey: Ctrl+Alt+R</i>
+		<br />
+		Resets all the layout operations, makes all nodes and edges visible. Does not recalculate the layout. You may need to do that for a better experience, else
+		everything may be layed out on one single point.
 		<h3>Pictures</h3>
 		<figure>
 			<img src="../assets/originalLayout.png" />
