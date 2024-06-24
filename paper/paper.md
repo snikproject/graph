@@ -16,11 +16,13 @@ authors:
   - name: Franziska Jahn
     orcid: 0000-0002-7687-8544
     affiliation: 1
-  - name: Alfred Winter
-    orcid: 0000-0003-0179-954X
-    affiliation: 1
   - name: Hannes Raphael Brunsch
     orcid: 0009-0004-5081-9820
+    affiliation: 1
+  - name: Anna Brakemeier
+    affiliation: 1
+  - name: Alfred Winter
+    orcid: 0000-0003-0179-954X
     affiliation: 1
 affiliations:
  - name: Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University
