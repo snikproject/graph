@@ -11,7 +11,11 @@ import "cytoscape-context-menus/assets/submenu-indicator-default.svg";
 import log from "loglevel";
 import { sub } from "../rdf";
 
-const config = { menuItems: [] as Array<MenuItem>, evtType: "cxttap" };
+const config = {
+	menuItems: [] as Array<MenuItem>,
+	evtType: "cxttap",
+	submenuIndicator: { src: "/node_modules/cytoscape-context-menus/assets/submenu-indicator-default.svg", width: 12, height: 12 },
+};
 
 // cytoscape-context-menus extension does not have type hints
 export interface MenuItem {
