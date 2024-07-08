@@ -19,6 +19,8 @@ authors:
   - name: Hannes Raphael Brunsch
     orcid: 0009-0004-5081-9820
     affiliation: 1
+  - name: Anna Brakemeier
+    affiliation: 1
   - name: Alfred Winter
     orcid: 0000-0003-0179-954X
     affiliation: 1
@@ -81,6 +83,5 @@ Adding a separate search backend will provide much faster initialization and sea
 
 # Acknowledgements
 SNIK is supported by the DFG (German Research Foundation), grant 1605/7-1 and 1387/8-1.
-We are especially thankful to Anna Brakemeier for her insightful suggestions for improving SNIK Graph, which she presented in her Bachelor's thesis.
 
 # References
