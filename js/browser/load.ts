@@ -131,8 +131,11 @@ export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph) {
 	if (!checkVersion(ViewJsonType.LAYOUT, json)) {
 		return;
 	}
-
 	const cy = graph.cy;
+
+	// Calling the existing presetLayout function would be much shorter then all the code below but takes 50% longer due to the large amount of nodes that are processed unnecessarily.
+	// presetLayout() also does not hide nodes and displays warnings when the coverage is below a high treshold, so we reimplement a preset layout here optimized for a small amount of nodes.
+	// layout.presetLayout(cy,json.graph);
 	cy.batch(() => {
 		const nodes: NodeCollection = cy.collection();
 		nodes.merge(
@@ -152,6 +155,13 @@ export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph) {
 		);
 		// hide all nodes and edges except the nodes (and edges between them) included in the file
 		const toHide: NodeCollection = cy.nodes().unmerge(nodes);
+		// workaround for https://github.com/snikproject/graph/issues/426 caused by https://github.com/cytoscape/cytoscape.js-euler/issues/24
+		// Separate the position of the hidden nodes for later unhiding because some layouts may freeze the browser if all are positioned at the same coordinate.
+		// On an Intel i9 12900k there seems to be no difference in Network "finish" time (around 1 second).
+		// Without this workaround, CTRL+ALT+R and then tight layout may freeze the browser.
+		toHide.forEach((node, i) => {
+			node.position({ x: (1 + (i % 20)) * 100, y: i * 2 });
+		});
 		const elements = nodes.union(nodes.edges());
 		Graph.setVisible(elements, true);
 		Graph.setVisible(toHide, false);
