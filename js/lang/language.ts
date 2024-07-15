@@ -84,7 +84,7 @@ export function updateHtml(): void {
 				case "BUTTON":
 				case "DIV":
 				case "SPAN":
-					element.textContent = hotkey === null ? s : s + ` (${hotkey.toUpperCase()})`;
+					element.textContent = hotkey ? s + ` (${hotkey.toUpperCase()})` : s;
 					break;
 				default:
 					log.warn(`Cannot assign text "${s}" to element with i18n key ${key} because its tag type ${element.tagName} is unsupported.`);

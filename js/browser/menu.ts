@@ -488,7 +488,9 @@ ${Menu.gitInfo()}`,
 				as.push(a);
 				a.classList.add("dropdown-entry");
 				a.setAttribute("data-i18n", entry.i18n);
-				a.setAttribute("hotkey", entry.hotkey);
+				if (entry.hotkey) {
+					a.setAttribute("hotkey", entry.hotkey);
+				}
 				a.setAttribute("tabindex", "-1");
 				div.appendChild(a);
 				a.innerHTML = language.getString(entry.i18n);
