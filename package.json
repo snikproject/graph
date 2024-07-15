@@ -66,15 +66,16 @@
 		"test": "vitest run --pool=forks",
 		"lint": "eslint js test --ext .ts",
 		"typecheck": "tsc --noEmit",
+		"fmt": "prettier --write js --cache",
 		"doc": "typedoc --plugin typedoc-plugin-merge-modules",
 		"prepare": "husky install"
 	},
 	"lint-staged": {
 		"*.{js,mjs,ts}": [
-			"prettier --write"
+			"prettier --write --cache"
 		],
 		"*.{html,css,json}": [
-			"prettier --write"
+			"prettier --write --cache"
 		]
 	},
 	"repository": {
