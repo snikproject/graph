@@ -186,7 +186,7 @@ export async function presetLayout(cy: Core, pos: Array<Array<object>>): Promise
 		const precision = hits / pos.length;
 		const recall = hits / cy.nodes().size();
 		if (precision < config.layoutCacheMinPrecision) {
-			log.warn(`Precision of ${precision} less than minimal required precision of ${config.layoutCacheMinPrecision}.`);
+			log.warn(`Preset layout precision of ${precision} less than minimal required precision of ${config.layoutCacheMinPrecision}.`);
 			return false;
 		}
 		if (recall < config.layoutCacheMinRecall) {
@@ -197,6 +197,7 @@ export async function presetLayout(cy: Core, pos: Array<Array<object>>): Promise
 		log.debug("...layout applied with 100% overlap.");
 	}
 	if (hits === 0) {
+		log.error(`0 hits in the preset layout.`);
 		return false;
 	}
 	return status;
