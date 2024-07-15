@@ -35,9 +35,10 @@ export function getLanguage(): string {
 
 /**
  * @param key - language independent key
+ * @param hotkey - optional key combination to be displayed next to this string
  * @returns language dependend string
  */
-export function getString(key: string): string {
+export function getString(key: string, hotkey?: string): string {
 	const ss = strings[language];
 	if (!ss.all) {
 		ss.all = { ...ss.idStrings, ...ss.messageStrings };
@@ -46,7 +47,7 @@ export function getString(key: string): string {
 	if (!s) {
 		log.error("Internationalization string not found for key " + key);
 	}
-	return s;
+	return s + (hotkey ? ` (${hotkey.toUpperCase()})` : "");
 }
 
 /**
@@ -74,17 +75,13 @@ export function updateHtml(): void {
 			continue;
 		}
 		for (const element of elements) {
-			const s = idstrings[key];
-			let hotkey = null;
-			if (element !== null) {
-				hotkey = element.getAttribute("hotkey");
-			}
+			const s = this.getString(key, element.getAttribute("hotkey"));
 			switch (element.tagName) {
 				case "A":
 				case "BUTTON":
 				case "DIV":
 				case "SPAN":
-					element.textContent = hotkey ? s + ` (${hotkey.toUpperCase()})` : s;
+					element.textContent = s;
 					break;
 				default:
 					log.warn(`Cannot assign text "${s}" to element with i18n key ${key} because its tag type ${element.tagName} is unsupported.`);
