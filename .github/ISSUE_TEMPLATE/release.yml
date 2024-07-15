@@ -49,10 +49,10 @@ body:
     id: linting
     attributes:
       label: Linting
-      description: 'There must be no errors and as few warnings as possible. Configured in `.eslintrc.json`. Can be integrated into IDEs and editors like Atom.'
+      description: 'There must be no errors and as few warnings as possible. Configured in `oxlintrc.json`. Can be integrated into IDEs and editors like Atom.'
       options:
         - label: '`npm run lint`'
-        - label: 'Some errors can be fixed automatically via `npx eslint js --fix`.'
+        - label: 'Some errors can be fixed automatically via `npm run fix`.'
   - type: checkboxes
     id: typechecking
     attributes:

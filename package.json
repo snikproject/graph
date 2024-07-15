@@ -32,20 +32,15 @@
 		"vitest": "^1.6.0"
 	},
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^7.13.1",
-		"@typescript-eslint/parser": "^7.13.1",
 		"c8": "^10.1.2",
-		"eslint": "^8.57.0",
-		"eslint-plugin-import": "^2.29.1",
-		"eslint-plugin-mocha": "^10.4.3",
-		"eslint-plugin-tsdoc": "^0.3.0",
 		"husky": "^8.0.3",
 		"lint-staged": "^15.2.7",
+		"oxlint": "^0.4.4",
 		"prettier": "^3.3.2",
 		"typedoc": "^0.25.13",
 		"typedoc-plugin-merge-modules": "^5.1.0",
 		"typescript": "^5.4.5",
-		"vite-plugin-eslint": "^1.8.1"
+		"vite-plugin-oxlint": "^1.0.4"
 	},
 	"keywords": [
 		"graph",
@@ -64,7 +59,8 @@
 		"build": "vite build --sourcemap true",
 		"preview": "vite preview",
 		"test": "vitest run --pool=forks",
-		"lint": "eslint js test --ext .ts",
+		"lint": "oxlint js test -c oxlintrc.json",
+		"fix": "oxlint js test -c oxlintrc.json --fix",
 		"typecheck": "tsc --noEmit",
 		"fmt": "prettier --write js --cache",
 		"doc": "typedoc --plugin typedoc-plugin-merge-modules",

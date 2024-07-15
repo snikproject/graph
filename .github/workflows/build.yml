@@ -14,8 +14,7 @@ on:
       - 'LICENSE'
       - 'README.md'
       - 'paper'
-      - '.eslintrc.json'
-      - '.eslintignore'
+      - 'oxlintrc.json'
 
 jobs:
   build:

@@ -120,6 +120,7 @@ export class View {
 			isClosable: View.mainView !== null,
 		};
 
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const thisView = this; // supply this to callback
 		if (View.mainView !== null) {
 			View.partViews.add(this);

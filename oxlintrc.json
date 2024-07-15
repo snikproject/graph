@@ -1,33 +1,9 @@
 {
-	"root": true,
-	"parser": "@typescript-eslint/parser",
-	"parserOptions": {
-		"project": "./tsconfig.json",
-		"ecmaVersion": 2020,
-		"sourceType": "module",
-		"ecmaFeatures": {
-			"impliedStrict": true
-		}
-	},
-	"plugins": ["@typescript-eslint/eslint-plugin", "eslint-plugin-tsdoc"],
 	"env": {
 		"browser": true,
-		"es2020": true,
+		"es2024": true,
 		"node": true
 	},
-	"globals": {
-		"cytoscape": false,
-		"Spinner": true,
-		"log": true,
-		"Fuse": true,
-		"hotkeys": true,
-		"Notyf": true,
-		"Stats": true,
-		"tippy": true,
-		"GoldenLayout": true,
-		"MicroModal": true
-	},
-	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:import/errors", "plugin:import/warnings", "plugin:import/typescript"],
 	"rules": {
 		"semi": ["error", "always"],
 		"no-use-before-define": "off",
@@ -35,7 +11,7 @@
 		"@typescript-eslint/no-inferrable-types": ["off"],
 		"@typescript-eslint/ban-ts-comment": ["warn"],
 		"@typescript-eslint/no-explicit-any": ["off"],
-		"@typescript-eslint/no-this-alias": ["warn", { "allowedNames": ["thisView"] }],
+		"@typescript-eslint/no-this-alias": ["warn"],
 		"@typescript-eslint/no-shadow": ["warn"],
 		"@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
 		"@typescript-eslint/consistent-type-imports": ["error"],
@@ -65,13 +41,5 @@
 		"no-trailing-spaces": "error",
 		"tsdoc/syntax": "warn",
 		"tsdoc-undefined-tag": "off"
-	},
-	"settings": {
-		"cache": false,
-		"import/resolver": {
-			"node": {
-				"extensions": [".js", ".jsx", ".ts", ".tsx"]
-			}
-		}
 	}
 }

@@ -72,7 +72,7 @@ Requires a browser with [ES6 module support](https://caniuse.com/es6-module).
 Make sure it runs locally before updating on the server, see releasechecklist.md.
 
 ### Code Style
-Specified in the [configuration files of ESlint](.eslintrc.json) and [Prettier](.prettierrc).
+Specified in the [configuration files of oxlint](oxlintrc.json) and [Prettier](.prettierrc).
 
 #### Formatting
 [Prettier](https://prettier.io/) guarantees consistent formatting without time-intensive manual efforts.
@@ -86,7 +86,7 @@ There should be no errors and as few warnings as possible.
 Can be integrated into IDEs and editors like Atom.
 
 - `npm run lint`
-- Some errors can be fixed automatically via `npx eslint js --fix`.
+- Some errors can be fixed automatically via `npm run fix`.
 
 #### Typechecking
 

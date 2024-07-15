@@ -36,11 +36,11 @@ There must be no errors.
 ### Linting
 
 There must be no errors and as few warnings as possible.
-Configured in `.eslintrc.json`.
+Configured in `oxlintrc.json`.
 Can be integrated into IDEs and editors like Atom.
 
 - [ ] `npm run lint`
-- [ ] Some errors can be fixed automatically via `npx eslint js --fix`.
+- [ ] Some errors can be fixed automatically via `npm run fix`.
 
 ### Typechecking
 
