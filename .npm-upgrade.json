@@ -3,6 +3,10 @@
 		"golden-layout": {
 			"versions": ">1",
 			"reason": "Incompatible"
+		},
+		"cytoscape": {
+			"versions": ">3.30.0",
+			"reason": "Breaks context menu"
 		}
 	}
 }

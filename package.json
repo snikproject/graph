@@ -13,7 +13,7 @@
 		"@types/node": "^20.14.5",
 		"@types/stats": "^0.16.30",
 		"chai": "^5.1.1",
-		"cytoscape": "^3.30.0",
+		"cytoscape": "3.30.0",
 		"cytoscape-context-menus": "^4.1.0",
 		"cytoscape-euler": "^1.2.2",
 		"cytoscape-svg": "^0.4.0",
