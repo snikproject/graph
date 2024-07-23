@@ -11,6 +11,8 @@ import type { Core, ElementDefinition, LayoutOptions, NodeCollection, Layouts, P
 import cytoscape from "cytoscape"; //eslint-disable-line no-duplicate-imports
 import cytoscapeeuler from "cytoscape-euler";
 cytoscape.use(cytoscapeeuler);
+import cytoscapefcose from "cytoscape-fcose";
+cytoscape.use(cytoscapefcose);
 
 const ANIMATE_THRESHOLD = 500;
 
@@ -321,6 +323,17 @@ export const cose: LayoutOptions = {
 	numIter: 500,
 	initialTemp: 1000,
 	nestingFactor: 1.01,
+	randomize: false,
+	fit: true,
+};
+
+/** Newer fast COSE layout */
+export const fcose: LayoutOptions = {
+	name: "fcose",
+	quality: "proof",
+	animate: true,
+	refresh: 50,
+	idealEdgeLength: 100,
 	randomize: false,
 	fit: true,
 };

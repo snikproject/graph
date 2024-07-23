@@ -289,6 +289,19 @@ ${Menu.gitInfo()}`,
 						action: () => {
 							layout.run(
 								View.activeState().graph.cy,
+								layout.fcose,
+								config.defaultSubOntologies,
+								this.separateSubs() && !View.activeState().graph.starMode,
+								false
+							);
+						},
+						label: "fcose layout",
+						i18n: "fcose-layout",
+					},
+					{
+						action: () => {
+							layout.run(
+								View.activeState().graph.cy,
 								layout.cose,
 								config.defaultSubOntologies,
 								this.separateSubs() && !View.activeState().graph.starMode,
