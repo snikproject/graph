@@ -7,14 +7,14 @@ import contextMenus from "cytoscape-context-menus";
 import type { Graph } from "./graph";
 cytoscape.use(contextMenus);
 import "cytoscape-context-menus/cytoscape-context-menus.css";
-import "cytoscape-context-menus/assets/submenu-indicator-default.svg";
+import submenuIndicatorImg from "cytoscape-context-menus/assets/submenu-indicator-default.svg";
 import log from "loglevel";
 import { sub } from "../rdf";
 
 const config = {
 	menuItems: [] as Array<MenuItem>,
 	evtType: "cxttap",
-	submenuIndicator: { src: "/node_modules/cytoscape-context-menus/assets/submenu-indicator-default.svg", width: 12, height: 12 },
+	submenuIndicator: { src: submenuIndicatorImg, width: 12, height: 12 },
 };
 
 // cytoscape-context-menus extension does not have type hints
