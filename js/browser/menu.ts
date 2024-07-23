@@ -129,16 +129,21 @@ export class Menu {
 			elements.restore();
 		}
 	}
+
 	static gitInfo(): string {
 		return `SNIK Graph version ${util.VERSION}
 commit date ${import.meta.env.VITE_GIT_COMMIT_DATE}
 ${import.meta.env.VITE_GIT_LAST_COMMIT_MESSAGE}
 ${import.meta.env.VITE_GIT_BRANCH_NAME}/${import.meta.env.VITE_GIT_COMMIT_HASH}`;
 	}
+
 	/** Notifies the user of the program version so that errors can be properly reported. */
 	static about(): void {
-		window.alert(Menu.gitInfo());
+		const cy = View?.activeState()?.graph?.cy;
+		const s = `\n${cy?.nodes()?.size()} nodes, ${cy?.edges()?.size()} edges loaded.`;
+		window.alert(Menu.gitInfo() + s);
 	}
+
 	/** Creates a GitHub issue for the visualization. */
 	static visualizationFeedback(): void {
 		util.createGitHubIssue(
