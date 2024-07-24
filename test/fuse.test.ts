@@ -1,4 +1,3 @@
-import "isomorphic-fetch";
 import { search, createIndex } from "../js/fuseSearch";
 console.groupCollapsed;
 

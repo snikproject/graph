@@ -1,5 +1,4 @@
 import * as sparql from "../js/sparql";
-import "isomorphic-fetch";
 import "chai/register-should";
 
 const EXPECTED_CLASSES_MIN = 4000;
