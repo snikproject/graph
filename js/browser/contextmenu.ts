@@ -47,10 +47,6 @@ export class ContextMenu {
 		cmd.onClickFunction.wrapped = true;
 	}
 
-	static ontoWikiUrl(uri) {
-		return "https://www.snik.eu/ontowiki/view/?r=" + uri + "&m=" + sub(uri);
-	}
-
 	/** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
   The extension itself is already registered through the plain HTML/JS import in index.html,
   which makes available cy.contextMenus().

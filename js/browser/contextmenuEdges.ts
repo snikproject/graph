@@ -27,9 +27,7 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 			selector: "edge",
 			onClickFunction: (event) => {
 				const edge = event.target;
-				const body = `Problem with the edge [${edgeLabel(edge)}](${edge.data(EDGE.SOURCE)}) ([OntoWiki URL](${ContextMenu.ontoWikiUrl(
-					edge.data(EDGE.SOURCE)
-				)})):\n\n`;
+				const body = `Problem with the edge [${edgeLabel(edge)}](${edge.data(EDGE.SOURCE)}):\n\n`;
 				util.createGitHubIssue(util.REPO_ONTOLOGY, edgeLabel(edge), body);
 			},
 		},
@@ -108,14 +106,6 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 					\n\`\`\`
 					${language.CONSTANTS.SPARUL_WARNING}`;
 						util.createGitHubIssue(util.REPO_ONTOLOGY, edgeLabel(edge), body);
-					},
-				},
-				{
-					// Open the source class of the triple in OntoWiki because you can edit the triple there.
-					content: "OntoWiki",
-					id: "edge-ontowiki",
-					onClickFunction: (event) => {
-						window.open(ContextMenu.ontoWikiUrl(event.target.data(EDGE.SOURCE)));
 					},
 				},
 				{
