@@ -90,6 +90,12 @@ export class View {
 		}
 	}
 
+	/** Recreates the context menus. Needed for language switching. */
+	recreateContextMenus(): void {
+		const menuItems = [...nodeCommands(this.state.graph), ...edgeCommands(this.state.graph)];
+		this.cxtMenu = new ContextMenu(this.state.graph, menuItems);
+	}
+
 	/**
 	 * Create an empty graph and add it to the state of this view along with its Cytoscape.js instance.
 	 * @param initialize - if initialize is true or not given, the graph is copied from the main view or, if that doesn't exist, from the SPARQL endpoint
@@ -146,8 +152,7 @@ export class View {
 		this.initialized.then(() => {
 			const options = toJSON().options;
 			this.state.graph.applyStyle(options.dayMode, options.edgesColorized, options.showProperty);
-			const menuItems = [...nodeCommands(graph), ...edgeCommands(graph)];
-			this.cxtMenu = new ContextMenu(this.state.graph, menuItems);
+			this.recreateContextMenus();
 		});
 	}
 

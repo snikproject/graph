@@ -110,7 +110,7 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 				},
 				{
 					content: "debug",
-					id: "edge-debug",
+					id: "debug",
 					onClickFunction: (event) => {
 						alert(JSON.stringify(event.target.data(), null, 2));
 					},

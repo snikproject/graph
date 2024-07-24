@@ -41,7 +41,7 @@ export function getLanguage(): string {
 export function getString(key: string, hotkey?: string): string {
 	const ss = strings[language];
 	if (!ss.all) {
-		ss.all = { ...ss.idStrings, ...ss.messageStrings };
+		ss.all = { ...ss.idStrings, ...ss.messageStrings, ...ss.contextMenuStrings };
 	}
 	const s = ss.all[key];
 	if (!s) {
@@ -92,3 +92,5 @@ export function updateHtml(): void {
 		log.debug(`UpdateHtml: i18n keys ${unused.toString()} not used`);
 	}
 }
+/** Update all context menus using their ID tag */
+export function updateContextMenus(): void {}

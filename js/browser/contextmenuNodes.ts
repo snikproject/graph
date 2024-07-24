@@ -16,12 +16,10 @@ const eventify = (f) => (event) => f(event.target); // simplify multiplex expres
 export function nodeCommands(graph: Graph): Array<MenuItem> {
 	return [
 		{
-			content: "compound",
 			id: "compound",
 			selector: "node:compound",
 			submenu: [
 				{
-					content: "open",
 					id: "open",
 					onClickFunction: (event) => {
 						event.target.children().move({ event: null });
@@ -29,32 +27,26 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 					},
 				},
 				{
-					content: "move matches on top of each other",
 					id: "move-match-on-top",
 					onClickFunction: (event) => graph.moveNodes(event.target.children(), 0),
 				},
 				{
-					content: "move matches nearby",
 					id: "move-match-nearby",
 					onClickFunction: (event) => graph.moveNodes(event.target.children(), 100),
 				},
 				{
-					content: "star",
 					id: "compound-star",
 					onClickFunction: (event) => graph.multiplex(graph.showStar, event.target.children(), true)(),
 				},
 				{
-					content: "incoming star",
 					id: "compound-incoming-star",
 					onClickFunction: (event) => graph.multiplex((node) => graph.showStar(node, false, Direction.IN), event.target.children(), true)(),
 				},
 				{
-					content: "outgoing star",
 					id: "compound-outgoing-star",
 					onClickFunction: (event) => graph.multiplex((node) => graph.showStar(node, false, Direction.OUT), event.target.children(), true)(),
 				},
 				{
-					content: "set as path source",
 					id: "compound-path-source",
 					onClickFunction: (event) => {
 						graph.setSource(event.target.children()[0]);
@@ -64,7 +56,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 		},
 		/* Comment out base entry to put base items directly as root items
 	{
-		content: "base",
 		id: "base",
 		selector: "node",
 		submenu: [
@@ -82,7 +73,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 		},
 
 		{
-			content: "class use",
 			id: "class-use",
 			selector: "node",
 			onClickFunction: (event) => {
@@ -91,14 +81,12 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			},
 		},
 		{
-			content: "hide",
 			id: "hide",
 			selector: "node",
 			onClickFunction: eventify(graph.multiplex((node) => Graph.setVisible(node, false))),
 			//onClickFunction: eventMultiplex(graph, event, (node) => Graph.setVisible(node, false)),
 		},
 		{
-			content: "set as path source",
 			id: "set-path-source",
 			selector: "node",
 			onClickFunction: (event) => {
@@ -106,7 +94,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			},
 		},
 		{
-			content: "description",
 			id: "description",
 			selector: "node",
 			onClickFunction: (event) => {
@@ -114,7 +101,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			},
 		},
 		{
-			content: "star",
 			id: "star",
 			selector: "node",
 			onClickFunction: async (event) => {
@@ -122,7 +108,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			},
 		},
 		{
-			content: "incoming star",
 			id: "incoming-star",
 			selector: "node",
 			onClickFunction: async (event) => {
@@ -130,7 +115,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			},
 		},
 		{
-			content: "outgoing star",
 			id: "outgoing-star",
 			selector: "node",
 			onClickFunction: async (event) => {
@@ -138,14 +122,12 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			},
 		},
 		{
-			content: "path",
 			id: "path",
 			selector: "node",
 			// onClickFunction: eventify(graph.multiplex(graph.showPath)), // does not work for unknown reasons
 			onClickFunction: (event) => graph.multiplex(graph.showPath(event.target))(graph.getSource()),
 		},
 		{
-			content: "spiderworm",
 			id: "spiderworm",
 			selector: "node",
 			// multiplexing spiderworm leads to errors and has not been needed
@@ -171,18 +153,15 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 		],
 	},*/
 		{
-			content: "developer",
 			id: "dev",
 			selector: "node",
 			submenu: [
 				{
-					content: "remove permanently",
 					id: "remove-permanently",
 					selector: "node",
 					onClickFunction: (event) => graph.createRemoveIssue(event.target),
 				},
 				{
-					content: "debug",
 					id: "debug",
 					selector: "node",
 					onClickFunction: (event) => alert(JSON.stringify(event.target.data(), null, 2)),
@@ -190,24 +169,20 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			],
 		},
 		{
-			content: "extended",
 			id: "ext",
 			selector: "node",
 			submenu: [
 				{
-					content: "doublestar",
 					id: "doublestar",
 					selector: "node",
 					onClickFunction: (event) => graph.multiplex(graph.showDoubleStar)(event.target),
 				},
 				{
-					content: "starpath",
 					id: "starpath",
 					selector: "node",
 					onClickFunction: (event) => graph.multiplex(graph.showPath(event.target, true))(graph.getSource()),
 				},
 				{
-					content: "circle star",
 					id: "circlestar",
 					selector: "node",
 					// circle star hides all other nodes so we always open it in a new view even if we are not in the main one
@@ -216,7 +191,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 					},
 				},
 				{
-					content: "LodLive",
 					id: "lodlive",
 					selector: "node",
 					onClickFunction: (event) => {
@@ -224,7 +198,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 					},
 				},
 				{
-					content: "move all selected here",
 					id: "move-selected",
 					selector: "node",
 					onClickFunction: (event) => {
@@ -232,13 +205,11 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 					},
 				},
 				{
-					content: "close matches",
 					id: "close-match",
 					selector: "node",
 					onClickFunction: eventify(graph.multiplex(graph.showCloseMatch, undefined, true)),
 				},
 				{
-					content: "show instances",
 					id: "show-instances",
 					onClickFunction: async (event) => {
 						const node = event.target;

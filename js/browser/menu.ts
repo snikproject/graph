@@ -125,6 +125,7 @@ export class Menu {
 			const elements = view.state.graph.cy.elements();
 			view.state.graph.cy.remove(elements);
 			elements.restore();
+			view.recreateContextMenus();
 		}
 	}
 

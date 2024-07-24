@@ -8,8 +8,8 @@ import type { Graph } from "./graph";
 cytoscape.use(contextMenus);
 import "cytoscape-context-menus/cytoscape-context-menus.css";
 import submenuIndicatorImg from "cytoscape-context-menus/assets/submenu-indicator-default.svg";
+import * as language from "../lang/language";
 import log from "loglevel";
-import { sub } from "../rdf";
 
 const config = {
 	menuItems: [] as Array<MenuItem>,
@@ -19,7 +19,7 @@ const config = {
 
 // cytoscape-context-menus extension does not have type hints
 export interface MenuItem {
-	content: string;
+	content?: string;
 	id: string;
 	selector?: "node" | "node:compound" | "edge";
 	submenu?: Array<MenuItem>;
@@ -35,7 +35,7 @@ export class ContextMenu {
 	 * @param  cmd - the context menu command to wrap if it isn't already wrapped
 	 * @param  messageFunction - a function that describes the element */
 	static logWrap(cmd: { onClickFunction; content }, messageFunction: (ele: Element) => any): void {
-		if (!cmd.onClickFunction || cmd.onClickFunction.wrapped) {
+		if (cmd?.onClickFunction?.wrapped) {
 			return;
 		}
 
@@ -48,14 +48,21 @@ export class ContextMenu {
 	}
 
 	/** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
-  The extension itself is already registered through the plain HTML/JS import in index.html,
-  which makes available cy.contextMenus().
-  @param graph - the graph that the context menu applies to */
-	constructor(graph: Graph, menuItems) {
+	 * The extension itself is already registered through the plain HTML/JS import in index.html,
+	 * which makes available cy.contextMenus().
+	 * @param graph - the graph that the context menu applies to */
+	constructor(graph: Graph, menuItems: Array<MenuItem>) {
 		this.graph = graph;
 		log.debug("Register Context Menu.");
 		config.menuItems = menuItems;
-		config.menuItems.forEach((menu) => ContextMenu.addTooltip(menu));
+
+		config.menuItems.forEach(function initItems(menu) {
+			ContextMenu.addTooltip(menu);
+			menu.content = language.getString(menu.id);
+			if (menu.submenu) {
+				menu.submenu.forEach((menu) => initItems(menu));
+			}
+		});
 		// @ts-expect-error provided by cytoscape-context-menus
 		graph.cy.contextMenus(config);
 	}
