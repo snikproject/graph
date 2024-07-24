@@ -440,7 +440,7 @@ export class Graph {
 			});
 		if (hideOthers) {
 			Graph.setVisible(this.cy.elements(), false);
-			Graph.setVisible(resultNodes.edgesTo(resultNodes), true);
+			Graph.setVisible(resultNodes.union(resultNodes.edgesTo(resultNodes)), true);
 			this.starMode = true;
 		}
 		this.cy.elements().unselect();

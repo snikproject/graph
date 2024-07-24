@@ -16,23 +16,11 @@ const selectedChapters = new Set();
 @param chapter - the chapter string value exactly as in the SPARQL triples, such as "5.3".
 */
 async function getClasses(sub: string, chapter: string): Promise<Set<string>> {
-	// TODO test if this is still an issue
-	// Using .../meta:subChapterOf* does not work for unknown reasons, maybe because of the old Virtuoso version we need for the OntoWiki.
-	// See https://stackoverflow.com/questions/58322216/sparql-property-paths-x-y-yields-different-result-than-x-union-x-y
 	const query = `SELECT DISTINCT(?class) ?label
   FROM <http://www.snik.eu/ontology/${sub}>
   {
-    ?class  ?p ?o;
-            a owl:Class;
-            rdfs:label ?label.
-    {?class meta:chapter <${chapter}>.}
-    UNION
-    {?class meta:chapter/meta:subChapterOf <${chapter}>.}
-    UNION
-    {?class meta:chapter/meta:subChapterOf/meta:subChapterOf <${chapter}>.}
-    UNION
-    {?class meta:chapter/meta:subChapterOf/meta:subChapterOf/meta:subChapterOf <${chapter}>.}
-
+    ?class meta:chapter/meta:subChapterOf* <${chapter}>.
+    ?class rdfs:label ?label.
     FILTER(LANGMATCHES(LANG(?label),"en"))
   }
   ORDER BY ASC(?class)`;
@@ -132,7 +120,6 @@ export async function showChapterSearch(graph: Graph, sub: string): Promise<void
 	const chapterSizeQuery = `SELECT COUNT(DISTINCT(?c)) AS ?count ?ch
   FROM <http://www.snik.eu/ontology/${sub}>
   {
-    ?c ?p ?o; a owl:Class.
     ?c meta:chapter/meta:subChapterOf* ?ch.
   } ORDER BY ASC(?ch)`;
 
