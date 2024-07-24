@@ -15,7 +15,13 @@ jobs:
           configurationJson: |
             {
               "pr_template": "- #{{TITLE}}",
-              "template": "#{{UNCATEGORIZED}}"
+              "template": "#{{UNCATEGORIZED}}",
+              "tag_resolver": {
+                "method": "semver",
+                "filter": {
+                  "pattern": "[2-9][0-9]\.[0-9][0-9]"
+                }
+              }
             }
       - name: Create Release
         id: create-release
