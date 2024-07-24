@@ -111,7 +111,6 @@ const help = {
 		},
 		"dev-mode": {
 			"remove-permanently": "Send us an issue to delete the selected item permanently. Also removes it until graph is reloaded.",
-			ontowiki: "Access restricted ontology editing tool.",
 			debug: "Get debug information to the edge/node from the JSON File",
 		},
 		"ext-mode": {

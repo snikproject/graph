@@ -16,6 +16,7 @@ const selectedChapters = new Set();
 @param chapter - the chapter string value exactly as in the SPARQL triples, such as "5.3".
 */
 async function getClasses(sub: string, chapter: string): Promise<Set<string>> {
+	// TODO test if this is still an issue
 	// Using .../meta:subChapterOf* does not work for unknown reasons, maybe because of the old Virtuoso version we need for the OntoWiki.
 	// See https://stackoverflow.com/questions/58322216/sparql-property-paths-x-y-yields-different-result-than-x-union-x-y
 	const query = `SELECT DISTINCT(?class) ?label

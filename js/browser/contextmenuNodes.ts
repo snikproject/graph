@@ -76,9 +76,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			selector: "node",
 			onClickFunction: (event) => {
 				const node = event.target;
-				const body = `Problem with the class [${rdf.short(node.data(NODE.ID))}](${node.data(NODE.ID)}) ([OntoWiki URL](${ContextMenu.ontoWikiUrl(
-					node.data(NODE.ID)
-				)})):\n\n`;
+				const body = `Problem with the class [${rdf.short(node.data(NODE.ID))}](${node.data(NODE.ID)}):\n\n`;
 				util.createGitHubIssue(util.REPO_ONTOLOGY, node.data(NODE.ID), body);
 			},
 		},
@@ -182,12 +180,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 					id: "remove-permanently",
 					selector: "node",
 					onClickFunction: (event) => graph.createRemoveIssue(event.target),
-				},
-				{
-					content: "OntoWiki",
-					id: "ontowiki",
-					selector: "node",
-					onClickFunction: (event) => window.open(ContextMenu.ontoWikiUrl(event.target.data(NODE.ID))),
 				},
 				{
 					content: "debug",
