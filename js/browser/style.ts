@@ -28,7 +28,7 @@ export const style = {
 				"text-halign": "center",
 				"border-opacity": 1.0,
 				"border-width": function (node) {
-					return node.data(NODE.INSTANCE) ? 1.0 : 0.0;
+					return node.data(NODE.HAS_INSTANCE) ? 1.0 : 0.0;
 				},
 				"font-family": "sans-serif",
 				"font-weight": "normal",
@@ -96,7 +96,7 @@ export const style = {
 					if (SHOW_QUALITY) {
 						label += "\n\u25CB\u25CF\u25CB\u25CB\u25CF";
 					}
-					if (node.data(NODE.INSTANCE)) {
+					if (node.data(NODE.HAS_INSTANCE)) {
 						label += "*";
 					}
 					return label;

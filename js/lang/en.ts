@@ -32,7 +32,8 @@ export const en = {
 		devMode: "Developer Mode",
 		extMode: "Extended Mode",
 		combineMatchMode: "Combine Matches",
-		showInstances: "Show Instances",
+		"show-classes-with-instances": "Show Classes with Instances",
+		"show-classes-without-instances": "Show Classes without Instances",
 		starNewView: "Star in new Partial Graph",
 		// layout*********************************************
 		layout: "Layout",
@@ -82,7 +83,7 @@ export const en = {
 		"outgoing-star": "Outgoing Star",
 		"combine-close-matches": "Combine Close Matches",
 		"class-use": "Class Use",
-		"show-instances": "Show Instances",
+		"show-instances": "Show Instances of this Class",
 	},
 	messageStrings: {
 		"no-search-results-for": "No Search Results for",

@@ -21,6 +21,8 @@ export const de = {
 		"save-image-svg-complete-partial-graph": "Speichere Bilddatei des kompletten Graphen als SVG",
 		// filter ********************************************
 		filter: "Filter",
+		"show-classes-with-instances": "Klassen zeigen, die Instanzen haben",
+		"show-classes-without-instances": "Klassen zeigen, die keine Instanzen haben",
 		// options********************************************
 		options: "Optionen",
 		separateSubs: "nach Subontologien aufspalten",
@@ -31,7 +33,6 @@ export const de = {
 		devMode: "Entwickler-Modus",
 		extMode: "Erweiterter Modus",
 		combineMatchMode: "Übereinstimmungen zusammenfassen",
-		showInstances: "Instanzen zeigen",
 		// layout*********************************************
 		layout: "Layout",
 		"show-close-matches": "Zeige close matches",
@@ -68,7 +69,6 @@ export const de = {
 		"outgoing-star": "ausgehender Stern",
 		"combine-close-matches": "kombiniere close matches",
 		"class-use": "Klassenbenutzung",
-		"show-instances": "zeige Instanzen",
 	},
 	messageStrings: {
 		"no-search-results-for": "Keine Suchresultate für",
@@ -109,6 +109,6 @@ export const de = {
 		lodlive: "LodLive",
 		"move-selected": "Ausgewählte bewegen",
 		"close-match": "Nahe matches (close matches)",
-		"show-instances": "Instanzen Zeigen",
+		"show-instances": "Instanzen dieser Klasse zeigen",
 	},
 };

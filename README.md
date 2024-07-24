@@ -100,6 +100,11 @@ This can help uncover some otherwise hard to find bugs.
 * `warn`: for problems that are recoverable
 * `error`: for errors that shut down the application
 
+### Internationalization (i18n)
+
+We support English (full), German (mostly) and Persian (partly).
+Feel free to contribute a PR with a new language by copying and adapting `js/lang/en.ts`, importing it in `js/lang/language.ts` and adding it to the `strings` constant there.
+
 ## Adaptation
 If you like SNIK Graph and want to use it with different data, please open an issue.
 If the website and the SPARQL endpoint are on different domains, you may need to [enable CORS in the SPARQL endpoint](http://vos.openlinksw.com/owiki/wiki/VOS/VirtTipsAndTricksCORsEnableSPARQLURLs).

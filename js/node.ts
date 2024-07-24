@@ -8,7 +8,7 @@ export const NODE = {
 	LABEL_PERSIAN: "fa",
 	SUBTOP: "st",
 	SOURCE: "source",
-	INSTANCE: "inst", // whether this is an instance of some class
+	HAS_INSTANCE: "inst", // whether this class has at least once instance
 	SUBTOP_ENTITY_TYPE: "E",
 	SUBTOP_ROLE: "R",
 	SUBTOP_FUNCTION: "F",

@@ -3,6 +3,8 @@ import "chai/register-should";
 
 const EXPECTED_CLASSES_MIN = 4000;
 const EXPECTED_CLASSES_MAX = 20000;
+const EXPECTED_INSTANCES_MIN = 60;
+const EXPECTED_INSTANCES_MAX = 100;
 const EXPECTED_META_CLASSES_MIN = 10;
 const EXPECTED_META_CLASSES_MAX = 25;
 const GRAPH_GROUP_SNIK = "http://www.snik.eu/ontology";
@@ -14,6 +16,12 @@ describe("sparql", () => {
 			return sparql.select("select count(?class) as ?count {?class a [rdfs:subClassOf meta:Top].}", GRAPH_GROUP_SNIK).then((bindings: Array<any>) => {
 				bindings[0].should.have.property("count");
 				parseInt(bindings[0].count.value).should.be.within(EXPECTED_CLASSES_MIN, EXPECTED_CLASSES_MAX);
+			});
+		});
+		it(`${GRAPH_GROUP_SNIK} should contain between ${EXPECTED_INSTANCES_MIN} and ${EXPECTED_INSTANCES_MAX} instances`, () => {
+			return sparql.select("select count(?i) as ?count {?i a ?class. ?class a [rdfs:subClassOf meta:Top].}", GRAPH_GROUP_SNIK).then((bindings: Array<any>) => {
+				bindings[0].should.have.property("count");
+				parseInt(bindings[0].count.value).should.be.within(EXPECTED_INSTANCES_MIN, EXPECTED_INSTANCES_MAX);
 			});
 		});
 		it(`${GRAPH_SNIK_META} should contain between ${EXPECTED_META_CLASSES_MIN} and ${EXPECTED_META_CLASSES_MAX} classes`, () => {

@@ -111,6 +111,7 @@ export class Menu {
 
 	///** @returns {boolean} whether star operations should be shown in a new view. */
 	// starNewView() {return this.starNewViewBox.checked;}
+
 	/** Sets the preferred node label language attribute. Use the values from node.js.
 	 * @param lang - the language to set */
 	setLanguage(lang: string): void {
