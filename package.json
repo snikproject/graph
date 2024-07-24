@@ -33,7 +33,7 @@
 	},
 	"devDependencies": {
 		"c8": "^10.1.2",
-		"husky": "^8.0.3",
+		"husky": "^9.1.1",
 		"lint-staged": "^15.2.7",
 		"oxlint": "^0.4.4",
 		"prettier": "^3.3.3",
@@ -64,7 +64,7 @@
 		"typecheck": "tsc --noEmit",
 		"fmt": "prettier --write js --cache",
 		"doc": "typedoc --plugin typedoc-plugin-merge-modules",
-		"prepare": "husky install"
+		"prepare": "husky"
 	},
 	"lint-staged": {
 		"*.{js,mjs,ts}": [

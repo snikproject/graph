@@ -26,7 +26,7 @@ body:
     id: dependencies
     attributes:
       label: Upgrade major dependency versions.
-      description: Golden Layout [needs to stay at version 1.x](https://github.com/snikproject/graph/issues/372). Husky [needs to stay at version 8.x](https://github.com/snikproject/graph/issues/410). If something breaks, try to fix it with reasonable effort. If that does not help, keep the old version and create an issue.'
+      description: Golden Layout [needs to stay at version 1.x](https://github.com/snikproject/graph/issues/372). If something breaks, try to fix it with reasonable effort. If that does not help, keep the old version, add an entry to `.npm-upgrade.json` and create an issue.'
       options:
         - label: '`npx npm-upgrade && npm install`'
         - label: upgrade all packages that do not break anything

@@ -16,9 +16,8 @@ Our releases have the form YY.MM with a corresponding milestone and git tag.
 
 Run `npx npm-upgrade && npm install` and upgrade all packages that don't break anything.
 Golden Layout [needs to stay at version 1.x](https://github.com/snikproject/graph/issues/372).
-Husky [needs to stay at version 8.x](https://github.com/snikproject/graph/issues/410).
 If something breaks, try to fix it with reasonable effort.
-If that doesn't help, keep the old version.
+If that doesn't help, keep the old version, document it with an issue and add the incompatible package version range and reason to `.npm-upgrade.json`.
 
 ### GitHub
 

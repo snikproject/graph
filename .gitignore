@@ -1,6 +1,7 @@
 blueorange.cyjs
 .*
 !.github
+!.husky
 *~
 cytoscape.js
 target
