@@ -17,9 +17,9 @@ jobs:
               "pr_template": "- #{{TITLE}}",
               "template": "#{{UNCATEGORIZED}}",
               "tag_resolver": {
-                "method": "semver",
+                "method": "sort",
                 "filter": {
-                  "pattern": "[2-9][0-9]\.[0-9][0-9]"
+                  "pattern": "^(?![2-9][0-9]\\.[0-9][0-9]).*"
                 }
               }
             }
