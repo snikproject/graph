@@ -10,22 +10,22 @@ import { View } from "./view";
 import log from "loglevel";
 
 const filterData = [
-	[`node[${NODE.SOURCE}='meta']`, `meta`, "meta"],
-	[`node[${NODE.SOURCE}='bb']`, `BB`, "bb"],
-	[`node[${NODE.SOURCE}='ob']`, `OB`, "ob"],
-	[`node[${NODE.SOURCE}='ciox']`, `CioX`, "ciox"],
-	[`node[${NODE.SOURCE}='he']`, `HE`, "he"],
-	[`node[${NODE.SOURCE}='it']`, `IT`, "it"],
-	[`node[${NODE.SOURCE}='it4it']`, `IT4IT`, "it4it"],
-	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_ROLE}']`, `Role`, "role"],
-	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_FUNCTION}']`, `Function`, "function"],
-	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_ENTITY_TYPE}']`, `EntityType`, "entitytype"],
-	[`node[?${NODE.HAS_INSTANCE}]`, `Show Classes with Instances`, "show-classes-with-instances"],
-	[`node[!${NODE.HAS_INSTANCE}]`, `Show Classes without Instances`, "show-classes-without-instances"],
-	[`edge[p='http://www.w3.org/2000/01/rdf-schema#subClassOf']`, `subClassOf`, "subclassof"],
-	[`edge[p!='http://www.w3.org/2000/01/rdf-schema#subClassOf']`, `non-subClassOf`, "non-subclassof"],
-	[`edge[p^='http://www.w3.org/2004/02/skos/core#']`, `inter-ontology-relations`, "inter-ontology-relations"],
-	[`edge[p!^='http://www.w3.org/2004/02/skos/core#']`, `non-inter-ontology-relations`, "non-inter-ontology-relations"],
+	[`node[${NODE.SOURCE}='meta']`, "meta"],
+	[`node[${NODE.SOURCE}='bb']`, "bb"],
+	[`node[${NODE.SOURCE}='ob']`, "ob"],
+	[`node[${NODE.SOURCE}='ciox']`, "ciox"],
+	[`node[${NODE.SOURCE}='he']`, "he"],
+	[`node[${NODE.SOURCE}='it']`, "it"],
+	[`node[${NODE.SOURCE}='it4it']`, "it4it"],
+	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_ROLE}']`, "role"],
+	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_FUNCTION}']`, "function"],
+	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_ENTITY_TYPE}']`, "entitytype"],
+	[`node[?${NODE.HAS_INSTANCE}]`, "show-classes-with-instances"],
+	[`node[!${NODE.HAS_INSTANCE}]`, "show-classes-without-instances"],
+	[`edge[p='http://www.w3.org/2000/01/rdf-schema#subClassOf']`, "subclassof"],
+	[`edge[p!='http://www.w3.org/2000/01/rdf-schema#subClassOf']`, "non-subclassof"],
+	[`edge[p^='http://www.w3.org/2004/02/skos/core#']`, "inter-ontology-relations"],
+	[`edge[p!^='http://www.w3.org/2004/02/skos/core#']`, "intra-ontology-relations"],
 ];
 
 const filters: Array<Filter> = [];
@@ -51,10 +51,9 @@ export class Filter {
 	/**
   Creates filter with HTML elements, filter functionality and listeners.
   @param selector - a Cytoscape.js selector, see {@link http://js.cytoscape.org/#selectors}
-  @param label - the menu entry label
   @param i18n - internationalization key
   */
-	constructor(selector: string, label: string, i18n: string) {
+	constructor(selector: string, i18n: string) {
 		this.selector = selector;
 		//let input = document.createRange().createContextualFragment('<input type="checkbox" class="filterbox" autocomplete="off" checked="true">'); // can't attach events to fragments
 		const input = document.createElement("input");
@@ -63,15 +62,14 @@ export class Filter {
 		input.classList.add("filterbox");
 		input.autocomplete = "off";
 		input.checked = true;
-		this.label = label;
 		this.a = document.createElement("a");
 		this.a.classList.add("dropdown-entry");
 		this.a.appendChild(input);
 		this.a.setAttribute("tabindex", "-1");
 		this.a.addEventListener("keydown", checkboxKeydownListener(input));
-		this.a.appendChild(checkboxClickableDiv(input, label, i18n));
+		this.a.appendChild(checkboxClickableDiv(input, "", i18n));
 		// each filter has its own associated CSS class, such as "filter-BB"
-		this.cssClass = `filter-${label}`;
+		this.cssClass = `filter-${i18n}`;
 		this.visible = true;
 		// Does not apply to elements that get added later, so only use if you don't add elements to the graph. Alternative if you want to use this update this after adding something.
 		// Assigns the CSS class of the filter to the nodes that match the filter selector.
@@ -124,7 +122,7 @@ Add filter entries to the filter menu.
 @param as - an empty array of HTML anchors to be filled */
 	static addFilterEntries(parent: HTMLElement, as: Array<HTMLAnchorElement>): void {
 		for (const datum of filterData) {
-			const filter = new Filter(datum[0], datum[1], datum[2]);
+			const filter = new Filter(datum[0], datum[1]);
 			parent.appendChild(filter.a);
 			as.push(filter.a);
 		}
