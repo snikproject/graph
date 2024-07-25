@@ -75,7 +75,7 @@ export function updateHtml(): void {
 			continue;
 		}
 		for (const element of elements) {
-			const s = this.getString(key, element.getAttribute("hotkey"));
+			const s = getString(key, element.getAttribute("hotkey"));
 			switch (element.tagName) {
 				case "A":
 				case "BUTTON":

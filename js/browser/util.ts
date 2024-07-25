@@ -1,6 +1,6 @@
 /** Various utility methods. */
 import { config } from "../config";
-import { NodeSingular, EdgeSingular } from "cytoscape";
+import type { NodeSingular, EdgeSingular } from "cytoscape";
 import { EDGE } from "../edge";
 import { NODE } from "../node";
 import * as sparql from "../sparql";
