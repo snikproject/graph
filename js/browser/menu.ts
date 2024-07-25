@@ -153,6 +153,8 @@ ${import.meta.env.VITE_GIT_BRANCH_NAME}/${import.meta.env.VITE_GIT_COMMIT_HASH}`
 
 ## Version Info
 ${Menu.gitInfo()}`,
+			undefined,
+			"",
 			log["logs"]
 		);
 	}

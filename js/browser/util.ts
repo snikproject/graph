@@ -8,7 +8,9 @@ import * as rdf from "../rdf";
 import * as language from "../lang/language";
 import * as packageInfo from "../../package.json";
 export const VERSION = packageInfo.version;
-const LOG_LIMIT = 500;
+// GitHub allows for 8201 characters, but some browser limit around 2000 chars:
+// https://stackoverflow.com/a/64565317 and https://stackoverflow.com/a/417184
+const LOG_LIMIT = 1600;
 
 /** getElementById with exception handling.
  * @param id - an HTML DOM id
@@ -30,19 +32,13 @@ export function getElementById(id: string): HTMLElement {
  * @param logs - optional array of github markdown formatted log strings
  */
 export function createGitHubIssue(repo: string, title: string, body: string, assignee?: string, label?: string, logs?: Array<string>): void {
-	//shorten the front end to avoid 414 Error URI too large
-	// let encodedBody = encodeURIComponent(body);
-	// if (encodedBody.length > LOG_LIMIT)
-	// {
-	//   encodedBody = encodedBody.slice(-7500, -1);
-	//
 	let encodedBody = encodeURIComponent(body);
 	if (logs) {
 		const encodedLogs = logs.map((l) => encodeURIComponent(l.trim()));
 		let encodedLog = encodedLogs.reduce((a, b) => a + "%0A" + b);
 
 		while (encodedLog.length > LOG_LIMIT) {
-			//remove log elements from the front until the length of the log is under the limit to avoid 414 Error URI too large
+			// remove log elements from the front until the length of the log is under the limit to avoid 414 Error URI too large
 			encodedLogs.shift();
 			encodedLog = encodedLogs.reduce((a, b) => a + "%0A" + b, "");
 		}
