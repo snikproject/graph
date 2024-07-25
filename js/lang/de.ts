@@ -24,7 +24,7 @@ export const de = {
 		"show-classes-with-instances": "Klassen zeigen, die Instanzen haben",
 		"show-classes-without-instances": "Klassen zeigen, die keine Instanzen haben",
 		role: "Rolle",
-		function: "Aufgane",
+		function: "Aufgabe",
 		entitytype: "Objekttyp",
 		subclassof: "subClassOf-Beziehungen",
 		"non-subclassof": "nicht-subClassOf-Beziehungen",
