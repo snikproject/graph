@@ -44,4 +44,18 @@ export const config = {
 		initialTabs: 1,
 		warnOnSessionLoad: true,
 	},
+	git: {
+		defaultIssueAssignee: "KonradHoeffner", // if you fork, please change
+		issueLabels: {
+			confirmLink: "confirmlimeslink",
+			editNode: "",
+			editEdge: "",
+			deleteEdge: "deletetripel",
+			deleteNode: "deleteclass",
+		},
+		repo: {
+			ontology: "https://github.com/snikproject/ontology",
+			application: "https://github.com/snikproject/graph",
+		},
+	},
 };

@@ -5,9 +5,6 @@ import { colorschemenight } from "./colorschemenight";
 import { colorschemeday } from "./colorschemeday";
 import { timer } from "../timer";
 import { NODE } from "../node";
-import * as sparql from "../sparql";
-import * as rdf from "../rdf";
-import * as language from "../lang/language";
 import { progress } from "./progress";
 import { View } from "./view";
 import type { Core, Collection, NodeCollection, EdgeCollection, NodeSingular } from "cytoscape";
@@ -487,39 +484,6 @@ export class Graph {
 				f(ele);
 			}
 		};
-	}
-	/** Open an issue on GitHub to remove the given node.
-	 * @param node - the node representing the resource that should be removed */
-	createRemoveIssue(node: NodeSingular): void {
-		this.cy.remove(node);
-		const clazzShort = rdf.short(node.data(NODE.ID));
-
-		sparql.describe(node.data(NODE.ID)).then((bindings) => {
-			const body = `Please permanently delete the class ${clazzShort}:
-            \`\`\`\n
-            sparql
-            # WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} FROM THE GRAPH AS EITHER SUBJECT OR OBJECT
-            # ALWAYS CREATE A BACKUP BEFORE THIS OPERATION AS A MISTAKE MAY DELETE THE WHOLE GRAPH.
-            # THERE MAY BE DATA LEFT OVER IN OTHER GRAPHS, SUCH AS <http://www.snik.eu/ontology/limes-exact> or <http://www.snik.eu/ontology/match>.
-            # THERE MAY BE LEFTOVER DATA IN AXIOMS OR ANNOTATIONS, CHECK THE UNDO DATA FOR SUCH THINGS.
-
-            DELETE DATA FROM <${rdf.longPrefix(node.data(NODE.ID))}>
-            {
-              {<${node.data(NODE.ID)}> ?p ?y.} UNION {?x ?p <${node.data(NODE.ID)}>.}
-            }
-            \n\`\`\`
-            **Warning: Restoring a class with the following triples is not guaranteed to work and may have unintended consequences if other edits occur between the deletion and restoration.
-            This only contains the triples from graph ${rdf.longPrefix(node.data(NODE.ID))}.**
-
-            Undo based on these triples:
-            \`\`\`\n
-            ${bindings}
-            \n\`\`\`
-            ${language.CONSTANTS.SPARUL_WARNING}`;
-			window.open(
-				"https://github.com/IMISE/snik-ontology/issues/new?title=" + encodeURIComponent("Remove class " + clazzShort) + "&body=" + encodeURIComponent(body)
-			);
-		});
 	}
 	/** Move all matching nodes together.
 	 * @param distance - the distance between them */

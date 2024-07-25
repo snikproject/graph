@@ -1,5 +1,6 @@
 /** Creates the circular context menu that can be opened on top of a node.*/
 import { classUse } from "./classuse";
+import { config } from "../config";
 import * as rdf from "../rdf";
 import { NODE } from "../node";
 import * as util from "./util";
@@ -54,21 +55,13 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 				},
 			],
 		},
-		/* Comment out base entry to put base items directly as root items
-	{
-		id: "base",
-		selector: "node",
-		submenu: [
-		*/
 		{
-			//content: '<img src onerror="tippy(\'span\')"><span data-tippy-content="Tooltip">edit/report</span>',
-			content: "edit/report",
 			id: "edit",
 			selector: "node",
 			onClickFunction: (event) => {
 				const node = event.target;
 				const body = `Problem with the class [${rdf.short(node.data(NODE.ID))}](${node.data(NODE.ID)}):\n\n`;
-				util.createGitHubIssue(util.REPO_ONTOLOGY, node.data(NODE.ID), body);
+				util.createGitHubIssue(config.git.repo.ontology, node.data(NODE.ID), body);
 			},
 		},
 
@@ -149,9 +142,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 		//     log.warn("'combine close matches' not implemented yet!", node);
 		//   },
 		// },
-		/*
-		],
-	},*/
 		{
 			id: "dev",
 			selector: "node",
@@ -159,7 +149,10 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 				{
 					id: "remove-permanently",
 					selector: "node",
-					onClickFunction: (event) => graph.createRemoveIssue(event.target),
+					onClickFunction: (event) => {
+						graph.cy.remove(event.target);
+						util.createGitHubNodeDeletionIssue(event.target);
+					},
 				},
 				{
 					id: "debug",

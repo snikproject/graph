@@ -147,7 +147,7 @@ ${import.meta.env.VITE_GIT_BRANCH_NAME}/${import.meta.env.VITE_GIT_COMMIT_HASH}`
 	/** Creates a GitHub issue for the visualization. */
 	static visualizationFeedback(): void {
 		util.createGitHubIssue(
-			util.REPO_APPLICATION,
+			config.git.repo.application,
 			"",
 			`## Issue
 

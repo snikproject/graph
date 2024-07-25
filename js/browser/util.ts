@@ -1,5 +1,11 @@
 /** Various utility methods. */
-
+import { config } from "../config";
+import { NodeSingular, EdgeSingular } from "cytoscape";
+import { EDGE } from "../edge";
+import { NODE } from "../node";
+import * as sparql from "../sparql";
+import * as rdf from "../rdf";
+import * as language from "../lang/language";
 import * as packageInfo from "../../package.json";
 export const VERSION = packageInfo.version;
 const LOG_LIMIT = 500;
@@ -15,16 +21,15 @@ export function getElementById(id: string): HTMLElement {
 	return el;
 }
 
-export const REPO_APPLICATION = "https://github.com/snikproject/graph";
-export const REPO_ONTOLOGY = "https://github.com/snikproject/ontology";
-
 /** Open a new issue on the GitHub repository.
-@param repo - GIT repository URL
-@param title - issue title
-@param body - issue body text
-@param logs - optional array of github markdown formatted log strings
-*/
-export function createGitHubIssue(repo: string, title: string, body: string, logs?: Array<string>): void {
+ * @param repo - GIT repository URL
+ * @param title - issue title
+ * @param body - issue body text
+ * @param assignee - default assignee for the issue (GitHub handle)
+ * @param label - default label for the issue
+ * @param logs - optional array of github markdown formatted log strings
+ */
+export function createGitHubIssue(repo: string, title: string, body: string, assignee?: string, label?: string, logs?: Array<string>): void {
 	//shorten the front end to avoid 414 Error URI too large
 	// let encodedBody = encodeURIComponent(body);
 	// if (encodedBody.length > LOG_LIMIT)
@@ -43,7 +48,94 @@ export function createGitHubIssue(repo: string, title: string, body: string, log
 		}
 		encodedBody += "%0A%0A%23%23%20Log%0A" + "%60%60%60" + encodedLog + "%0A%60%60%60";
 	}
-	window.open(`${repo}/issues/new?title=${encodeURIComponent(title)}&body=${encodedBody}`);
+	if (!assignee) {
+		assignee = config.git.defaultIssueAssignee;
+	}
+	if (!label) {
+		label = "";
+	}
+	console.log(label);
+	window.open(`${repo}/issues/new?title=${encodeURIComponent(title)}&body=${encodedBody}&assignees=${assignee}&labels=${label}`);
+}
+
+/**
+ * Prompts creation of an issue on GitHub with the label specified in `config.git.issueLabels.deleteNode` and the default assignee to remove the given node.
+ * @param node The node which is to be removed
+ */
+export function createGitHubNodeDeletionIssue(node: NodeSingular) {
+	const clazzShort = rdf.short(node.data(NODE.ID));
+
+	sparql.describe(node.data(NODE.ID)).then((bindings) => {
+		const body = `Please permanently delete the class ${clazzShort}:
+\`\`\`sparql
+# WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} FROM THE GRAPH AS EITHER SUBJECT OR OBJECT
+# ALWAYS CREATE A BACKUP BEFORE THIS OPERATION AS A MISTAKE MAY DELETE THE WHOLE GRAPH.
+# THERE MAY BE DATA LEFT OVER IN OTHER GRAPHS, SUCH AS <http://www.snik.eu/ontology/limes-exact> or <http://www.snik.eu/ontology/match>.
+# THERE MAY BE LEFTOVER DATA IN AXIOMS OR ANNOTATIONS, CHECK THE UNDO DATA FOR SUCH THINGS.
+DELETE DATA FROM <${rdf.longPrefix(node.data(NODE.ID))}>
+{
+{<${node.data(NODE.ID)}> ?p ?y.} UNION {?x ?p <${node.data(NODE.ID)}>.}
+}
+\`\`\`\n
+**Warning: Restoring a class with the following triples is not guaranteed to work and may have unintended consequences if other edits occur between the deletion and restoration.
+This only contains the triples from graph ${rdf.longPrefix(node.data(NODE.ID))}.**
+Undo based on these triples:
+\`\`\`
+${bindings}
+\n\`\`\`
+${language.CONSTANTS.SPARUL_WARNING}`;
+		createGitHubIssue(config.git.repo.ontology, "Remove class " + clazzShort, body, undefined, config.git.issueLabels.deleteNode);
+	});
+}
+
+/**
+ * Prompts creation of an issue on GitHub with the label specified in `config.git.issueLabels.deleteEdge` and the default assignee to remove the given edge (triple).
+ * @param edge The edge (standing for a triple) which is to be removed
+ */
+export function createGitHubEdgeDeletionIssue(edge: EdgeSingular) {
+	const body = `Please permanently delete the edge ${edgeLabel(edge)}:
+\`\`\`sparql
+DELETE DATA FROM <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+\`\`\`\n
+Undo with
+\`\`\`sparql
+INSERT DATA INTO <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+\`\`\`\n
+${language.CONSTANTS.SPARUL_WARNING}`;
+	createGitHubIssue(config.git.repo.ontology, edgeLabel(edge), body, undefined, config.git.issueLabels.deleteEdge);
+}
+
+/**
+ * Prompts creation of an issue on GitHub with the label specified in `config.git.issueLabels.confirmLink` and the default assignee to confirm the given edge.
+ * @param node The edge which is to be confirmed
+ */
+export function createGitHubConfirmLinkIssue(edge: EdgeSingular) {
+	edge.data(EDGE.GRAPH, "http://www.snik.eu/ontology/match");
+	const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
+\`\`\`sparql
+DELETE DATA FROM <http://www.snik.eu/ontology/limes-exact>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+INSERT DATA INTO <http://www.snik.eu/ontology/match>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+\`\`\`\n
+Undo with
+\`\`\`sparql
+DELETE DATA FROM <http://www.snik.eu/ontology/match>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+INSERT DATA INTO <http://www.snik.eu/ontology/limes-exact>
+{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+\n\`\`\`\n
+${language.CONSTANTS.SPARUL_WARNING}`;
+	createGitHubIssue(config.git.repo.ontology, edgeLabel(edge), body, undefined, config.git.issueLabels.confirmLink);
+}
+
+/** Creates a human readable string of the triple that an edge represents.
+ *  @param edge - the edge, whose label is determined
+ *  @returns a human readable string of the triple that an edge represents. */
+export function edgeLabel(edge: EdgeSingular): string {
+	return rdf.short(edge.data(EDGE.SOURCE)) + " " + rdf.short(edge.data(EDGE.PROPERTY)) + " " + rdf.short(edge.data(EDGE.TARGET));
 }
 
 export const checkboxKeydownListener = (box) => (e) => {
