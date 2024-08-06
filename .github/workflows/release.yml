@@ -11,7 +11,7 @@ jobs:
         id: build-changelog
         uses: mikepenz/release-changelog-builder-action@v5
         with:
-          commitMode: true
+          mode: "COMMIT"
           configurationJson: |
             {
               "pr_template": "- #{{TITLE}}",
