@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/.github/workflows"
     commit-message:
-      prefix: 'chore'
+      prefix: 'ci'
       include: 'scope'
     assignees: ["KonradHoeffner"]
     schedule:
