@@ -7,8 +7,8 @@ jobs:
     name: Create release
     runs-on: ubuntu-latest
     steps:
-      - name: Build Changelog
-        id: build-changelog
+      - name: Changelog
+        id: changelog
         uses: mikepenz/release-changelog-builder-action@v5
         with:
           mode: "COMMIT"
@@ -27,4 +27,4 @@ jobs:
         id: create-release
         uses: softprops/action-gh-release@v2
         with:
-          body: ${{steps.build-changelog.outputs.changelog}}
+          body: ${{steps.changelog.outputs.changelog}}
