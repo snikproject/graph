@@ -154,7 +154,6 @@ export async function fillInitialGraph(graph: Graph): Promise<void> {
 	await progress(async () => {
 		const params = parseParams();
 		await applyParams(graph, params);
-		graph.menu = new Menu();
 		new Search(util.getElementById("search") as HTMLFormElement);
 		initHelp();
 	});

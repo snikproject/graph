@@ -31,7 +31,6 @@ export class Graph {
 	pathSource: NodeSingular | null = null;
 	container: HTMLElement;
 	instancesLoaded: boolean = false;
-	menu: Menu = null;
 	/** Creates a new cytoscape graph, assigns it to the #cy container and sets up basic event listeners.
   @param container - parent element
   */
@@ -78,6 +77,8 @@ export class Graph {
 			edges.addClass("hidden");
 			edges.removeClass("highlighted");
 		}
+
+		View.getMenu().applyOptions();
 	}
 	/**
     @param eles - the elements to assign the star mode css class to */

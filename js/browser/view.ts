@@ -7,6 +7,7 @@ import { goldenLayout } from "./viewLayout";
 import { toJSON } from "./state";
 import log from "loglevel";
 import type { ComponentConfig, ContentItem } from "golden-layout";
+import { Menu } from "./menu";
 
 let viewCount: number = 0; // only used for the name, don't decrement on destroy to prevent name conflicts
 
@@ -45,6 +46,7 @@ export class View {
 	readonly cyContainer: HTMLDivElement = document.createElement("div");
 	element: HTMLElement;
 	cxtMenu: ContextMenu;
+	menu: Menu = null;
 	static mainView = null;
 	static readonly partViews = new Set<View>();
 
@@ -69,6 +71,7 @@ export class View {
 		const graph = this.state.graph;
 		if (View.mainView === null) {
 			View.mainView = this;
+			this.menu = new Menu();
 			firstFinished = fillInitialGraph(graph);
 			await firstFinished;
 			log.debug(`Main view ${this.state.name} loaded with ${graph.cy.elements().size()} elements.`);
@@ -166,5 +169,9 @@ export class View {
 		viewCount = 0;
 		viewLayout.destroy();
 		viewLayout = goldenLayout();
+	}
+
+	static getMenu(): Menu {
+		return View.mainView.menu;
 	}
 }

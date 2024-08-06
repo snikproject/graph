@@ -407,9 +407,7 @@ ${Menu.gitInfo()}`,
 			log.debug("Set combine match mode to " + (this as any).combineMatchModeBox.checked);
 			// give the browser time to update the checkbox, see https://stackoverflow.com/questions/64442639/how-to-give-instant-user-feedback-on-slow-checkbox-listeners-in-javascript?noredirect=1#comment113950377_64442639
 			setTimeout(() => {
-				View.views()
-					.map((v) => v.state.graph)
-					.forEach((graph) => graph.combineMatch((this as any).combineMatchModeBox.checked));
+				this.combineMatches();
 			}, 10);
 		});
 
@@ -587,5 +585,23 @@ ${Menu.gitInfo()}`,
 				(this as any).optionBoxes[name].click();
 			}
 		}
+	}
+
+	/**
+	 * Applies the options selected in the menu tab "Options", for example Combine Match Mode.
+	 */
+	applyOptions() {
+		if ((this as any).combineMatchModeBox.checked) {
+			this.combineMatches();
+		}
+	}
+
+	/**
+	 * Applies combine match mode for all tabs.
+	 */
+	private combineMatches() {
+		View.views()
+			.map((v) => v.state.graph)
+			.forEach((graph) => graph.combineMatch((this as any).combineMatchModeBox.checked));
 	}
 }

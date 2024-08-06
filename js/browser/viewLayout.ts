@@ -45,7 +45,7 @@ export function goldenLayout(): GoldenLayout {
 		const stackState = () => (stack as any).getActiveContentItem().config.componentState;
 		const cy = () => stackState().cy;
 		const controls = (stack as any).header.controlsContainer[0];
-		const separateSubs = () => View.mainView.state.graph.menu.separateSubs() && !stackState().graph.starMode;
+		const separateSubs = () => View.getMenu().separateSubs() && !stackState().graph.starMode;
 		const data = [
 			[
 				".plussign",
