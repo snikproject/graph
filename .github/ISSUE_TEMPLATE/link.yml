@@ -16,3 +16,7 @@ body:
       label: Target
     validations:
       required: true
+  - type: textarea
+    id: sparql
+    attributes:
+      label: SPARQL query

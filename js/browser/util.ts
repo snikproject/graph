@@ -55,6 +55,18 @@ export function createGitHubIssue(repo: string, title: string, body: string, ass
 }
 
 /**
+/** Open a new issue on the GitHub repository using the given template.
+ * @param repo - GIT repository URL
+ * @param title - issue title
+ * @param template - template filename without the .yml extension
+ * @param fields - form field keys and string values
+ */
+export function createGitHubTemplateIssue(repo: string, title: string, template: string, fields: [string, string][]): void {
+	const encodedFields = fields.map(([key, value]) => `&${key}=${encodeURIComponent(value)}`).reduce((a, b) => a + b);
+	window.open(`${repo}/issues/new?template=${template}.yml&title=${encodeURIComponent(title)}${encodedFields}`);
+}
+
+/**
  * Prompts creation of an issue on GitHub with the label specified in `config.git.issueLabels.deleteNode` and the default assignee to remove the given node.
  * @param node The node which is to be removed
  */
@@ -109,22 +121,22 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
  */
 export function createGitHubConfirmLinkIssue(edge: EdgeSingular) {
 	edge.data(EDGE.GRAPH, "http://www.snik.eu/ontology/match");
-	const body = `Please confirm the automatic interlink ${edgeLabel(edge)}:
+	const source = edge.data(EDGE.SOURCE);
+	const target = edge.data(EDGE.TARGET);
+	const property = edge.data(EDGE.PROPERTY);
+	const triple = `{<${source}> <${property}> <${target}>.}`;
+	const sparql = `Confirm on the SPARQL endpoint via:
 \`\`\`sparql
-DELETE DATA FROM <http://www.snik.eu/ontology/limes-exact>
-{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-INSERT DATA INTO <http://www.snik.eu/ontology/match>
-{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+DELETE DATA FROM <http://www.snik.eu/ontology/limes-exact> ${triple}
+INSERT DATA INTO <http://www.snik.eu/ontology/match> ${triple}
 \`\`\`\n
 Undo with
 \`\`\`sparql
-DELETE DATA FROM <http://www.snik.eu/ontology/match>
-{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-INSERT DATA INTO <http://www.snik.eu/ontology/limes-exact>
-{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
+DELETE DATA FROM <http://www.snik.eu/ontology/match> ${triple}
+INSERT DATA INTO <http://www.snik.eu/ontology/limes-exact> ${triple}
 \n\`\`\`\n
 ${language.CONSTANTS.SPARUL_WARNING}`;
-	createGitHubIssue(config.git.repo.ontology, edgeLabel(edge), body, undefined, config.git.issueLabels.confirmLink);
+	createGitHubTemplateIssue(config.git.repo.application, "Confirm " + edgeLabel(edge), "link", Object.entries({ source, target, sparql }));
 }
 
 /** Creates a human readable string of the triple that an edge represents.
