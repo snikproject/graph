@@ -54,7 +54,7 @@ export const config = {
 	git: {
 		defaultIssueAssignee: "KonradHoeffner", // if you fork, please change
 		issueLabels: {
-			confirmLink: "confirmlimeslink",
+			confirmLink: "link",
 			editNode: "",
 			editEdge: "",
 			deleteEdge: "deletetripel",
