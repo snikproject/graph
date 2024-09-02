@@ -39,6 +39,13 @@ export const config = {
 		graph: "http://www.snik.eu/ontology",
 		instances: false,
 		isSnik: true,
+		// How to identify relations to display
+		// A SPARQL query is run:
+		// (a) ... { ?c ?r ?d } { ?c a owl:Class } { ?d a owl:Class }
+		// (b) ... { ?c ?r ?d } { ?c xx:someIdVal ?x } { ?d xx:someIdVal ?y }
+		// Either value "owl:class" for option (a) or an id (e.g. "hito:internalId" or "https://hitontology.eu/ontology/internalId") for option (b)
+		// For SNIK and probably many others (like DBPedia), this should be "a owl:Class". For HITO this should be "hito:internalId".
+		classId: "a owl:Class",
 	},
 	multiview: {
 		initialTabs: 1,

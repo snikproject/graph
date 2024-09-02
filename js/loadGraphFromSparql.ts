@@ -169,14 +169,37 @@ async function createInstanceNodes(from: string): Promise<Array<object>> {
  * @returns SPARQL query result object
  */
 async function selectTriples(from: string, fromNamed: string, instances: boolean, virtual: boolean): Promise<Array<object>> {
+	let idA, idB, idC, idD;
+	const isValidHttpUrl = (str) => {
+		// https://stackoverflow.com/a/43467144
+		let url;
+
+		try {
+			url = new URL(str);
+		} catch (_) {
+			return false;
+		}
+		return url.protocol === "http:" || url.protocol === "https:";
+	};
+	if (config.sparql.classId === "a owl:Class") {
+		idA = config.sparql.classId;
+		idB = config.sparql.classId;
+		idC = config.sparql.classId;
+		idD = config.sparql.classId;
+	} else if (isValidHttpUrl(config.sparql.classId) || /^\w+:\w+$/.test(config.sparql.classId)) {
+		idA = config.sparql.classId + " ?x";
+		idB = config.sparql.classId + " ?y";
+		idC = idA + 1;
+		idD = idB + 1;
+	}
 	const sparqlPropertiesTimer = timer("sparql-properties");
 	const tripleQuerySimple = `
     select  ?c ?p ?d
     ${from}
     {
       {?c ?p ?d.} ${virtual ? " UNION {?p rdfs:domain ?c; rdfs:range ?d.}" : ""}
-      {?c a owl:Class.} ${instances ? " UNION {?c a [a owl:Class]}" : ""}
-      {?d a owl:Class.} ${instances ? " UNION {?d a [a owl:Class]}" : ""}
+      {?c ${idA}.} ${instances ? ` UNION {?c a [${idC}]}` : ""}
+      {?d ${idB}.} ${instances ? ` UNION {?d a [${idD}}` : ""}
     }`;
 	// the optional part should be a union
 	const tripleQuerySnik = `PREFIX sniko: <http://www.snik.eu/ontology/>
