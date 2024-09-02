@@ -108,30 +108,27 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 			await loadGraphFromSparql(graph.cy, graphs, params.instances, params.virtual);
 		}
 		graph.instancesLoaded = params.instances;
-		if (config.sparql.isSnik) {
-			// layout is loaded here
-			if (config.loadJsonLayoutAsInitialView) {
-				const json: ViewJson = {
-					version: initialViewJson.version,
-					title: initialViewJson.title,
-					type: initialViewJson.type,
-					graph: initialViewJson.graph,
-				};
-				loadLayoutFromJsonObject(json, View.activeState().graph);
-			} else {
-				await layout.runCached(graph.cy, layout.euler, config.defaultSubOntologies, false); // todo: use the correct subs
-				Graph.setVisible(graph.cy.elements(), false);
-				// restrict visible nodes at start to improve performance
-				// use default: star around bb:ChiefInformationOfficer
-				const start = graph.cy.nodes("node[id='http://www.snik.eu/ontology/bb/ChiefInformationOfficer']");
-				graph.showStar(start);
-				await layout.run(graph.cy, layout.eulerTight);
-				graph.cy.elements().unselect();
-				graph.cy.center(start);
-				graph.cy.fit(graph.cy.elements(":visible"));
-				Graph.setVisible(start, true);
-			}
-
+		// layout is loaded here
+		if (config.loadJsonLayoutAsInitialView) {
+			const json: ViewJson = {
+				version: initialViewJson.version,
+				title: initialViewJson.title,
+				type: initialViewJson.type,
+				graph: initialViewJson.graph,
+			};
+			loadLayoutFromJsonObject(json, View.activeState().graph);
+		} else if (config.sparql.isSnik) {
+			await layout.runCached(graph.cy, layout.euler, config.defaultSubOntologies, false); // todo: use the correct subs
+			Graph.setVisible(graph.cy.elements(), false);
+			// restrict visible nodes at start to improve performance
+			// use default: star around bb:ChiefInformationOfficer
+			const start = graph.cy.nodes("node[id='http://www.snik.eu/ontology/bb/ChiefInformationOfficer']");
+			graph.showStar(start);
+			await layout.run(graph.cy, layout.eulerTight);
+			graph.cy.elements().unselect();
+			graph.cy.center(start);
+			graph.cy.fit(graph.cy.elements(":visible"));
+			Graph.setVisible(start, true);
 			graph.starMode = true;
 		} else {
 			await layout.run(graph.cy, layout.euler);
