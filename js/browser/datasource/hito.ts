@@ -1,24 +1,13 @@
-/** @module */
-import * as NODE from "../../node.js";
-import * as rdf from "../../rdf.js";
-
 const prefixes = ["UserGroup", "Feature", "EnterpriseFunction", "ApplicationSystem", "OrganizationalUnit"];
 
 const citationTypes = prefixes.map((p) => p + "Citation");
 const classifiedTypes = prefixes.map((p) => p + "Classified");
 const catalogueTypes = prefixes.map((p) => p + "Catalogue");
 
-const shapeMap = new Map([
-	...prefixes.map((p) => [p + "Citation", "rectangle"]),
-	...prefixes.map((p) => [p + "Classified", "ellipse"]),
-	...prefixes.map((p) => [p + "Catalogue", "triangle"]),
-]);
-//[...(prefixes.map((p) => [p + "Citation","rectangle"])]
-//...prefixes.map((p) => [p + "Citation","ellipse"],
-//...prefixes.map((p) => [p + "Citation","triangle"]
-/*("Citation", "rectangle")],
-	["Classified", "ellipse"],
-	["Catalogue", "triangle"],*/
+const shapeMap: Map<string, string> = new Map();
+citationTypes.forEach((p) => shapeMap.set(p, "rectangle"));
+classifiedTypes.forEach((p) => shapeMap.set(p, "ellipse"));
+catalogueTypes.forEach((p) => shapeMap.set(p, "triangle"));
 
 const colorMap = new Map([
 	["UserGroup", ""],
@@ -37,8 +26,8 @@ export default {
 	color: (node) => colorMap.get(node.data("pre")) || "orange",
 
 	sparql: {
-		endpoint: "https://www.snik.eu/sparql",
-		graph: "http://www.snik.eu/ontology",
+		endpoint: "https://www.hitontology.eu/sparql",
+		graph: "http://www.hitontology.eu/ontology",
 		instances: false,
 	},
 
