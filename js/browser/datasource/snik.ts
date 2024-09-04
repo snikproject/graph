@@ -1,5 +1,5 @@
 /** @module */
-import * as NODE from "../../node.js";
+import { NODE } from "../../node";
 
 const shapeMap = new Map([
 	[NODE.SUBTOP_ENTITY_TYPE, "rectangle"],
