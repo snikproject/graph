@@ -33,10 +33,11 @@ async function selectClasses(from: string): Promise<Array<ClassBinding>> {
     OPTIONAL {?src ov:defines ?c.}
   }
   `;
-
-	const nodeQuery = config.ontology.nodeQuery ? config.ontology.nodeQuery(from) : nodeQuerySimple;
+	// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
+	// @ts-ignore Needed to easily swap different config files, we handle it not existing here
+	const nodeQuery = config.ontology.sparql?.queries?.nodes ? config.ontology.sparql.queries.nodes(from) : nodeQuerySimple;
 	const bindings = (await sparql.select(nodeQuery)) as Array<ClassBinding>;
-	sparqlClassesTimer.stop(bindings.length + " classes using " + (config.ontology.isSnik ? "SNIK query" : "default query"));
+	sparqlClassesTimer.stop(bindings.length + " classes using " + (config.ontology.name ? `${config.ontology.name} query` : "default query"));
 	return bindings;
 }
 
@@ -162,27 +163,13 @@ async function selectTriples(from: string, fromNamed: string, instances: boolean
       {?d a owl:Class.} ${instances ? " UNION {?d a [a owl:Class}" : ""}
     }`;
 	// the optional part should be a union
-	const tripleQuerySnik = `PREFIX sniko: <http://www.snik.eu/ontology/>
-    select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
-    ${from}
-    ${fromNamed}
-    {
-      graph ?g {?c ?p ?d.}
-      filter(?g!=sniko:)
-      {?c a [rdfs:subClassOf meta:Top].} ${instances ? " UNION {?c a [a [rdfs:subClassOf meta:Top]]}" : ""}
-      {?d a [rdfs:subClassOf meta:Top].} ${instances ? " UNION {?d a [a [rdfs:subClassOf meta:Top]]}" : ""}
-      filter(?p!=rdf:type)
-      OPTIONAL
-      {
-        ?ax a owl:Axiom;
-        owl:annotatedSource ?c;
-        owl:annotatedProperty ?p;
-        owl:annotatedTarget ?d.
-      }
-    }`;
-	const tripleQuery = config.ontology.isSnik ? tripleQuerySnik : tripleQuerySimple;
+	// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
+	// @ts-ignore Needed to easily swap different config files, we handle it not existing here
+	const tripleQuery = config.ontology.sparql?.queries?.triples
+		? config.ontology.sparql.queries.triples(from, fromNamed, virtual, instances)
+		: tripleQuerySimple;
 	const json = await sparql.select(tripleQuery);
-	sparqlPropertiesTimer.stop(json.length + " properties using " + (config.ontology.isSnik ? "SNIK query" : "default query"));
+	sparqlPropertiesTimer.stop(json.length + " properties using " + (config.ontology.name ? `${config.ontology.name} query` : "default query"));
 	return json;
 }
 
