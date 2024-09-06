@@ -37,6 +37,9 @@ export const config = {
 	sparql: {
 		endpoint: "https://www.snik.eu/sparql",
 		graph: "http://www.snik.eu/ontology",
+		// the file containing the information on which node to use which shape on.
+		// SNIK and HITO options contained in this repository, directory "js/browser/datasource/(snik|hito).ts"
+		coloringConfigurationFile: "js/browser/datasource/snik.ts",
 		instances: false,
 		isSnik: true,
 		// How to identify relations to display

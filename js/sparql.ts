@@ -15,7 +15,7 @@ export const SNIK = {
 @param endpoint - An optional SPARQL endpoint. May override FROM statements.
 @returns A promise of a set of SPARQL select result bindings.
 */
-export async function select(query: string, graph?: string, endpoint: string = config.sparql.endpoint): Promise<Array<object>> {
+export async function select(query: string, graph?: string, endpoint: string = config.ontology.sparql.endpoint): Promise<Array<object>> {
 	const browser = typeof window !== "undefined";
 	let url = endpoint + "?query=" + encodeURIComponent(query) + "&format=json";
 	if (graph) {
@@ -62,7 +62,11 @@ export async function select(query: string, graph?: string, endpoint: string = c
 export async function describe(uri: string, graphOpt?: string): Promise<string> {
 	const query = "describe <" + uri + ">";
 	const url =
-		config.sparql.endpoint + "?query=" + encodeURIComponent(query) + "&format=text" + (graphOpt ? "&default-graph-uri=" + encodeURIComponent(graphOpt) : "");
+		config.ontology.sparql.endpoint +
+		"?query=" +
+		encodeURIComponent(query) +
+		"&format=text" +
+		(graphOpt ? "&default-graph-uri=" + encodeURIComponent(graphOpt) : "");
 
 	try {
 		const response = await fetch(url);
