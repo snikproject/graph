@@ -1,4 +1,4 @@
-import hitoView from "../initialView/hito.json" assert { type: "json" };
+import hitoView from "./initialView/hito.json" assert { type: "json" };
 
 const prefixes = ["UserGroup", "Feature", "EnterpriseFunction", "ApplicationSystem", "OrganizationalUnit"];
 

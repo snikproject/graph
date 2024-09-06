@@ -1,6 +1,6 @@
 /** Fuzzy search with fuse.js.*/
 import * as sparql from "./sparql";
-import { config } from "./config";
+import { config } from "./config/config";
 import Fuse, { type FuseResult } from "fuse.js";
 import log from "loglevel";
 import { timer } from "./timer";

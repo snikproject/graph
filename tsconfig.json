@@ -24,7 +24,7 @@
 	"typedocOptions": {
 		"entryPoints": ["./js"],
 		"entryPointStrategy": "expand",
-		"exclude": "js/config.ts",
+		"exclude": "js/config/config.ts",
 		"includeVersion": true,
 		"mergeModulesMergeMode": "project",
 		"mergeModulesRenameDefaults": true,

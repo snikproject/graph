@@ -18,7 +18,7 @@ Live at <https://www.snik.eu/graph> (stable) and <https://snikproject.github.io/
     git clone https://github.com/snikproject/graph.git
     cd graph
     npm install
-    cp js/config.dist.ts js/config.ts
+    cp js/config/config.dist.ts js/config/config.ts
     npm run dev 
 
 Open the displayed local link in a browser.
@@ -27,7 +27,7 @@ Open the displayed local link in a browser.
 
 Developing on Windows is not recommended but possible with the following adaptions:
 
-* Instead of `cp js/config.dist.ts js/config.ts`, do `copy js\config.dist.ts js\config.ts` or use the Explorer to copy the file.
+* Instead of `cp js/config/config.dist.ts js/config/config.ts`, do `copy js\config\config.dist.ts js\config\config.ts` or use the Explorer to copy the file.
 * lint-staged fails on Windows with "Current directory is not a git directory!". Skip the Husky commit hook with `git commit --no-verify`.
 
 ### Docker
@@ -67,7 +67,7 @@ Requires a browser with [ES6 module support](https://caniuse.com/es6-module).
 ### Update
 1. `git pull`
 2. `npm update`
-3. if there are new keys in the config file, you may need to copy `js/config.dist.js` to `js/config.js` again
+3. if there are new keys in the config file, you may need to copy `js/config/config.dist.ts` to `js/config/config.ts` again
 
 Make sure it runs locally before updating on the server, see releasechecklist.md.
 

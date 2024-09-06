@@ -30,7 +30,7 @@ jobs:
 
       - name: Install
         run: |
-          cp js/config.dist.ts js/config.ts
+          cp js/config.dist.ts js/config/config.ts
           npm install --no-fund --ignore-scripts --no-audit
 
       - name: Test
