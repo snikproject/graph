@@ -1,5 +1,5 @@
 /** Various utility methods. */
-import { config } from "../config";
+import { config } from "../config/config";
 import type { NodeSingular, EdgeSingular } from "cytoscape";
 import { EDGE } from "../edge";
 import { NODE } from "../node";

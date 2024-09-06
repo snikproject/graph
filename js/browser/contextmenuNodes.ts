@@ -1,6 +1,6 @@
 /** Creates the circular context menu that can be opened on top of a node.*/
 import { classUse } from "./classuse";
-import { config } from "../config";
+import { config } from "../config/config";
 import * as rdf from "../rdf";
 import { NODE } from "../node";
 import * as util from "./util";

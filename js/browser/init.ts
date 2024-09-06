@@ -1,4 +1,4 @@
-import { config } from "../config";
+import { config } from "../config/config";
 import { loadGraphFromSparql } from "../loadGraphFromSparql";
 import { loadGraphFromJsonFile, loadLayoutFromJsonObject } from "./load";
 import { Menu } from "./menu";

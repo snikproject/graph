@@ -1,7 +1,7 @@
 /**Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.*/
 import * as sparql from "./sparql";
 import { timer } from "./timer";
-import { config } from "./config";
+import { config } from "./config/config";
 import log from "loglevel";
 import type { ElementDefinition, Core } from "cytoscape";
 

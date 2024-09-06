@@ -1,5 +1,5 @@
-import { NODE } from "../../node";
-import snikView from "../initialView/snik.json" assert { type: "json" };
+import { NODE } from "../node";
+import snikView from "./initialView/snik.json" assert { type: "json" };
 
 const shapeMap = new Map([
 	[NODE.SUBTOP_ENTITY_TYPE, "rectangle"],

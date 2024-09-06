@@ -2,7 +2,7 @@
 import { View } from "./view";
 import type { ViewJson, Session } from "./save";
 import { ViewJsonType } from "./save"; //eslint-disable-line no-duplicate-imports
-import { config } from "../config";
+import { config } from "../config/config";
 import { fromJSON } from "./state";
 import { VERSION } from "./util";
 import log from "loglevel";

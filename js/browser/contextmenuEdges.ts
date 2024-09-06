@@ -1,6 +1,6 @@
 /** Creates the circular context menu that can be opened on top of an edge.*/
 import * as util from "./util";
-import { config } from "../config";
+import { config } from "../config/config";
 import { EDGE } from "../edge";
 import * as language from "../lang/language";
 import { Graph } from "./graph";

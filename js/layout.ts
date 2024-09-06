@@ -5,7 +5,7 @@ If a breakthrough occurs in JavaScript graph layouting, update here and possibly
 */
 import { timer } from "./timer";
 import { NODE } from "./node";
-import { config } from "./config";
+import { config } from "./config/config";
 import log from "loglevel";
 import type { Core, ElementDefinition, LayoutOptions, NodeCollection, Layouts, Position } from "cytoscape";
 import cytoscape from "cytoscape"; //eslint-disable-line no-duplicate-imports

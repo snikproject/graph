@@ -1,4 +1,4 @@
-import { config } from "../config";
+import { config } from "../config/config";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import log from "loglevel";
