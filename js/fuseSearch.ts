@@ -47,7 +47,7 @@ export async function createIndex(): Promise<Array<object>> {
   ?c as ?uri
   group_concat(distinct(str(?l));separator="|") as ?l
   group_concat(distinct(str(?def));separator="|") as ?def
-  from <${config.sparql.graph}>
+  from <${config.ontology.sparql.graph}>
   {
     {
      {?c a owl:Class.} UNION {?c a [a owl:Class]}

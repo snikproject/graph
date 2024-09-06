@@ -34,26 +34,9 @@ async function selectClasses(from: string): Promise<Array<ClassBinding>> {
   }
   `;
 
-	const nodeQuerySnik = `
-  PREFIX ov: <http://open.vocab.org/terms/>
-  PREFIX meta: <http://www.snik.eu/ontology/meta/>
-  SELECT DISTINCT(?c)
-  GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
-  SAMPLE(?st) AS ?st
-  ?src
-  SAMPLE(?inst) AS ?inst
-  ${from}
-  {
-    ?c a [rdfs:subClassOf meta:Top].
-    OPTIONAL {?src ov:defines ?c.}
-    OPTIONAL {?c rdf:type ?st. FILTER(?st!=owl:Class)}
-    OPTIONAL {?c rdfs:label ?l.}
-    OPTIONAL {?inst a ?c.}
-  }`;
-
-	const nodeQuery = config.sparql.isSnik ? nodeQuerySnik : nodeQuerySimple;
+	const nodeQuery = config.ontology.nodeQuery ? config.ontology.nodeQuery(from) : nodeQuerySimple;
 	const bindings = (await sparql.select(nodeQuery)) as Array<ClassBinding>;
-	sparqlClassesTimer.stop(bindings.length + " classes using " + (config.sparql.isSnik ? "SNIK query" : "default query"));
+	sparqlClassesTimer.stop(bindings.length + " classes using " + (config.ontology.isSnik ? "SNIK query" : "default query"));
 	return bindings;
 }
 
@@ -93,7 +76,7 @@ async function createClassNodes(from: string): Promise<Array<ElementDefinition>>
 		if (bindings[i].src) {
 			source = bindings[i].src.value;
 			if (source.includes("http://www.snik.eu/ontology/")) {
-				source = source.replace("http://www.snik.eu/ontology/", "");
+				source = source.replace("http://www.snik.eu/ontology//", "");
 			} // abbreviate snik
 			sources.add(source);
 		}
@@ -112,8 +95,8 @@ async function createClassNodes(from: string): Promise<Array<ElementDefinition>>
 	const colors = ["rgb(30,152,255)", "rgb(255,173,30)", "rgb(80,255,250)", "rgb(150,255,120)", "rgb(204, 0, 204)", "rgb(255, 255, 0)"];
 	let count = 0;
 	for (const source of sources) {
-		if (!config.color.has(source)) {
-			config.color.set(source, colors[count]);
+		if (!config.ontology.style.colorMap.has(source)) {
+			config.ontology.style.colorMap.set(source, colors[count]);
 			count = (count + 1) % colors.length;
 		}
 	}
@@ -169,37 +152,14 @@ async function createInstanceNodes(from: string): Promise<Array<object>> {
  * @returns SPARQL query result object
  */
 async function selectTriples(from: string, fromNamed: string, instances: boolean, virtual: boolean): Promise<Array<object>> {
-	let idA, idB, idC, idD;
-	const isValidHttpUrl = (str) => {
-		// https://stackoverflow.com/a/43467144
-		let url;
-
-		try {
-			url = new URL(str);
-		} catch (_) {
-			return false;
-		}
-		return url.protocol === "http:" || url.protocol === "https:";
-	};
-	if (config.sparql.classId === "a owl:Class") {
-		idA = config.sparql.classId;
-		idB = config.sparql.classId;
-		idC = config.sparql.classId;
-		idD = config.sparql.classId;
-	} else if (isValidHttpUrl(config.sparql.classId) || /^\w+:\w+$/.test(config.sparql.classId)) {
-		idA = config.sparql.classId + " ?x";
-		idB = config.sparql.classId + " ?y";
-		idC = idA + 1;
-		idD = idB + 1;
-	}
 	const sparqlPropertiesTimer = timer("sparql-properties");
 	const tripleQuerySimple = `
     select  ?c ?p ?d
     ${from}
     {
       {?c ?p ?d.} ${virtual ? " UNION {?p rdfs:domain ?c; rdfs:range ?d.}" : ""}
-      {?c ${idA}.} ${instances ? ` UNION {?c a [${idC}]}` : ""}
-      {?d ${idB}.} ${instances ? ` UNION {?d a [${idD}}` : ""}
+      {?c a owl:Class.} ${instances ? " UNION {?c a [a owl:Class]}" : ""}
+      {?d a owl:Class.} ${instances ? " UNION {?d a [a owl:Class}" : ""}
     }`;
 	// the optional part should be a union
 	const tripleQuerySnik = `PREFIX sniko: <http://www.snik.eu/ontology/>
@@ -220,9 +180,9 @@ async function selectTriples(from: string, fromNamed: string, instances: boolean
         owl:annotatedTarget ?d.
       }
     }`;
-	const tripleQuery = config.sparql.isSnik ? tripleQuerySnik : tripleQuerySimple;
+	const tripleQuery = config.ontology.isSnik ? tripleQuerySnik : tripleQuerySimple;
 	const json = await sparql.select(tripleQuery);
-	sparqlPropertiesTimer.stop(json.length + " properties using " + (config.sparql.isSnik ? "SNIK query" : "default query"));
+	sparqlPropertiesTimer.stop(json.length + " properties using " + (config.ontology.isSnik ? "SNIK query" : "default query"));
 	return json;
 }
 
@@ -280,7 +240,7 @@ async function createNodes(from: string, instances: boolean): Promise<Array<Elem
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
 export async function loadGraphFromSparql(cy: Core, graphs: Array<string>, instances: boolean = false, virtual: boolean = false): Promise<void> {
-	log.debug(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
+	log.debug(`Loading graph from endpoint ${config.ontology.sparql.endpoint} with graphs ${graphs}.`);
 	const from = graphs.map((g) => `FROM <${g}>`).reduce((a, b) => a + "\n" + b, "");
 	const fromNamed = from.replace(/FROM/g, "FROM NAMED");
 

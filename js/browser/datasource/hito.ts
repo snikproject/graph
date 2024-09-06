@@ -1,37 +1,48 @@
+import hitoView from "../initialView/hito.json" assert { type: "json" };
+
 const prefixes = ["UserGroup", "Feature", "EnterpriseFunction", "ApplicationSystem", "OrganizationalUnit"];
 
 const citationTypes = prefixes.map((p) => p + "Citation");
 const classifiedTypes = prefixes.map((p) => p + "Classified");
 const catalogueTypes = prefixes.map((p) => p + "Catalogue");
+console.log(citationTypes);
 
-const shapeMap: Map<string, string> = new Map();
-citationTypes.forEach((p) => shapeMap.set(p, "rectangle"));
-classifiedTypes.forEach((p) => shapeMap.set(p, "ellipse"));
-catalogueTypes.forEach((p) => shapeMap.set(p, "triangle"));
+let shapeMap: Map<string, string> = new Map();
+for (const p in citationTypes) {
+	shapeMap.set(p, "rectangle");
+}
+for (const p in classifiedTypes) {
+	shapeMap.set(p, "ellipse");
+}
+for (const p in catalogueTypes) {
+	shapeMap.set(p, "triangle");
+}
 
 const colorMap = new Map([
-	["UserGroup", ""],
-	["Feature", ""],
-	["EnterpriseFunction", ""],
-	["ApplicationSystem", ""],
-	["OrganizationalUnit", ""],
+	["UserGroup", "grey"],
+	["Feature", "green"],
+	["EnterpriseFunction", "yellow"],
+	["ApplicationSystem", "red"],
+	["OrganizationalUnit", "blue"],
 ]);
-
-const HITO = "http://hitontology.eu/ontology/";
 
 export default {
 	id: "hito",
 	name: "HITO",
-	shape: (node) => shapeMap.get(node.data("super")) || shapeMap.get(node.data("?c")) || "hexagon",
-	color: (node) => colorMap.get(node.data("pre")) || "orange",
-
+	initialView: hitoView,
+	isSnik: false,
+	style: {
+		shape: (node) => shapeMap.get(node.data("super")) || shapeMap.get(node.data("?c")) || "hexagon",
+		color: (node) => colorMap.get(node.data("pre")) || "orange",
+		colorMap: colorMap,
+	},
 	sparql: {
+		// without trailing slashes!
 		endpoint: "https://www.hitontology.eu/sparql",
 		graph: "http://www.hitontology.eu/ontology",
 		instances: false,
 	},
-
-	classQuery: (FROM) => `
+	nodeQuery: (FROM) => `
 SELECT REPLACE(STR(?c),"http://hitontology.eu/ontology/","") AS ?c
 GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") as ?l
 REPLACE(STR(SAMPLE(?class)),"http://hitontology.eu/ontology/","") AS ?class

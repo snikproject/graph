@@ -11,7 +11,6 @@ import * as util from "./util";
 import { initHelp } from "../help";
 import { addBenchmarkOverlay } from "./benchmark";
 import { Graph } from "./graph";
-import initialViewJson from "./init.json" assert { type: "json" };
 import type { ViewJson } from "./save.ts";
 import { View } from "./view";
 
@@ -31,8 +30,8 @@ interface Params {
 function parseParams(): Params {
 	const url = new URL(window.location.href);
 	const defaults = {
-		endpoint: config.sparql.endpoint,
-		instances: config.sparql.instances,
+		endpoint: config.ontology.sparql.endpoint,
+		instances: config.ontology.sparql.instances,
 	};
 	return Object.assign(defaults, {
 		empty: url.searchParams.get("empty") !== null,
@@ -87,9 +86,9 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 			return;
 		}
 		log.debug("Loading from SPARQL Endpoint " + params.endpoint);
-		config.sparql.endpoint = params.endpoint; // loadGraphFromSparql loads from config.sparql.endpoint
+		config.ontology.sparql.endpoint = params.endpoint; // loadGraphFromSparql loads from config.ontology.sparql.endpoint
 		const graphs: string[] = [];
-		if (config.sparql.isSnik) {
+		if (config.ontology.isSnik) {
 			let subs: string[] = [];
 			if (params.sub) {
 				subs = params.sub.split(",");
@@ -101,7 +100,7 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 			graphs.push(...subs.map((g) => sparql.SNIK.PREFIX + g));
 		} else if (params.rdfGraph) {
 			graphs.push(params.rdfGraph);
-			config.sparql.graph = params.rdfGraph;
+			config.ontology.sparql.graph = params.rdfGraph;
 		}
 		console.debug(`Loading graph with${params.instances ? "" : "out"} instances.`);
 		{
@@ -109,15 +108,15 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 		}
 		graph.instancesLoaded = params.instances;
 		// layout is loaded here
-		if (config.loadJsonLayoutAsInitialView) {
+		if (config.ontology.initialView) {
 			const json: ViewJson = {
-				version: initialViewJson.version,
-				title: initialViewJson.title,
-				type: initialViewJson.type,
-				graph: initialViewJson.graph,
+				version: config.ontology.initialView.version,
+				title: config.ontology.initialView.title,
+				type: config.ontology.initialView.type,
+				graph: config.ontology.initialView.graph,
 			};
 			loadLayoutFromJsonObject(json, View.activeState().graph);
-		} else if (config.sparql.isSnik) {
+		} else if (config.ontology.isSnik) {
 			await layout.runCached(graph.cy, layout.euler, config.defaultSubOntologies, false); // todo: use the correct subs
 			Graph.setVisible(graph.cy.elements(), false);
 			// restrict visible nodes at start to improve performance

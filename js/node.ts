@@ -12,4 +12,5 @@ export const NODE = {
 	SUBTOP_ENTITY_TYPE: "E",
 	SUBTOP_ROLE: "R",
 	SUBTOP_FUNCTION: "F",
+	TYPE: "t",
 };

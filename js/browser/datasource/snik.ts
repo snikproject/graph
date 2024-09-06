@@ -1,5 +1,5 @@
-/** @module */
 import { NODE } from "../../node";
+import snikView from "../initialView/snik.json" assert { type: "json" };
 
 const shapeMap = new Map([
 	[NODE.SUBTOP_ENTITY_TYPE, "rectangle"],
@@ -10,18 +10,34 @@ const shapeMap = new Map([
 	["http://www.snik.eu/ontology/meta/Function", "triangle"],
 ]);
 
+const colorMap = new Map([
+	["ciox", "rgb(80,255,250)"],
+	["meta", "rgb(255,80,80)"],
+	["ob", "rgb(255,173,30)"],
+	["bb", "rgb(30,152,255)"],
+	["he", "rgb(150,255,120)"],
+	["it", "rgb(204, 0, 204)"],
+	["it4it", "rgb(255, 255, 0)"],
+]);
+
 export default {
 	id: "snik",
 	name: "SNIK",
-	shape: (node) => shapeMap.get(node.data(NODE.SUBTOP)) || shapeMap.get(node.data(NODE.ID)) || "hexagon",
-
+	initialView: snikView,
+	isSnik: true,
+	style: {
+		shape: (node) => shapeMap.get(node.data(NODE.SUBTOP)) || shapeMap.get(node.data(NODE.ID)) || "hexagon",
+		color: (node) => colorMap.get(node.data(NODE.SOURCE)) || "orange",
+		colorMap: colorMap,
+	},
+	// overrides config
 	sparql: {
+		// without trailing slashes!
 		endpoint: "https://www.snik.eu/sparql",
 		graph: "http://www.snik.eu/ontology",
 		instances: false,
 	},
-
-	classQuery: (from) => `
+	nodeQuery: (from) => `
 	PREFIX ov: <http://open.vocab.org/terms/>
 	PREFIX meta: <http://www.snik.eu/ontology/meta/>
 	SELECT DISTINCT(?c)
@@ -31,10 +47,10 @@ export default {
 	SAMPLE(?inst) AS ?inst
 	${from}
 	{
-		?c a owl:Class.
-		OPTIONAL {?src ov:defines ?c.}
-		OPTIONAL {?c meta:subTopClass ?st.}
-		OPTIONAL {?c rdfs:label ?l.}
-		OPTIONAL {?inst a ?c.}
+	  ?c a [rdfs:subClassOf meta:Top].
+	  OPTIONAL {?src ov:defines ?c.}
+	  OPTIONAL {?c rdf:type ?st. FILTER(?st!=owl:Class)}
+	  OPTIONAL {?c rdfs:label ?l.}
+	  OPTIONAL {?inst a ?c.}
 	}`,
 };
