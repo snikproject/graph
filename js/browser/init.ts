@@ -107,12 +107,21 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 			await loadGraphFromSparql(graph.cy, graphs, params.instances, params.virtual);
 		}
 		graph.instancesLoaded = params.instances;
-		// layout is loaded here
-		if (config.ontology.initialView) {
+		// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
+		// @ts-ignore Needed to easily swap different config files, we handle it not existing here
+		if (config.ontology?.initialView) {
 			const json: ViewJson = {
+				// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
+				// @ts-ignore Needed to easily swap different config files, we handle it not existing here
 				version: config.ontology.initialView.version,
+				// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
+				// @ts-ignore Needed to easily swap different config files, we handle it not existing here
 				title: config.ontology.initialView.title,
+				// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
+				// @ts-ignore Needed to easily swap different config files, we handle it not existing here
 				type: config.ontology.initialView.type,
+				// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
+				// @ts-ignore Needed to easily swap different config files, we handle it not existing here
 				graph: config.ontology.initialView.graph,
 			};
 			loadLayoutFromJsonObject(json, View.activeState().graph);
