@@ -42,29 +42,42 @@ export default {
 		graph: "http://www.hitontology.eu/ontology",
 		instances: false,
 		queries: {
+			/*
+			 * Right now, this query defines nodes as resources with instances - Not the most elegant, but the only relatively simple viable option I saw.
+			 * This works because every class in the metamodel has (should have) instances.
+			 * ?c a ?type: to rule out owl/rdfs classes for literals and the like we use in HITO (like http://www.w3.org/2000/01/rdf-schema#Datatype)
+			 */
 			nodes: (from) => `
 			PREFIX ov: <http://open.vocab.org/terms/>
-			SELECT ?c
-			GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") as ?l
+			SELECT DISTINCT(?c)
+			GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
+			SAMPLE(?st) AS ?st
 			?src
 			${from}
+			SAMPLE(?inst) AS ?inst
 			{
-				?c a ?type.
-				OPTIONAL {?c rdfs:label ?l.}
-				OPTIONAL {?src ov:defines ?c.}
+			  ?c a ?type.
+			  OPTIONAL {?inst a ?c.}
+			  OPTIONAL {?src ov:defines ?c.}
+			  OPTIONAL {?c rdf:type ?st. FILTER(?st!=owl:Class)}
+			  OPTIONAL {?c rdfs:label ?l.}
 			}
 			`,
-			triples: (from, fromNamed, virtualTriples, instances) => `select  ?c ?p ?d
+			triples: (from, fromNamed, virtualTriples, instances) => `
+			select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
 			${from}
+			${fromNamed}
 			{
+			  graph ?g {?c ?p ?d.}
+			  {?instA a ?c.} ${instances ? " UNION {?c a [a owl:Class].}" : ""}
+			  {?instB a ?d.} ${instances ? " UNION {?d a [a owl:Class].}" : ""}
+			  filter(?p!=rdf:type)
+			  OPTIONAL
 			  {
-				{?c ?p ?d.} ${virtualTriples ? " UNION {?p rdfs:domain ?c; rdfs:range ?d.}" : ""}
-			  	{?c hito:internalId ?idA.} ${instances ? ` UNION {?c a [hito:internalId ?idC]}` : ""}
-			  	{?d hito:internalId ?idB.} ${instances ? ` UNION {?d a [hito:internalId ?idD]}` : ""}
-			  } UNION {
-				{?c ?p ?d.} ${virtualTriples ? " UNION {?p rdfs:domain ?c; rdfs:range ?d.}" : ""}
-				{?c a owl:Class.} ${instances ? ` UNION {?d a [a owl:Class]}` : ""}
-				{?d a owl:Class.} ${instances ? ` UNION {?d a [a owl:Class]}` : ""}
+				?ax a owl:Axiom;
+				owl:annotatedSource ?c;
+				owl:annotatedProperty ?p;
+				owl:annotatedTarget ?d.
 			  }
 			}`,
 		},
