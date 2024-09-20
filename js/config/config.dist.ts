@@ -26,7 +26,8 @@ export const config = {
 			standard: { width: 1920, height: 1920 },
 		},
 	},
-	ontology: hitoConf,
+	// Change this when you want to use a different ontology. Refer to ./config.snik.ts and ./config.hito.ts for examples.
+	ontology: snikConf,
 	multiview: {
 		initialTabs: 1,
 		warnOnSessionLoad: true,
