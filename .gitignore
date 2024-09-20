@@ -8,7 +8,7 @@ target
 node_modules
 config.js
 config.json
-js/config.ts
+js/config/config.ts
 lib
 dist
 scratch
