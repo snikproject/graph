@@ -27,7 +27,12 @@ export default {
 	isSnik: true,
 	style: {
 		shape: (node) => shapeMap.get(node.data(NODE.SUBTOP)) || shapeMap.get(node.data(NODE.ID)) || "hexagon",
-		color: (node) => colorMap.get(node.data(NODE.SOURCE)) || "orange",
+		color: (node) => {
+			// format: http://www.snik.eu/ontology/bb => must be trimmed
+			const subonto: string = node.data(NODE.SOURCE);
+			const cutoff = subonto.lastIndexOf("/");
+			return colorMap.get(subonto.substring(cutoff + 1)) || "orange";
+		},
 		colorMap: colorMap,
 	},
 	// overrides config
