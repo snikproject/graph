@@ -13,8 +13,6 @@
 		["http://hitontology.eu/ontology/Interoperability", { "x": 80, "y": 343 }],
 		["http://hitontology.eu/ontology/OrganizationalUnitCitation", { "x": 404, "y": 479 }],
 		["http://hitontology.eu/ontology/SoftwareProduct", { "x": 419, "y": 367 }],
-		["http://hitontology.eu/ontology/Language", { "x": 80, "y": 379 }],
-		["http://hitontology.eu/ontology/License", { "x": 80, "y": 415 }],
 		["http://hitontology.eu/ontology/EnterpriseFunctionClassified", { "x": 741, "y": 212 }],
 		["http://hitontology.eu/ontology/EnterpriseFunctionCatalogue", { "x": 741, "y": 138 }],
 		["http://hitontology.eu/ontology/FeatureClassified", { "x": 1033, "y": 212 }],
