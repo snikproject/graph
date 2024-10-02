@@ -38,8 +38,8 @@ export default {
 	},
 	sparql: {
 		// without trailing slashes!
-		endpoint: "https://www.hitontology.eu/sparql",
-		graph: "http://www.hitontology.eu/ontology",
+		endpoint: "https://hitontology.eu/sparql",
+		graph: "http://hitontology.eu/ontology",
 		instances: false,
 		queries: {
 			/*
@@ -72,6 +72,7 @@ export default {
 			  {?instA a ?c.} ${instances ? " UNION {?c a [a owl:Class].}" : ""}
 			  {?instB a ?d.} ${instances ? " UNION {?d a [a owl:Class].}" : ""}
 			  filter(?p!=rdf:type)
+			  FILTER( contains(str(?g), "hitontology.eu") )
 			  OPTIONAL
 			  {
 				?ax a owl:Axiom;
