@@ -73,6 +73,7 @@ async function createClassNodes(from: string): Promise<Array<ElementDefinition>>
 	const nodes: Array<ElementDefinition> = [];
 	const sources = new Set<string>();
 	for (let i = 0; i < bindings.length; i++) {
+		// The source value if it exists does not come from the SPARQL graph the node comes from but instead from a class that ov:defines it.
 		let source;
 		if (bindings[i].src) {
 			source = bindings[i].src.value;

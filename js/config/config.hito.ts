@@ -29,7 +29,7 @@ const colorMap = new Map([
 export default {
 	id: "hito",
 	name: "HITO",
-	initialView: hitoView,
+	//initialView: hitoView,
 	isSnik: false,
 	style: {
 		shape: (node) => shapeMap.get(node.data("super")) || shapeMap.get(node.data("?c")) || "hexagon",
@@ -47,20 +47,21 @@ export default {
 			 * This works because every class in the metamodel has (should have) instances.
 			 * ?c a ?type: to rule out owl/rdfs classes for literals and the like we use in HITO (like http://www.w3.org/2000/01/rdf-schema#Datatype)
 			 */
+			// only nodes with labels are loaded
 			nodes: (from) => `
 			PREFIX ov: <http://open.vocab.org/terms/>
 			SELECT DISTINCT(?c)
 			GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
 			SAMPLE(?st) AS ?st
+			SAMPLE(?inst) AS ?inst
 			?src
 			${from}
-			SAMPLE(?inst) AS ?inst
 			{
 			  ?c a ?type.
+			  ?c rdfs:label ?l.
 			  OPTIONAL {?inst a ?c.}
 			  OPTIONAL {?src ov:defines ?c.}
 			  OPTIONAL {?c rdf:type ?st. FILTER(?st!=owl:Class)}
-			  OPTIONAL {?c rdfs:label ?l.}
 			}
 			`,
 			triples: (from, fromNamed, virtualTriples, instances) => `
