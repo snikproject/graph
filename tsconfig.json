@@ -14,8 +14,9 @@
 		"esModuleInterop": true,
 		"noImplicitAny": false,
 		"noEmitOnError": false,
-		"noEmit": false,
+		"noEmit": true,
 		"resolveJsonModule": true,
+		"rootDirs": ["js", "test"],
 		"sourceMap": true,
 		"skipLibCheck": true,
 		"strict": false
