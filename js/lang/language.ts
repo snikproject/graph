@@ -46,6 +46,7 @@ export function getString(key: string, hotkey?: string): string {
 	const s = ss.all[key];
 	if (!s) {
 		log.error("Internationalization string not found for key " + key);
+		return null;
 	}
 	return s + (hotkey ? ` (${hotkey.toUpperCase()})` : "");
 }
