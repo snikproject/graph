@@ -1,7 +1,7 @@
 /** Generates the HTML user manual using the help data describing the menu and context menu. */
 import fs from "fs";
-import * as help from "../js/help.js";
-import * as language from "../js/lang/language.js";
+import { help } from "../js/help.ts";
+import * as language from "../js/lang/language.ts";
 // provide the log global to language.js, only show warnings and errors
 global.log = { debug: () => {}, info: () => {}, warn: console.warn, error: console.error };
 
@@ -10,6 +10,8 @@ String.prototype.capitalize = function () {
 		return a.toUpperCase();
 	});
 };
+
+let counter = 0;
 
 /** Recursively traverse the help data and transform it to HTML.*/
 function traverse(o, depth = 1) {
@@ -22,6 +24,7 @@ function traverse(o, depth = 1) {
 			.capitalize();
 	const heading = (key) => `<h${depth}>${label(key)}</h${depth}>\n`;
 	for (const key in o) {
+		counter++;
 		const value = o[key];
 		if (typeof value !== "string") {
 			// value is an object
@@ -47,14 +50,14 @@ function traverse(o, depth = 1) {
 /** Fill the HTML template and write the result to the manual. */
 function generateManual() {
 	language.setLanguage("en");
-	const html = traverse(help.help);
-
+	const html = traverse(help);
+	console.log("Generating " + counter + " help entries");
 	fs.readFile("node/manual.html.template", "utf8", (err, data) => {
 		if (err) {
 			throw err;
 		}
 		{
-			fs.writeFile("manual.html", data.replace("#CONTENT#", html), (err2) => {
+			fs.writeFile("html/manual.html", data.replace("#CONTENT#", html), (err2) => {
 				if (err2) {
 					throw err2;
 				}

@@ -6,6 +6,34 @@
 <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
 </head>
 <body>
+		<h1>Glossary</h1>
+		<table>
+			<tr>
+				<th>Term</th>
+				<th>Synonyms</th>
+				<th>Meaning</th>
+			</tr>
+			<tr>
+				<td>Main Graph</td>
+				<td>Main Model</td>
+				<td>first tab with the initially visible subset and default layout</td>
+			</tr>
+			<tr>
+				<td>Partial Graph</td>
+				<td>View, Tab, Partial Model</td>
+				<td>further tabs with custom subsets of the graph</td>
+			</tr>
+			<tr>
+				<td>Current View</td>
+				<td></td>
+				<td>the part of the currently shown graph (view, tab) that is currently visible on screen</td>
+			</tr>
+			<tr>
+				<td>Session</td>
+				<td></td>
+				<td>layout and visibility state of all graphs (tabs), can be saved and loaded</td>
+			</tr>
+		</table>
 #CONTENT#
 </body>
 </html>

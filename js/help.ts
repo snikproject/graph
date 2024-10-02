@@ -3,7 +3,7 @@ import "tippy.js/dist/tippy.css";
 import "../css/tippy.css";
 import log from "loglevel";
 
-const help = {
+export const help = {
 	"SNIK Graph Manual": {
 		img: "graph.png",
 	},

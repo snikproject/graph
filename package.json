@@ -63,6 +63,7 @@
 		"typecheck": "tsc --noEmit",
 		"fmt": "prettier --write js --cache",
 		"doc": "typedoc --plugin typedoc-plugin-merge-modules",
+		"manual": "vite-node node/generateManual.mjs && prettier --write html/manual.html",
 		"prepare": "husky"
 	},
 	"lint-staged": {
