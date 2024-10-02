@@ -18,7 +18,7 @@
 		"resolveJsonModule": true,
 		"sourceMap": true,
 		"skipLibCheck": true,
-		"strict": false,
+		"strict": false
 	},
 	"typedocOptions": {
 		"entryPoints": ["./js"],
@@ -29,8 +29,8 @@
 		"mergeModulesRenameDefaults": true,
 		"name": "SNIK Graph",
 		"out": "doc",
-		"readme": "none",
+		"readme": "none"
 	},
 	"include": ["js/**/*", "test/**/*", "globals.d.ts"],
-	"exclude": ["node_modules"],
+	"exclude": ["node_modules"]
 }
