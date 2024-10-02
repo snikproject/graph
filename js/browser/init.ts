@@ -89,18 +89,19 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 		config.ontology.sparql.endpoint = params.endpoint; // loadGraphFromSparql loads from config.ontology.sparql.endpoint
 		const graphs: string[] = [];
 		if (config.ontology.isSnik) {
-			let subs: string[] = [];
-			if (params.sub) {
-				subs = params.sub.split(",");
-			}
+			// We can only load specific subgraphs of SNIK using the "sub" GET parameter.
+			// Attention: This is different from the SNIK subontology filters, which use the Cytoscape node "source" data element to filter at runtime without reloading.
+			let subs: string[] = params.sub?.split(",") || [];
 			if (subs.length === 0) {
-				// either not present or empty value
+				// no override specified, use default SNIK values
 				subs = [...config.helperGraphs, ...config.defaultSubOntologies];
 			}
 			graphs.push(...subs.map((g) => sparql.SNIK.PREFIX + g));
 		} else if (params.rdfGraph) {
 			graphs.push(params.rdfGraph);
 			config.ontology.sparql.graph = params.rdfGraph;
+		} else if (config.ontology.sparql.graph) {
+			graphs.push(config.ontology.sparql.graph);
 		}
 		console.debug(`Loading graph with${params.instances ? "" : "out"} instances.`);
 		{
