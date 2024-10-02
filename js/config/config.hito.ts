@@ -29,7 +29,7 @@ const colorMap = new Map([
 export default {
 	id: "hito",
 	name: "HITO",
-	//initialView: hitoView,
+	initialView: hitoView,
 	isSnik: false,
 	style: {
 		shape: (node) => shapeMap.get(node.data("super")) || shapeMap.get(node.data("?c")) || "hexagon",
@@ -57,8 +57,8 @@ export default {
 			?src
 			${from}
 			{
-			  ?c a ?type.
 			  ?c rdfs:label ?l.
+			  ?c a owl:Class.
 			  OPTIONAL {?inst a ?c.}
 			  OPTIONAL {?src ov:defines ?c.}
 			  OPTIONAL {?c rdf:type ?st. FILTER(?st!=owl:Class)}
@@ -69,18 +69,20 @@ export default {
 			${from}
 			${fromNamed}
 			{
-			  graph ?g {?c ?p ?d.}
-			  {?instA a ?c.} ${instances ? " UNION {?c a [a owl:Class].}" : ""}
-			  {?instB a ?d.} ${instances ? " UNION {?d a [a owl:Class].}" : ""}
+			  {?c a owl:Class.} ${instances ? " UNION {?c a [a owl:Class].}" : ""}
+			  {?d a owl:Class.} ${instances ? " UNION {?d a [a owl:Class].}" : ""}			  
+			{
+			?p rdfs:domain ?c.
+			?p rdfs:range ?d.
+			FILTER(CONTAINS(STR(?c),"hitontology.eu"))
+			FILTER(CONTAINS(STR(?d ),"hitontology.eu"))
+			}
+			UNION
+			{
+			  graph ?g {?c ?p ?d.} 
 			  filter(?p!=rdf:type)
-			  FILTER( contains(str(?g), "hitontology.eu") )
-			  OPTIONAL
-			  {
-				?ax a owl:Axiom;
-				owl:annotatedSource ?c;
-				owl:annotatedProperty ?p;
-				owl:annotatedTarget ?d.
-			  }
+			  filter(?p!=owl:equivalentClass)
+			}
 			}`,
 		},
 	},

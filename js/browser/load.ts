@@ -140,18 +140,28 @@ export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph) {
 		const nodes: NodeCollection = cy.collection();
 		nodes.merge(
 			//@ts-expect-error compiler doesnt know JSON objects
-			json.graph.flatMap((jsonNode: Array<any>) => {
-				const position: Position = {
-					x: jsonNode[1].x,
-					y: jsonNode[1].y,
-				};
-				const cytoNode: NodeSingular = cy.nodes("node[id='" + jsonNode[0] + "']").first();
-				cytoNode.unlock();
-				cytoNode.position(position);
-				//cytoNode.lock();
+			json.graph
+				.flatMap((jsonNode: Array<any>) => {
+					const position: Position = {
+						x: jsonNode[1].x,
+						y: jsonNode[1].y,
+					};
+					// first check if we find any
+					const cytoNodes: NodeCollection = cy.nodes("node[id='" + jsonNode[0] + "']");
+					if (cytoNodes.size() === 0) {
+						// element doesn't exist
+						log.warn(`Node with id ${jsonNode[0]} was not found.`);
+						return null;
+					}
+					// then get the only
+					const cytoNode: NodeSingular = cytoNodes.first();
+					cytoNode.unlock();
+					cytoNode.position(position);
+					//cytoNode.lock();
 
-				return cytoNode;
-			})
+					return cytoNode;
+				})
+				.filter((node) => node) // do not merge null elements
 		);
 		// hide all nodes and edges except the nodes (and edges between them) included in the file
 		const toHide: NodeCollection = cy.nodes().unmerge(nodes);
