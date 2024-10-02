@@ -14,7 +14,8 @@ export interface ViewJson {
 	version: string;
 	title: string;
 	type: ViewJsonType;
-	graph: object;
+	// output format of cytoscape's cy.json()
+	graph: Array<object>;
 }
 
 export interface NodeLayout {
@@ -114,7 +115,8 @@ export function saveView(state: ViewState): void {
 		version: VERSION,
 		title: state.title,
 		type: ViewJsonType.VIEW,
-		graph: state.cy.json(),
+		// the view as JSON, ts doesn't know this is an array
+		graph: state.cy.json() as Array<object>,
 	};
 	//@ts-expect-error compiler doesnt know graph.style
 	delete json.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
