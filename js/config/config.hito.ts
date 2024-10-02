@@ -40,7 +40,7 @@ export default {
 		// without trailing slashes!
 		endpoint: "https://hitontology.eu/sparql",
 		graph: "http://hitontology.eu/ontology",
-		instances: false,
+		instances: true,
 		queries: {
 			/*
 			 * Right now, this query defines nodes as resources with instances - Not the most elegant, but the only relatively simple viable option I saw.
