@@ -39,11 +39,10 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 				}
 			},
 		},
-		/** Context menu for edges that are unconfirmed interlinks, that is skos:closeMatch and friends in the limes-exact graph.
-					selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`, */
+		/** Context menu for edges that are unconfirmed interlinks, that is skos:closeMatch and friends in the limes-exact graph. */
 		{
 			id: "edge-confirm-link",
-			selector: "edge",
+			selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`,
 			onClickFunction: (event) => util.createGitHubConfirmLinkIssue(event.target),
 		},
 		/** Context menu for edges in development mode that are either confirmed interlinks (skos:closeMatch and friends in the match graph) or meta relations, such as meta:updates.

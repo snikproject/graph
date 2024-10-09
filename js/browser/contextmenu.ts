@@ -21,7 +21,7 @@ const config = {
 export interface MenuItem {
 	content?: string;
 	id: string;
-	selector?: "node" | "node:compound" | "edge";
+	selector?: "node" | "node:compound" | `edge${any}`;
 	submenu?: Array<MenuItem>;
 	onClickFunction?(event: Event | { target: any }): void;
 }
