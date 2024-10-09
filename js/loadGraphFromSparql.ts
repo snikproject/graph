@@ -78,7 +78,7 @@ async function createClassNodes(from: string): Promise<Array<ElementDefinition>>
 		if (bindings[i].src) {
 			source = bindings[i].src.value;
 			if (source.includes("http://www.snik.eu/ontology/")) {
-				source = source.replace("http://www.snik.eu/ontology//", "");
+				source = source.replace("http://www.snik.eu/ontology/", "");
 			} // abbreviate snik
 			sources.add(source);
 		}
