@@ -79,7 +79,6 @@ export default {
 			UNION
 			{
 			  graph ?g {?c ?p ?d.} 
-			  filter(?p!=rdf:type)
 			  filter(?p!=owl:equivalentClass)
 			}
 			}`,
