@@ -1,5 +1,6 @@
 import hitoView from "./initialView/hito.json" assert { type: "json" };
 import { NODE } from "../node";
+import { NodeSingular } from "cytoscape";
 
 let shapeMap: Map<string, string> = new Map([
 	["Citation", "rectangle"],
@@ -30,8 +31,8 @@ export default {
 	initialView: hitoView,
 	isSnik: false,
 	style: {
-		shape: (node) => shapeMap.get(getMapKeyIncludedInString(node.data(NODE.ID), shapeMap)) || "hexagon",
-		color: (node) => colorMap.get(getMapKeyIncludedInString(typeof node === "string" ? node : node.data(NODE.ID), colorMap)) || "orange",
+		shape: (node: NodeSingular) => shapeMap.get(getMapKeyIncludedInString(node.data(NODE.ID), shapeMap)) || "hexagon",
+		color: (node: string | NodeSingular) => colorMap.get(getMapKeyIncludedInString(typeof node === "string" ? node : node.data(NODE.ID), colorMap)) || "orange",
 		colorMap: colorMap,
 	},
 	sparql: {
