@@ -95,7 +95,7 @@ export class Graph {
 		this.cy.elements().removeClass("highlighted");
 		this.cy.elements().removeClass("starmode");
 		this.cy.elements().removeClass("hidden");
-		// keep "rdfs:type"-edges hidden
+		// keep "rdf:type"-edges hidden
 		Graph.setVisible(this.cy.edges("[p='http://www.w3.org/1999/02/22-rdf-syntax-ns#type']"), false);
 		/*
     if(this.pathSource)

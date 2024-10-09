@@ -109,7 +109,7 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 		}
 		graph.instancesLoaded = params.instances;
 
-		// hide "rdfs:type"-edges
+		// hide "rdf:type"-edges
 		Graph.setVisible(graph.cy.edges("[p='http://www.w3.org/1999/02/22-rdf-syntax-ns#type']"), false);
 
 		// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
