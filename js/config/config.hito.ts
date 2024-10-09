@@ -1,30 +1,28 @@
 import hitoView from "./initialView/hito.json" assert { type: "json" };
+import { NODE } from "../node";
 
-const prefixes = ["UserGroup", "Feature", "EnterpriseFunction", "ApplicationSystem", "OrganizationalUnit"];
-
-const citationTypes = prefixes.map((p) => p + "Citation");
-const classifiedTypes = prefixes.map((p) => p + "Classified");
-const catalogueTypes = prefixes.map((p) => p + "Catalogue");
-console.log(citationTypes);
-
-let shapeMap: Map<string, string> = new Map();
-for (const p in citationTypes) {
-	shapeMap.set(p, "rectangle");
-}
-for (const p in classifiedTypes) {
-	shapeMap.set(p, "ellipse");
-}
-for (const p in catalogueTypes) {
-	shapeMap.set(p, "triangle");
-}
+let shapeMap: Map<string, string> = new Map([
+	["Citation", "rectangle"],
+	["Classified", "ellipse"],
+	["Catalogue", "triangle"],
+]);
 
 const colorMap = new Map([
 	["UserGroup", "grey"],
 	["Feature", "green"],
 	["EnterpriseFunction", "yellow"],
-	["ApplicationSystem", "red"],
+	["ApplicationSystemType", "red"],
 	["OrganizationalUnit", "blue"],
 ]);
+
+function getMapKeyIncludedInString<V>(search: string, map: Map<string, V>): string | undefined {
+	for (const key of map.keys()) {
+		if (search.includes(key)) {
+			return key;
+		}
+	}
+	return undefined;
+}
 
 export default {
 	id: "hito",
@@ -32,8 +30,8 @@ export default {
 	initialView: hitoView,
 	isSnik: false,
 	style: {
-		shape: (node) => shapeMap.get(node.data("super")) || shapeMap.get(node.data("?c")) || "hexagon",
-		color: (node) => colorMap.get(node.data("pre")) || "orange",
+		shape: (node) => shapeMap.get(getMapKeyIncludedInString(node.data(NODE.ID), shapeMap)) || "hexagon",
+		color: (node) => colorMap.get(getMapKeyIncludedInString(node.data(NODE.ID), colorMap)) || "orange",
 		colorMap: colorMap,
 	},
 	sparql: {
