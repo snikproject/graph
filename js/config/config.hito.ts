@@ -16,6 +16,12 @@ const colorMap = new Map([
 	["OrganizationalUnit", "blue"],
 ]);
 
+/**
+ * Finds the first key of the map included in the search string.
+ * @param search String in which to search for keys
+ * @param map Map whose keys to use
+ * @returns The first key found which the string includes
+ */
 function getMapKeyIncludedInString<V>(search: string, map: Map<string, V>): string | undefined {
 	for (const key of map.keys()) {
 		if (search.includes(key)) {
@@ -71,8 +77,14 @@ export default {
 		graph: "http://hitontology.eu/ontology",
 		instances: true,
 		queries: {
-			// only nodes with labels are loaded
-			nodes: (from) => `
+			//
+			/**
+			 * Get SPARQL Query which loads the list of nodes from which all triples are formed.
+			 * Only nodes with labels which are an owl:Class and their instances are loaded.
+			 * @param from "FROM ..." SPARQL clause
+			 * @returns A string containing a SPARQL query which still needs to be executed
+			 */
+			nodes: (from: string): string => `
 			PREFIX ov: <http://open.vocab.org/terms/>
 			SELECT DISTINCT(?c)
 			GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
@@ -88,7 +100,15 @@ export default {
 			  OPTIONAL {?c rdf:type ?st. FILTER(?st!=owl:Class)}
 			}
 			`,
-			triples: (from, fromNamed, virtualTriples, instances) => `
+			/**
+			 * Loads all triples from HITO which we display.
+			 * @param from "FROM ..." SPARQL clause
+			 * @param fromNamed "FROM NAMED ..." SPARQL clause
+			 * @param virtualTriples (ignored here)
+			 * @param instances Whether or not to include instances in the fetched triples. Highly recommended for HITO.
+			 * @returns A string containing a SPARQL query which still needs to be executed
+			 */
+			triples: (from: string, fromNamed: string, virtualTriples: boolean, instances: boolean): string => `
 			select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
 			${from}
 			${fromNamed}
@@ -99,7 +119,7 @@ export default {
 			?p rdfs:domain ?c.
 			?p rdfs:range ?d.
 			FILTER(CONTAINS(STR(?c),"hitontology.eu"))
-			FILTER(CONTAINS(STR(?d ),"hitontology.eu"))
+			FILTER(CONTAINS(STR(?d),"hitontology.eu"))
 			}
 			UNION
 			{
