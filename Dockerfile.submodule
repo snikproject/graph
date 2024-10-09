@@ -6,7 +6,7 @@ RUN npm install --no-fund --ignore-scripts --no-audit
 COPY graph graph
 COPY .git .git
 WORKDIR /src/graph
-RUN cp js/config.dist.ts js/config/config.ts
+RUN cp js/config/config.dist.ts js/config/config.ts
 ARG SPARQL_ENDPOINT=https://www.snik.eu/sparql
 RUN sed -i "s|https://www\.snik\.eu/sparql|${SPARQL_ENDPOINT}|" js/config/config.ts && \
 	npm run build && \
