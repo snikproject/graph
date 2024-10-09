@@ -2,9 +2,8 @@
 import * as util from "./util";
 import { config } from "../config/config";
 import { EDGE } from "../edge";
-import * as language from "../lang/language";
 import { Graph } from "./graph";
-import { type MenuItem, ContextMenu } from "./contextmenu";
+import type { MenuItem } from "./contextmenu";
 import log from "loglevel";
 
 /** Register modular edge context menu.

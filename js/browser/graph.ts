@@ -9,7 +9,6 @@ import { progress } from "./progress";
 import { View } from "./view";
 import type { Core, Collection, NodeCollection, EdgeCollection, NodeSingular } from "cytoscape";
 import cytoscape from "cytoscape"; //eslint-disable-line no-duplicate-imports
-import type { Menu } from "./menu";
 import log from "loglevel";
 
 /** Specify the direction of edges to show around a given node. */

@@ -5,7 +5,7 @@ import * as rdf from "../rdf";
 import { NODE } from "../node";
 import * as util from "./util";
 import { Graph, Direction } from "./graph";
-import { type MenuItem, ContextMenu } from "./contextmenu";
+import type { MenuItem } from "./contextmenu";
 import * as sparql from "../sparql";
 import * as language from "../lang/language";
 

@@ -3,7 +3,9 @@ Copy to js/config/config.ts after checkout and adapt to your preferences.
 */
 
 import type { LogLevelDesc } from "loglevel";
+// eslint-disable-next-line no-unused-vars
 import snikConf from "./config.snik";
+// eslint-disable-next-line no-unused-vars
 import hitoConf from "./config.hito";
 
 export const config = {

@@ -1,7 +1,6 @@
 import { config } from "../config/config";
 import { loadGraphFromSparql } from "../loadGraphFromSparql";
 import { loadGraphFromJsonFile, loadLayoutFromJsonObject } from "./load";
-import { Menu } from "./menu";
 import { Search } from "./search";
 import * as layout from "../layout";
 import * as sparql from "../sparql";

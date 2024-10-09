@@ -1,6 +1,6 @@
 import hitoView from "./initialView/hito.json" assert { type: "json" };
 import { NODE } from "../node";
-import { NodeSingular } from "cytoscape";
+import type { NodeSingular } from "cytoscape";
 
 let shapeMap: Map<string, string> = new Map([
 	["Citation", "rectangle"],

@@ -1,4 +1,4 @@
-import { NodeSingular } from "cytoscape";
+import type { NodeSingular } from "cytoscape";
 import { NODE } from "../node";
 import snikView from "./initialView/snik.json" assert { type: "json" };
 
