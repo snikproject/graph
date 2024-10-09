@@ -1,6 +1,7 @@
 /** Various utility methods. */
 import { config } from "../config/config";
 import type { NodeSingular, EdgeSingular } from "cytoscape";
+import log from "loglevel";
 import { EDGE } from "../edge";
 import { NODE } from "../node";
 import * as sparql from "../sparql";
@@ -10,7 +11,9 @@ import * as packageInfo from "../../package.json";
 export const VERSION = packageInfo.version;
 // GitHub allows for 8201 characters, but some browser limit around 2000 chars:
 // https://stackoverflow.com/a/64565317 and https://stackoverflow.com/a/417184
-const LOG_LIMIT = 1600;
+// update from 2024: most modern browsers should support more and we don't care about search engines, so increase to 6000 for now
+// otherwise, the log doesn't help much
+const LOG_LIMIT = 6000;
 
 /** getElementById with exception handling.
  * @param id - an HTML DOM id
@@ -63,7 +66,7 @@ export function createGitHubIssue(repo: string, title: string, body: string, ass
  */
 export function createGitHubTemplateIssue(repo: string, title: string, template: string, fields: [string, string][]): void {
 	const encodedFields = fields.map(([key, value]) => `&${key}=${encodeURIComponent(value)}`).reduce((a, b) => a + b);
-	window.open(`${repo}/issues/new?template=${template}.yml&title=${encodeURIComponent(title)}${encodedFields}`);
+	window.open(`${repo}/issues/new?template=${template}.yml&assignees=${config.git.defaultIssueAssignee}&title=${encodeURIComponent(title)}${encodedFields}`);
 }
 
 /**
@@ -116,14 +119,14 @@ ${language.CONSTANTS.SPARUL_WARNING}`;
 }
 
 /**
- * Prompts creation of an issue on GitHub with the label specified in `config.git.issueLabels.confirmLink` and the default assignee to confirm the given edge.
- * @param node The edge which is to be confirmed
+ * Prompts creation of an issue on GitHub to confirm the given LIMES link.
+ * @param link The edge of the link which is to be confirmed
  */
-export function createGitHubConfirmLinkIssue(edge: EdgeSingular) {
-	edge.data(EDGE.GRAPH, "http://www.snik.eu/ontology/match");
-	const source = edge.data(EDGE.SOURCE);
-	const target = edge.data(EDGE.TARGET);
-	const property = edge.data(EDGE.PROPERTY);
+export function createGitHubConfirmLinkIssue(link: EdgeSingular) {
+	link.data(EDGE.GRAPH, "http://www.snik.eu/ontology/match");
+	const source = link.data(EDGE.SOURCE);
+	const target = link.data(EDGE.TARGET);
+	const property = link.data(EDGE.PROPERTY);
 	const triple = `{<${source}> <${property}> <${target}>.}`;
 	const sparql = `Confirm on the SPARQL endpoint via:
 \`\`\`sparql
@@ -136,10 +139,30 @@ DELETE DATA FROM <http://www.snik.eu/ontology/match> ${triple}
 INSERT DATA INTO <http://www.snik.eu/ontology/limes-exact> ${triple}
 \n\`\`\`\n
 ${language.CONSTANTS.SPARUL_WARNING}`;
-	createGitHubTemplateIssue(config.git.repo.application, "Confirm " + edgeLabel(edge), "link", Object.entries({ source, target, sparql }));
+	createGitHubTemplateIssue(config.git.repo.application, "Confirm " + edgeLabel(link), "link", Object.entries({ source, target, sparql }));
 }
 
-/** Creates a human readable string of the triple that an edge represents.
+export function gitInfo(): string {
+	return `SNIK Graph version ${VERSION}
+commit date ${import.meta.env.VITE_GIT_COMMIT_DATE}
+${import.meta.env.VITE_GIT_LAST_COMMIT_MESSAGE}
+${import.meta.env.VITE_GIT_BRANCH_NAME}/${import.meta.env.VITE_GIT_COMMIT_HASH}`;
+}
+
+/** Prompts creation of an issue on GitHub to report a bug. */
+export function createGitHubBugReportIssue() {
+	const version = gitInfo();
+	// cannot reuse the equivalent code from createGitHubIssue because this is pre-encoding, handling should be unified in the future
+	// filter out already encoded parts which are SPARQL queries that take too much space
+	// encoding increases size slightly, 3/4 should be enough, reduce if it causes errors
+	const logs = log["logs"]
+		.filter((x) => !x.includes("%20"))
+		.reduce((a, b) => a + "\n" + b)
+		.substr((-LOG_LIMIT * 3) / 4);
+	createGitHubTemplateIssue(config.git.repo.application, "", "bugreport", Object.entries({ version, logs }));
+}
+
+/** Creates a human readable string of the triple that an link represents.
  *  @param edge - the edge, whose label is determined
  *  @returns a human readable string of the triple that an edge represents. */
 export function edgeLabel(edge: EdgeSingular): string {

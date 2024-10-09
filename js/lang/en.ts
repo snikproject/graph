@@ -85,8 +85,9 @@ export const en = {
 		"project-homepage": "Project Homepage",
 		"meta-model": "SNIK Meta Model",
 		about: "About SNIK Graph",
+		"bug-report": "Submit a Bug Report",
+		"feature-request": "Request new Feature for the Visualization",
 		"feedback-ontology": "Submit Feedback about the Ontology",
-		"feedback-visualization": "Submit Feedback about the Visualization",
 		// don't translate the help options yet because they are -english anyways
 		// other *********************************************
 		"deselect-all": "Deselect All",

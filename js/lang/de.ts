@@ -67,6 +67,8 @@ export const de = {
 		persian: "Persisch",
 		// help **********************************************
 		help: "Hilfe",
+		"bug-report": "Fehler melden",
+		"feature-request": "Verbesserung für die Visualisierung vorschlagen",
 		// don't translate the help options yet because they are -english anyways
 		// other *********************************************
 		"deselect-all": "alle abwählen",

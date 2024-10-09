@@ -130,34 +130,13 @@ export class Menu {
 		}
 	}
 
-	static gitInfo(): string {
-		return `SNIK Graph version ${util.VERSION}
-commit date ${import.meta.env.VITE_GIT_COMMIT_DATE}
-${import.meta.env.VITE_GIT_LAST_COMMIT_MESSAGE}
-${import.meta.env.VITE_GIT_BRANCH_NAME}/${import.meta.env.VITE_GIT_COMMIT_HASH}`;
-	}
-
 	/** Notifies the user of the program version so that errors can be properly reported. */
 	static about(): void {
 		const cy = View?.activeState()?.graph?.cy;
 		const s = `\n${cy?.nodes()?.size()} nodes, ${cy?.edges()?.size()} edges loaded.`;
-		window.alert(Menu.gitInfo() + s);
+		window.alert(util.gitInfo() + s);
 	}
 
-	/** Creates a GitHub issue for the visualization. */
-	static visualizationFeedback(): void {
-		util.createGitHubIssue(
-			config.git.repo.application,
-			"",
-			`## Issue
-
-## Version Info
-${Menu.gitInfo()}`,
-			undefined,
-			"",
-			log["logs"]
-		);
-	}
 	/** Show all nodes that are connected via close matches to visible nodes. */
 	showCloseMatches(): void {
 		log.debug("show close matches start");
@@ -341,7 +320,11 @@ ${Menu.gitInfo()}`,
 					{ action: "https://www.snik.eu/public/SNIK_Metamodell_V10.svg", i18n: "meta-model" },
 					{ action: Menu.about, i18n: "about" },
 					{ action: "https://github.com/snikproject/ontology/issues", i18n: "feedback-ontology" },
-					{ action: Menu.visualizationFeedback, i18n: "feedback-visualization" },
+					{
+						action: "https://github.com/snikproject/graph/issues/new?assignees=KonradHoeffner&labels=feature&projects=&template=featurerequest.yml",
+						i18n: "feature-request",
+					},
+					{ action: util.createGitHubBugReportIssue, i18n: "bug-report" },
 				],
 			},
 		];
