@@ -10,6 +10,13 @@ body:
       label: What happened?
     validations:
       required: true
+  - type: input
+    id: version
+    attributes:
+      label: SNIK Graph version
+      description: YY.MM, see Help menu -> About SNIK Graph. Optionally also commit date and hash.
+    validations:
+      required: true
   - type: dropdown
     id: browsers
     attributes:
