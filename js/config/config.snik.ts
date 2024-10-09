@@ -1,3 +1,4 @@
+import { NodeSingular } from "cytoscape";
 import { NODE } from "../node";
 import snikView from "./initialView/snik.json" assert { type: "json" };
 
@@ -26,8 +27,8 @@ export default {
 	initialView: snikView,
 	isSnik: true,
 	style: {
-		shape: (node) => shapeMap.get(node.data(NODE.SUBTOP)) || shapeMap.get(node.data(NODE.ID)) || "hexagon",
-		color: (node) => {
+		shape: (node: NodeSingular) => shapeMap.get(node.data(NODE.SUBTOP)) || shapeMap.get(node.data(NODE.ID)) || "hexagon",
+		color: (node: string | NodeSingular) => {
 			let key;
 			// format: http://www.snik.eu/ontology/bb => must be trimmed
 			if (typeof node === "string") {
