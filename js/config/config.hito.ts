@@ -41,11 +41,6 @@ export default {
 		graph: "http://hitontology.eu/ontology",
 		instances: true,
 		queries: {
-			/*
-			 * Right now, this query defines nodes as resources with instances - Not the most elegant, but the only relatively simple viable option I saw.
-			 * This works because every class in the metamodel has (should have) instances.
-			 * ?c a ?type: to rule out owl/rdfs classes for literals and the like we use in HITO (like http://www.w3.org/2000/01/rdf-schema#Datatype)
-			 */
 			// only nodes with labels are loaded
 			nodes: (from) => `
 			PREFIX ov: <http://open.vocab.org/terms/>
@@ -84,17 +79,4 @@ export default {
 			}`,
 		},
 	},
-	/**nodeQuery: (FROM) => `
-SELECT REPLACE(STR(?c),"http://hitontology.eu/ontology/","") AS ?c
-GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
-REPLACE(STR(SAMPLE(?class)),"http://hitontology.eu/ontology/","") AS ?class
-REPLACE(REPLACE(REPLACE(?class,"Classified",""),"Citation",""),"Catalogue","") AS ?pre
-REPLACE(STR(SAMPLE(?super)),"http://hitontology.eu/ontology/","") AS ?super
-FROM <http://hitontology.eu/ontology>
-{
-	{?c a owl:Class.} UNION {?c a [a owl:Class].}
-	?c a ?class
-	OPTIONAL {?c rdfs:label ?l.}
-	OPTIONAL {?class rdfs:subClassOf ?super.}
-}`,*/
 };
