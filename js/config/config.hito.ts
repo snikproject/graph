@@ -31,7 +31,7 @@ export default {
 	isSnik: false,
 	style: {
 		shape: (node) => shapeMap.get(getMapKeyIncludedInString(node.data(NODE.ID), shapeMap)) || "hexagon",
-		color: (node) => colorMap.get(getMapKeyIncludedInString(node.data(NODE.ID), colorMap)) || "orange",
+		color: (node) => colorMap.get(getMapKeyIncludedInString(typeof node === "string" ? node : node.data(NODE.ID), colorMap)) || "orange",
 		colorMap: colorMap,
 	},
 	sparql: {

@@ -28,10 +28,16 @@ export default {
 	style: {
 		shape: (node) => shapeMap.get(node.data(NODE.SUBTOP)) || shapeMap.get(node.data(NODE.ID)) || "hexagon",
 		color: (node) => {
+			let key;
 			// format: http://www.snik.eu/ontology/bb => must be trimmed
-			const subonto: string = node.data(NODE.SOURCE);
-			const cutoff = subonto.lastIndexOf("/");
-			return colorMap.get(subonto.substring(cutoff + 1)) || "orange";
+			if (typeof node === "string") {
+				key = node;
+			} else {
+				const subonto: string = node.data(NODE.SOURCE);
+				const cutoff = subonto.lastIndexOf("/");
+				key = subonto.substring(cutoff + 1);
+			}
+			return colorMap.get(key) || "orange";
 		},
 		colorMap: colorMap,
 	},

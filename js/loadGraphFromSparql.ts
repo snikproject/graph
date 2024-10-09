@@ -97,7 +97,7 @@ async function createClassNodes(from: string): Promise<Array<ElementDefinition>>
 	const colors = ["rgb(30,152,255)", "rgb(255,173,30)", "rgb(80,255,250)", "rgb(150,255,120)", "rgb(204, 0, 204)", "rgb(255, 255, 0)"];
 	let count = 0;
 	for (const source of sources) {
-		if (!config.ontology.style.colorMap.has(source)) {
+		if (!config.ontology.style.colorMap.has(source) && !config.ontology.style.color(source)) {
 			config.ontology.style.colorMap.set(source, colors[count]);
 			count = (count + 1) % colors.length;
 		}
