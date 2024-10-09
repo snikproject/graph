@@ -31,8 +31,38 @@ export default {
 	initialView: hitoView,
 	isSnik: false,
 	style: {
-		shape: (node: NodeSingular) => shapeMap.get(getMapKeyIncludedInString(node.data(NODE.ID), shapeMap)) || "hexagon",
-		color: (node: string | NodeSingular) => colorMap.get(getMapKeyIncludedInString(typeof node === "string" ? node : node.data(NODE.ID), colorMap)) || "orange",
+		/**
+		 * Finds out which shape to use for any specific node using a map (Citation => rectangle, Classified => ellipse, Catalogue => triangle).
+		 * If the node contains any of these words, use the shape.
+		 * If the node B contains any of these words and is the rdf:type of node A, then node A also has this shape.
+		 * If none of this is true, then the node will be a hexagon.
+		 * @param node Node which should have this shape when displayed
+		 * @returns A string containing a code for a shape ("rectangle", "ellipse" or "triangle")
+		 */
+		shape: (node: NodeSingular) =>
+			shapeMap.get(getMapKeyIncludedInString(node.data(NODE.ID), shapeMap)) ||
+			shapeMap.get(
+				// get shape of parent (node rdf:type parent)
+				getMapKeyIncludedInString(node.outgoers("[p='http://www.w3.org/1999/02/22-rdf-syntax-ns#type']").targets().first()?.data(NODE.ID) || "", shapeMap)
+			) ||
+			"hexagon",
+		/**
+		 * Finds out which shape to use for any specific node using a map.
+		 * If the node contains any of the keys in the map, use this color.
+		 * If the node B contains any of these words and is the rdf:type of node A, then node A also has this shape.
+		 * If none of this is true, then the node will be orange.
+		 * @param node Node which should have this colour when displayed (as a NodeSingular cytoscape.js object) OR id of parent of the node (as a string)
+		 * @returns A string containing a name of a color
+		 */
+		color: (node: string | NodeSingular) =>
+			colorMap.get(getMapKeyIncludedInString(typeof node === "string" ? node : node.data(NODE.ID), colorMap)) ||
+			(typeof node === "object" && // verify that node is object
+				"outgoers" in node && // verify that node is NodeSingular
+				colorMap.get(
+					// get color of parent (node rdf:type parent)
+					getMapKeyIncludedInString(node.outgoers("[p='http://www.w3.org/1999/02/22-rdf-syntax-ns#type']").targets().first()?.data(NODE.ID) || "", colorMap)
+				)) ||
+			"orange",
 		colorMap: colorMap,
 	},
 	sparql: {
