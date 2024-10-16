@@ -35,7 +35,7 @@ function initKeyListener(): void {
 			} // do nothing when nothing selected
 			clipboard.length = 0;
 			clipboard.push(...selected.map((node) => node.id()));
-			log.debug(`Copied ${clipboard.length} elements from ${layoutState.name}.`);
+			log.debug(`Copied ${clipboard.length} elements from ${layoutState.title}.`);
 			log.info("Partial graph copied!");
 		}
 		// Paste
@@ -54,7 +54,7 @@ function initKeyListener(): void {
 			pasted.select(); // select all pasted nodes so that they are more visible above the other nodes
 
 			layoutState.cy.fit(layoutState.cy.elements(".unfiltered").not(".hidden")); // needs to be outside the batch to fit correctly
-			log.debug(`Pasted ${clipboard.length} elements into ${layoutState.name}.`);
+			log.debug(`Pasted ${clipboard.length} elements into ${layoutState.title}.`);
 			log.info("Partial graph inserted!");
 		}
 	});

@@ -6,7 +6,7 @@ import { edgeCommands } from "./contextmenuEdges";
 import { goldenLayout } from "./viewLayout";
 import { toJSON } from "./state";
 import log from "loglevel";
-import type { ComponentConfig, ContentItem } from "golden-layout";
+import type { ComponentItemConfig, ContentItem, Stack } from "golden-layout";
 import { Menu } from "./menu";
 
 let viewCount: number = 0; // only used for the name, don't decrement on destroy to prevent name conflicts
@@ -20,8 +20,8 @@ let viewLayout = goldenLayout();
 function traverse(x: ContentItem, depth: number): Array<ContentItem> {
 	const removeTabsArray: Array<ContentItem> = [];
 	if (x.type === "component") {
-		const config = x as unknown as ComponentConfig;
-		if (config.componentName !== "Main Graph") {
+		const config = x as unknown as ComponentItemConfig;
+		if (config.title !== "Main Graph") {
 			removeTabsArray.push(x);
 			return removeTabsArray;
 		}
@@ -35,7 +35,6 @@ function traverse(x: ContentItem, depth: number): Array<ContentItem> {
 export interface ViewState {
 	title: string;
 	graph: Graph;
-	name: string;
 	cy: cytoscape.Core;
 }
 
@@ -74,7 +73,7 @@ export class View {
 			this.menu = new Menu();
 			firstFinished = fillInitialGraph(graph);
 			await firstFinished;
-			log.debug(`Main view ${this.state.name} loaded with ${graph.cy.elements().size()} elements.`);
+			log.debug(`Main view loaded with ${graph.cy.elements().size()} elements.`);
 		} else {
 			await firstFinished;
 			graph.cy.add(View.mainView.state.cy.elements()); // don't load again, copy from first view
@@ -105,52 +104,62 @@ export class View {
 	 * @param title - optional view title
 	 */
 	constructor(initialize: boolean = true, title?: string) {
+		/*******************
+		 * Tab Title Stuff *
+		 ******************/
 		// if custom name, check for and prevent duplication
 		if (title !== "undefined" && viewCount > 0) {
 			View.views().forEach((part: View) => {
-				if (part.state.title === title) {
+				if (part && part.state.title === title) {
 					title = "Teilmodell " + View.views().length;
-					return;
 				}
 			});
 		}
-
 		//find initial title of the new View
 		title = title ?? (viewCount === 0 ? "Main Graph" : "Partial Graph " + viewCount);
 		viewCount++;
-		// @ts-expect-error is be completed later
-		this.state = { title, name: "unnamed" };
 
-		const itemConfig = {
-			title: title,
-			type: "component",
-			componentName: title,
-			componentState: this.state,
-			isClosable: View.mainView !== null,
-		};
-
-		// eslint-disable-next-line @typescript-eslint/no-this-alias
-		const thisView = this; // supply this to callback
+		/*********************
+		 * Manage view.state *
+		 *********************
+		 *
+		 * (and adding to partViews-list)
+		 */
 		if (View.mainView !== null) {
 			View.partViews.add(this);
 		}
-		viewLayout.registerComponent(title, function (container) {
-			//thisView.cyContainer = document.createElement("div");
-			thisView.element = container.getElement()[0];
-			container.getElement()[0].appendChild(thisView.cyContainer);
-			container.on("destroy", () => {
-				View.partViews.delete(thisView);
-			});
-		});
+		// will be completed later
+		// creating graph now will break cytoscape
+		this.state = {
+			title: title,
+			graph: undefined,
+			cy: undefined,
+		};
 
-		(viewLayout as any).root.contentItems[0].addChild(itemConfig);
+		/***********************
+		 * Golden Layout Stuff *
+		 **********************/
+		// Stack where Tabs are added to
+		const stack = viewLayout.rootItem as Stack;
+		const itemConfig: ComponentItemConfig = {
+			title: title,
+			type: "component",
+			componentType: "view",
+			componentState: this.state,
+			isClosable: View.mainView !== null,
+		};
+		stack.addItem(itemConfig);
 
-		const graph = new Graph(thisView.cyContainer);
-		const cy = graph.cy;
-
+		/********************************
+		 * Complete Managing view.state *
+		 ********************************/
+		const graph = new Graph(this.cyContainer);
 		this.state.graph = graph;
-		this.state.cy = cy;
+		this.state.cy = graph.cy;
 
+		/******************************
+		 * Stuff After Initialization *
+		 *****************************/
 		this.initialized = initialize ? this.fill() : Promise.resolve();
 		this.initialized.then(() => {
 			const options = toJSON().options;
@@ -161,7 +170,7 @@ export class View {
 
 	/** Close all tabs except the first one. */
 	static reset(): void {
-		const removeTabsArray = traverse(viewLayout.root, 0);
+		const removeTabsArray = traverse(viewLayout.rootItem, 0);
 		for (const content of removeTabsArray) {
 			content.remove();
 		}

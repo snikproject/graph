@@ -1,52 +1,45 @@
 import * as util from "./util";
-import { View } from "./view";
+import { View, ViewState } from "./view";
 import * as layout from "../layout";
-import GoldenLayout from "golden-layout";
+import { ComponentContainer, EventEmitter, GoldenLayout, LayoutConfig, Stack } from "golden-layout";
 import log from "loglevel";
-import "golden-layout/src/css/goldenlayout-base.css";
-import "golden-layout/src/css/goldenlayout-dark-theme.css";
-import "../../css/goldenlayout.css";
 
 /** Create, configure and return a GoldenLayout instance.
  *  @returns the created GoldenLayout instance */
 export function goldenLayout(): GoldenLayout {
-	const layoutConfig = {
-		settings: { selectionEnabled: true },
-		content: [
-			{
-				type: "stack",
-				content: [],
-			},
-		],
+	const layoutConfig: LayoutConfig = {
+		root: {
+			type: "stack",
+			content: [],
+		},
 	};
 
-	const viewLayout = new GoldenLayout(layoutConfig);
+	const viewLayout = new GoldenLayout();
+	viewLayout.loadLayout(layoutConfig);
+
+	const stack: Stack = viewLayout.rootItem as Stack;
+	const template = util.getElementById("goldenlayout-header");
+	const zoomButtons = document.importNode(template, true);
+	// Add the zoomButtons to the header
+	stack.header.controlsContainerElement.prepend(zoomButtons);
 	// TODO: update stack on focus change
 
-	viewLayout.on("selectionChanged ", (event) => {
+	viewLayout.addEventListener("stackHeaderClick", (event) => {
 		// TODO TP: This event is not firing despite following the docs. Please investigate and fix.
 		log.info("SELECTION CHANGED");
 		log.info(event);
 	});
 
-	viewLayout.on("stackCreated", function (stack) {
-		(viewLayout as any).selectItem(stack);
-		const template = util.getElementById("goldenlayout-header");
-		const zoomButtons = document.importNode((template as any).content, true);
-		// Add the zoomButtons to the header
-		(stack as any).header.controlsContainer.prepend(zoomButtons);
+	viewLayout.on("tabCreated", function (...tabs: EventEmitter.TabParam) {
 		// When a tab is selected then select its stack. For unknown reasons this is not default behaviour of GoldenLayout.
 		// What happens when a tab is moved out of a stack? Testing showed no problems but this should be investigated for potential bugs.
+		tabs[0].setActive(true);
 
-		(stack as any).on("activeContentItemChanged", () => {
-			(viewLayout as any).selectItem(stack);
-		});
-
-		const stackState = () => (stack as any).getActiveContentItem().config.componentState;
+		const stackState = () => stack.getActiveComponentItem().toConfig().componentState as ViewState;
 		const cy = () => stackState().cy;
-		const controls = (stack as any).header.controlsContainer[0];
+		const controls = stack.header.controlsContainerElement;
 		const separateSubs = () => View.getMenu().separateSubs() && !stackState().graph.starMode;
-		const data = [
+		const data = new Map([
 			[
 				".plussign",
 				() => {
@@ -84,11 +77,22 @@ export function goldenLayout(): GoldenLayout {
 					layout.run(cy(), layout.cose, (layoutConfig as any).defaultSubOntologies, false, true);
 				},
 			],
-		];
+		]);
 		for (const datum of data) {
 			controls.querySelector(datum[0]).addEventListener("click", datum[1]);
 		}
 	});
-	viewLayout.init();
+
+	viewLayout.registerComponentFactoryFunction("view", (container: ComponentContainer): View => {
+		log.warn("Oh nO!");
+		const view = new View();
+		view.element = container.element[0];
+		container.element.appendChild(view.cyContainer);
+		container.on("destroy", () => {
+			View.partViews.delete(view);
+		});
+		return view;
+	});
+
 	return viewLayout;
 }
