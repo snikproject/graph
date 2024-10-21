@@ -195,6 +195,7 @@ async function createEdges(from: string, fromNamed: string, instances: boolean, 
 				pl: json[i]["p"].value.replace(/.*[#/]/, ""),
 				...(json[i]["g"] && { g: json[i]["g"].value }), // don't add null/undefined values, see https://stackoverflow.com/a/40560953/398963
 				...(json[i]["ax"] && { ax: json[i]["ax"].value }), // in case of virtual triples: the URI of the axiom
+				trans: json[i]["trans"] || false,
 			},
 			//position: { x: 200, y: 200 }
 		});

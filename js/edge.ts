@@ -7,4 +7,5 @@ export const EDGE = {
 	PROPERTY_LABEL: "pl",
 	GRAPH: "g",
 	AXIOM: "ax",
+	TRANSITIVE: "trans",
 };

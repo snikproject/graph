@@ -42,6 +42,8 @@ export default {
 		},
 		colorMap: colorMap,
 	},
+	/** Properties which are transitive in nature */
+	transitiveProperties: ["rdfs:subClassOf"],
 	// overrides config
 	sparql: {
 		// without trailing slashes!
@@ -82,6 +84,43 @@ export default {
 				owl:annotatedProperty ?p;
 				owl:annotatedTarget ?d.
 			  }
+			}`,
+			/**
+			 * Query to get all triples implied by transitive properties.
+			 *
+			 * When you have the triples
+			 * <pre><code>
+			 * :a :p :b
+			 * :b :p :c
+			 * </code></pre>,
+			 * then this query will also return the triple <code>:a :p :c</code>
+			 * (if you gave :p as a transitive property in the input array).
+			 *
+			 * This will not, however, produce the triple <code>:a :p :c</code>
+			 * from <pre><code>
+			 * :a :p :b
+			 * :c rdfs:subClassOf :a
+			 * </code></pre>,
+			 * even if you pass :p as an item in the input array.
+			 * @param from "FROM ..." SPARQL clause
+			 * @param transitive Properties represented as strings (e.g. "rdfs:subClassOf", "<http://www.w3.org/2000/01/rdf-schema#subClassOf">, whatever the endpoint can parse) which are transitive
+			 * @returns SPARQL query listing all transitive properties
+			 */
+			transitive: (from: string, transitive: Array<string>) => `select ?c ?p ?d ?trans
+			${from}
+			{
+			  {${transitive
+					.map(
+						(trans) => `{
+						  ?c a [rdfs:subClassOf meta:Top].
+						  ?d a [rdfs:subClassOf meta:Top].
+						  ?c ${trans}+ ?d.
+						  BIND(${trans} AS ?p).
+						}`
+					)
+					.join("UNION")}
+			  }
+			  BIND(true AS ?trans)
 			}`,
 		},
 	},
