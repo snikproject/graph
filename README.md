@@ -9,7 +9,7 @@
 
 Visualization of the SNIK ontology using the Cytoscape.js graph library.
 Live at <https://www.snik.eu/graph> (stable) and <https://snikproject.github.io/graph/index.html> (master branch).
-<!--Browse the code documentation [here](https://snikproject.github.io/graph/index.html)!-->
+Browse the code documentation [here](https://snikproject.github.io/graph/doc/).
 
 ## Installation and Preview
 
