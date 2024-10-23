@@ -151,7 +151,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 					selector: "node",
 					onClickFunction: (event) => {
 						graph.cy.remove(event.target);
-						util.createGitHubNodeDeletionIssue(event.target);
+						util.deleteClass(event.target);
 					},
 				},
 				{

@@ -42,7 +42,7 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 		{
 			id: "edge-confirm-link",
 			selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`,
-			onClickFunction: (event) => util.createGitHubConfirmLinkIssue(event.target),
+			onClickFunction: (event) => util.confirmLink(event.target),
 		},
 		/** Context menu for edges in development mode that are either confirmed interlinks (skos:closeMatch and friends in the match graph) or meta relations, such as meta:updates.
 			Offers base and development commands. */
@@ -54,7 +54,7 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 					id: "remove-permanently",
 					onClickFunction: (event) => {
 						graph.cy.remove(event.target);
-						util.createGitHubEdgeDeletionIssue(event.target);
+						util.deleteTriple(event.target);
 					},
 				},
 				{

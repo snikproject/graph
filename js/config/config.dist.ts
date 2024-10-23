@@ -3,10 +3,8 @@ Copy to js/config/config.ts after checkout and adapt to your preferences.
 */
 
 import type { LogLevelDesc } from "loglevel";
-// eslint-disable-next-line no-unused-vars
 import snikConf from "./config.snik";
-// eslint-disable-next-line no-unused-vars
-import hitoConf from "./config.hito";
+//import hitoConf from "./config.hito";
 
 export const config = {
 	defaultSubOntologies: ["meta", "bb", "ob", "ciox", "he", "it4it"],
@@ -37,11 +35,10 @@ export const config = {
 	git: {
 		defaultIssueAssignee: "KonradHoeffner", // if you fork, please change
 		issueLabels: {
+			bug: "bug",
 			confirmLink: "link",
-			editNode: "",
-			editEdge: "",
-			deleteEdge: "deletetripel",
-			deleteNode: "deleteclass",
+			deleteTriple: "deletetriple",
+			deleteClass: "deleteclass",
 		},
 		repo: {
 			ontology: "https://github.com/snikproject/ontology",

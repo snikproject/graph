@@ -4,9 +4,7 @@ import type { NodeSingular, EdgeSingular } from "cytoscape";
 import log from "loglevel";
 import { EDGE } from "../edge";
 import { NODE } from "../node";
-import * as sparql from "../sparql";
 import * as rdf from "../rdf";
-import * as language from "../lang/language";
 import * as packageInfo from "../../package.json";
 export const VERSION = packageInfo.version;
 // GitHub allows for 8201 characters, but some browser limit around 2000 chars:
@@ -62,84 +60,63 @@ export function createGitHubIssue(repo: string, title: string, body: string, ass
  * @param repo - GIT repository URL
  * @param title - issue title
  * @param template - template filename without the .yml extension
+ * @param label - GitHub issue label
  * @param fields - form field keys and string values
  */
-export function createGitHubTemplateIssue(repo: string, title: string, template: string, fields: [string, string][]): void {
+export function createGitHubTemplateIssue(repo: string, title: string, template: string, label: string, fields: [string, string][]): void {
 	const encodedFields = fields.map(([key, value]) => `&${key}=${encodeURIComponent(value)}`).reduce((a, b) => a + b);
-	window.open(`${repo}/issues/new?template=${template}.yml&assignees=${config.git.defaultIssueAssignee}&title=${encodeURIComponent(title)}${encodedFields}`);
+	window.open(
+		`${repo}/issues/new?template=${template}.yml&assignees=${config.git.defaultIssueAssignee}&labels=${label}&title=${encodeURIComponent(title)}${encodedFields}`
+	);
 }
 
 /**
- * Prompts creation of an issue on GitHub with the label specified in `config.git.issueLabels.deleteNode` and the default assignee to remove the given node.
- * @param node The node which is to be removed
+ * Prompts creation of an issue on GitHub to remove the given class.
+ * @param node The cytoscape node representing the class to be removed
  */
-export function createGitHubNodeDeletionIssue(node: NodeSingular) {
-	const clazzShort = rdf.short(node.data(NODE.ID));
-
-	sparql.describe(node.data(NODE.ID)).then((bindings) => {
-		const body = `Please permanently delete the class ${clazzShort}:
-\`\`\`sparql
-# WARNING: THIS WILL DELETE ALL TRIPLES THAT CONTAIN THE CLASS ${clazzShort} FROM THE GRAPH AS EITHER SUBJECT OR OBJECT
-# ALWAYS CREATE A BACKUP BEFORE THIS OPERATION AS A MISTAKE MAY DELETE THE WHOLE GRAPH.
-# THERE MAY BE DATA LEFT OVER IN OTHER GRAPHS, SUCH AS <http://www.snik.eu/ontology/limes-exact> or <http://www.snik.eu/ontology/match>.
-# THERE MAY BE LEFTOVER DATA IN AXIOMS OR ANNOTATIONS, CHECK THE UNDO DATA FOR SUCH THINGS.
-DELETE DATA FROM <${rdf.longPrefix(node.data(NODE.ID))}>
-{
-{<${node.data(NODE.ID)}> ?p ?y.} UNION {?x ?p <${node.data(NODE.ID)}>.}
-}
-\`\`\`\n
-**Warning: Restoring a class with the following triples is not guaranteed to work and may have unintended consequences if other edits occur between the deletion and restoration.
-This only contains the triples from graph ${rdf.longPrefix(node.data(NODE.ID))}.**
-Undo based on these triples:
-\`\`\`
-${bindings}
-\n\`\`\`
-${language.CONSTANTS.SPARUL_WARNING}`;
-		createGitHubIssue(config.git.repo.ontology, "Remove class " + clazzShort, body, undefined, config.git.issueLabels.deleteNode);
-	});
+export function deleteClass(node: NodeSingular) {
+	const clazz = rdf.short(node.data(NODE.ID));
+	createGitHubTemplateIssue(
+		config.git.repo.ontology,
+		"Remove class " + clazz,
+		"deleteclass",
+		config.git.issueLabels.deleteClass,
+		Object.entries({ class: clazz })
+	);
 }
 
 /**
- * Prompts creation of an issue on GitHub with the label specified in `config.git.issueLabels.deleteEdge` and the default assignee to remove the given edge (triple).
- * @param edge The edge (standing for a triple) which is to be removed
+ * Prompts creation of an issue on GitHub with the default assignee to remove the given edge (triple).
+ * @param edge The cytoscape edge representing the triple to be removed
  */
-export function createGitHubEdgeDeletionIssue(edge: EdgeSingular) {
-	const body = `Please permanently delete the edge ${edgeLabel(edge)}:
-\`\`\`sparql
-DELETE DATA FROM <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
-{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-\`\`\`\n
-Undo with
-\`\`\`sparql
-INSERT DATA INTO <${rdf.longPrefix(edge.data(EDGE.SOURCE))}>
-{<${edge.data(EDGE.SOURCE)}> <${edge.data(EDGE.PROPERTY)}> <${edge.data(EDGE.TARGET)}>.}
-\`\`\`\n
-${language.CONSTANTS.SPARUL_WARNING}`;
-	createGitHubIssue(config.git.repo.ontology, edgeLabel(edge), body, undefined, config.git.issueLabels.deleteEdge);
+export function deleteTriple(edge: EdgeSingular) {
+	const subject = rdf.short(edge.data(EDGE.SOURCE));
+	const predicate = rdf.short(edge.data(EDGE.PROPERTY));
+	const object = rdf.short(edge.data(EDGE.TARGET));
+	createGitHubTemplateIssue(
+		config.git.repo.ontology,
+		`Delete triple ${subject} ${predicate} ${object}`,
+		"deletetriple",
+		config.git.issueLabels.deleteTriple,
+		Object.entries({ subject, predicate, object })
+	);
 }
 
 /**
  * Prompts creation of an issue on GitHub to confirm the given LIMES link.
  * @param link The edge of the link which is to be confirmed
  */
-export function createGitHubConfirmLinkIssue(link: EdgeSingular) {
+export function confirmLink(link: EdgeSingular) {
 	link.data(EDGE.GRAPH, "http://www.snik.eu/ontology/match");
-	const source = link.data(EDGE.SOURCE);
-	const target = link.data(EDGE.TARGET);
-	const property = link.data(EDGE.PROPERTY);
-	const triple = `{<${source}> <${property}> <${target}>.}`;
-	const sparql = `Confirm on the SPARQL endpoint via:
-\`\`\`sparql
-DELETE DATA FROM <http://www.snik.eu/ontology/limes-exact> ${triple}
-INSERT DATA INTO <http://www.snik.eu/ontology/match> ${triple}
-\`\`\`\n
-Undo with
-\`\`\`sparql
-DELETE DATA FROM <http://www.snik.eu/ontology/match> ${triple}
-INSERT DATA INTO <http://www.snik.eu/ontology/limes-exact> ${triple}
-\n\`\`\`\n
-${language.CONSTANTS.SPARUL_WARNING}`;
-	createGitHubTemplateIssue(config.git.repo.application, "Confirm " + edgeLabel(link), "link", Object.entries({ source, target, sparql }));
+	const source = rdf.short(link.data(EDGE.SOURCE));
+	const target = rdf.short(link.data(EDGE.TARGET));
+	createGitHubTemplateIssue(
+		config.git.repo.ontology,
+		"Confirm " + edgeLabel(link),
+		"link",
+		config.git.issueLabels.confirmLink,
+		Object.entries({ source, target })
+	);
 }
 
 export function gitInfo(): string {
@@ -159,7 +136,7 @@ export function createGitHubBugReportIssue() {
 		.filter((x) => !x.includes("%20"))
 		.reduce((a, b) => a + "\n" + b)
 		.substr((-LOG_LIMIT * 3) / 4);
-	createGitHubTemplateIssue(config.git.repo.application, "", "bugreport", Object.entries({ version, logs }));
+	createGitHubTemplateIssue(config.git.repo.application, "", "bugreport", config.git.issueLabels.bug, Object.entries({ version, logs }));
 }
 
 /** Creates a human readable string of the triple that an link represents.
