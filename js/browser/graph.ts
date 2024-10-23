@@ -587,9 +587,7 @@ export class Graph {
 	}
 
 	/** Create and return a new graph if the option is set to create star operations in a new view.
-	 *  @param title - optional view title
 	 *  @returns this iff the option to create stars in a new view is unset, a new view's graph if it is set */
-	//async newGraph(title?: string, alwaysNew: boolean = false): Promise<Graph> {
 	async newGraph(alwaysNew: boolean = false): Promise<Graph> {
 		if (!alwaysNew && this !== View.mainView.state.graph) {
 			return this;
