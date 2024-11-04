@@ -28,6 +28,7 @@ export const en = {
 		he: "HE",
 		it: "IT",
 		it4it: "IT4IT",
+		bb2: "BB2",
 		role: "Role",
 		function: "Function",
 		entitytype: "EntityType",

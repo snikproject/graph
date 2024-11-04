@@ -17,6 +17,7 @@ const filterData = [
 	[`node[${NODE.SOURCE}='he']`, "he"],
 	[`node[${NODE.SOURCE}='it']`, "it"],
 	[`node[${NODE.SOURCE}='it4it']`, "it4it"],
+	[`node[${NODE.SOURCE}='bb2']`, "bb2"],
 	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_ROLE}']`, "role"],
 	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_FUNCTION}']`, "function"],
 	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_ENTITY_TYPE}']`, "entitytype"],

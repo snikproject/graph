@@ -552,7 +552,7 @@ export class Graph {
 				for (const key in labels) {
 					labels[key] = [[...labels[key]].reduce((a, b) => a + ", " + b)];
 				}
-				const priorities = ["bb", "ob", "he", "it4it", "ciox"];
+				const priorities = ["bb", "ob", "he", "it4it", "ciox", "bb2"];
 				const priority = (source) => {
 					let p = priorities.indexOf(source);
 					if (p === -1) {
