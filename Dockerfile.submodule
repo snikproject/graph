@@ -2,7 +2,7 @@
 FROM node
 WORKDIR /src
 COPY graph/package.json graph/package.json
-RUN npm install --no-fund --ignore-scripts --no-audit
+RUN npm install --no-fund --ignore-scripts --no-audit --prefix ./graph
 COPY graph graph
 COPY .git .git
 WORKDIR /src/graph
