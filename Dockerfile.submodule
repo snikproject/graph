@@ -1,10 +1,19 @@
 # syntax=docker/dockerfile:1
+# This file only exists because SNIK Graph needs information from git for the about window.
+# When checked out as a submodule, .git is a file pointing to the .git directory of the parent directory.
+# To access the .git dir of the parent folder, this Dockerfile is build with the parent folder as context.
 FROM node
 WORKDIR /src
 COPY graph/package.json graph/package.json
 RUN npm install --no-fund --ignore-scripts --no-audit --prefix ./graph
-COPY graph graph
-COPY .git .git
+# The .dockerignore of the graph folder is ignored, so we need to copy each directory separately to not pick up useless junk like node_modules.
+COPY graph/js graph/js
+COPY graph/img graph/img
+COPY graph/css graph/css
+COPY graph/html graph/html
+COPY graph/favicon.ico graph/*.html graph/*.json graph/*.ts graph/*.js graph/
+COPY .git/modules/graph .git/modules/graph
+COPY graph/.git graph/.git
 WORKDIR /src/graph
 RUN cp js/config/config.dist.ts js/config/config.ts
 ARG SPARQL_ENDPOINT=https://www.snik.eu/sparql
