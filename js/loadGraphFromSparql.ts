@@ -228,7 +228,7 @@ async function createNodes(from: string, instances: boolean): Promise<Array<Elem
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
 export async function loadGraphFromSparql(cy: Core, graphs: Array<string>, instances: boolean = false, virtual: boolean = false): Promise<void> {
-	log.debug(`Loading graph from endpoint ${config.ontology.sparql.endpoint} with graphs ${graphs}.`);
+	log.debug(`Loading graph from endpoint ${config.ontology.sparql.endpoint} with graphs ${graphs.join(",")}.`);
 	const from = graphs.map((g) => `FROM <${g}>`).reduce((a, b) => a + "\n" + b, "");
 	const fromNamed = from.replace(/FROM/g, "FROM NAMED");
 
