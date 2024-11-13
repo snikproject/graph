@@ -1,0 +1,1 @@
+cp js/config/config.dist.ts js/config/config.ts
