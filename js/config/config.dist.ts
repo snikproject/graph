@@ -46,3 +46,5 @@ export const config = {
 		},
 	},
 };
+// uncomment when you have a custom SPARQL endpoint, but want to use the SNIK template still
+//config.ontology.sparql.endpoint="http://localhost:8080/sparql";
