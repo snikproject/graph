@@ -51,7 +51,7 @@
 		"cytoscape"
 	],
 	"bugs": {
-		"url": "https://github.com/IMISE/snik-cytoscape.js/issues"
+		"url": "https://github.com/snikproject/graph/issues"
 	},
 	"scripts": {
 		"dev": "vite",
