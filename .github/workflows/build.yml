@@ -31,7 +31,7 @@ jobs:
       - name: Install
         run: |
           cp js/config/config.dist.ts js/config/config.ts
-          npm install --no-fund --ignore-scripts --no-audit --legacy-peer-deps
+          npm install --no-fund --ignore-scripts --no-audit
 
       - name: Test
         run: |
