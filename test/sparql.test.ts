@@ -42,6 +42,7 @@ describe("sparql", () => {
 					//'http://www.snik.eu/ontology/it',
 					"http://www.snik.eu/ontology/ciox",
 					"http://www.snik.eu/ontology/bb",
+					"http://www.snik.eu/ontology/bb2",
 					"http://www.snik.eu/ontology/he",
 					"http://www.snik.eu/ontology/it4it",
 				]);
