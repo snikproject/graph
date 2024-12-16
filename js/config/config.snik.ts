@@ -19,6 +19,7 @@ const colorMap = new Map([
 	["he", "rgb(150,255,120)"],
 	["it", "rgb(204, 0, 204)"],
 	["it4it", "rgb(255, 255, 0)"],
+	["bb2", "rgb(0, 255, 255)"],
 ]);
 
 export default {
