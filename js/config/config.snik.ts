@@ -27,6 +27,9 @@ export default {
 	name: "SNIK",
 	initialView: snikView,
 	isSnik: true,
+	defaultSubOntologies: ["meta", "bb", "ob", "ciox", "he", "it4it", "bb2"],
+	allSubOntologies: ["meta", "bb", "ob", "ciox", "he", "he-unconsolidated", "it4it", "bb2"],
+	helperGraphs: ["limes-exact", "match"],
 	style: {
 		shape: (node: NodeSingular) => shapeMap.get(node.data(NODE.SUBTOP)) || shapeMap.get(node.data(NODE.ID)) || "hexagon",
 		color: (node: string | NodeSingular) => {

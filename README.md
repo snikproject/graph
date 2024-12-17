@@ -54,6 +54,31 @@ Requires a browser with [ES6 module support](https://caniuse.com/es6-module).
 * [SNIK Project Homepage](https://www.snik.eu/)
 * generate API documentation in the `docs` folder with `npm run doc`
 
+## Configuration
+SNIK Graph visualizes SNIK by default and is optimized for it but you can configure it to visualize other ontologies as well.
+
+### GET Parameters
+
+All GET parameters are optional and must be lower case.
+Flags are disabled by default and not need a value, for example <https://www.snik.eu/graph?empty&benchmark>.
+Default parameter values are specified in `js/config.dist.ts`.
+Values for keys starting with `ontology` are specified in the ontology config included in the config, by default `js/config/config.snik.ts`.
+
+|**Flag**|**Description**|
+|--------|-------------|
+|empty|Skip initial graph loading and show button to load a local [Cytoscape.js JSON](https://js.cytoscape.org/#notation/elements-json) file.|
+|benchmark|Add an overlay with performance statistics such as FPS and number of classes.|
+|instances|Load and show instances when loading from SPARQL endpoint, not only classes.|
+|virtual|Create "virtual triples" to visualize connections like domain-range.|
+
+|**Parameter**|**Type**|**Config Key**|**Default**|**Description**|
+|-------------|--------|--------------|-----------|---------------|
+|class|URI|||Center and highlight the given class, e.g. <https://www.snik.eu/graph?clazz=http://www.snik.eu/ontology/bb/Management>. Skips the default view.|
+|json|URL|||Skip initial graph loading and instead load a [Cytoscape.js JSON](https://js.cytoscape.org/#notation/elements-json) object from the given URL.|
+|sparql|URL|ontology.sparql.endpoint|<https://www.snik.eu/sparql>|SPARQL endpoint to load the graph from|
+|graph|URI|ontology.sparql.graph|<https://www.snik.eu/ontology>|SPARQL RDF graph or RDF graph group|
+|sub|comma-separated list|helperGraphs + defaultSubOntologies|meta,bb,bb2,ob,ciox,he,it4it,limes-exact,match|List of subgraphs to load, only applies to SNIK.|
+
 ## Development
 
 ### Scripts

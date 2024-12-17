@@ -7,10 +7,7 @@ import snikConf from "./config.snik";
 //import hitoConf from "./config.hito";
 
 export const config = {
-	defaultSubOntologies: ["meta", "bb", "ob", "ciox", "he", "it4it", "bb2"],
-	allSubOntologies: ["meta", "bb", "ob", "ciox", "he", "he-unconsolidated", "it4it", "bb2"],
 	nodeSize: 39,
-	helperGraphs: ["limes-exact", "match"],
 	activeOptions: ["edgecolor"], // initially active options, choose a subset of: ["dev", "ext","day", "edgecolor"]
 	searchCloseMatch: true, // true is rejected because of the high estimated time by the SPARQL endpoint because of too many optional clauses
 	// only used for mobile, desktop will always use cxttapstart

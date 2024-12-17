@@ -15,41 +15,49 @@ import { View } from "./view";
 
 interface Params {
 	empty: boolean;
-	clazz: string;
-	jsonUrl: string;
-	endpoint: string;
+	benchmark: boolean;
 	instances: boolean;
 	virtual: boolean;
-	rdfGraph: string;
+	class: string;
+	json: string;
+	sparql: string;
+	graph: string;
 	sub: string;
-	benchmark: boolean;
 }
 
-/** Parse browser URL POST parameters. */
+/** A flag is a GET parameter with a boolean value.
+Allow setting a flag without a value, for example <https://www.snik.eu/graph?instances>.
+In this case the empty string is returned, see <https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/get>.
+The alternative is <https://www.snik.eu/graph?instances=true> but all other values are treated as false.
+This is needed in case one wants to override a flag that is active by default through the configuration. */
+function parseFlag(f: string): boolean {
+	return f === "" || f === "true";
+}
+
+/** Parse browser URL GET parameters. */
 function parseParams(): Params {
 	const url = new URL(window.location.href);
 	const defaults = {
-		endpoint: config.ontology.sparql.endpoint,
+		sparql: config.ontology.sparql.endpoint,
 		instances: config.ontology.sparql.instances,
 	};
 	// TypeScript interfaces don't exist on runtime, keep in sync with Params interface.
-	const paramKeys = new Set(["empty", "benchmark", "instances", "virtual", "clazz", "jsonUrl", "endpoint", "rdfGraph", "sub"]);
+	const paramKeys = new Set(["empty", "benchmark", "instances", "virtual", "class", "json", "sparql", "graph", "sub"]);
 	const unknown = new Set(Array.from(url.searchParams.keys())).difference(paramKeys);
 	if (unknown.size > 0) {
 		log.warn("Unknown GET parameters: " + Array.from(unknown).join(", "));
 	}
 	return Object.assign(defaults, {
-		empty: url.searchParams.get("empty") !== null,
-		clazz: url.searchParams.get("class"),
-		jsonUrl: url.searchParams.get("json"),
-		...(url.searchParams.get("sparql") && { endpoint: url.searchParams.get("sparql") }), // don't overwrite default with null
-		// load and show instances when loading from endpoint, not only class
-		// specify either without value ...&instances or as ...&instances=true
-		...(url.searchParams.get("instances") !== null && { instances: url.searchParams.get("instances") === "" || url.searchParams.get("instances") === "true" }),
-		virtual: url.searchParams.get("virtual") !== null, // create "virtual triples" to visualize connections like domain-range
-		rdfGraph: url.searchParams.get("graph"),
+		empty: parseFlag(url.searchParams.get("empty")),
+		benchmark: parseFlag(url.searchParams.get("benchmark")),
+		// load and show instances when loading from endpoint, not only classes
+		...(url.searchParams.get("instances") && { instances: parseFlag(url.searchParams.get("instances")) }),
+		virtual: parseFlag(url.searchParams.get("virtual")), // create "virtual triples" to visualize connections like domain-range
+		class: url.searchParams.get("class"),
+		json: url.searchParams.get("json"),
+		...(url.searchParams.get("sparql") && { sparql: url.searchParams.get("sparql") }), // don't overwrite default with null
+		graph: url.searchParams.get("graph"),
 		sub: url.searchParams.get("sub"),
-		benchmark: url.searchParams.get("benchmark") !== null,
 	});
 }
 
@@ -83,15 +91,15 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 			});
 			return;
 		}
-		if (params.jsonUrl) {
-			log.info(`Loading from JSON URL ` + params.jsonUrl);
-			const json = await (await fetch(params.jsonUrl)).json();
+		if (params.json) {
+			log.info(`Loading from JSON URL ` + params.json);
+			const json = await (await fetch(params.json)).json();
 			graph.cy.add(json);
 			layout.run(graph.cy, layout.eulerTight);
 			return;
 		}
-		log.debug("Loading from SPARQL Endpoint " + params.endpoint);
-		config.ontology.sparql.endpoint = params.endpoint; // loadGraphFromSparql loads from config.ontology.sparql.endpoint
+		log.debug("Loading from SPARQL Endpoint " + params.sparql);
+		config.ontology.sparql.endpoint = params.sparql;
 		const graphs: string[] = [];
 		if (config.ontology.isSnik) {
 			// We can only load specific subgraphs of SNIK using the "sub" GET parameter.
@@ -99,12 +107,12 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 			let subs: string[] = params.sub?.split(",") || [];
 			if (subs.length === 0) {
 				// no override specified, use default SNIK values
-				subs = [...config.helperGraphs, ...config.defaultSubOntologies];
+				subs = [...config.ontology.helperGraphs, ...config.ontology.defaultSubOntologies];
 			}
 			graphs.push(...subs.map((g) => sparql.SNIK.PREFIX + g));
-		} else if (params.rdfGraph) {
-			graphs.push(params.rdfGraph);
-			config.ontology.sparql.graph = params.rdfGraph;
+		} else if (params.graph) {
+			graphs.push(params.graph);
+			config.ontology.sparql.graph = params.graph;
 		} else if (config.ontology.sparql.graph) {
 			graphs.push(config.ontology.sparql.graph);
 		}
@@ -152,10 +160,10 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 			await layout.run(graph.cy, layout.euler);
 		}
 
-		if (params.clazz) {
-			log.info(`Parameter "class" detected. Centering on URI ${params.clazz}.`);
+		if (params.class) {
+			log.info(`Parameter "class" detected. Centering on URI ${params.class}.`);
 			// shouldn't be needed in theory due to the await in front of layout.run/runCached but is needed in practice
-			setTimeout(() => graph.presentUri(params.clazz), 300);
+			setTimeout(() => graph.presentUri(params.class), 300);
 		}
 	} catch (e) {
 		log.error(e);
