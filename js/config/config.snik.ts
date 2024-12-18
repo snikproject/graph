@@ -36,8 +36,8 @@ export default {
 				key = node;
 			} else {
 				const subonto: string = node.data(NODE.SOURCE);
-				const cutoff = subonto.lastIndexOf("/");
-				key = subonto.substring(cutoff + 1);
+				const cutoff = subonto?.lastIndexOf("/");
+				key = subonto?.substring(cutoff + 1);
 			}
 			return colorMap.get(key) || "orange";
 		},
