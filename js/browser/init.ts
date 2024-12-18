@@ -32,6 +32,12 @@ function parseParams(): Params {
 		endpoint: config.ontology.sparql.endpoint,
 		instances: config.ontology.sparql.instances,
 	};
+	// TypeScript interfaces don't exist on runtime, keep in sync with Params interface.
+	const paramKeys = new Set(["empty", "benchmark", "instances", "virtual", "clazz", "jsonUrl", "endpoint", "rdfGraph", "sub"]);
+	const unknown = new Set(Array.from(url.searchParams.keys())).difference(paramKeys);
+	if (unknown.size > 0) {
+		log.warn("Unknown GET parameters: " + Array.from(unknown).join(", "));
+	}
 	return Object.assign(defaults, {
 		empty: url.searchParams.get("empty") !== null,
 		clazz: url.searchParams.get("class"),
