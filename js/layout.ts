@@ -224,6 +224,10 @@ export async function runCached(
 		log.error("Web storage not available, could not access browser-based cache.");
 		return run(cy, layoutConfig, subs, separateSubs, false);
 	}
+	if (!subs) {
+		log.debug("subs not supplied, run layout without cache");
+		return run(cy, layoutConfig, undefined, false, false);
+	}
 	const name = storageName(layoutConfig.name, subs, separateSubs);
 	// web storage
 	const cacheItem = localStorage.getItem(name);
