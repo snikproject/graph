@@ -29,6 +29,7 @@ export default (_) => {
 				},
 				output: {
 					assetFileNames: "assets/[name][extname]",
+					manualChunks: { config: ["js/config/config.ts"] },
 				},
 			},
 		},
