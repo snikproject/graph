@@ -62,7 +62,7 @@ function parseParams(): Params {
 }
 
 /**
- * Apply parameters.
+ * Apply parameters and load graph.
 @param graph - the graph to apply the params to
 @param params - parameter object */
 async function applyParams(graph: Graph, params: Params): Promise<void> {
@@ -101,13 +101,13 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 		log.debug("Loading from SPARQL Endpoint " + params.sparql);
 		config.ontology.sparql.endpoint = params.sparql;
 		const graphs: string[] = [];
-		if (config.ontology.isSnik) {
+		if (config.ontology.snik) {
 			// We can only load specific subgraphs of SNIK using the "sub" GET parameter.
 			// Attention: This is different from the SNIK subontology filters, which use the Cytoscape node "source" data element to filter at runtime without reloading.
 			let subs: string[] = params.sub?.split(",") || [];
 			if (subs.length === 0) {
 				// no override specified, use default SNIK values
-				subs = [...config.ontology.helperGraphs, ...config.ontology.defaultSubOntologies];
+				subs = [...config.ontology.snik.helperGraphs, ...config.ontology.snik.defaultSubOntologies];
 			}
 			graphs.push(...subs.map((g) => sparql.SNIK.PREFIX + g));
 		} else if (params.graph) {
@@ -124,27 +124,15 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 
 		// hide "rdf:type"-edges
 		Graph.setVisible(graph.cy.edges("[p='http://www.w3.org/1999/02/22-rdf-syntax-ns#type']"), false);
-
-		// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
-		// @ts-ignore Needed to easily swap different config files, we handle it not existing here
 		if (config.ontology?.initialView) {
-			const json: ViewJson = {
-				// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
-				// @ts-ignore Needed to easily swap different config files, we handle it not existing here
-				version: config.ontology.initialView.version,
-				// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
-				// @ts-ignore Needed to easily swap different config files, we handle it not existing here
-				title: config.ontology.initialView.title,
-				// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
-				// @ts-ignore Needed to easily swap different config files, we handle it not existing here
-				type: config.ontology.initialView.type,
-				// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
-				// @ts-ignore Needed to easily swap different config files, we handle it not existing here
-				graph: config.ontology.initialView.graph,
-			};
+			const json: ViewJson = config.ontology.initialView;
 			loadLayoutFromJsonObject(json, View.activeState().graph);
-		} else if (config.ontology.isSnik) {
-			await layout.runCached(graph.cy, layout.euler, config.defaultSubOntologies, false); // todo: use the correct subs
+		}
+		// This old code path is never run because we have an initial view with predefined positions for SNIK.
+		// Keep it for now as a way to quickly visualize additions, such as the new bb2 subontology.
+		// Can also be adapted to other graphs then SNIK and HITO that are too large to show at once initially without the effort of specifying initial layout positions.
+		else if (config.ontology.snik) {
+			await layout.runCached(graph.cy, layout.euler, config.ontology.snik.defaultSubOntologies, false); // todo: use the correct subs
 			Graph.setVisible(graph.cy.elements(), false);
 			// restrict visible nodes at start to improve performance
 			// use default: star around bb:ChiefInformationOfficer

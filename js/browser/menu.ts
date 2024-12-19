@@ -170,7 +170,9 @@ export class Menu {
 					{
 						action: async () => {
 							await loadGraphFromSparql(View.activeState().graph.cy, []);
-							progress(async () => await layout.runCached(View.activeState().graph.cy, layout.euler, config.defaultSubOntologies, this.separateSubs()));
+							progress(
+								async () => await layout.runCached(View.activeState().graph.cy, layout.euler, config.ontology?.snik?.defaultSubOntologies, this.separateSubs())
+							);
 						},
 						i18n: "load-sparql",
 					},
@@ -181,7 +183,7 @@ export class Menu {
 					{ action: () => save.saveLayout(View.activeState()), i18n: "save-layout" },
 					{
 						action: () => {
-							progress(() => layout.run(View.activeState().cy, layout.euler, config.defaultSubOntologies, this.separateSubs(), true));
+							progress(() => layout.run(View.activeState().cy, layout.euler, config.ontology?.snik?.defaultSubOntologies, this.separateSubs(), true));
 						},
 						i18n: "recalculate-layout-replace",
 					},
@@ -231,7 +233,7 @@ export class Menu {
 							layout.run(
 								View.activeState().graph.cy,
 								layout.euler,
-								config.defaultSubOntologies,
+								config.ontology?.snik?.defaultSubOntologies,
 								this.separateSubs() && !View.activeState().graph.starMode,
 								true
 							);
@@ -244,7 +246,7 @@ export class Menu {
 							layout.run(
 								View.activeState().graph.cy,
 								layout.eulerTight,
-								config.defaultSubOntologies,
+								config.ontology?.snik?.defaultSubOntologies,
 								this.separateSubs() && !View.activeState().graph.starMode,
 								false
 							);
@@ -257,7 +259,7 @@ export class Menu {
 							layout.run(
 								View.activeState().graph.cy,
 								layout.cose,
-								config.defaultSubOntologies,
+								config.ontology?.snik?.defaultSubOntologies,
 								this.separateSubs() && !View.activeState().graph.starMode,
 								false
 							);

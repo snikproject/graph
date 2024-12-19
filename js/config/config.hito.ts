@@ -35,7 +35,7 @@ export default {
 	id: "hito",
 	name: "HITO",
 	initialView: hitoView,
-	isSnik: false,
+	snik: null,
 	style: {
 		/**
 		 * Finds out which shape to use for any specific node using a map (Citation => rectangle, Classified => ellipse, Catalogue => triangle).
