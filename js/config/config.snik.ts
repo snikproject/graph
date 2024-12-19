@@ -30,6 +30,8 @@ export default {
 		defaultSubOntologies: ["meta", "bb", "ob", "ciox", "he", "it4it", "bb2"],
 		//allSubOntologies: ["meta", "bb", "ob", "ciox", "he", "he-unconsolidated", "it4it", "bb2"],
 		helperGraphs: ["limes-exact", "match"],
+		center: "http://www.snik.eu/ontology/bb/ChiefInformationOfficer", // center node for initial star, only used when there is no initial view
+		centerDepth: 1, // number of successive star operations on all visible nodes, starting with center
 	},
 	style: {
 		shape: (node: NodeSingular) => shapeMap.get(node.data(NODE.SUBTOP)) || shapeMap.get(node.data(NODE.ID)) || "hexagon",

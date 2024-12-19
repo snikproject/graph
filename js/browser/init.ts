@@ -131,18 +131,20 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 		// This old code path is never run because we have an initial view with predefined positions for SNIK.
 		// Keep it for now as a way to quickly visualize additions, such as the new bb2 subontology.
 		// Can also be adapted to other graphs then SNIK and HITO that are too large to show at once initially without the effort of specifying initial layout positions.
-		else if (config.ontology.snik) {
+		else if (config.ontology?.snik?.center) {
 			await layout.runCached(graph.cy, layout.euler, config.ontology.snik.defaultSubOntologies, false); // todo: use the correct subs
 			Graph.setVisible(graph.cy.elements(), false);
-			// restrict visible nodes at start to improve performance
-			// use default: star around bb:ChiefInformationOfficer
-			const start = graph.cy.nodes("node[id='http://www.snik.eu/ontology/bb/ChiefInformationOfficer']");
-			graph.showStar(start);
+			// restrict visible nodes at start to improve performance and clarity
+			const center = graph.cy.nodes(`node[id='${config.ontology.snik.center}']`);
+			Graph.setVisible(center, true);
+			for (let i = 0; i < config.ontology.snik.centerDepth; i++) {
+				graph.showStarMultiplexed()(graph.cy.elements(":visible"));
+			}
 			await layout.run(graph.cy, layout.eulerTight);
 			graph.cy.elements().unselect();
-			graph.cy.center(start);
+			graph.cy.center(center);
 			graph.cy.fit(graph.cy.elements(":visible"));
-			Graph.setVisible(start, true);
+			Graph.setVisible(center, true);
 			graph.starMode = true;
 		} else {
 			await layout.run(graph.cy, layout.euler);
