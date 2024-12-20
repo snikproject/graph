@@ -56,6 +56,12 @@ Requires a browser with [ES6 module support](https://caniuse.com/es6-module).
 
 ## Configuration
 SNIK Graph visualizes SNIK by default and is optimized for it but you can configure it to visualize other ontologies as well.
+You can use the GET parameters on any running instance to filter and tweak the view in small ways without needing to use the UI.
+For more complex operations, such as using your own ontology with SNIK Graph, you can use the configuration files to run your own instance.
+
+> [!NOTE]
+> When forking, please change the `git` configuration keys - for example in the [README](README.md) and [default config](./js/config/config.dist.ts).
+> If you want to use your own ontology, you need to change the `ontology` configuration, see below.
 
 ### GET Parameters
 
@@ -78,6 +84,79 @@ Values for keys starting with `ontology` are specified in the ontology config in
 |sparql|URL|ontology.sparql.endpoint|<https://www.snik.eu/sparql>|SPARQL endpoint to load the graph from|
 |graph|URI|ontology.sparql.graph|<https://www.snik.eu/ontology>|SPARQL RDF graph or RDF graph group|
 |sub|comma-separated list|helperGraphs + defaultSubOntologies|meta,bb,bb2,ob,ciox,he,it4it,limes-exact,match|List of subgraphs to load, only applies to SNIK.|
+
+### Config Files
+
+Using the configuration files, you can change the behaviour of SNIK Graph in major ways.
+To adapt the configuration to your own ontology, check out the [HITO config](./js/config/config.hito.ts) as an example as well.
+
+The instance specific configuration is defined in `js/config/config.ts`.
+It exports a `config` object with key-value pairs.
+The top-level keys are:
+|**Key**|**Description**|**Example**|
+|-------|---------------|-----------|
+| `nodeSize`| Height and width of a node in pixels | `39` |
+| `activeOptions` | Initially active style options, choose a subset of: `["showproperty","day", "edgecolor"]`; partially described in [the manual](./html/manual.html). | `["edgecolor"]` |
+| `searchCloseMatch` | When searching for a resource, also show resources connected to it by `skos:closeMatch`. | `true` |
+| `logLevelConsole` | Only used for mobile, desktop will always use `cxttapstart` | `"debug" as LogLevelDesc` |
+| `logLevelDisplay` | Only used for mobile, desktop will always use `cxttapstart` | `"info" as LogLevelDesc` |
+| `logLevelMemory` | Only used for mobile, desktop will always use `cxttapstart` | `"debug" as LogLevelDesc` |
+| `layoutCacheMinRecall` | Preset layout minimum recall required to have it applied. | `0.95` |
+| `layoutCacheMinPrecision` | Preset layout minimum precision required to have it applied. | `0.5` |
+| `language` | Default language of the interface, choose either `"de"` or `"en"`. | `"en"` |
+| `download` | Configuration regarding resolution of image downloads. ||
+| `ontology` | Configuration regarding the ontology used in SNIK Graph. ||
+| `multiview` | Configuration regarding tabs. ||
+| `git` | Configuration regarding the GitHub repository connection. ||
+
+#### `download`
+
+Changes the resolution of downloaded images.
+Specify an `image` object with the following properties:
+|**Key**|**Description**|**Example**|
+|-------|---------------|-----------|
+| `image.max.width` | Max width of downloaded (high-res) images. | `5000` |
+| `image.max.height` | Max height of downloaded (high-res) images. | `4000` |
+| `image.standard.width` | Standard width of downloaded images. | `1920` |
+| `image.standard.height` | Standard height of downloaded images. | `1080` |
+
+#### `ontology`
+
+> [!TIP]
+> This is probably what you want to change when using your own ontology.
+
+This configuration is rather complex and one of the reasons why we still use a TypeScript file and not a yaml file of some sorts for configuration. 
+In the current [default configuration](./js/config/config.dist.ts), we import either a [snik config](./js/config/config.snik.ts) or a [hito config](./js/config/config.hito.ts) for the SNIK and HITO ontologies, respectively.
+Consult these two files for more examples on this part of the config.
+
+#### `multiview`
+
+|**Key**|**Description**|**Example**|
+|-------|---------------|-----------|
+| `initialTabs` | How many tabs are open at the start. | `1` |
+| `warnOnSessionLoad` | When loading a new session, warn that this will override the old one. | `true` |
+
+#### `git`
+
+We rely on GitHub for automatically assigning accounts and labels to issues (which can be reported through the app).
+Here are the keys we use, **most of which you should probably change when running your own instance**.
+
+> [!CAUTION]
+> Please do not leave them at their default values when forking.
+
+|**Key**|**Description**|**Example**|
+|-------|---------------|-----------|
+| `defaultIssueAssignee` | When reporting an issue through the application, this person is automatically assigned. | `"KonradHoeffner"` |
+| `issueLabels` | We auto-assign some labels in the application and reference them by config keys. If you have different labels in your repository, change these values. | `{ bug: "bug", confirmLink: "link", deleteTriple: "deletetriple", deleteClass: "deleteclass" }` |
+| `repo` | Assign the `ontology` repository and `application` repository to create the issues in. Please consult the following table for where each repo is used. | `{ ontology: "https://github.com/snikproject/ontology", application: "https://github.com/snikproject/graph" }` |
+
+A more in-depth description of the issue labels, and where each type is created:
+|**Key**|**Repository**|**Description**|**Example**|
+|-------|--------------|---------------|-----------|
+| `bug` | `application` | When a bug is reported through the UI, this label is assigned to the issue. | `"bug"` |
+| `confirmLink` | `ontology` | When a limes link is being confirmed (right-click an edge; applies only to the very few, if any, remaining unconfirmed edges), this label is assigned to the issue created for the confirmation. | `"link"` |
+| `deleteTriple` | `ontology` | When a user says a triple should be deleted (right-click any edge), this label is assigned to the issue requesting deletion. | `"deletetriple"` |
+| `deleteClass` | `ontology` | When a user says a class should be deleted (right-click any node), this label is assigned to the issue requesting deletion. | `"deleteclass"` |
 
 ## Development
 

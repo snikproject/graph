@@ -8,8 +8,8 @@ import snikConf from "./config.snik";
 
 export const config = {
 	nodeSize: 39,
-	activeOptions: ["edgecolor"], // initially active options, choose a subset of: ["dev", "ext","day", "edgecolor"]
-	searchCloseMatch: true, // true is rejected because of the high estimated time by the SPARQL endpoint because of too many optional clauses
+	activeOptions: ["edgecolor"], // initially active options, choose a subset of: ["showproperty", "day", "edgecolor"]
+	searchCloseMatch: true,
 	// only used for mobile, desktop will always use cxttapstart
 	logLevelConsole: "debug" as LogLevelDesc,
 	logLevelDisplay: "info" as LogLevelDesc,
