@@ -129,6 +129,34 @@ This configuration is rather complex and one of the reasons why we still use a T
 In the current [default configuration](./js/config/config.dist.ts), we import either a [snik config](./js/config/config.snik.ts) or a [hito config](./js/config/config.hito.ts) for the SNIK and HITO ontologies, respectively.
 Consult these two files for more examples on this part of the config.
 
+When writing your own ontology config, you can either do that in the `config.ts` itself (not recommended), or also write a separate file (recommended).
+
+The subkeys are:
+|**Key**|**Description**|**Example**|
+|-------|---------------|-----------|
+| `id` | ID used in code to identify which ontology is being used, for possibly better integration of a specific ontology (like SNIK). *This seems to be unused.* | `"snik"` |
+| `name` | Name of the ontology in the docs. | `"SNIK"` |
+| `name` | Name of the ontology in the docs. | `"SNIK"` |
+| `initialView` | Object (probably JSON) which is loaded as the initial view. Consult [snik](./js/config/initialView/snik.json) and [hito](./js/config/initialView/hito.json) as examples. ||
+| `snik` | SNIK-specific configuration. Only used for SNIK. Probably `null` if not the default. See below. | `null` |
+| `style` | How to apply shapes and colors to the resources. See below. ||
+| `sparql` | SPARQL-Queries to get triples (edges) and classes (nodes). See below. ||
+
+##### SNIK-specific configuration
+
+##### Style your own ontology
+
+##### SPARQL-Config for custom ontology
+|**Key**|**Description**|**Example**|
+|-------|---------------|-----------|
+| `endpoint` | SPARQL endpoint to use. Sends queries to this server. | `"https://www.snik.eu/sparql"` |
+| `graph` | Base URI / SPARQL graph to use. | `""http://www.snik.eu/ontology"` |
+| `instances` | Whether to display instances of classes. May not work. | `false` |
+| `queries` | SPARQL-queries to query for classes and triples. See below. ||
+
+> [!NOTE]
+> TODO. For now, consult the files in the `js/config` directory for this part.
+
 #### `multiview`
 
 |**Key**|**Description**|**Example**|
