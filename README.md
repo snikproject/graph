@@ -134,9 +134,8 @@ When writing your own ontology config, you can either do that in the `config.ts`
 The subkeys are:
 |**Key**|**Description**|**Example**|
 |-------|---------------|-----------|
-| `id` | ID used in code to identify which ontology is being used, for possibly better integration of a specific ontology (like SNIK). *This seems to be unused.* | `"snik"` |
-| `name` | Name of the ontology in the docs. | `"SNIK"` |
-| `name` | Name of the ontology in the docs. | `"SNIK"` |
+| `id` | ID used to identify which ontology is being used, for possibly better integration of a specific ontology (like SNIK). *This seems to be unused.* | `"snik"` |
+| `name` | Displayed name of the ontology. | `"SNIK"` |
 | `initialView` | Object (probably JSON) which is loaded as the initial view. Consult [snik](./js/config/initialView/snik.json) and [hito](./js/config/initialView/hito.json) as examples. ||
 | `snik` | SNIK-specific configuration. Only used for SNIK. Probably `null` if not the default. See below. | `null` |
 | `style` | How to apply shapes and colors to the resources. See below. ||
@@ -144,7 +143,28 @@ The subkeys are:
 
 ##### SNIK-specific configuration
 
+|**Key**|**Description**|**Example**|
+|-------|---------------|-----------|
+| `defaultSubOntologies` | Array of subontologies to load and show by default. See more below. | `["meta", "bb", "ob", "he"]` |
+| `helperGraphs` | Functionally the exact same as `defaultSubOntologies`, but semantically different. | `["limes-exact", "match"]` |
+| `center` | If `initialView` is not specified, `snik.centerDepth` number of star operations are made on this node. | `"http://www.snik.eu/ontology/bb/ChiefInformationOfficer"` |
+| `centerDepth` | How many star operations to make on `snik.center` if no `initialView` is specified. | `1` |
+
+###### Adding another subontology
+
+> [!NOTE]
+> TODO. For now, you hopefully do not have to do this.
+
 ##### Style your own ontology
+
+Nodes can be individually styled by shape and color.
+This is done via methods which take a cytoscape node and return either a shape name or a color code.
+
+|**Key**|**Description**|
+|-------|---------------|
+| `shape` | Determines the shape of a node. Function that takes a `NodeSingular` and returns one of `"rectangle"`, `"ellipse"`, `"triangle"` or `"hexagon"`. |
+| `color` | Determines the color of a node. Function that accepts a `NodeSingular` or a string with *only* the name of the node (without prefix URI) and returns any color code. |
+| `colorMap` | Needs to be used by `color` function. If a node id is contained here, the node has this color. Used in code to auto assign colors to nodes not covered by the color function. |
 
 ##### SPARQL-Config for custom ontology
 |**Key**|**Description**|**Example**|
@@ -154,8 +174,13 @@ The subkeys are:
 | `instances` | Whether to display instances of classes. May not work. | `false` |
 | `queries` | SPARQL-queries to query for classes and triples. See below. ||
 
+There are two different queries run when filling the graph:
+1. A query to get the classes to display as nodes in the graph from the ontology, and
+2. a query to get the triples to show as edges between the nodes from the ontology.
+
 > [!NOTE]
-> TODO. For now, consult the files in the `js/config` directory for this part.
+> TODO. For more information on what the SPARQL queries need to return,
+> consult the `nodes` and `triples` queries in `js/config/config.snik.ts` and `js/config/config.hito.ts`.
 
 #### `multiview`
 
