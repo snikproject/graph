@@ -150,11 +150,6 @@ The subkeys are:
 | `center` | If `initialView` is not specified, `snik.centerDepth` number of star operations are made on this node. | `"http://www.snik.eu/ontology/bb/ChiefInformationOfficer"` |
 | `centerDepth` | How many star operations to make on `snik.center` if no `initialView` is specified. | `1` |
 
-###### Adding another subontology
-
-> [!NOTE]
-> TODO. For now, you hopefully do not have to do this.
-
 ##### Style your own ontology
 
 Nodes can be individually styled by shape and color.
@@ -295,6 +290,31 @@ If you want to cite SNIK Graph, please refer to our [publication in the Journal 
 Citation info and meta data is documented in CITATION.cff, which is also used by Zenodo to populate the metadata of the [Zenodo record](https://doi.org/10.5281/zenodo.11997333) for each SNIK Graph release.
 
 ## FAQ
+
+### How can I use this for my own ontology?
+
+When using your own ontology, you need to change the configuration in `ontology` and `git`, see above.
+Some things are not configurable yet, but this is actively being worked on.
+
+### How can I add another SNIK subontology?
+
+For this, both the ontology and graph source have to be modified.
+
+First, the things you need to change in the graph.
+
+Some things are changed in the config: you need to add your new subontology by its id in `ontology.snik.defaultSubOntologies`.
+For colors, you need to add it to the `ontology.colorMap`.
+The SNIK ontology config is in [`config.snik.ts`](js/config/config.snik.ts), this probably has to be changed there.
+
+You also need to add a filter so you can filter out the new subontology in the filter menu.
+For this, add your filter function to `filterData` in [`filter.ts`](js/browser/filter.ts).
+These are cytoscape selectors and I18N labels for the button;
+all entities selected by the node selector are filtered by this.
+You then also need to add a label for the new button in [the file for the default language](js/lang/en.ts).
+
+
+> [!NOTE]
+> The ontology part is TODO. For now, you hopefully do not have to do this.
 
 ### The devs told me a bug was fixed but it still occurs
 Browsers may hold an old version of SNIK Graph in the cache.
