@@ -172,15 +172,39 @@ This is done via methods which take a cytoscape node and return either a shape n
 | `endpoint` | SPARQL endpoint to use. Sends queries to this server. | `"https://www.snik.eu/sparql"` |
 | `graph` | Base URI / SPARQL graph to use. | `""http://www.snik.eu/ontology"` |
 | `instances` | Whether to display instances of classes. May not work. | `false` |
-| `queries` | SPARQL-queries to query for classes and triples. See below. ||
+| `queries` | SPARQL-queries to query for classes and triples. See below. | `{ nodes: ..., triples: ... }` |
 
 There are two different queries run when filling the graph:
-1. A query to get the classes to display as nodes in the graph from the ontology, and
-2. a query to get the triples to show as edges between the nodes from the ontology.
+1. A query to get the classes to display as nodes in the graph from the ontology (the *nodes* query), and
+2. a query to get the triples to show as edges between the nodes from the ontology (the *triples* query).
 
-> [!NOTE]
-> TODO. For more information on what the SPARQL queries need to return,
-> consult the `nodes` and `triples` queries in `js/config/config.snik.ts` and `js/config/config.hito.ts`.
+If you want to take a look how the queries are used in the code, consider [`loadGraphFromSparql.ts`](js/loadGraphFromSparql.ts).
+
+##### nodes query
+This method takes a `from` parameter
+which functions as a SPARQL `FROM` clause (specifying the RDF dataset)
+and returns a plain string which is executed as a SPARQL query.
+
+The nodes query is a query which selects the following:
+- `?c` for all (distinct) classes that should be loaded (only loaded classes are contained in triples!)
+- `?l` for labels for the class in all languages as a single string (`GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l`)
+- `?src` is the class that `ov:define`s the class; it does not need to come from the same SPARQL graph and is not distinct
+- `?inst` instances, if you want instances; else use `SAMPLE(?inst) AS ?inst`
+- `?st` in SNIK is the *subtop* of the node, specifies whether this is a *role*, a *function* or an *entity type*; **if you don't use SNIK, this still needs to be selected**, consider using `SAMPLE(?st) AS ?st` to ignore it
+
+##### triples query
+
+This method takes:
+- a `from` parameter which functions as a SPARQL `FROM` clause (specifying the RDF dataset)
+- a `fromNamed` parameter which functions as a SPARQL `FROM NAMED` clause (specifying the RDF dataset)
+- a `virtualTriples`, boolean whether you want to include virtual triples - you can ignore this if you don't want it
+- a `instances`, boolean whether relations between instances should be queried for
+It returns a plain string which is executed as a SPARQL query.
+
+The triples query is a query which selects the following:
+- `?g` as the  [SPARQL `GRAPH`](https://www.w3.org/TR/sparql11-query#rdfDataset) of the triple
+- `?c`, `?p` and `?d` as subject, predicate and object of the triple
+- `?ax` for axioms, you probably want to shove this into an optional section and ignore it (also select `MIN(?ax) as ?ax`)
 
 #### `multiview`
 
