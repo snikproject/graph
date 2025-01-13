@@ -1,6 +1,6 @@
 {
 	"name": "snikgraph",
-	"version": "24.10",
+	"version": "25.01",
 	"description": "SNIK Graph",
 	"main": "js/browser/main.ts",
 	"type": "module",
@@ -31,20 +31,15 @@
 	"devDependencies": {
 		"c8": "^10.1.3",
 		"husky": "^9.1.7",
-		"lint-staged": "^15.2.11",
-		"oxlint": "0.15.3",
+		"lint-staged": "^15.3.0",
+		"oxlint": "0.15.5",
 		"prettier": "^3.4.2",
-		"typedoc": "^0.27.5",
+		"typedoc": "^0.27.6",
 		"typedoc-plugin-merge-modules": "^6.1.0",
-		"typescript": "^5.7.2",
-		"vite": "^6.0.3",
+		"typescript": "^5.7.3",
+		"vite": "^6.0.7",
 		"vitest": "^2.1.8",
-		"vite-plugin-oxlint": "1.1.3"
-	},
-	"overrides": {
-		"vite": {
-			"esbuild": "0.24.0"
-		}
+		"vite-plugin-oxlint": "1.2.1"
 	},
 	"keywords": [
 		"graph",
