@@ -25,6 +25,7 @@ const colorMap = new Map([
 export default {
 	id: "snik",
 	name: "SNIK",
+	title: "SNIK Ontology Graph",
 	initialView: snikView,
 	snik: {
 		defaultSubOntologies: ["meta", "bb", "ob", "ciox", "he", "it4it", "bb2"],

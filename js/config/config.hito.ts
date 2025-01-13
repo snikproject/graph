@@ -34,6 +34,7 @@ function getMapKeyIncludedInString<V>(search: string, map: Map<string, V>): stri
 export default {
 	id: "hito",
 	name: "HITO",
+	title: "Health IT Ontology Graph",
 	initialView: hitoView,
 	snik: null,
 	links: {

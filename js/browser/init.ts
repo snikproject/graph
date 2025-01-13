@@ -164,6 +164,7 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 /** Fill the initial Graph based on the URL GET parameters.
 @param graph - the initial graph */
 export async function fillInitialGraph(graph: Graph): Promise<void> {
+	document.title = config.ontology.title ?? "Ontology Graph";
 	await progress(async () => {
 		const params = parseParams();
 		await applyParams(graph, params);
