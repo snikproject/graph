@@ -21,7 +21,7 @@ body:
         - label: git pull
         - label: '`npm install --include=dev && npm update`'
         - label: '`cp js/config/config.dist.ts js/config/config.ts`'
-        - label: change the version number in `package.json` and `js/browser/init.json` to the new release
+        - label: change the version number in `package.json` and `js/config/initialView/*.json` to the new release
   - type: checkboxes
     id: dependencies
     attributes:

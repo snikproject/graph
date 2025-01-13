@@ -10,7 +10,7 @@ Our releases have the form YY.MM with a corresponding milestone and git tag.
 - [ ] git pull
 - [ ] `npm install --include=dev && npm update`
 - [ ] `cp js/config/config.dist.ts js/config/config.ts`
-- [ ] change the version number in `package.json` and `js/browser/init.json` to the new release
+- [ ] change the version number in `package.json` and `js/config/initialView/*.json` to the new release
 
 ### Upgrade major dependency versions
 
