@@ -138,6 +138,7 @@ The subkeys are:
 | `name` | Displayed name of the ontology. | `"SNIK"` |
 | `initialView` | Object (probably JSON) which is loaded as the initial view. Consult [snik](./js/config/initialView/snik.json) and [hito](./js/config/initialView/hito.json) as examples. ||
 | `snik` | SNIK-specific configuration. Only used for SNIK. Probably `null` if not the default. See below. | `null` |
+| `links` | Links to homepage etc. in the services and help menus. See below. ||
 | `style` | How to apply shapes and colors to the resources. See below. ||
 | `sparql` | SPARQL-Queries to get triples (edges) and classes (nodes). See below. ||
 
@@ -149,6 +150,20 @@ The subkeys are:
 | `helperGraphs` | Functionally the exact same as `defaultSubOntologies`, but semantically different. | `["limes-exact", "match"]` |
 | `center` | If `initialView` is not specified, `snik.centerDepth` number of star operations are made on this node. | `"http://www.snik.eu/ontology/bb/ChiefInformationOfficer"` |
 | `centerDepth` | How many star operations to make on `snik.center` if no `initialView` is specified. | `1` |
+
+##### Help links
+
+If you do not want to display ome or more of these, set them to a falsy value (like `null`).
+
+|**Key**|**Description**|**Example**|
+|-------|---------------|-----------|
+| `homepage` | Link to the homepage of your project. | `"https://www.snik.eu/"` |
+| `metamodel` | Link to a metamodel of your ontology. | `"https://www.snik.eu/public/SNIK_Metamodell_V10.svg"` |
+| `feedbackOntology` | Link to a place where one can submit feedback about your dataset. | `"https://github.com/snikproject/ontology/issues"` |
+| `featureRequest` | Link to a place where one can submit a feature request for the graph. | `[too long]` |
+| `youtube` | Link to a YouTube channel. | `"https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured"` |
+| `sparqlEndpoint` | User-facing SPARQL endpoint. | `"https://www.snik.eu/sparql"` |
+| `rdfBrowser` | RDF browser (e.g. RickView) instance for your ontology. | `"https://www.snik.eu/ontology` |
 
 ##### Style your own ontology
 

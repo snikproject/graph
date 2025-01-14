@@ -295,8 +295,8 @@ export class Menu {
 			{
 				i18n: "services",
 				entries: [
-					{ action: "http://www.snik.eu/sparql", i18n: "sparql-endpoint" },
-					{ action: "http://www.snik.eu/ontology", i18n: "rdf-browser" },
+					config.ontology.links.sparqlEndpoint ? { action: config.ontology.links.sparqlEndpoint, i18n: "sparql-endpoint" } : null,
+					config.ontology.links.rdfBrowser ? { action: config.ontology.links.rdfBrowser, i18n: "rdf-browser" } : null,
 					//["http://snik.eu/evaluation","Data Quality Evaluation","data-quality-evaluation"],
 				],
 			},
@@ -315,17 +315,14 @@ export class Menu {
 					//{action: "https://www.snik.eu/sites/www.snik.eu/files/files/uploads/Einfuehrung/snik-tutorial.pdf", i18n: "tutorial"}, // todo: fix link and uncomment
 					{ action: "html/layoutHelp.html", i18n: "layout-help" },
 					{ action: "doc/index.html", i18n: "developer-doc" },
-					{ action: "https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured", i18n: "youtube-channel" },
+					config.ontology.links.youtube ? { action: config.ontology.links.youtube, i18n: "youtube-channel" } : null,
 					{ action: "html/troubleshooting.html", i18n: "troubleshooting" },
 					{ action: "html/contribute.html", i18n: "contribute" },
-					{ action: "https://www.snik.eu/", i18n: "project-homepage" },
-					{ action: "https://www.snik.eu/public/SNIK_Metamodell_V10.svg", i18n: "meta-model" },
+					config.ontology.links.homepage ? { action: config.ontology.links.homepage, i18n: "project-homepage" } : null,
+					config.ontology.links.metamodel ? { action: config.ontology.links.metamodel, i18n: "meta-model" } : null,
 					{ action: Menu.about, i18n: "about" },
-					{ action: "https://github.com/snikproject/ontology/issues", i18n: "feedback-ontology" },
-					{
-						action: "https://github.com/snikproject/graph/issues/new?assignees=KonradHoeffner&labels=feature&projects=&template=featurerequest.yml",
-						i18n: "feature-request",
-					},
+					config.ontology.links.feedbackOntology ? { action: config.ontology.links.feedbackOntology, i18n: "feedback-ontology" } : null,
+					config.ontology.links.featureRequest ? { action: config.ontology.links.featureRequest, i18n: "feature-request" } : null,
 					{ action: util.createGitHubBugReportIssue, i18n: "bug-report" },
 				],
 			},
@@ -453,6 +450,9 @@ export class Menu {
 			const as: Array<HTMLAnchorElement> = [];
 			aas.push(as);
 			for (const entry of menuElement.entries) {
+				if (entry === null) {
+					continue;
+				}
 				const a = document.createElement("a");
 				as.push(a);
 				a.classList.add("dropdown-entry");

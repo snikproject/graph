@@ -33,6 +33,15 @@ export default {
 		center: "http://www.snik.eu/ontology/bb/ChiefInformationOfficer", // center node for initial star, only used when there is no initial view
 		centerDepth: 1, // number of successive star operations on all visible nodes, starting with center
 	},
+	links: {
+		homepage: "https://www.snik.eu/",
+		metamodel: "https://www.snik.eu/public/SNIK_Metamodell_V10.svg",
+		feedbackOntology: "https://github.com/snikproject/ontology/issues",
+		featureRequest: "https://github.com/snikproject/graph/issues/new?assignees=KonradHoeffner&labels=feature&projects=&template=featurerequest.yml",
+		youtube: "https://www.youtube.com/channel/UCV8wbTpOdHurbaHqP0sAOng/featured",
+		sparqlEndpoint: "http://www.hitontology.eu/sparql",
+		rdfBrowser: "http://www.hitontology.eu/ontology",
+	},
 	style: {
 		shape: (node: NodeSingular) => shapeMap.get(node.data(NODE.SUBTOP)) || shapeMap.get(node.data(NODE.ID)) || "hexagon",
 		color: (node: string | NodeSingular) => {

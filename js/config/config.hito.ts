@@ -36,6 +36,15 @@ export default {
 	name: "HITO",
 	initialView: hitoView,
 	snik: null,
+	links: {
+		homepage: "https://www.hitontology.eu/",
+		metamodel: "https://www.hitontology.eu/public/2024-05-hito_diagram.svg",
+		feedbackOntology: "https://github.com/hitontology/ontology/issues",
+		featureRequest: "https://github.com/snikproject/graph/issues/new?assignees=KonradHoeffner&labels=feature&projects=&template=featurerequest.yml",
+		youtube: null,
+		sparqlEndpoint: "http://www.hitontology.eu/sparql",
+		rdfBrowser: "http://www.hitontology.eu/ontology",
+	},
 	style: {
 		/**
 		 * Finds out which shape to use for any specific node using a map (Citation => rectangle, Classified => ellipse, Catalogue => triangle).
