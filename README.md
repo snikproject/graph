@@ -136,6 +136,7 @@ The subkeys are:
 |-------|---------------|-----------|
 | `id` | ID used to identify which ontology is being used, for possibly better integration of a specific ontology (like SNIK). *This seems to be unused.* | `"snik"` |
 | `name` | Displayed name of the ontology. | `"SNIK"` |
+| `legend` | Raw HTML for legend in the bottom left. | `"<span>&#9632; Entity Type</span>"` |
 | `title` | Title of the browser tab. Defaults to `"Ontology Graph"` if not specified. | `"SNIK Ontology Graph"` |
 | `initialView` | Object (probably JSON) which is loaded as the initial view. Consult [snik](./js/config/initialView/snik.json) and [hito](./js/config/initialView/hito.json) as examples. ||
 | `snik` | SNIK-specific configuration. Only used for SNIK. Probably `null` if not the default. See below. | `null` |
