@@ -25,6 +25,7 @@ const colorMap = new Map([
 export default {
 	id: "snik",
 	name: "SNIK",
+	legend: "<span>&#9632; Entity Type</span> <span>&#9650; Role</span> <span>&#9679; Function</span>",
 	title: "SNIK Ontology Graph",
 	initialView: snikView,
 	snik: {

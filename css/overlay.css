@@ -1,51 +1,65 @@
-.modal {display: none;}
+.modal {
+	display: none;
+}
 
-.modal.is-open {display: block;}
+.modal.is-open {
+	display: block;
+}
 
 .overlay-legend {
-    position: absolute;
-    z-index: 1;
-    bottom: 0px;
-    left: 0;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0, 0.9);
-    overflow-x: hidden;
-    transition: 0.5s;
+	position: absolute;
+	text-align: center;
+	z-index: 1;
+	bottom: 5px;
+	left: 5px;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0.9);
+	overflow-x: hidden;
+	transition: 0.5s;
 }
 
 .fullscreen {
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0, 0.9);
-    overflow-x: hidden;
-    transition: 0.5s;
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0.9);
+	overflow-x: hidden;
+	transition: 0.5s;
 }
 
 .fullscreen a {
-    padding: 8px;
-    text-decoration: none;
-  	font-size: 1em;
-    display: block;
-    transition: 0.3s;
+	padding: 8px;
+	text-decoration: none;
+	font-size: 1em;
+	display: block;
+	transition: 0.3s;
 }
 
-.fullscreen a:hover, .fullscreen a:focus {
-    color: #f1f1f1;
+.fullscreen a:hover,
+.fullscreen a:focus {
+	color: #f1f1f1;
 }
 
 .fullscreen .closebtn {
-    position: absolute;
-    top: 20px;
-    right: 45px;
-    font-size: 60px;
+	position: absolute;
+	top: 20px;
+	right: 45px;
+	font-size: 60px;
 }
 
-td>a.search-class0 {color: lightgreen;}
-td>a.search-class1 {color: yellow;}
-td>a.search-class2 {color: orange;}
-td>a.search-class3 {color: darkred;}
+td > a.search-class0 {
+	color: lightgreen;
+}
+td > a.search-class1 {
+	color: yellow;
+}
+td > a.search-class2 {
+	color: orange;
+}
+td > a.search-class3 {
+	color: darkred;
+}
