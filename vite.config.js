@@ -1,7 +1,6 @@
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 import { execSync } from "child_process";
-import viteCompression from "vite-plugin-compression";
 import oxlint from "vite-plugin-oxlint";
 
 const _dirname = typeof __dirname !== "undefined" ? __dirname : dirname(fileURLToPath(import.meta.url));
@@ -33,7 +32,7 @@ export default (_) => {
 				},
 			},
 		},
-		plugins: [oxlint(), viteCompression()],
+		plugins: [oxlint()],
 		test: { globals: true },
 	};
 };
