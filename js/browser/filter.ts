@@ -4,29 +4,18 @@ Filters use the Cytoscape.js "display" attribute, while star operations (see gra
 This ensures that filters and star operations interact properly, for example that resetting the style does not show filtered nodes.
 See http://js.cytoscape.org/#style/visibility.
 */
+import { config } from "../config/config";
 import { NODE } from "../node";
 import { checkboxKeydownListener, checkboxClickableDiv } from "./util";
 import { View } from "./view";
 import log from "loglevel";
 
 const filterData = [
-	[`node[${NODE.SOURCE}='meta']`, "meta"],
-	[`node[${NODE.SOURCE}='bb']`, "bb"],
-	[`node[${NODE.SOURCE}='ob']`, "ob"],
-	[`node[${NODE.SOURCE}='ciox']`, "ciox"],
-	[`node[${NODE.SOURCE}='he']`, "he"],
-	[`node[${NODE.SOURCE}='it']`, "it"],
-	[`node[${NODE.SOURCE}='it4it']`, "it4it"],
-	[`node[${NODE.SOURCE}='bb2']`, "bb2"],
-	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_ROLE}']`, "role"],
-	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_FUNCTION}']`, "function"],
-	[`node[${NODE.SUBTOP}='${NODE.SUBTOP_ENTITY_TYPE}']`, "entitytype"],
 	[`node[?${NODE.HAS_INSTANCE}]`, "show-classes-with-instances"],
 	[`node[!${NODE.HAS_INSTANCE}]`, "show-classes-without-instances"],
 	[`edge[p='http://www.w3.org/2000/01/rdf-schema#subClassOf']`, "subclassof"],
 	[`edge[p!='http://www.w3.org/2000/01/rdf-schema#subClassOf']`, "non-subclassof"],
-	[`edge[p^='http://www.w3.org/2004/02/skos/core#']`, "inter-ontology-relations"],
-	[`edge[p!^='http://www.w3.org/2004/02/skos/core#']`, "intra-ontology-relations"],
+	...config.ontology.filter,
 ];
 
 const filters: Array<Filter> = [];

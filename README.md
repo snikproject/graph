@@ -142,6 +142,7 @@ The subkeys are:
 | `links` | Links to homepage etc. in the services and help menus. See below. ||
 | `style` | How to apply shapes and colors to the resources. See below. ||
 | `sparql` | SPARQL-Queries to get triples (edges) and classes (nodes). See below. ||
+| `filter` | Array of pairs of cytoscape selectors and i18n keys which show up additionally to some default values in the filter tab. | `[ [node[source='bb'], "bb"] ]` |
 
 ##### SNIK-specific configuration
 
