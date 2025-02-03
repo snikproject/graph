@@ -134,7 +134,7 @@ When writing your own ontology config, you can either do that in the `config.ts`
 The subkeys are:
 |**Key**|**Description**|**Example**|
 |-------|---------------|-----------|
-| `id` | ID used to identify which ontology is being used, for possibly better integration of a specific ontology (like SNIK). *This seems to be unused.* | `"snik"` |
+| `id` | ID to identify which ontology is loaded. This is used to toggle some menus only displaying for SNIK. | `"snik"` |
 | `name` | Displayed name of the ontology. | `"SNIK"` |
 | `legend` | Raw HTML for legend in the bottom left. | `"<span>&#9632; Entity Type</span>"` |
 | `title` | Title of the browser tab. Defaults to `"Ontology Graph"` if not specified. | `"SNIK Ontology Graph"` |

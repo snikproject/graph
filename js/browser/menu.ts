@@ -69,6 +69,8 @@ export interface MenuEntry {
 	action: string | (() => void);
 	i18n: string;
 	hotkey?: string;
+	/** config.ontology.id for which this entry is shown */
+	only?: string;
 }
 
 /** Populates the menu bar on the top and initializes the context menu.*/
@@ -274,12 +276,14 @@ export class Menu {
 							showChapterSearch(View.activeState().graph, "bb");
 						},
 						i18n: "bb-chapter-search",
+						only: "snik",
 					},
 					{
 						action: () => {
 							showChapterSearch(View.activeState().graph, "ob");
 						},
 						i18n: "ob-chapter-search",
+						only: "snik",
 					},
 					{ action: subOntologyConnectivity, i18n: "subontology-connectivity" },
 					{ action: View.mainView.state.graph.resetStyle, i18n: "reset-view", hotkey: "ctrl+alt+r" },
@@ -289,6 +293,7 @@ export class Menu {
 							View.activeState().title = View.activeView().config.title;
 						},
 						i18n: "change-title",
+						only: "snik",
 					},
 				],
 			},
@@ -340,7 +345,7 @@ export class Menu {
 		// snik-only options
 		const snikOptions = ["separateSubs"];
 		// used options
-		const names = config.ontology.snik ? [...snikOptions, ...generalOptions] : generalOptions;
+		const names = config.ontology.id === "snik" ? [...snikOptions, ...generalOptions] : generalOptions;
 
 		(this as any).optionBoxes = {};
 		for (const name of names) {
@@ -457,7 +462,7 @@ export class Menu {
 			const as: Array<HTMLAnchorElement> = [];
 			aas.push(as);
 			for (const entry of menuElement.entries) {
-				if (entry === null) {
+				if (entry === null || (entry.only && entry.only !== config.ontology.id)) {
 					continue;
 				}
 				const a = document.createElement("a");
