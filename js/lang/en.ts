@@ -8,7 +8,7 @@ export const en = {
 		"load-view": "Load Partial Graph",
 		"load-layout": "Load Layout of Partial Graph",
 		"save-session": "Save Session",
-		"save-snik-graph": "Save complete SNIK Graph as Cytoscape File",
+		"save-snik-graph": "Save complete graph as Cytoscape File",
 		"new-view": "Open New Partial Graph",
 		"save-view": "Save Current Partial Graph",
 		"save-layout": "Save Layout of Current Partial Graph",
@@ -84,12 +84,12 @@ export const en = {
 		troubleshooting: "Troubleshooting",
 		contribute: "Contribute",
 		"project-homepage": "Project Homepage",
-		"meta-model": "SNIK Meta Model",
+		"meta-model": "Ontology Meta Model",
 		about: "About SNIK Graph",
 		"bug-report": "Submit a Bug Report",
 		"feature-request": "Request new Feature for the Visualization",
 		"feedback-ontology": "Submit Feedback about the Ontology",
-		// don't translate the help options yet because they are -english anyways
+		// 'dont translate the help options yet because they are -english anyways
 		// other *********************************************
 		"deselect-all": "Deselect All",
 		"search-field": "Search Field",
