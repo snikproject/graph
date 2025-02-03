@@ -334,7 +334,14 @@ export class Menu {
 	 * @param as - an empty array that will be filled with the anchor elements */
 	addOptions(as: Array<HTMLAnchorElement>): void {
 		const optionsContent = util.getElementById("options-menu-content");
-		const names = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges", "showProperty"]; // ,"starNewView"
+
+		// names of options to be added
+		const generalOptions = ["cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges", "showProperty"]; // ,"starNewView"
+		// snik-only options
+		const snikOptions = ["separateSubs"];
+		// used options
+		const names = config.ontology.snik ? [...snikOptions, ...generalOptions] : generalOptions;
+
 		(this as any).optionBoxes = {};
 		for (const name of names) {
 			log.trace("Add option " + name);
