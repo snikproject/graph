@@ -98,6 +98,13 @@ export class Menu {
 	}
 
 	/**
+	 * @returns whether day mode is active.
+	 */
+	dayMode(): boolean {
+		return this.dayModeBox.checked;
+	}
+
+	/**
 	 * @returns if edges should get different colors by type.
 	 */
 	coloredEdges(): boolean {
@@ -105,7 +112,7 @@ export class Menu {
 	}
 
 	/**
-	 * @returns if edge labels with the property names should always be shown
+	 * @returns if edge labels with the property names should always be shown.
 	 */
 	showProperty(): boolean {
 		return this.showPropertyBox.checked;
@@ -190,27 +197,27 @@ export class Menu {
 						i18n: "recalculate-layout-replace",
 					},
 					{
-						action: () => save.savePng(View.activeState().graph, this.dayModeBox.checked, false, false),
+						action: () => save.savePng(View.activeState().graph, this.dayMode(), false, false),
 						i18n: "save-image-png-visible-region",
 					},
 					{
-						action: () => save.savePng(View.activeState().graph, this.dayModeBox.checked, true, false),
+						action: () => save.savePng(View.activeState().graph, this.dayMode(), true, false),
 						i18n: "save-image-png-complete-partial-graph",
 					},
 					{
-						action: () => save.savePng(View.activeState().graph, this.dayModeBox.checked, false, true),
+						action: () => save.savePng(View.activeState().graph, this.dayMode(), false, true),
 						i18n: "save-image-png-visible-region-high-res",
 					},
 					{
-						action: () => save.savePng(View.activeState().graph, this.dayModeBox.checked, true, true),
+						action: () => save.savePng(View.activeState().graph, this.dayMode(), true, true),
 						i18n: "save-image-png-complete-partial-graph-high-res",
 					},
 					{
-						action: () => save.saveSvg(View.activeState().graph, this.dayModeBox.checked, false),
+						action: () => save.saveSvg(View.activeState().graph, this.dayMode(), false),
 						i18n: "save-image-svg-visible-region",
 					},
 					{
-						action: () => save.saveSvg(View.activeState().graph, this.dayModeBox.checked, true),
+						action: () => save.saveSvg(View.activeState().graph, this.dayMode(), true),
 						i18n: "save-image-svg-complete-partial-graph",
 					},
 					{ action: () => new View(), i18n: "new-view" },
@@ -369,21 +376,21 @@ export class Menu {
 		// some more snik-only configuration
 		if (config.ontology.id === "snik") {
 			this.separateSubsBox.addEventListener("change", () => {
-				log.debug("Set separate Subontologies to " + this.separateSubsBox.checked);
+				log.debug("Set separate Subontologies to " + this.separateSubs());
 			});
 		}
 
 		this.dayModeBox.addEventListener("change", () => {
 			for (const view of View.views()) {
-				view.state.graph.applyStyle(this.dayModeBox.checked, this.coloredEdgesBox.checked, this.showPropertyBox.checked);
+				view.state.graph.applyStyle(this.dayMode(), this.coloredEdges(), this.showProperty());
 			}
-			log.debug("Set dayMode to " + this.dayModeBox.checked);
+			log.debug("Set dayMode to " + this.dayMode());
 		});
 		this.showPropertyBox.addEventListener("change", () => {
 			for (const view of View.views()) {
-				view.state.graph.applyStyle(this.dayModeBox.checked, this.coloredEdgesBox.checked, this.showPropertyBox.checked);
+				view.state.graph.applyStyle(this.dayMode(), this.coloredEdges(), this.showProperty());
 			}
-			log.debug("Set showProperty to " + this.showPropertyBox.checked);
+			log.debug("Set showProperty to " + this.showProperty());
 		});
 		(this as any).gridBox.addEventListener("change", () => {
 			document.body.classList[(this as any).gridBox.checked ? "add" : "remove"]("grid");
@@ -410,14 +417,14 @@ export class Menu {
 			}, 10);
 		});
 
-		// colorize edges dependent on tpye
-		(this as any).coloredEdgesBox.addEventListener("change", () => {
-			const colorize = (this as any).coloredEdgesBox.checked;
+		// colorize edges dependent on type
+		this.coloredEdgesBox.addEventListener("change", () => {
+			const colorize = this.coloredEdges();
 			log.debug("Set coloredEdges to " + colorize);
 			(config as any).edgesColorized = colorize;
 			// redraw all canvas
 			for (const view of View.views()) {
-				view.state.graph.applyStyle(this.dayModeBox.checked, this.coloredEdgesBox.checked, this.showPropertyBox.checked);
+				view.state.graph.applyStyle(this.dayMode(), this.coloredEdges(), this.showProperty());
 			}
 		});
 		if (config.activeOptions.includes("edgecolor")) {
