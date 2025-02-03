@@ -75,10 +75,10 @@ export interface MenuEntry {
 
 /** Populates the menu bar on the top and initializes the context menu.*/
 export class Menu {
-	separateSubsBox;
-	dayModeBox;
-	coloredEdgesBox;
-	showPropertyBox;
+	separateSubsBox: HTMLInputElement;
+	dayModeBox: HTMLInputElement;
+	coloredEdgesBox: HTMLInputElement;
+	showPropertyBox: HTMLInputElement;
 	/** Construct the main menu bar. */
 	constructor() {
 		if (menu) {
@@ -396,11 +396,11 @@ export class Menu {
 			this.showPropertyBox.click();
 		}
 		// is only used by the main tab
-		((this as any).cumulativeSearchBox as HTMLInputElement).addEventListener("change", () => {
+		(this as any).cumulativeSearchBox.addEventListener("change", () => {
 			log.debug("Set cumulative search to " + (this as any).cumulativeSearchBox.checked);
 		});
 
-		((this as any).combineMatchModeBox as HTMLInputElement).addEventListener("change", () => {
+		(this as any).combineMatchModeBox.addEventListener("change", () => {
 			// Combine matches is *not* active in a new tab if the user first copies, then turns combine matches on and finally pastes.
 			// In this case, "combine matches" needs to be deactivated and activated again to take effect on the paste result.
 			log.debug("Set combine match mode to " + (this as any).combineMatchModeBox.checked);
@@ -411,7 +411,7 @@ export class Menu {
 		});
 
 		// colorize edges dependent on tpye
-		((this as any).coloredEdgesBox as HTMLInputElement).addEventListener("change", () => {
+		(this as any).coloredEdgesBox.addEventListener("change", () => {
 			const colorize = (this as any).coloredEdgesBox.checked;
 			log.debug("Set coloredEdges to " + colorize);
 			(config as any).edgesColorized = colorize;
