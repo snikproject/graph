@@ -285,7 +285,7 @@ export class Menu {
 						i18n: "ob-chapter-search",
 						only: "snik",
 					},
-					{ action: subOntologyConnectivity, i18n: "subontology-connectivity" },
+					{ action: subOntologyConnectivity, i18n: "subontology-connectivity", only: "snik" },
 					{ action: View.mainView.state.graph.resetStyle, i18n: "reset-view", hotkey: "ctrl+alt+r" },
 					{
 						action: () => {
@@ -365,9 +365,14 @@ export class Menu {
 			a.addEventListener("keydown", util.checkboxKeydownListener(box));
 			a.appendChild(util.checkboxClickableDiv(box, language.getString(name), name));
 		}
-		this.separateSubsBox.addEventListener("change", () => {
-			log.debug("Set separate Subontologies to " + this.separateSubsBox.checked);
-		});
+
+		// some more snik-only configuration
+		if (config.ontology.id === "snik") {
+			this.separateSubsBox.addEventListener("change", () => {
+				log.debug("Set separate Subontologies to " + this.separateSubsBox.checked);
+			});
+		}
+
 		this.dayModeBox.addEventListener("change", () => {
 			for (const view of View.views()) {
 				view.state.graph.applyStyle(this.dayModeBox.checked, this.coloredEdgesBox.checked, this.showPropertyBox.checked);
@@ -566,7 +571,10 @@ export class Menu {
 	}
 	/** Save session-based options (not user preferences) to JSON. */
 	optionsToJSON(): object {
-		const sessionOptions = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges"];
+		const generalSessionOptions = ["cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges"];
+		const snikSessionOptions = ["separateSubs"];
+		const sessionOptions = config.ontology.id === "snik" ? [...snikSessionOptions, ...generalSessionOptions] : generalSessionOptions;
+
 		const options = {};
 		for (const option of sessionOptions) {
 			options[option] = (this as any).optionBoxes[option].checked;
