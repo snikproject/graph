@@ -59,6 +59,11 @@ export function getIdStrings(): Array<string> {
 	return strings[language].idStrings;
 }
 
+// return everything
+export function getAll() {
+	return strings;
+}
+
 /* These strings have a fixed language because they are intended for the developers. */
 export const CONSTANTS = {
 	SPARUL_WARNING:
