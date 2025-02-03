@@ -89,7 +89,6 @@ export const en = {
 		"bug-report": "Submit a Bug Report",
 		"feature-request": "Request new Feature for the Visualization",
 		"feedback-ontology": "Submit Feedback about the Ontology",
-		// 'dont translate the help options yet because they are -english anyways
 		// other *********************************************
 		"deselect-all": "Deselect All",
 		"search-field": "Search Field",
