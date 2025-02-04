@@ -1,6 +1,7 @@
 name: Release
 description: Create a new Release.
 title: Release
+type: task
 labels: ["release"]
 assignees:
   - KonradHoeffner

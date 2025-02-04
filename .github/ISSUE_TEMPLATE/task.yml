@@ -1,0 +1,12 @@
+name: Task
+description: Something to do that isn't a full feature
+type: task
+assignees:
+  - KonradHoeffner
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: Add a description
+    validations:
+      required: true

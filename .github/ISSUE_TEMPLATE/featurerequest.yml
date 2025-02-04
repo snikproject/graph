@@ -1,6 +1,6 @@
 name: Feature Request
 description: Suggest a new feature.
-labels: ["feature"]
+type: feature
 assignees:
   - KonradHoeffner
 body:
