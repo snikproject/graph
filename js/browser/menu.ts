@@ -94,7 +94,7 @@ export class Menu {
 
 	/** @returns whether subontologies are to be displayed separately. */
 	separateSubs(): boolean {
-		return this.separateSubsBox.checked;
+		return this.separateSubsBox?.checked; // prevent undefined property access, box only exists for SNIK
 	}
 
 	/**
