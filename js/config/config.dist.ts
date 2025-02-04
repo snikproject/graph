@@ -3,8 +3,8 @@ Copy to js/config/config.ts after checkout and adapt to your preferences.
 */
 
 import type { LogLevelDesc } from "loglevel";
-import snikConf from "./config.snik";
-//import hitoConf from "./config.hito";
+import ontologyConf from "./config.snik";
+//import ontologyConf from "./config.hito";
 
 export const config = {
 	nodeSize: 39,
@@ -24,7 +24,7 @@ export const config = {
 		},
 	},
 	// Change this when you want to use a different ontology. Refer to ./config.snik.ts and ./config.hito.ts for examples.
-	ontology: snikConf,
+	ontology: ontologyConf,
 	multiview: {
 		initialTabs: 1,
 		warnOnSessionLoad: true,

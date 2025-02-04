@@ -22,10 +22,12 @@ const colorMap = new Map([
 	["bb2", "rgb(0, 255, 255)"],
 ]);
 
+const colorLegend = () => Array.from(colorMap.entries()).reduce((ac, [n, c]) => ac + ` <span style='color:${c}'>&#9632;</span> ${n}`, "");
+
 export default {
 	id: "snik",
 	name: "SNIK",
-	legend: "<span>&#9632; Entity Type</span> <span>&#9650; Role</span> <span>&#9679; Function</span> <span>* has Instances</span>",
+	legend: "<span>&#9632; Entity Type</span> <span>&#9650; Role</span> <span>&#9679; Function</span> <span>* has Instances</span>" + colorLegend(),
 	title: "SNIK Ontology Graph",
 	initialView: snikView,
 	snik: {
