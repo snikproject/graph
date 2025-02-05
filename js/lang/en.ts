@@ -40,7 +40,7 @@ export const en = {
 		"intra-ontology-relations": "Intra-Ontology Relations",
 		// options********************************************
 		options: "Options",
-		separateSubs: "Separate Subontologies",
+		separateColours: "Separate Colours",
 		cumulativeSearch: "Cumulative Search",
 		grid: "Show Grid",
 		dayMode: "Day Mode",

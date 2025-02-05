@@ -45,7 +45,7 @@ export function goldenLayout(): GoldenLayout {
 		const stackState = () => (stack as any).getActiveContentItem().config.componentState;
 		const cy = () => stackState().cy;
 		const controls = (stack as any).header.controlsContainer[0];
-		const separateSubs = () => View.getMenu().separateSubs() && !stackState().graph.starMode;
+		const separateColours = () => View.getMenu().separateColours() && !stackState().graph.starMode;
 		const data = [
 			[
 				".plussign",
@@ -68,16 +68,16 @@ export function goldenLayout(): GoldenLayout {
 			[
 				".recalculatesign",
 				() => {
-					layout.run(cy(), layout.euler, (layoutConfig as any).defaultSubOntologies, separateSubs(), true);
+					layout.run(cy(), layout.euler, (layoutConfig as any).defaultSubOntologies, separateColours(), true);
 				},
 			],
 			[
 				".tightlayoutsign",
 				() => {
-					layout.run(cy(), layout.eulerTight, (layoutConfig as any).defaultSubOntologies, separateSubs(), true);
+					layout.run(cy(), layout.eulerTight, (layoutConfig as any).defaultSubOntologies, separateColours(), true);
 				},
 			],
-			// The compound layout does not work with separate subs so set the latter always to false.
+			// The compound layout does not work with separate colours so set the latter always to false.
 			[
 				".compoundlayoutsign",
 				() => {

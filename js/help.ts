@@ -54,7 +54,7 @@ export const help = {
 		},
 		options: {
 			"": "Here you can find different checkboxes that toggle the behaviour of SNIK Graph. These are applied to all open views.",
-			"separate-subs": "Spread the SNIK Graph into subgraphs of the subontologies.",
+			"separate-colours": "Separate the nodes by their colours when selecting a new layout.",
 			"cumulative-search": "Keep previous search results visible when searching again.",
 			grid: "shows a grid that supports better organizing of nodes.",
 			"combine-match": `Highlights groups of classes representing the same concept from different subontologies (matches) by placing them in boxes. Use "move matches on top of each other" or "move matches nearby" to shrink those boxes.`,

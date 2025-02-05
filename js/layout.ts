@@ -19,11 +19,11 @@ let activeLayout: Layouts;
 /**
 @param layoutName - Cytoscape.js layout name
 @param subs - the subontology identifiers included in the graph. Used to retrieve the correct layout later.
-@param separateSubs - Whether to separate the graph based on the subontologies.
+@param separateColours - Whether to separate the graph based on its colours.
 @returns the storage name coded by the layout and the subontologies
 @example storageName("euler",new Set(["meta","ob","bb"]));
 */
-function storageName(layoutName: string, subs: Array<string>, separateSubs: boolean = false): string {
+function storageName(layoutName: string, subs: Array<string>, separateColours: boolean = false): string {
 	return (
 		"layout" +
 		layoutName +
@@ -31,7 +31,7 @@ function storageName(layoutName: string, subs: Array<string>, separateSubs: bool
 			.sort()
 			.toString()
 			.replace(/[^a-z]/g, "") +
-		!!separateSubs
+		!!separateColours
 	);
 }
 
@@ -69,7 +69,7 @@ function center(nodes: NodeCollection): Position {
 @param cy - the Cytoscape.js graph to run the layout on
 @param layoutConfig - the layout configuration, which includes the layout name and options
 @param  subs - Set of subontologies. If the subs are not given the layout still works but it is not saved.
-@param  separateSubs - Whether to separate the graph based on the subontologies.
+@param  separateColours - Whether to separate the graph based on its colours.
 @param  save - Whether to save the layout on local storage.
 @returns whether the layout could successfully be applied. Does not indicate success of saving to cache.
 @example
@@ -77,13 +77,19 @@ function center(nodes: NodeCollection): Position {
 run(cy,{"name":"grid"},new Set(["meta","ciox"]))
 ```
 */
-export async function run(cy: Core, layoutConfig: LayoutOptions, subs?: Array<string>, separateSubs: boolean = false, save: boolean = false): Promise<boolean> {
+export async function run(
+	cy: Core,
+	layoutConfig: LayoutOptions,
+	subs?: Array<string>,
+	separateColours: boolean = false,
+	save: boolean = false
+): Promise<boolean> {
 	if (cy.nodes().size() === 0) {
 		log.warn("layout.js#run: Graph empty. Nothing to layout.");
 		return false;
 	}
 	const layoutTimer = timer("layout");
-	if (separateSubs) {
+	if (separateColours) {
 		const sources: Set<string> = new Set();
 		const virtualEdges: Array<ElementDefinition> = [];
 
@@ -98,11 +104,11 @@ export async function run(cy: Core, layoutConfig: LayoutOptions, subs?: Array<st
 				virtualEdges.push({ group: "edges", data: { source: node.data(NODE.ID), target: source, springLength: 180 } });
 			}
 		}
-		log.debug("Separate subontologies checked");
+		log.debug("Separate colours checked");
 		log.debug(`Adding ${virtualEdges.length} virtual edges.`);
 		cy.add(virtualEdges);
 	} else {
-		log.debug("Separate subontologies unchecked");
+		log.debug("Separate colours unchecked");
 	}
 	activeLayout && activeLayout.stop();
 
@@ -124,7 +130,7 @@ export async function run(cy: Core, layoutConfig: LayoutOptions, subs?: Array<st
 			elements.nodes().shift({ x: oldCenter.x - newCenter.x, y: oldCenter.y - newCenter.y });
 		}
 		layoutTimer.stop();
-		if (separateSubs) {
+		if (separateColours) {
 			const virtualNodes = cy.nodes("[type='virtual']");
 			log.debug(`Removing ${virtualNodes.length} virtual nodes.`);
 			cy.remove(virtualNodes); // connected edges should go away automatically
@@ -135,7 +141,7 @@ export async function run(cy: Core, layoutConfig: LayoutOptions, subs?: Array<st
 				return true;
 			}
 			const pos = positions(cy.nodes());
-			const name = storageName(layoutConfig.name, subs, separateSubs);
+			const name = storageName(layoutConfig.name, subs, separateColours);
 			localStorage.setItem(name, JSON.stringify(pos));
 			log.info("Replaced layout cache.");
 		}
@@ -201,24 +207,24 @@ export interface LayoutConfig {
 @param cy - the Cytoscape.js graph to run the layout on
 @param layoutConfig - the layout configuration, which includes the layout name and options
 @param subs - Set of subontologies. If the subs are not given the layout still works but it is not cached.
-@param separateSubs - Whether to separate the graph based on the subontologies.
+@param separateColours - Whether to separate the graph based on its colours.
 @returns whether the layout could successfully be applied. Does not indicate success of loading from cache, in which case it is calculated anew.
 */
 export async function runCached(
 	cy: cytoscape.Core,
 	layoutConfig: cytoscape.LayoutOptions,
 	subs: Array<string>,
-	separateSubs: boolean = false
+	separateColours: boolean = false
 ): Promise<boolean> {
 	if (typeof localStorage === "undefined") {
 		log.error("Web storage not available, could not access browser-based cache.");
-		return run(cy, layoutConfig, subs, separateSubs, false);
+		return run(cy, layoutConfig, subs, separateColours, false);
 	}
 	if (!subs) {
 		log.debug("subs not supplied, run layout without cache");
 		return run(cy, layoutConfig, undefined, false, false);
 	}
-	const name = storageName(layoutConfig.name, subs, separateSubs);
+	const name = storageName(layoutConfig.name, subs, separateColours);
 	// web storage
 	const cacheItem = localStorage.getItem(name);
 	if (cacheItem) {
@@ -238,7 +244,7 @@ export async function runCached(
 	else {
 		log.warn("Layout not in cache, recalculating layout...");
 	}
-	return run(cy, layoutConfig, subs, separateSubs, true);
+	return run(cy, layoutConfig, subs, separateColours, true);
 }
 
 /** Very fast but useless for most purposes except for testing.*/

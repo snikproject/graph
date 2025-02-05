@@ -40,7 +40,7 @@ export const de = {
 		"intra-ontology-relations": "Beziehungen innerhalb von (Teil-)Ontologien",
 		// options********************************************
 		options: "Optionen",
-		separateSubs: "Nach Subontologien aufspalten",
+		separateColours: "Nach Farben trennen",
 		cumulativeSearch: "Kumulative Suche",
 		grid: "Raster anzeigen",
 		dayMode: "Tag-Modus",

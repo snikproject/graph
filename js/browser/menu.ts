@@ -75,7 +75,7 @@ export interface MenuEntry {
 
 /** Populates the menu bar on the top and initializes the context menu.*/
 export class Menu {
-	separateSubsBox: HTMLInputElement;
+	separateColoursBox: HTMLInputElement;
 	dayModeBox: HTMLInputElement;
 	coloredEdgesBox: HTMLInputElement;
 	showPropertyBox: HTMLInputElement;
@@ -93,8 +93,8 @@ export class Menu {
 	}
 
 	/** @returns whether subontologies are to be displayed separately. */
-	separateSubs(): boolean {
-		return this.separateSubsBox?.checked; // prevent undefined property access, box only exists for SNIK
+	separateColours(): boolean {
+		return this.separateColoursBox?.checked; // prevent undefined property access, box only exists for SNIK
 	}
 
 	/**
@@ -180,7 +180,8 @@ export class Menu {
 						action: async () => {
 							await loadGraphFromSparql(View.activeState().graph.cy, []);
 							progress(
-								async () => await layout.runCached(View.activeState().graph.cy, layout.euler, config.ontology?.snik?.defaultSubOntologies, this.separateSubs())
+								async () =>
+									await layout.runCached(View.activeState().graph.cy, layout.euler, config.ontology?.snik?.defaultSubOntologies, this.separateColours())
 							);
 						},
 						i18n: "load-sparql",
@@ -192,7 +193,7 @@ export class Menu {
 					{ action: () => save.saveLayout(View.activeState()), i18n: "save-layout" },
 					{
 						action: () => {
-							progress(() => layout.run(View.activeState().cy, layout.euler, config.ontology?.snik?.defaultSubOntologies, this.separateSubs(), true));
+							progress(() => layout.run(View.activeState().cy, layout.euler, config.ontology?.snik?.defaultSubOntologies, this.separateColours(), true));
 						},
 						i18n: "recalculate-layout-replace",
 					},
@@ -243,7 +244,7 @@ export class Menu {
 								View.activeState().graph.cy,
 								layout.euler,
 								config.ontology?.snik?.defaultSubOntologies,
-								this.separateSubs() && !View.activeState().graph.starMode,
+								this.separateColours() && !View.activeState().graph.starMode,
 								true
 							);
 						},
@@ -256,7 +257,7 @@ export class Menu {
 								View.activeState().graph.cy,
 								layout.eulerTight,
 								config.ontology?.snik?.defaultSubOntologies,
-								this.separateSubs() && !View.activeState().graph.starMode,
+								this.separateColours() && !View.activeState().graph.starMode,
 								false
 							);
 						},
@@ -269,7 +270,7 @@ export class Menu {
 								View.activeState().graph.cy,
 								layout.cose,
 								config.ontology?.snik?.defaultSubOntologies,
-								this.separateSubs() && !View.activeState().graph.starMode,
+								this.separateColours() && !View.activeState().graph.starMode,
 								false
 							);
 						},
@@ -348,7 +349,7 @@ export class Menu {
 		const optionsContent = util.getElementById("options-menu-content");
 
 		// names of options to be added
-		const names = ["cumulativeSearch", "separateSubs", "grid", "combineMatchMode", "dayMode", "coloredEdges", "showProperty"]; // ,"starNewView"
+		const names = ["separateColours", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges", "showProperty"]; // ,"starNewView"
 
 		(this as any).optionBoxes = {};
 		for (const name of names) {
@@ -378,8 +379,8 @@ export class Menu {
 			a.appendChild(util.checkboxClickableDiv(box, language.getString(name), name));
 		}
 
-		this.separateSubsBox.addEventListener("change", () => {
-			log.debug("Set separate Subontologies to " + this.separateSubs());
+		this.separateColoursBox.addEventListener("change", () => {
+			log.debug("Set separate colours to " + this.separateColours());
 		});
 		this.dayModeBox.addEventListener("change", () => {
 			for (const view of View.views()) {
@@ -579,7 +580,7 @@ export class Menu {
 	}
 	/** Save session-based options (not user preferences) to JSON. */
 	optionsToJSON(): object {
-		const sessionOptions = ["cumulativeSearch", "separateSubs", "grid", "combineMatchMode", "dayMode", "coloredEdges"];
+		const sessionOptions = ["separateColours", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges"];
 		const options = {};
 
 		for (const option of sessionOptions) {
