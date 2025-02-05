@@ -93,7 +93,7 @@ export function saveSession(options): void {
 		graph: View.mainView.state.cy.json(),
 		options,
 	};
-	delete mainGraph.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
+	delete mainGraph.graph["style"]; // the style gets corrupted on export due to including functions, the default style will be used instead
 
 	const session: Session = { tabs: [], state: toJSON(), mainGraph };
 
