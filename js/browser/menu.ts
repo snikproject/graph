@@ -348,11 +348,7 @@ export class Menu {
 		const optionsContent = util.getElementById("options-menu-content");
 
 		// names of options to be added
-		const generalOptions = ["cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges", "showProperty"]; // ,"starNewView"
-		// snik-only options
-		const snikOptions = ["separateSubs"];
-		// used options
-		const names = config.ontology.id === "snik" ? [...snikOptions, ...generalOptions] : generalOptions;
+		const names = ["cumulativeSearch", "separateSubs", "grid", "combineMatchMode", "dayMode", "coloredEdges", "showProperty"]; // ,"starNewView"
 
 		(this as any).optionBoxes = {};
 		for (const name of names) {
@@ -382,13 +378,9 @@ export class Menu {
 			a.appendChild(util.checkboxClickableDiv(box, language.getString(name), name));
 		}
 
-		// some more snik-only configuration
-		if (config.ontology.id === "snik") {
-			this.separateSubsBox.addEventListener("change", () => {
-				log.debug("Set separate Subontologies to " + this.separateSubs());
-			});
-		}
-
+		this.separateSubsBox.addEventListener("change", () => {
+			log.debug("Set separate Subontologies to " + this.separateSubs());
+		});
 		this.dayModeBox.addEventListener("change", () => {
 			for (const view of View.views()) {
 				view.state.graph.applyStyle(this.dayMode(), this.coloredEdges(), this.showProperty());
@@ -587,11 +579,9 @@ export class Menu {
 	}
 	/** Save session-based options (not user preferences) to JSON. */
 	optionsToJSON(): object {
-		const generalSessionOptions = ["cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges"];
-		const snikSessionOptions = ["separateSubs"];
-		const sessionOptions = config.ontology.id === "snik" ? [...snikSessionOptions, ...generalSessionOptions] : generalSessionOptions;
-
+		const sessionOptions = ["cumulativeSearch", "separateSubs", "grid", "combineMatchMode", "dayMode", "coloredEdges"];
 		const options = {};
+
 		for (const option of sessionOptions) {
 			options[option] = (this as any).optionBoxes[option].checked;
 		}

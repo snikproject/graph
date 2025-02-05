@@ -84,12 +84,12 @@ export async function run(cy: Core, layoutConfig: LayoutOptions, subs?: Array<st
 	}
 	const layoutTimer = timer("layout");
 	if (separateSubs) {
-		const sources: Set<ElementDefinition> = new Set();
+		const sources: Set<string> = new Set();
 		const virtualEdges: Array<ElementDefinition> = [];
 
 		const nodes = cy.nodes();
 		for (const node of nodes) {
-			const source = node.data(NODE.SOURCE);
+			const source = config.ontology.style.color(node);
 			if (source) {
 				if (!sources.has(source)) {
 					cy.add({ group: "nodes", data: { id: source, mass: 400, type: "virtual" } });
