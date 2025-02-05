@@ -88,8 +88,7 @@ export async function run(cy: Core, layoutConfig: LayoutOptions, subs?: Array<st
 		const virtualEdges: Array<ElementDefinition> = [];
 
 		const nodes = cy.nodes();
-		for (let i = 0; i < nodes.length; i++) {
-			const node = nodes[i];
+		for (const node of nodes) {
 			const source = node.data(NODE.SOURCE);
 			if (source) {
 				if (!sources.has(source)) {
@@ -107,20 +106,11 @@ export async function run(cy: Core, layoutConfig: LayoutOptions, subs?: Array<st
 	}
 	activeLayout && activeLayout.stop();
 
-	let elements;
-	let partLayout; // only change the positions of the selected nodes, keep the other ones in place
-	if (cy.nodes(":selected").size() > 1) {
-		elements = cy.elements(":selected");
-		partLayout = true;
-	} else {
-		elements = cy.elements(":visible");
-		partLayout = false;
-	}
-	let oldCenter;
+	// only change the positions of the selected nodes, keep the other ones in place
+	const partLayout = cy.nodes(":selected").size() > 1;
+	const elements = partLayout ? cy.elements(":selected") : cy.elements(":visible");
 	// Because it is a partial graph, the relation to the whole graph should still be discernable. That is why we preserve the center position of that partial graph and restore it later.
-	if (partLayout) {
-		oldCenter = center(elements.nodes());
-	}
+	const oldCenter = partLayout ? center(elements.nodes()) : undefined;
 
 	const animate = elements.size() > ANIMATE_THRESHOLD && typeof window !== "undefined"; // can't animate from node
 	const configCopy = { ...layoutConfig, animate };
