@@ -37,6 +37,9 @@ export const help = {
 			"save-image-png-complete-partial-graph": "Save an image of the whole graph with the same pixel density as the current view.",
 			"save-image-png-visible-region-high-res": "Save an image of the current view with a high resolution, for example for printing.",
 			"save-image-png-complete-partial-graph-high-res": "Save an image of the whole graph with a high resolution, for example for printing.",
+			"save-image-svg-visible-region": "Save an image of the current view as a vector graphic, for example for web use.",
+			"save-image-svg-complete-partial-graph": "Save an image of the whole graph as a vector graphic, for example for web use.",
+			"new-view": "Opens an empty new tab which you can copy nodes and endges to.",
 		},
 		filter: {
 			"": "A collection of filters to display relevant subgraphs. Filters are applied to all open views.",
