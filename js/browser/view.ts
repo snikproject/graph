@@ -47,7 +47,7 @@ export class View {
 	element: HTMLElement;
 	cxtMenu: ContextMenu;
 	menu: Menu = null;
-	static mainView = null;
+	static mainView: View = null;
 	static readonly partViews = new Set<View>();
 
 	static views(): Array<View> {
