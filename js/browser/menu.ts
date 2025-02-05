@@ -357,18 +357,27 @@ export class Menu {
 		(this as any).optionBoxes = {};
 		for (const name of names) {
 			log.trace("Add option " + name);
+
+			// <a> link
 			const a = document.createElement("a");
-			as.push(a);
-			optionsContent.appendChild(a);
 			a.setAttribute("tabindex", "-1");
 			a.classList.add("dropdown-entry");
+
+			// add <a> link to returned links and HTML container
+			as.push(a);
+			optionsContent.appendChild(a);
+
+			// <input> checkbox
 			const box = document.createElement("input");
 			(this as any).optionBoxes[name] = box;
-			a.appendChild(box);
 			box.type = "checkbox";
 			box.autocomplete = "off";
-			this[name + "Box"] = box;
 			box.id = name + "Box";
+			// add <input> checkbox to <a> link
+			a.appendChild(box);
+			this[name + "Box"] = box;
+
+			// click on container to click on checkbox
 			a.addEventListener("keydown", util.checkboxKeydownListener(box));
 			a.appendChild(util.checkboxClickableDiv(box, language.getString(name), name));
 		}
