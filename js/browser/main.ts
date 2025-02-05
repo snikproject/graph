@@ -5,7 +5,6 @@ import { initLog } from "./log";
 import { View } from "./view";
 import MicroModal from "micromodal";
 import log from "loglevel";
-import type { NodeCollection } from "cytoscape";
 
 const clipboard: string[] = [];
 
@@ -29,7 +28,7 @@ function initKeyListener(): void {
 		}
 		// Copy
 		if (e.code === "KeyS" || e.code === "KeyC") {
-			const selected = layoutState.cy.nodes(":selected");
+			const selected = layoutState.cy.elements(":selected");
 			if (selected.size() === 0) {
 				return;
 			} // do nothing when nothing selected
@@ -42,14 +41,14 @@ function initKeyListener(): void {
 		if (e.code === "KeyP" || e.code === "KeyV") {
 			layoutState.cy.startBatch();
 			layoutState.cy.elements().unselect();
-			const nodes = layoutState.graph.getElementsByIds(clipboard) as unknown as NodeCollection;
-			Graph.setVisible(nodes, true);
+			const eles = layoutState.graph.getElementsByAllMeansNecessary(clipboard);
+			Graph.setVisible(eles, true);
 
 			layoutState.cy.endBatch();
 
 			const visibleNodes = layoutState.cy.nodes(".unfiltered").not(".hidden");
-			const edges = nodes.edgesWith(visibleNodes);
-			const pasted = nodes.union(edges);
+			const edges = eles.nodes().edgesWith(visibleNodes);
+			const pasted = eles.union(edges);
 			Graph.setVisible(pasted, true);
 			pasted.select(); // select all pasted nodes so that they are more visible above the other nodes
 

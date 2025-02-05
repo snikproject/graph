@@ -319,7 +319,8 @@ export class Graph {
 		return this.getElementsByIds(nodes.map((node) => node.id())) as unknown as NodeCollection;
 	}
 
-	/** @param ids - iterable of cytoscape ids
+	/** Get a collection of nodes/edges using a list of their IDs. Works only in this graph.
+	 * @param ids - iterable of cytoscape ids
 	 * @returns cytoscape collection of elements with those ids */
 	getElementsByIds(ids: Iterable<string>): Collection {
 		const own = this.cy.collection();
@@ -329,6 +330,35 @@ export class Graph {
 		}
 		return own;
 	}
+
+	/** Get a collection of nodes/edges using a list of their IDs.
+	 * If not existent in this graph, then all others are scanned.
+	 * If found, the node or edge is added to the current view and returned.
+	 * @param ids - iterable of cytoscape ids
+	 * @returns cytoscape collection of elements with those ids */
+	getElementsByAllMeansNecessary(ids: Iterable<string>): Collection {
+		const own = this.cy.collection();
+		for (const id of ids) {
+			let ele = this.cy.getElementById(id);
+			if (ele.length === 0) {
+				// get out the big guns
+				// search every view for this id
+				for (const view of View.views()) {
+					ele = view.state.cy.getElementById(id);
+					// if the query does not return an empty collection, we found the element
+					if (ele.length !== 0) {
+						console.debug("Found!");
+						// add it to our graph!
+						this.cy.add(ele);
+						break;
+					}
+				}
+			}
+			own.merge(ele);
+		}
+		return own;
+	}
+
 	/** Returns the start node for all path operations
       @returns the start node for all path operations, or null if none exists. */
 	getSource(): NodeSingular | null {
