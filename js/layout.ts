@@ -124,7 +124,7 @@ export async function run(cy: Core, layoutConfig: LayoutOptions, subs?: Array<st
 			elements.nodes().shift({ x: oldCenter.x - newCenter.x, y: oldCenter.y - newCenter.y });
 		}
 		layoutTimer.stop();
-		if (subs && separateSubs) {
+		if (separateSubs) {
 			const virtualNodes = cy.nodes("[type='virtual']");
 			log.debug(`Removing ${virtualNodes.length} virtual nodes.`);
 			cy.remove(virtualNodes); // connected edges should go away automatically
