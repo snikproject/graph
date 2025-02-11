@@ -1,8 +1,7 @@
 /** Provides graph operations such as initialization, wayfinding and highlighting.*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
 import { coloredEdgeStyle, showPropertyStyle, style } from "./style";
-import { colorschemenight } from "./colorschemenight";
-import { colorschemeday } from "./colorschemeday";
+import { colorSchemeDay, colorSchemeNight } from "./colorScheme";
 import { timer } from "../timer";
 import { NODE } from "../node";
 import { progress } from "./progress";
@@ -40,7 +39,7 @@ export class Graph {
 		this.cy = cytoscape({
 			container,
 			//@ts-expect-error concat type
-			style: style.style.concat(colorschemenight),
+			style: style.style.concat(colorSchemeNight),
 			wheelSensitivity: 0.3,
 			minZoom: 0.02,
 			maxZoom: 7,
@@ -408,10 +407,10 @@ export class Graph {
 		let baseStyle = style.style as any;
 		if (dayScheme) {
 			this.container.style.backgroundColor = "white";
-			baseStyle = baseStyle.concat(colorschemeday);
+			baseStyle = baseStyle.concat(colorSchemeDay);
 		} else {
 			this.container.style.backgroundColor = "black";
-			baseStyle = baseStyle.concat(colorschemenight);
+			baseStyle = baseStyle.concat(colorSchemeNight);
 		}
 		if (coloredEdges) {
 			baseStyle = baseStyle.concat(coloredEdgeStyle);
