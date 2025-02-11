@@ -3,7 +3,7 @@ Due to JavaScript being a slow mostly single-threaded language with no really fa
 After the first time, the layout is cached and reused, until major changes occur in the graph.
 If a breakthrough occurs in JavaScript graph layouting, update here and possibly remove cache.
 */
-import { timer } from "./timer";
+import { Timer } from "./timer";
 import { NODE } from "./utils/constants";
 import { config } from "./config/config";
 import log from "loglevel";
@@ -68,9 +68,9 @@ function center(nodes: NodeCollection): Position {
 /** Layouts all visible nodes in a graph. Saves to cache but doesn't load from it, use {@link runCached} for that.
 @param cy - the Cytoscape.js graph to run the layout on
 @param layoutConfig - the layout configuration, which includes the layout name and options
-@param  subs - Set of subontologies. If the subs are not given the layout still works but it is not saved.
-@param  separateColours - Whether to separate the graph based on its colours.
-@param  save - Whether to save the layout on local storage.
+@param subs - Set of subontologies. If the subs are not given the layout still works but it is not saved.
+@param separateColours - Whether to separate the graph based on its colours.
+@param save - Whether to save the layout on local storage.
 @returns whether the layout could successfully be applied. Does not indicate success of saving to cache.
 @example
 ```
@@ -88,7 +88,7 @@ export async function run(
 		log.warn("layout.js#run: Graph empty. Nothing to layout.");
 		return false;
 	}
-	const layoutTimer = timer("layout");
+	const layoutTimer = new Timer("layout");
 	if (separateColours) {
 		const sources: Set<string> = new Set();
 		const virtualEdges: Array<ElementDefinition> = [];

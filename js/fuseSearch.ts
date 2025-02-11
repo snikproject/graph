@@ -3,7 +3,7 @@ import * as sparql from "./sparql";
 import { config } from "./config/config";
 import Fuse, { type FuseResult } from "fuse.js";
 import log from "loglevel";
-import { timer } from "./timer";
+import { Timer } from "./timer";
 
 export interface Item {
 	uri: string;
@@ -41,7 +41,7 @@ export async function createIndex(): Promise<Array<object>> {
 	if (typeof window !== "undefined") {
 		console.groupCollapsed("Create Fuse.js index");
 	}
-	const indexTimer = timer("Create Fuse search index");
+	const indexTimer = new Timer("Create Fuse search index");
 	log.debug("Create Fuse Search Index with searchCloseMatch = " + config.searchCloseMatch);
 	const sparqlQuery = `select
   ?c as ?uri

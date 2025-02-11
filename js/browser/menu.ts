@@ -565,14 +565,7 @@ export class Menu {
 	/** Close the dropdown if the user clicks outside of the menu.
 	 *  @param e - a click event */
 	static closeListener(e: any): void {
-		if (
-			e &&
-			e.target &&
-			e.target.matches &&
-			!e.target.matches(".dropdown-entry") &&
-			!e.target.matches(".dropdown-menu") &&
-			!e.target.matches("input.filterbox")
-		) {
+		if (e?.target?.matches && !e.target.matches(".dropdown-entry") && !e.target.matches(".dropdown-menu") && !e.target.matches("input.filterbox")) {
 			// don't close while user edits the text field of the custom filter
 			const dropdowns = document.getElementsByClassName("dropdown-content");
 			Array.from(dropdowns).forEach((d) => d.classList.remove("show"));
@@ -590,7 +583,7 @@ export class Menu {
 	}
 	/** Restore session-based options from the output of toJSON().
 	 *  @param json - an option object */
-	optionsFromJSON(json): void {
+	optionsFromJSON(json: object): void {
 		const currentOptions = this.optionsToJSON();
 		for (const [name, checked] of Object.entries(json)) {
 			if (currentOptions[name] !== checked) {
@@ -602,7 +595,7 @@ export class Menu {
 	/**
 	 * Applies the options selected in the menu tab "Options", for example Combine Match Mode.
 	 */
-	applyOptions() {
+	applyOptions(): void {
 		if ((this as any).combineMatchModeBox.checked) {
 			this.combineMatches();
 		}
@@ -611,7 +604,7 @@ export class Menu {
 	/**
 	 * Applies combine match mode for all tabs.
 	 */
-	private combineMatches() {
+	private combineMatches(): void {
 		View.views()
 			.map((v) => v.state.graph)
 			.forEach((graph) => graph.combineMatch((this as any).combineMatchModeBox.checked));

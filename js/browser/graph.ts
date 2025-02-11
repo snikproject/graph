@@ -2,7 +2,7 @@
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
 import { coloredEdgeStyle, showPropertyStyle, style } from "./style";
 import { colorSchemeDay, colorSchemeNight } from "./colorScheme";
-import { timer } from "../timer";
+import { Timer } from "../timer";
 import { NODE } from "../utils/constants";
 import { progress } from "./progress";
 import { View } from "./view";
@@ -33,7 +33,7 @@ export class Graph {
   @param container - parent element
   */
 	constructor(container: HTMLElement) {
-		const initTimer = timer("graph-init");
+		const initTimer = new Timer("graph-init");
 		this.container = container;
 		this.container.style.backgroundColor = "black"; // required to show background image
 		this.cy = cytoscape({

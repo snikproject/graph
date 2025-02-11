@@ -1,6 +1,6 @@
 /**Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.*/
 import * as sparql from "./sparql";
-import { timer } from "./timer";
+import { Timer } from "./timer";
 import { config } from "./config/config";
 import log from "loglevel";
 import type { ElementDefinition, Core } from "cytoscape";
@@ -19,7 +19,7 @@ interface ClassBinding {
  * @returns SPARQL JSON result
  */
 async function selectClasses(from: string): Promise<Array<ClassBinding>> {
-	const sparqlClassesTimer = timer("sparql-classes");
+	const sparqlClassesTimer = new Timer("sparql-classes");
 
 	const nodeQuerySimple = `
   PREFIX ov: <http://open.vocab.org/terms/>
@@ -111,7 +111,7 @@ async function createClassNodes(from: string): Promise<Array<ElementDefinition>>
 * @param from - a SPARQL FROM clause defining where to load the instances from
  @returns SPARQL JSON result */
 async function selectInstances(from: string): Promise<Array<object>> {
-	const sparqlInstancesTimer = timer("sparql-classes");
+	const sparqlInstancesTimer = new Timer("sparql-classes");
 	const instanceQuery = `SELECT
   DISTINCT(?i)
   GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
@@ -154,7 +154,7 @@ async function createInstanceNodes(from: string): Promise<Array<object>> {
  * @returns SPARQL query result object
  */
 async function selectTriples(from: string, fromNamed: string, instances: boolean, virtual: boolean): Promise<Array<object>> {
-	const sparqlPropertiesTimer = timer("sparql-properties");
+	const sparqlPropertiesTimer = new Timer("sparql-properties");
 	const tripleQuerySimple = `
     select  ?c ?p ?d
     ${from}

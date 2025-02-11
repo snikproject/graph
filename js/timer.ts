@@ -1,19 +1,26 @@
 /** Measures elapsed duration. */
 import log from "loglevel";
 
-/** Generates a timer object that logs the elapsed time after its stop function is called.
-Call example: myTimer = timer("egg cooking"); cookEgg(); timer.stop("successfull");
- * @param   name - identifies the timer
- * @returns the timer object with the stop(message) function. The message is optional.
- */
-export function timer(name: string) {
-	const start = new Date();
-	return {
-		stop: function (message?: string) {
-			const end = new Date();
-			const time = end.getTime() - start.getTime();
-			//const f = time > config.minInfoTime ? log.debug : time > config.minDebugTime ? log.debug : log.debug;
-			log.debug(name + " finished in " + time + " ms" + (message ? ` (${message})` : ""));
-		},
-	};
+export class Timer {
+	start: Date;
+	name: string;
+
+	/** Generates a timer object that logs the elapsed time after its stop function is called.
+	 * Call example: const myTimer = timer("egg cooking"); cookEgg(); timer.stop("successful");
+	 * @param name - identifies the timer
+	 */
+	constructor(name: string) {
+		this.start = new Date();
+		this.name = name;
+	}
+
+	/** Stops the timer with the time and an optional message to console.
+	 * @param message message that is displayed at the end of the console output
+	 */
+	stop(message?: string): void {
+		const end = new Date();
+		const time = end.getTime() - this.start.getTime();
+		//const f = time > config.minInfoTime ? log.debug : time > config.minDebugTime ? log.debug : log.debug;
+		log.debug(this.name + " finished in " + time + " ms" + (message ? ` (${message})` : ""));
+	}
 }
