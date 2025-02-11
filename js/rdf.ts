@@ -18,7 +18,7 @@ const prefixes = [
  * @param  uri - any URI
  * @returns the prefix part of a URI if it is defined in this file.
  */
-export function longPrefix(uri: string) {
+export function longPrefix(uri: string): string {
 	for (const prefix of prefixes) {
 		if (uri.startsWith(prefix[1])) {
 			return prefix[1].replace(/\/$/, "");

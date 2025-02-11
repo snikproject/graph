@@ -254,7 +254,7 @@ export const grid = { name: "grid" };
  *  @param edge -- any edge
  *  @returns  the preferred spring length of an edge
  */
-function springLength(edge: cytoscape.EdgeSingular) {
+function springLength(edge: cytoscape.EdgeSingular): number {
 	const len = edge.data("springLength");
 	if (len) {
 		return len;

@@ -434,7 +434,7 @@ export class Menu {
 		}
 	}
 	/** Adds the menu to the graph parent DOM element and sets up the event listeners. */
-	addMenu() {
+	addMenu(): void {
 		console.groupCollapsed("Add menu");
 		//const frag = new DocumentFragment();
 		const ul = document.createElement("ul");

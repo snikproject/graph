@@ -451,7 +451,7 @@ export class Graph {
 	 * @param uris - the URIs to present
 	 * @param   hideOthers - whether to hide the other nodes
 	 * @returns whether presenting the URIs succeeded */
-	presentUris(uris: Array<string>, hideOthers: boolean = false) {
+	presentUris(uris: Array<string>, hideOthers: boolean = false): boolean {
 		if (uris.length < 1) {
 			log.warn("All search results are only available on the SPARQL endpoint but not in the graph.");
 			return false;

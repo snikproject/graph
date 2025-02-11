@@ -197,7 +197,7 @@ export const style: CytoStyle = {
 	],
 };
 
-function edgeColor(edge: EdgeSingular) {
+function edgeColor(edge: EdgeSingular): string {
 	const edgeType = edge.data(EDGE.PROPERTY);
 	const color = stringToColor(edgeType); // maybe adjust the v of the hsv color for day mode
 	return color;

@@ -73,7 +73,7 @@ export function createGitHubTemplateIssue(repo: string, title: string, template:
  * Prompts creation of an issue on GitHub to remove the given class.
  * @param node The cytoscape node representing the class to be removed
  */
-export function deleteClass(node: NodeSingular) {
+export function deleteClass(node: NodeSingular): void {
 	const clazz = rdf.short(node.data(NODE.ID));
 	createGitHubTemplateIssue(
 		config.git.repo.ontology,
@@ -88,7 +88,7 @@ export function deleteClass(node: NodeSingular) {
  * Prompts creation of an issue on GitHub with the default assignee to remove the given edge (triple).
  * @param edge The cytoscape edge representing the triple to be removed
  */
-export function deleteTriple(edge: EdgeSingular) {
+export function deleteTriple(edge: EdgeSingular): void {
 	const subject = rdf.short(edge.data(EDGE.SOURCE));
 	const predicate = rdf.short(edge.data(EDGE.PROPERTY));
 	const object = rdf.short(edge.data(EDGE.TARGET));
@@ -105,7 +105,7 @@ export function deleteTriple(edge: EdgeSingular) {
  * Prompts creation of an issue on GitHub to confirm the given LIMES link.
  * @param link The edge of the link which is to be confirmed
  */
-export function confirmLink(link: EdgeSingular) {
+export function confirmLink(link: EdgeSingular): void {
 	link.data(EDGE.GRAPH, "http://www.snik.eu/ontology/match");
 	const source = rdf.short(link.data(EDGE.SOURCE));
 	const target = rdf.short(link.data(EDGE.TARGET));

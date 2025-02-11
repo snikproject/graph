@@ -126,7 +126,7 @@ export function loadView(event: Event): void {
 	});
 }
 
-export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph) {
+export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph): void {
 	// compare versions of file and package.json and warn if deprecated
 	if (!checkVersion(ViewJsonType.LAYOUT, json)) {
 		return;
