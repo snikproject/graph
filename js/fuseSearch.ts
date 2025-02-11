@@ -3,7 +3,7 @@ import * as sparql from "./sparql";
 import { config } from "./config/config";
 import Fuse, { type FuseResult } from "fuse.js";
 import log from "loglevel";
-import { Timer } from "./timer";
+import { Timer } from "./logs/timer";
 
 export interface Item {
 	uri: string;

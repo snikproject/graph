@@ -3,7 +3,7 @@ Due to JavaScript being a slow mostly single-threaded language with no really fa
 After the first time, the layout is cached and reused, until major changes occur in the graph.
 If a breakthrough occurs in JavaScript graph layouting, update here and possibly remove cache.
 */
-import { Timer } from "./timer";
+import { Timer } from "./logs/timer";
 import { NODE } from "./utils/constants";
 import { config } from "./config/config";
 import log from "loglevel";

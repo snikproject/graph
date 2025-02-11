@@ -2,7 +2,7 @@
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
 import { coloredEdgeStyle, showPropertyStyle, style } from "./style";
 import { colorSchemeDay, colorSchemeNight } from "./colorScheme";
-import { Timer } from "../timer";
+import { Timer } from "../logs/timer";
 import { NODE } from "../utils/constants";
 import { progress } from "./progress";
 import { View } from "./view";
