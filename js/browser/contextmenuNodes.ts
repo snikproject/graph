@@ -8,8 +8,9 @@ import { Graph, Direction } from "./graph";
 import type { MenuItem } from "./contextmenu";
 import * as sparql from "../sparql";
 import * as language from "../lang/language";
+import type { NodeSingular } from "cytoscape";
 
-const eventify = (f) => (event) => f(event.target); // simplify multiplex expressions on event.target
+const eventify = (f: Function) => (event: Event) => f(event.target); // simplify multiplex expressions on event.target
 
 /** Menu entries
 @param graph - the graph that the commands should apply to, if any
@@ -76,7 +77,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 		{
 			id: "hide",
 			selector: "node",
-			onClickFunction: eventify(graph.multiplex((node) => Graph.setVisible(node, false))),
+			onClickFunction: eventify(graph.multiplex((node: NodeSingular) => Graph.setVisible(node, false))),
 			//onClickFunction: eventMultiplex(graph, event, (node) => Graph.setVisible(node, false)),
 		},
 		{

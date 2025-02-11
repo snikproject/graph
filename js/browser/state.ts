@@ -8,8 +8,8 @@ export const state = {
 };
 
 export interface StateJson {
-	filters: object;
-	options: object;
+	filters: any;
+	options: any;
 }
 
 /** Saves the visibility values of all filters.
