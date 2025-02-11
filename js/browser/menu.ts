@@ -3,7 +3,9 @@ import * as layout from "../layout";
 import { NODE } from "../utils/constants";
 import { loadGraphFromSparql } from "../loadGraphFromSparql";
 import * as language from "../lang/language";
-import * as util from "./util";
+import * as util from "../utils/gitHubIssues";
+import * as checkboxKeydownListener from "../utils/checkboxes";
+import * as gitInfo from "../utils/info";
 import MicroModal from "micromodal";
 import { config } from "../config/config";
 import { progress } from "./progress";
@@ -143,7 +145,7 @@ export class Menu {
 	static about(): void {
 		const cy = View?.activeState()?.graph?.cy;
 		const s = `\n${cy?.nodes()?.size()} nodes, ${cy?.edges()?.size()} edges loaded.`;
-		window.alert(util.gitInfo() + s);
+		window.alert(gitInfo.gitInfo() + s);
 	}
 
 	/** Show all nodes that are connected via close matches to visible nodes. */
@@ -375,8 +377,8 @@ export class Menu {
 			this[name + "Box"] = box;
 
 			// click on container to click on checkbox
-			a.addEventListener("keydown", util.checkboxKeydownListener(box));
-			a.appendChild(util.checkboxClickableDiv(box, language.getString(name), name));
+			a.addEventListener("keydown", checkboxKeydownListener.checkboxKeydownListener(box));
+			a.appendChild(checkboxKeydownListener.checkboxClickableDiv(box, language.getString(name), name));
 		}
 
 		this.separateColoursBox.addEventListener("change", () => {

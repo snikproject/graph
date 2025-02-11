@@ -2,7 +2,7 @@
 import { config } from "../config/config";
 import { toJSON } from "./state";
 import { View, type ViewState } from "./view";
-import { VERSION } from "./util";
+import { VERSION } from "../utils/info";
 import type { Graph } from "./graph";
 import log from "loglevel";
 import c from "cytoscape";

@@ -1,6 +1,6 @@
 /** Textual node search.*/
 import * as sparql from "../sparql";
-import * as util from "./util";
+import * as util from "../utils/gitHubIssues";
 import * as fuse from "../fuseSearch";
 import { progress } from "./progress";
 import { View } from "./view";

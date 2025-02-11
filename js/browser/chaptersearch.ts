@@ -1,6 +1,6 @@
 /** Search classes by chapter.*/
 import * as sparql from "../sparql";
-import * as util from "./util";
+import * as util from "../utils/gitHubIssues";
 import * as language from "../lang/language";
 import type { Graph } from "./graph";
 import MicroModal from "micromodal";

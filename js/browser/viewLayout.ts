@@ -1,4 +1,4 @@
-import * as util from "./util";
+import * as util from "../utils/gitHubIssues";
 import { View } from "./view";
 import * as layout from "../layout";
 import GoldenLayout from "golden-layout";

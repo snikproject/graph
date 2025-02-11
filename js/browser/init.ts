@@ -6,7 +6,7 @@ import * as layout from "../layout";
 import * as sparql from "../sparql";
 import { progress } from "./progress";
 import log from "loglevel";
-import * as util from "./util";
+import * as util from "../utils/gitHubIssues";
 import { initHelp } from "../help";
 import { addBenchmarkOverlay } from "./benchmark";
 import { Graph } from "./graph";

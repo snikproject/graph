@@ -4,7 +4,7 @@ import type { ViewJson, Session } from "./save";
 import { ViewJsonType } from "./save"; //eslint-disable-line no-duplicate-imports
 import { config } from "../config/config";
 import { fromJSON } from "./state";
-import { VERSION } from "./util";
+import { VERSION } from "../utils/info";
 import log from "loglevel";
 import { Graph } from "./graph";
 import type { NodeCollection, NodeSingular, Position } from "cytoscape";

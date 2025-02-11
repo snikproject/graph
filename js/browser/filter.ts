@@ -6,7 +6,7 @@ See http://js.cytoscape.org/#style/visibility.
 */
 import { config } from "../config/config";
 import { NODE } from "../utils/constants";
-import { checkboxKeydownListener, checkboxClickableDiv } from "./util";
+import { checkboxKeydownListener, checkboxClickableDiv } from "../utils/checkboxes";
 import { View } from "./view";
 import log from "loglevel";
 

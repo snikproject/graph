@@ -5,7 +5,7 @@
 import { NODE, EDGE } from "../utils/constants";
 import * as language from "../lang/language";
 import { config } from "../config/config";
-import { stringToColor } from "./util";
+import { stringToColor } from "../utils/colors";
 import type { CytoColorScheme } from "./colorScheme";
 import type { EdgeSingular } from "cytoscape";
 // see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing

@@ -3,7 +3,7 @@ import { classUse } from "./classuse";
 import { config } from "../config/config";
 import * as rdf from "../rdf";
 import { NODE } from "../utils/constants";
-import * as util from "./util";
+import * as util from "../utils/gitHubIssues";
 import { Graph, Direction } from "./graph";
 import type { MenuItem } from "./contextmenu";
 import * as sparql from "../sparql";

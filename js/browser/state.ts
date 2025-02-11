@@ -1,7 +1,7 @@
 /** Application State, e.g. which filters and options are activated, which is imported from and exported to JSON. */
 import { Filter } from "./filter";
 import { menu } from "./menu";
-import { VERSION } from "./util";
+import { VERSION } from "../utils/info";
 
 export const state = {
 	version: VERSION,
