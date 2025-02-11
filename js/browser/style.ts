@@ -1,16 +1,24 @@
-/* eslint-disable camelcase */
 /**
-Cytoscape style file, excluding color information, which is contained in the color schemes.
-@see colorSchemeDay
-@see colorSchemeNight
-*/
+ * Cytoscape style file, excluding color information, which is contained in the color schemes.
+ * @see colorScheme
+ */
 import { NODE, EDGE } from "../utils/constants";
 import * as language from "../lang/language";
 import { config } from "../config/config";
 import { stringToColor } from "./util";
+import type { CytoColorScheme } from "./colorScheme";
+import type { EdgeSingular } from "cytoscape";
 // see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing
 
-export const style = {
+export type CytoStyle = {
+	format_version?: string;
+	generated_by?: string;
+	target_cytoscapejs_version?: string;
+	title?: string;
+	style: CytoColorScheme[];
+};
+
+export const style: CytoStyle = {
 	format_version: "1.0",
 	generated_by: "cytoscape-3.4.0",
 	target_cytoscapejs_version: "~2.1",
@@ -189,13 +197,13 @@ export const style = {
 	],
 };
 
-function edgeColor(edge) {
+function edgeColor(edge: EdgeSingular) {
 	const edgeType = edge.data(EDGE.PROPERTY);
 	const color = stringToColor(edgeType); // maybe adjust the v of the hsv color for day mode
 	return color;
 }
 
-export const coloredEdgeStyle = [
+export const coloredEdgeStyle: CytoColorScheme[] = [
 	{
 		selector: "edge",
 		css: {
@@ -210,7 +218,7 @@ export const coloredEdgeStyle = [
 	},
 ];
 
-export const showPropertyStyle = [
+export const showPropertyStyle: CytoColorScheme[] = [
 	{
 		selector: "edge",
 		css: {
@@ -225,3 +233,37 @@ export const showPropertyStyle = [
 		},
 	},
 ];
+
+/** Test style for error detection.*/
+export const testStyle: CytoStyle = {
+	style: [
+		{
+			selector: "node", // compound nodes
+			css: {
+				"background-color": "#ffffff",
+				shape: "circle",
+				label: (node) => node.data("id").replace("http://www.snik.eu/ontology/", ""),
+				color: "#ffffff",
+			},
+		},
+		{
+			selector: "edge", // compound nodes
+			css: {
+				label: (edge) => edge.data("pl"),
+				color: "white",
+			},
+		},
+		{
+			selector: ".hidden",
+			css: {
+				visibility: "hidden",
+			},
+		},
+		{
+			selector: ":parent", // compound nodes
+			css: {
+				"background-color": "#ff0000",
+			},
+		},
+	],
+};

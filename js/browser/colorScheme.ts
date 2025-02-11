@@ -1,8 +1,13 @@
 /** Some Cytoscape color schemes. */
 import { EDGE } from "../utils/constants";
 
+export type CytoColorScheme = {
+	selector: string;
+	css: object;
+};
+
 /** Standard light mode Cytoscape color scheme.*/
-export const colorSchemeDay = [
+export const colorSchemeDay: CytoColorScheme[] = [
 	{
 		selector: "node",
 		css: {
@@ -65,7 +70,7 @@ export const colorSchemeDay = [
 ];
 
 /** Standard dark mode Cytoscape color scheme.*/
-export const colorSchemeNight = [
+export const colorSchemeNight: CytoColorScheme[] = [
 	{
 		selector: "node",
 		css: {

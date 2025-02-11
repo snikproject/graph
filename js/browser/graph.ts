@@ -38,7 +38,6 @@ export class Graph {
 		this.container.style.backgroundColor = "black"; // required to show background image
 		this.cy = cytoscape({
 			container,
-			//@ts-expect-error concat type
 			style: style.style.concat(colorSchemeNight),
 			wheelSensitivity: 0.3,
 			minZoom: 0.02,
@@ -404,7 +403,7 @@ export class Graph {
 	 * @param showProperty - Show the property as edge label even on all edges, else only show edge labels on unselected edges.
 	 */
 	applyStyle(dayScheme: boolean, coloredEdges: boolean, showProperty: boolean): void {
-		let baseStyle = style.style as any;
+		let baseStyle = style.style;
 		if (dayScheme) {
 			this.container.style.backgroundColor = "white";
 			baseStyle = baseStyle.concat(colorSchemeDay);
