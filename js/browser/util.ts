@@ -2,8 +2,7 @@
 import { config } from "../config/config";
 import type { NodeSingular, EdgeSingular } from "cytoscape";
 import log from "loglevel";
-import { EDGE } from "../edge";
-import { NODE } from "../node";
+import { NODE, EDGE } from "../utils/constants";
 import * as rdf from "../rdf";
 import * as packageInfo from "../../package.json";
 export const VERSION = packageInfo.version;

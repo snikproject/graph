@@ -1,5 +1,5 @@
 /** Some Cytoscape color schemes. */
-import { EDGE } from "../edge";
+import { EDGE } from "../utils/constants";
 
 /** Standard light mode Cytoscape color scheme.*/
 export const colorSchemeDay = [

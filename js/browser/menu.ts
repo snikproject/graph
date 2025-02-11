@@ -1,6 +1,6 @@
 import * as save from "./save";
 import * as layout from "../layout";
-import { NODE } from "../node";
+import { NODE } from "../utils/constants";
 import { loadGraphFromSparql } from "../loadGraphFromSparql";
 import * as language from "../lang/language";
 import * as util from "./util";

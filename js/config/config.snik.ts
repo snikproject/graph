@@ -1,5 +1,5 @@
 import type { NodeSingular } from "cytoscape";
-import { NODE } from "../node";
+import { NODE } from "../utils/constants";
 import snikView from "./initialView/snik.json" assert { type: "json" };
 
 const shapeMap = new Map([

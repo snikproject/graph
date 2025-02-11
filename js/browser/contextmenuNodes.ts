@@ -2,7 +2,7 @@
 import { classUse } from "./classuse";
 import { config } from "../config/config";
 import * as rdf from "../rdf";
-import { NODE } from "../node";
+import { NODE } from "../utils/constants";
 import * as util from "./util";
 import { Graph, Direction } from "./graph";
 import type { MenuItem } from "./contextmenu";

@@ -5,7 +5,7 @@ This ensures that filters and star operations interact properly, for example tha
 See http://js.cytoscape.org/#style/visibility.
 */
 import { config } from "../config/config";
-import { NODE } from "../node";
+import { NODE } from "../utils/constants";
 import { checkboxKeydownListener, checkboxClickableDiv } from "./util";
 import { View } from "./view";
 import log from "loglevel";

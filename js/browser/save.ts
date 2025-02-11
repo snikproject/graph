@@ -7,7 +7,7 @@ import type { Graph } from "./graph";
 import log from "loglevel";
 import c from "cytoscape";
 import svg from "cytoscape-svg";
-import { NODE } from "../node";
+import { NODE } from "../utils/constants";
 c.use(svg);
 
 export interface ViewJson {

@@ -3,7 +3,7 @@
 import { coloredEdgeStyle, showPropertyStyle, style } from "./style";
 import { colorSchemeDay, colorSchemeNight } from "./colorScheme";
 import { timer } from "../timer";
-import { NODE } from "../node";
+import { NODE } from "../utils/constants";
 import { progress } from "./progress";
 import { View } from "./view";
 import type { Core, Collection, NodeCollection, EdgeCollection, NodeSingular } from "cytoscape";
