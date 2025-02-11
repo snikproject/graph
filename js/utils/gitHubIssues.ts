@@ -12,17 +12,6 @@ import { edgeLabel } from "./string";
 // otherwise, the log doesn't help much
 const LOG_LIMIT = 6000;
 
-/** getElementById with exception handling.
- * @param id - an HTML DOM id
- * @returns the element with the given id */
-export function getElementById(id: string): HTMLElement {
-	const el = document.getElementById(id);
-	if (!el) {
-		throw new Error(`Element with id ${id} does not exist.`);
-	}
-	return el;
-}
-
 /** Open a new issue on the GitHub repository.
  * @param repo - GIT repository URL
  * @param title - issue title

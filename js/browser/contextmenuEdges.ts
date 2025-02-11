@@ -1,6 +1,6 @@
 /** Creates the circular context menu that can be opened on top of an edge.*/
-import * as util from "../utils/gitHubIssues";
-import * as string from "../utils/string";
+import { createGitHubIssue, confirmLink, deleteTriple } from "../utils/gitHubIssues";
+import { edgeLabel } from "../utils/string";
 import { config } from "../config/config";
 import { EDGE } from "../utils/constants";
 import { Graph } from "./graph";
@@ -18,8 +18,8 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 			selector: "edge",
 			onClickFunction: (event) => {
 				const edge = event.target;
-				const body = `Problem with the edge [${string.edgeLabel(edge)}](${edge.data(EDGE.SOURCE)}):\n\n`;
-				util.createGitHubIssue(config.git.repo.ontology, string.edgeLabel(edge), body);
+				const body = `Problem with the edge [${edgeLabel(edge)}](${edge.data(EDGE.SOURCE)}):\n\n`;
+				createGitHubIssue(config.git.repo.ontology, edgeLabel(edge), body);
 			},
 		},
 		{
@@ -43,7 +43,7 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 		{
 			id: "edge-confirm-link",
 			selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`,
-			onClickFunction: (event) => util.confirmLink(event.target),
+			onClickFunction: (event) => confirmLink(event.target),
 		},
 		/** Context menu for edges in development mode that are either confirmed interlinks (skos:closeMatch and friends in the match graph) or meta relations, such as meta:updates.
 			Offers base and development commands. */
@@ -55,7 +55,7 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 					id: "remove-permanently",
 					onClickFunction: (event) => {
 						graph.cy.remove(event.target);
-						util.deleteTriple(event.target);
+						deleteTriple(event.target);
 					},
 				},
 				{

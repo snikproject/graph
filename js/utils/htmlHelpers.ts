@@ -1,3 +1,17 @@
+/** Helper functions for HTML. */
+
+/** getElementById with exception handling.
+ * @param id - an HTML DOM id
+ * @returns the element with the given id */
+
+export function getElementById(id: string): HTMLElement {
+	const el = document.getElementById(id);
+	if (!el) {
+		throw new Error(`Element with id ${id} does not exist.`);
+	}
+	return el;
+}
+
 export const checkboxKeydownListener = (box) => (e) => {
 	switch (e.key) {
 		case " ":

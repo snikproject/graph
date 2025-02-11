@@ -1,6 +1,6 @@
 /** Search classes by chapter.*/
 import * as sparql from "../sparql";
-import * as util from "../utils/gitHubIssues";
+import { getElementById } from "../utils/htmlHelpers";
 import * as language from "../lang/language";
 import type { Graph } from "./graph";
 import MicroModal from "micromodal";
@@ -44,7 +44,7 @@ async function getClasses(sub: string, chapter: string): Promise<Set<string>> {
 @param classes - resource URIs
 @returns Void promise, just for waiting. */
 async function showClasses(graph: Graph, classes: Set<string>): Promise<void> {
-	const table = util.getElementById("tab:chapter-search-classes") as HTMLTableElement;
+	const table = getElementById("tab:chapter-search-classes") as HTMLTableElement;
 	while (table.rows.length > 0) {
 		table.deleteRow(0);
 	} // clear leftovers from last time
@@ -91,12 +91,12 @@ async function showClasses(graph: Graph, classes: Set<string>): Promise<void> {
 export async function showChapterSearch(graph: Graph, sub: string): Promise<void> {
 	MicroModal.show("chapter-search");
 
-	const table = util.getElementById("tab:chapter-search-chapters") as HTMLTableElement;
+	const table = getElementById("tab:chapter-search-chapters") as HTMLTableElement;
 	while (table.rows.length > 0) {
 		table.deleteRow(0);
 	} // clear leftovers from last time
 	{
-		const classTable = util.getElementById("tab:chapter-search-classes") as HTMLTableElement;
+		const classTable = getElementById("tab:chapter-search-classes") as HTMLTableElement;
 		while (classTable.rows.length > 0) {
 			classTable.deleteRow(0);
 		} // clear leftovers from last time

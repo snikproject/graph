@@ -3,9 +3,9 @@ import * as layout from "../layout";
 import { NODE } from "../utils/constants";
 import { loadGraphFromSparql } from "../loadGraphFromSparql";
 import * as language from "../lang/language";
-import * as util from "../utils/gitHubIssues";
-import * as checkboxKeydownListener from "../utils/checkboxes";
-import * as gitInfo from "../utils/info";
+import { createGitHubBugReportIssue } from "../utils/gitHubIssues";
+import { getElementById, checkboxClickableDiv, checkboxKeydownListener } from "../utils/htmlHelpers";
+import { gitInfo } from "../utils/info";
 import MicroModal from "micromodal";
 import { config } from "../config/config";
 import { progress } from "./progress";
@@ -145,7 +145,7 @@ export class Menu {
 	static about(): void {
 		const cy = View?.activeState()?.graph?.cy;
 		const s = `\n${cy?.nodes()?.size()} nodes, ${cy?.edges()?.size()} edges loaded.`;
-		window.alert(gitInfo.gitInfo() + s);
+		window.alert(gitInfo() + s);
 	}
 
 	/** Show all nodes that are connected via close matches to visible nodes. */
@@ -338,7 +338,7 @@ export class Menu {
 					{ action: Menu.about, i18n: "about" },
 					config.ontology.links.feedbackOntology ? { action: config.ontology.links.feedbackOntology, i18n: "feedback-ontology" } : null,
 					config.ontology.links.featureRequest ? { action: config.ontology.links.featureRequest, i18n: "feature-request" } : null,
-					{ action: util.createGitHubBugReportIssue, i18n: "bug-report" },
+					{ action: createGitHubBugReportIssue, i18n: "bug-report" },
 				],
 			},
 		];
@@ -348,7 +348,7 @@ export class Menu {
 	 * Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.
 	 * @param as - an empty array that will be filled with the anchor elements */
 	addOptions(as: Array<HTMLAnchorElement>): void {
-		const optionsContent = util.getElementById("options-menu-content");
+		const optionsContent = getElementById("options-menu-content");
 
 		// names of options to be added
 		const names = ["separateColours", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges", "showProperty"]; // ,"starNewView"
@@ -377,8 +377,8 @@ export class Menu {
 			this[name + "Box"] = box;
 
 			// click on container to click on checkbox
-			a.addEventListener("keydown", checkboxKeydownListener.checkboxKeydownListener(box));
-			a.appendChild(checkboxKeydownListener.checkboxClickableDiv(box, language.getString(name), name));
+			a.addEventListener("keydown", checkboxKeydownListener(box));
+			a.appendChild(checkboxClickableDiv(box, language.getString(name), name));
 		}
 
 		this.separateColoursBox.addEventListener("change", () => {
@@ -441,7 +441,7 @@ export class Menu {
 		//const frag = new DocumentFragment();
 		const ul = document.createElement("ul");
 		//this.graph.parent.prepend(ul); // for multiple graphs at the same time with a menu each
-		util.getElementById("top").prepend(ul); // a single menu for a single graph
+		getElementById("top").prepend(ul); // a single menu for a single graph
 		ul.classList.add("dropdown-bar");
 		// see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
 		ul.setAttribute("tabindex", "0");
@@ -528,9 +528,9 @@ export class Menu {
 			});
 		}
 
-		load.addFileLoadEntries(View.activeState().graph, util.getElementById("file-menu-content"), aas[0] /*, this.optionsFromJSON*/); // update index when "File" position changes in the menu
+		load.addFileLoadEntries(View.activeState().graph, getElementById("file-menu-content"), aas[0] /*, this.optionsFromJSON*/); // update index when "File" position changes in the menu
 		log.debug("fileLoadEntries added");
-		Filter.addFilterEntries(util.getElementById("filter-menu-content"), aas[1]); // update index when "Filter" position changes in the menu
+		Filter.addFilterEntries(getElementById("filter-menu-content"), aas[1]); // update index when "Filter" position changes in the menu
 		log.debug("filter entries added");
 		this.addOptions(aas[2]); // update index when "Options" position changes in the menu
 		for (let i = 0; i < aas.length; i++) {

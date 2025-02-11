@@ -1,6 +1,6 @@
 /** Textual node search.*/
 import * as sparql from "../sparql";
-import * as util from "../utils/gitHubIssues";
+import { getElementById } from "../utils/htmlHelpers";
 import * as fuse from "../fuseSearch";
 import { progress } from "./progress";
 import { View } from "./view";
@@ -31,13 +31,13 @@ export class Search {
 	 */
 	showSearchResults(query: string, uris: Array<string>): boolean {
 		this.resultNodes = [];
-		const table = util.getElementById("tab:search-results") as HTMLTableElement;
+		const table = getElementById("tab:search-results") as HTMLTableElement;
 		// clear leftovers from last time
 		while (table.rows.length > 0) {
 			table.deleteRow(0);
 		}
 		if (uris.length === 0) {
-			util.getElementById("h2:search-results").innerHTML = `No Search Results for "${query}"`;
+			getElementById("h2:search-results").innerHTML = `No Search Results for "${query}"`;
 			return false;
 		}
 		if (uris.length === 1) {
@@ -46,9 +46,9 @@ export class Search {
 			return true;
 		}
 		if (uris.length === SEARCH_LIMIT) {
-			util.getElementById("h2:search-results").innerHTML = `First ${SEARCH_LIMIT} Search Results for "${query}"`;
+			getElementById("h2:search-results").innerHTML = `First ${SEARCH_LIMIT} Search Results for "${query}"`;
 		} else {
-			util.getElementById("h2:search-results").innerHTML = `${uris.length} Search Results for "${query}"`;
+			getElementById("h2:search-results").innerHTML = `${uris.length} Search Results for "${query}"`;
 		}
 		// Preprocessing: Classify URIs as (0) in graph and visible, (1) in graph and hidden but not filtered, (2) in graph and filtered and (3) not in the graph.
 		const uriType = {};

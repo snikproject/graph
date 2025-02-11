@@ -1,4 +1,4 @@
-import * as util from "../utils/gitHubIssues";
+import { getElementById } from "../utils/htmlHelpers";
 import { View } from "./view";
 import * as layout from "../layout";
 import GoldenLayout from "golden-layout";
@@ -31,7 +31,7 @@ export function goldenLayout(): GoldenLayout {
 
 	viewLayout.on("stackCreated", function (stack) {
 		(viewLayout as any).selectItem(stack);
-		const template = util.getElementById("goldenlayout-header");
+		const template = getElementById("goldenlayout-header");
 		const zoomButtons = document.importNode((template as any).content, true);
 		// Add the zoomButtons to the header
 		(stack as any).header.controlsContainer.prepend(zoomButtons);

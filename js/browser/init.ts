@@ -6,7 +6,7 @@ import * as layout from "../layout";
 import * as sparql from "../sparql";
 import { progress } from "./progress";
 import log from "loglevel";
-import * as util from "../utils/gitHubIssues";
+import { getElementById } from "../utils/htmlHelpers";
 import { initHelp } from "../help";
 import { addBenchmarkOverlay } from "./benchmark";
 import { Graph } from "./graph";
@@ -174,7 +174,7 @@ export async function fillInitialGraph(graph: Graph): Promise<void> {
 	await progress(async () => {
 		const params = parseParams();
 		await applyParams(graph, params);
-		new Search(util.getElementById("search") as HTMLFormElement);
+		new Search(getElementById("search") as HTMLFormElement);
 		initHelp();
 	});
 	initHelp();
