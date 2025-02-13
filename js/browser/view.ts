@@ -1,8 +1,8 @@
 import { Graph } from "./graph";
 import { fillInitialGraph } from "./init";
 import { ContextMenu } from "./contextMenu";
-import { nodeCommands } from "../contextMenus/contextMenuNodes";
-import { edgeCommands } from "../contextMenus/contextMenuEdges";
+import { nodeCommands } from "../menuData/contextMenuNodes";
+import { edgeCommands } from "../menuData/contextMenuEdges";
 import { goldenLayout } from "./viewLayout";
 import { toJSON } from "./state";
 import log from "loglevel";
