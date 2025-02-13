@@ -1,6 +1,6 @@
 import * as layout from "../js/layout";
 import { loadGraphFromSparql } from "../js/loadGraphFromSparql";
-import { SNIK } from "./utils/sparql";
+import { SNIK } from "../js/utils/sparql";
 import cytoscape from "cytoscape";
 import { assert } from "chai";
 
