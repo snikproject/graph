@@ -8,8 +8,8 @@ import { getElementById, checkboxClickableDiv, checkboxKeydownListener } from ".
 import { gitInfo } from "../utils/info";
 import MicroModal from "micromodal";
 import { config } from "../config/config";
-import { progress } from "./progress";
-import { showChapterSearch } from "./chaptersearch";
+import { progress } from "../animation/progress";
+import { showChapterSearch } from "../search/chaptersearch";
 import { Filter } from "./filter";
 import * as load from "./load";
 import { Graph } from "./graph";

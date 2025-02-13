@@ -3,7 +3,7 @@ import { config } from "../config/config";
 import type { NodeSingular, EdgeSingular } from "cytoscape";
 import log from "loglevel";
 import { NODE, EDGE } from "./constants";
-import * as rdf from "../rdf";
+import * as rdf from "./rdf";
 import { gitInfo } from "./info";
 import { edgeLabel } from "./string";
 // GitHub allows for 8201 characters, but some browser limit around 2000 chars:

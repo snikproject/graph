@@ -1,9 +1,9 @@
 /** Textual node search.*/
-import * as sparql from "../sparql";
+import * as sparql from "../utils/sparql";
 import { getElementById } from "../utils/htmlHelpers";
-import * as fuse from "../fuseSearch";
-import { progress } from "./progress";
-import { View } from "./view";
+import * as fuse from "./fuseSearch";
+import { progress } from "../animation/progress";
+import { View } from "../browser/view";
 import MicroModal from "micromodal";
 
 import log from "loglevel";

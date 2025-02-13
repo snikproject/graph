@@ -1,10 +1,10 @@
 import { config } from "../config/config";
 import { loadGraphFromSparql } from "../loadGraphFromSparql";
 import { loadGraphFromJsonFile, loadLayoutFromJsonObject } from "./load";
-import { Search } from "./search";
+import { Search } from "../search/search";
 import * as layout from "../layout";
-import * as sparql from "../sparql";
-import { progress } from "./progress";
+import * as sparql from "../utils/sparql";
+import { progress } from "../animation/progress";
 import log from "loglevel";
 import { getElementById } from "../utils/htmlHelpers";
 import { initHelp } from "../help";

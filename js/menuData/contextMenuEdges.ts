@@ -3,8 +3,8 @@ import { createGitHubIssue, confirmLink, deleteTriple } from "../utils/gitHubIss
 import { edgeLabel } from "../utils/string";
 import { config } from "../config/config";
 import { EDGE } from "../utils/constants";
-import { Graph } from "./graph";
-import type { MenuItem } from "./contextmenu";
+import { Graph } from "../browser/graph";
+import type { MenuItem } from "../browser/contextMenu";
 import log from "loglevel";
 
 /** Register modular edge context menu.

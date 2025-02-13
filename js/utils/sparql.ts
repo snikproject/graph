@@ -1,5 +1,5 @@
 /** Functions for querying the SNIK SPARQL endpoint. */
-import { config } from "./config/config";
+import { config } from "../config/config";
 import log from "loglevel";
 
 export const SNIK = {

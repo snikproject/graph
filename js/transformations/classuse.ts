@@ -1,9 +1,9 @@
 /** Show the environment of a single node using a special layout.*/
-import * as sparql from "../sparql";
+import * as sparql from "../utils/sparql";
 import { NODE } from "../utils/constants";
-import { Graph } from "./graph";
-import { View } from "./view";
-import { short } from "../rdf";
+import { Graph } from "../browser/graph";
+import { View } from "../browser/view";
+import { short } from "../utils/rdf";
 import log from "loglevel";
 
 let count = 0;

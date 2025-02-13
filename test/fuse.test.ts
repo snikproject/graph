@@ -1,4 +1,4 @@
-import { search, createIndex } from "../js/fuseSearch";
+import { search, createIndex } from "../js/search/fuseSearch";
 console.groupCollapsed;
 
 const SEARCH = {

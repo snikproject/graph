@@ -7,7 +7,7 @@ import { Timer } from "./logs/timer";
 import { NODE } from "./utils/constants";
 import { config } from "./config/config";
 import log from "loglevel";
-import type { Core, ElementDefinition, LayoutOptions, NodeCollection, Layouts, Position } from "cytoscape";
+import type { Core, ElementDefinition, LayoutOptions, NodeCollection, Layouts, Position, EdgeSingular, NodeSingular } from "cytoscape";
 import cytoscape from "cytoscape"; //eslint-disable-line no-duplicate-imports
 import cytoscapeeuler from "cytoscape-euler";
 cytoscape.use(cytoscapeeuler);
@@ -199,10 +199,6 @@ export async function presetLayout(cy: Core, pos: Array<Array<object>>): Promise
 	return status;
 }
 
-export interface LayoutConfig {
-	name: string;
-}
-
 /** Cached version of {@link run}.
 @param cy - the Cytoscape.js graph to run the layout on
 @param layoutConfig - the layout configuration, which includes the layout name and options
@@ -266,7 +262,7 @@ function springLength(edge: cytoscape.EdgeSingular): number {
 export const euler = {
 	/*eslint no-unused-vars: "off"*/
 	name: "euler",
-	springLength: (edge) => springLength(edge),
+	springLength: (edge: EdgeSingular) => springLength(edge),
 	animate: true,
 	refresh: 50,
 	maxSimulationTime: 40000,
@@ -275,7 +271,7 @@ export const euler = {
 	randomize: true,
 	movementThreshold: 1,
 	fit: false, // center and zoom after so that it fits in the view
-	mass: (node) => node.data("mass") | 40,
+	mass: (node: NodeSingular) => node.data("mass") | 40,
 };
 
 /**Fastest (but still slow) force directed Cytoscape.js layout found.*/

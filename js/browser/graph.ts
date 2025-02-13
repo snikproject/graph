@@ -4,7 +4,7 @@ import { coloredEdgeStyle, showPropertyStyle, style } from "./style";
 import { colorSchemeDay, colorSchemeNight } from "./colorScheme";
 import { Timer } from "../logs/timer";
 import { NODE } from "../utils/constants";
-import { progress } from "./progress";
+import { progress } from "../animation/progress";
 import { View } from "./view";
 import type { Core, Collection, NodeCollection, EdgeCollection, NodeSingular } from "cytoscape";
 import cytoscape from "cytoscape"; //eslint-disable-line no-duplicate-imports
@@ -190,14 +190,13 @@ export class Graph {
 		this.cy.startBatch();
 		// open 2 levels deep on closeMatch
 		let inner = center; // if you don't want to include close match, keep inner at that
-		let closeMatchEdges;
 		for (
 			let innerSize = 0;
 			innerSize < inner.size(); // repeat until the close match chain ends
 
 		) {
 			innerSize = inner.size();
-			closeMatchEdges = inner.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
+			const closeMatchEdges = inner.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
 			inner = inner.union(closeMatchEdges.connectedNodes(".unfiltered")); // in case there is no close match edge
 		}
 		let edges: EdgeCollection;
@@ -226,9 +225,7 @@ export class Graph {
 		//const visible = this.cy.nodes(".unfiltered").not(".hidden");
 		//Graph.starStyle(visible.edgesWith(visible));
 		if (changeLayout) {
-			const sorted = nodes.sort(
-				(a, b) => smallestEdgeCode(a, inner) - smallestEdgeCode(b, inner)
-			);
+			const sorted = nodes.sort((a, b) => smallestEdgeCode(a, inner) - smallestEdgeCode(b, inner));
 			sorted
 				.layout({
 					name: "concentric",
@@ -474,8 +471,7 @@ export class Graph {
 	 * @param nodes - The nodes, each of which will be passed as parameter to a separate call of the given function. Can be null or undefined,
 	 * @param direct - whether the input is a cytoscape collection that can be passed directly into the function without looping, which can be much faster if possible.
 	 * @returns the function described above. */
-	multiplex(f: any, nodes?: NodeCollection, direct?: boolean) {
-		//multiplex(f: (node?: NodeSingular | NodeCollection) => void, nodes?: NodeCollection, direct?: boolean) {
+	multiplex(f: (node?: NodeSingular | NodeCollection) => void, nodes?: NodeCollection, direct?: boolean) {
 		return (ele?: NodeSingular) => {
 			const selected = this.cy.nodes(":selected");
 			let collection = nodes;

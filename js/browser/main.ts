@@ -1,7 +1,7 @@
 /** Entry point.*/
 import { Graph } from "./graph";
 import { config } from "../config/config";
-import { initLog } from "./log";
+import { initLog } from "../logs/log";
 import { View } from "./view";
 import MicroModal from "micromodal";
 import log from "loglevel";

@@ -12,7 +12,7 @@ export function getElementById(id: string): HTMLElement {
 	return el;
 }
 
-export const checkboxKeydownListener = (box) => (e) => {
+export const checkboxKeydownListener = (box: HTMLInputElement) => (e: KeyboardEvent) => {
 	switch (e.key) {
 		case " ":
 		case "Enter":

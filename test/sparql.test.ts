@@ -1,4 +1,4 @@
-import * as sparql from "../js/sparql";
+import * as sparql from "./utils/sparql";
 import "chai/register-should";
 
 const EXPECTED_CLASSES_MIN = 4000;

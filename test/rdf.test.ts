@@ -1,4 +1,4 @@
-import * as rdf from "../js/rdf";
+import * as rdf from "./utils/rdf";
 import assert from "assert"; // 'assert.js' does not work for some reason, probably only works because of the transpilation to require
 
 const shortlongs = [

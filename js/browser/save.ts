@@ -14,16 +14,8 @@ export interface ViewJson {
 	version: string;
 	title: string;
 	type: ViewJsonType;
-	// output format of cytoscape's cy.json()
+	/** output format of cytoscape's cy.json() */
 	graph: Array<object>;
-}
-
-export interface NodeLayout {
-	uri: string;
-	position: {
-		x: number;
-		y: number;
-	};
 }
 
 export interface Session {

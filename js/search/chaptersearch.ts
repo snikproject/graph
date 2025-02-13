@@ -1,14 +1,14 @@
 /** Search classes by chapter.*/
-import * as sparql from "../sparql";
+import * as sparql from "../utils/sparql";
 import { getElementById } from "../utils/htmlHelpers";
 import * as language from "../lang/language";
-import type { Graph } from "./graph";
+import type { Graph } from "../browser/graph";
 import MicroModal from "micromodal";
 
 const chapters: Map<string, Array<string>> = new Map();
-const labels = new Map();
+const labels = new Map<string, string>();
 
-const selectedChapters = new Set();
+const selectedChapters = new Set<string>();
 
 /**
 @returns classes the set of classes in that chapter

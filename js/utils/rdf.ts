@@ -14,19 +14,6 @@ const prefixes = [
 	["owl", "http://www.w3.org/2002/07/owl#"],
 ];
 
-/**
- * @param  uri - any URI
- * @returns the prefix part of a URI if it is defined in this file.
- */
-export function longPrefix(uri: string): string {
-	for (const prefix of prefixes) {
-		if (uri.startsWith(prefix[1])) {
-			return prefix[1].replace(/\/$/, "");
-		}
-	}
-	return uri;
-}
-
 /** Shortens a URI if possible using SNIK prefixes defined in this file.
  * @param  uri - a URI, for example "http://www.snik.eu/ontology/meta/Function".
  * @returns the shortened URI, for example "meta:Function". If no prefix applies, return the input as is.
@@ -47,18 +34,4 @@ export function long(uri: string): string {
 		uri = uri.replace(prefix[0] + ":", prefix[1]);
 	}
 	return uri;
-}
-
-/**
- * Returns the subontology a SNIK uri belongs to.
- * @param  uri - a SNIK URI
- * @returns     the subontology of the URI
- */
-export function sub(uri: string): string {
-	if (uri.startsWith("http://www.snik.eu/ontology/")) {
-		return uri.replace(/\/[^/]*$/, "");
-	}
-	{
-		return null;
-	}
 }

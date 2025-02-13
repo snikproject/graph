@@ -1,12 +1,12 @@
 /** Creates the circular context menu that can be opened on top of a node.*/
-import { classUse } from "./classuse";
+import { classUse } from "../transformations/classuse";
 import { config } from "../config/config";
-import * as rdf from "../rdf";
+import * as rdf from "../utils/rdf";
 import { NODE } from "../utils/constants";
 import { createGitHubIssue, deleteClass } from "../utils/gitHubIssues";
-import { Graph, Direction } from "./graph";
-import type { MenuItem } from "./contextmenu";
-import * as sparql from "../sparql";
+import { Graph, Direction } from "../browser/graph";
+import type { MenuItem } from "../browser/contextMenu";
+import * as sparql from "../utils/sparql";
 import * as language from "../lang/language";
 import type { NodeSingular } from "cytoscape";
 
