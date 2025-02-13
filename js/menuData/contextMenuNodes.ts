@@ -1,5 +1,5 @@
 /** Creates the circular context menu that can be opened on top of a node.*/
-import { classUse } from "../transformations/classuse";
+import { classUse } from "../transformations/classUse";
 import { config } from "../config/config";
 import * as rdf from "../utils/rdf";
 import { NODE } from "../utils/constants";
