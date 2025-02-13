@@ -9,6 +9,7 @@ import { View } from "./view";
 import type { Core, Collection, NodeCollection, EdgeCollection, NodeSingular } from "cytoscape";
 import cytoscape from "cytoscape"; //eslint-disable-line no-duplicate-imports
 import log from "loglevel";
+import { smallestEdgeCode } from "../utils/string";
 
 /** Specify the direction of edges to show around a given node. */
 export enum Direction {
@@ -199,7 +200,7 @@ export class Graph {
 			closeMatchEdges = inner.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
 			inner = inner.union(closeMatchEdges.connectedNodes(".unfiltered")); // in case there is no close match edge
 		}
-		let edges;
+		let edges: EdgeCollection;
 		switch (direction) {
 			case Direction.IN:
 				edges = this.cy.elements(".unfiltered").edgesTo(inner);
@@ -225,25 +226,9 @@ export class Graph {
 		//const visible = this.cy.nodes(".unfiltered").not(".hidden");
 		//Graph.starStyle(visible.edgesWith(visible));
 		if (changeLayout) {
-			const sorted = nodes.sort((a, b) => {
-				const pa = Math.min(
-					a.edgesTo(inner).map((n) =>
-						n
-							.data("pl")
-							.split("")
-							.reduce((na, nb) => na + nb.charCodeAt(0), 0)
-					)
-				);
-				const pb = Math.min(
-					b.edgesTo(inner).map((n) =>
-						n
-							.data("pl")
-							.split("")
-							.reduce((na, nb) => na + nb.charCodeAt(0), 0)
-					)
-				);
-				return pa - pb;
-			});
+			const sorted = nodes.sort(
+				(a, b) => smallestEdgeCode(a, inner) - smallestEdgeCode(b, inner)
+			);
 			sorted
 				.layout({
 					name: "concentric",
@@ -569,19 +554,19 @@ export class Graph {
 				const labels = {};
 				let nodes = comp.nodes();
 				for (let j = 0; j < nodes.length; j++) {
-					const l = nodes[j].data("l");
+					const l = nodes[j].data(NODE.LABEL);
 					for (const key in l) {
 						if (!labels[key]) {
 							labels[key] = new Set();
 						}
-						l[key].forEach((ll) => labels[key].add(ll));
+						l[key].forEach((ll: string) => labels[key].add(ll));
 					}
 				}
 				for (const key in labels) {
 					labels[key] = [[...labels[key]].reduce((a, b) => a + ", " + b)];
 				}
 				const priorities = ["bb", "ob", "he", "it4it", "ciox", "bb2"];
-				const priority = (source) => {
+				const priority = (source: string) => {
 					let p = priorities.indexOf(source);
 					if (p === -1) {
 						p = 99;

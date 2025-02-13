@@ -7,7 +7,7 @@ import * as language from "../lang/language";
 import { config } from "../config/config";
 import { stringToColor } from "../utils/colors";
 import type { CytoColorScheme } from "./colorScheme";
-import type { EdgeSingular } from "cytoscape";
+import type { EdgeSingular, NodeSingular } from "cytoscape";
 // see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing
 
 export type CytoStyle = {
@@ -49,7 +49,7 @@ export const style: CytoStyle = {
 						return node.data(NODE.ID);
 					}
 					// Use the user-prefered language if available.
-					let it;
+					let it: string;
 					if ((it = label[language.getLanguage()]) && (it = it[0])) {
 						label = it;
 					}
@@ -122,7 +122,7 @@ export const style: CytoStyle = {
 			selector: "edge.highlighted,edge:selected,edge.starmode",
 			css: {
 				"text-opacity": 1.0,
-				"mid-target-arrow-shape": function (edge) {
+				"mid-target-arrow-shape": function (edge: EdgeSingular) {
 					// no arrow for properties edges
 					switch (edge.data(EDGE.PROPERTY)) {
 						case "http://www.snik.eu/ontology/meta/isAssociatedWith":
@@ -242,14 +242,14 @@ export const testStyle: CytoStyle = {
 			css: {
 				"background-color": "#ffffff",
 				shape: "circle",
-				label: (node) => node.data("id").replace("http://www.snik.eu/ontology/", ""),
+				label: (node: NodeSingular) => node.data(NODE.ID).replace("http://www.snik.eu/ontology/", ""),
 				color: "#ffffff",
 			},
 		},
 		{
 			selector: "edge", // compound nodes
 			css: {
-				label: (edge) => edge.data("pl"),
+				label: (edge: EdgeSingular) => edge.data(EDGE.PROPERTY_LABEL),
 				color: "white",
 			},
 		},
