@@ -1,0 +1,43 @@
+{
+	"env": {
+		"browser": true,
+		"es2024": true,
+		"node": true
+	},
+	"rules": {
+		"semi": ["error", "always"],
+		"no-use-before-define": "off",
+		"typescript/no-use-before-define": "error",
+		"typescript/no-inferrable-types": "off",
+		"typescript/ban-ts-comment": "warn",
+		"typescript/no-explicit-any": "off",
+		"typescript/no-this-alias": "warn",
+		"typescript/no-shadow": "warn",
+		"typescript/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+		"typescript/consistent-type-imports": "error",
+		"consistent-type-exports": "error",
+		"no-shadow": "off",
+		"no-console": "off",
+		"no-duplicate-imports": "error",
+		"dot-notation": "off",
+		"eqeqeq": "error",
+		"eol-last": "error",
+		"import/no-default-export": "warn",
+		"import/no-cycle": "off",
+		"import/no-unresolved": "error",
+		"max-len": ["warn", 245],
+		"padded-blocks": ["error", "never"],
+		"space-in-parens": "error",
+		"array-bracket-spacing": "error",
+		"no-unneeded-ternary": "error",
+		"no-unexpected-multiline": "off",
+		"no-var": "error",
+		"no-control-regex": "off",
+		"curly": "warn",
+		"camelcase": "warn",
+		"prefer-const": "warn",
+		"comma-style": ["error", "last"],
+		"class-methods-use-this": "off",
+		"no-trailing-spaces": "error"
+	}
+}

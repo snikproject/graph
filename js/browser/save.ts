@@ -10,12 +10,32 @@ import svg from "cytoscape-svg";
 import { NODE } from "../node";
 c.use(svg);
 
+// different format than what https://js.cytoscape.org/#layouts/preset expects because we save it as JSON so we have to convert
+export type CustomJsonLayoutElement = [string, { x: number; y: number }];
+export type CustomJsonLayout = Array<CustomJsonLayoutElement>;
+
 export interface ViewJson {
 	version: string;
 	title: string;
-	type: ViewJsonType;
-	// output format of cytoscape's cy.json()
-	graph: Array<object>;
+	type: ViewJsonType.VIEW;
+	graph: {
+		elements: {
+			nodes?: cytoscape.ElementDefinition[];
+			edges?: cytoscape.ElementDefinition[];
+		};
+	} & Record<string, any>;
+}
+
+export interface LayoutJson {
+	version: string;
+	title: string;
+	type: ViewJsonType.LAYOUT;
+	graph: CustomJsonLayout;
+}
+
+export enum ViewJsonType {
+	VIEW,
+	LAYOUT,
 }
 
 export interface NodeLayout {
@@ -30,11 +50,6 @@ export interface Session {
 	tabs: Array<TabContent>;
 	state: any;
 	mainGraph: any;
-}
-
-export enum ViewJsonType {
-	VIEW,
-	LAYOUT,
 }
 
 const a = document.createElement("a"); // reused for all saving, not visible to the user
@@ -100,7 +115,9 @@ export function saveSession(options): void {
 	for (const view of View.partViews) {
 		const tabContent = {
 			title: view.state.title,
-			graph: view.state.cy.json() as { style },
+			// overloaded function with multiple TypeScript declarations, see https://js.cytoscape.org/#cy.json
+			// no parameters represent the boolean parameter export function with it's default value of false for two keyed arrays by group
+			graph: view.state.cy.json(),
 		};
 		delete tabContent.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 		session.tabs.push(tabContent);
@@ -115,10 +132,8 @@ export function saveView(state: ViewState): void {
 		version: VERSION,
 		title: state.title,
 		type: ViewJsonType.VIEW,
-		// the view as JSON, ts doesn't know this is an array
-		graph: state.cy.json() as Array<object>,
+		graph: state.cy.json(),
 	};
-	//@ts-expect-error compiler doesnt know graph.style
 	delete json.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 	saveJson(json, "snik-view.json");
 }
@@ -126,15 +141,13 @@ export function saveView(state: ViewState): void {
 /** Saves the locations and URIs of the nodes of the current view as a custom JSON file.
  *  @param state - a GoldenLayout view state */
 export function saveLayout(state: ViewState): void {
-	const layout = state.cy.nodes(":visible").map((node) => [node.data(NODE.ID), node.position()]);
-
-	const json: ViewJson = {
+	const layout = state.cy.nodes(":visible").map((node) => [node.data(NODE.ID), node.position()]) as CustomJsonLayout;
+	const json: LayoutJson = {
 		version: VERSION,
 		title: state.title,
 		type: ViewJsonType.LAYOUT,
 		graph: layout,
 	};
-
 	// no need to delete style because we didn't copy it
 	saveJson(json, "snik-layout.json");
 }

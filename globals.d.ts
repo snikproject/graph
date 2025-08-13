@@ -1,4 +1,4 @@
-import jQuery from "jquery";
+import type jQuery from "jquery";
 
 declare global {
 	//const log: log.RootLogger & { logs: Array<string> };

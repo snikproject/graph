@@ -1,6 +1,7 @@
 import type { NodeSingular } from "cytoscape";
 import { NODE } from "../node";
 import snikView from "./initialView/snik.json" assert { type: "json" };
+import type { LayoutJson } from "../browser/save.ts";
 
 const shapeMap = new Map([
 	[NODE.SUBTOP_ENTITY_TYPE, "rectangle"],
@@ -29,7 +30,7 @@ export default {
 	name: "SNIK",
 	legend: "<span>&#9632; Entity Type</span> <span>&#9650; Role</span> <span>&#9679; Function</span> <span>* has Instances</span>" + colorLegend(),
 	title: "SNIK Ontology Graph",
-	initialView: snikView,
+	initialView: snikView as LayoutJson,
 	snik: {
 		defaultSubOntologies: ["meta", "bb", "ob", "ciox", "he", "it4it", "bb2"],
 		//allSubOntologies: ["meta", "bb", "ob", "ciox", "he", "he-unconsolidated", "it4it", "bb2"],

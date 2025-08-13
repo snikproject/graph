@@ -1,4 +1,5 @@
 import hitoView from "./initialView/hito.json" assert { type: "json" };
+import type { LayoutJson } from "../browser/save.ts";
 import { NODE } from "../node";
 import type { NodeSingular } from "cytoscape";
 
@@ -38,7 +39,7 @@ export default {
 	name: "HITO",
 	legend: "<span>&#9632; Citation</span> <span>&#9650; Classification</span> <span>&#9679; Catalogue</span> " + colorLegend(),
 	title: "Health IT Ontology Graph",
-	initialView: hitoView,
+	initialView: hitoView as LayoutJson,
 	snik: null,
 	links: {
 		homepage: "https://www.hitontology.eu/",

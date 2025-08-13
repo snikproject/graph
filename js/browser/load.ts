@@ -1,6 +1,6 @@
 /** Module for loading files both locally from the server and via upload from the client.*/
 import { View } from "./view";
-import type { ViewJson, Session } from "./save";
+import type { ViewJson, LayoutJson, CustomJsonLayoutElement, Session } from "./save";
 import { ViewJsonType } from "./save"; //eslint-disable-line no-duplicate-imports
 import { config } from "../config/config";
 import { fromJSON } from "./state";
@@ -126,7 +126,7 @@ export function loadView(event: Event): void {
 	});
 }
 
-export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph) {
+export function loadLayoutFromJsonObject(json: LayoutJson, graph: Graph) {
 	// compare versions of file and package.json and warn if deprecated
 	if (!checkVersion(ViewJsonType.LAYOUT, json)) {
 		return;
@@ -141,7 +141,7 @@ export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph) {
 		nodes.merge(
 			//@ts-expect-error compiler doesnt know JSON objects
 			json.graph
-				.flatMap((jsonNode: Array<any>) => {
+				.flatMap((jsonNode: CustomJsonLayoutElement) => {
 					const position: Position = {
 						x: jsonNode[1].x,
 						y: jsonNode[1].y,
@@ -189,7 +189,7 @@ export function loadLayoutFromJsonObject(json: ViewJson, graph: Graph) {
 @param event - a file input change event */
 export function loadLayout(event: Event): void {
 	console.groupCollapsed("Loading JSON Layout file into View.");
-	uploadJson(event, (json: ViewJson) => {
+	uploadJson(event, (json: LayoutJson) => {
 		const view: View = new View(true, json.title);
 		loadLayoutFromJsonObject(json, view.state.graph);
 	});

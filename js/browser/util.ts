@@ -190,22 +190,22 @@ export function hsvToHexColor(hue: number, saturation: number, value: number): s
 	let r: number, g: number, b: number;
 	switch (hDash % 6) {
 		case 0:
-			(r = value), (g = t), (b = p);
+			((r = value), (g = t), (b = p));
 			break;
 		case 1:
-			(r = q), (g = value), (b = p);
+			((r = q), (g = value), (b = p));
 			break;
 		case 2:
-			(r = p), (g = value), (b = t);
+			((r = p), (g = value), (b = t));
 			break;
 		case 3:
-			(r = p), (g = q), (b = value);
+			((r = p), (g = q), (b = value));
 			break;
 		case 4:
-			(r = t), (g = p), (b = value);
+			((r = t), (g = p), (b = value));
 			break;
 		case 5:
-			(r = value), (g = p), (b = q);
+			((r = value), (g = p), (b = q));
 			break;
 	}
 	return (

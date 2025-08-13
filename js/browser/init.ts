@@ -10,7 +10,7 @@ import * as util from "./util";
 import { initHelp } from "../help";
 import { addBenchmarkOverlay } from "./benchmark";
 import { Graph } from "./graph";
-import type { ViewJson } from "./save.ts";
+import type { LayoutJson } from "./save.ts";
 import { View } from "./view";
 
 interface Params {
@@ -125,7 +125,7 @@ async function applyParams(graph: Graph, params: Params): Promise<void> {
 		// hide "rdf:type"-edges
 		Graph.setVisible(graph.cy.edges("[p='http://www.w3.org/1999/02/22-rdf-syntax-ns#type']"), false);
 		if (config.ontology?.initialView) {
-			const json: ViewJson = config.ontology.initialView;
+			const json: LayoutJson = config.ontology.initialView;
 			loadLayoutFromJsonObject(json, View.activeState().graph);
 		}
 		// This old code path is never run because we have an initial view with predefined positions for SNIK.
