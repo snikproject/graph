@@ -96,6 +96,7 @@ export async function loadSessionFromJsonFile(event: Event): Promise<void> {
  */
 function checkVersion(type: ViewJsonType, json: any): boolean {
 	let ok: boolean = true;
+	let ts = (t) => `type ${t} (${ViewJsonType[t]})`;
 	if (
 		json.version !== VERSION &&
 		!confirm(`Your file was saved in version ${json.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`)
@@ -105,7 +106,7 @@ function checkVersion(type: ViewJsonType, json: any): boolean {
 		alert(`Unknown file format, aborting.`);
 		ok = false;
 	} else if (json.type !== type) {
-		alert(`Your file was saved as ${json.type}, but you are trying to load a ${type}, aborting.`);
+		alert(`Your file was saved as ${ts(json.type)}, but you are trying to load ${ts(type)}, aborting.`);
 		ok = false;
 	}
 	return ok;
@@ -190,11 +191,10 @@ export function loadLayoutFromJsonObject(json: LayoutJson, graph: Graph) {
 export function loadLayout(event: Event): void {
 	console.groupCollapsed("Loading JSON Layout file into View.");
 	uploadJson(event, (json: LayoutJson) => {
-		const view: View = new View(true, json.title);
-		loadLayoutFromJsonObject(json, view.state.graph);
+		loadLayoutFromJsonObject(json, View.activeState().graph);
+		console.info("Finished loading layout from file.");
+		console.groupEnd();
 	});
-	console.info("Finished loading layout from file.");
-	console.groupEnd();
 }
 
 /**
