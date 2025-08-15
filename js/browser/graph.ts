@@ -41,7 +41,7 @@ export class Graph {
 			container,
 			//@ts-expect-error concat type
 			style: style.style.concat(colorschemenight),
-			wheelSensitivity: 0.3,
+			wheelSensitivity: 2,
 			minZoom: 0.02,
 			maxZoom: 7,
 		});
