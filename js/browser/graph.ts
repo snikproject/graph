@@ -93,7 +93,7 @@ export class Graph {
 		this.cy.startBatch();
 		this.cy.elements().removeClass("highlighted");
 		this.cy.elements().removeClass("starmode");
-		this.cy.elements().removeClass("hidden");
+		//this.cy.elements().removeClass("hidden"); // temporarily comment this out as a workaround for https://github.com/snikproject/graph/issues/464
 		// keep "rdf:type"-edges hidden
 		Graph.setVisible(this.cy.edges("[p='http://www.w3.org/1999/02/22-rdf-syntax-ns#type']"), false);
 		/*
