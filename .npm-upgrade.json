@@ -3,6 +3,14 @@
 		"golden-layout": {
 			"versions": ">1",
 			"reason": "Incompatible"
+		},
+		"jquery": {
+			"versions": ">3",
+			"reason": "Incompatible"
+		},
+		"@types/jquery": {
+			"versions": ">3",
+			"reason": "Incompatible"
 		}
 	}
 }
