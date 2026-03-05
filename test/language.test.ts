@@ -1,5 +1,5 @@
 import * as language from "../js/lang/language";
-import { assert } from "chai";
+import { assert } from "vitest";
 
 describe("language", () => {
 	describe("#getStrings()", () => {
