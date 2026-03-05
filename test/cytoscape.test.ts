@@ -2,7 +2,7 @@ import * as layout from "../js/layout";
 import { loadGraphFromSparql } from "../js/loadGraphFromSparql";
 import { SNIK } from "../js/sparql";
 import cytoscape from "cytoscape";
-import { assert } from "chai";
+import { assert } from "vitest";
 
 describe("cytoscape", () => {
 	let cy;

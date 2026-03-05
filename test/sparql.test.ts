@@ -1,5 +1,6 @@
 import * as sparql from "../js/sparql";
-import "chai/register-should";
+import { chai } from "vitest";
+chai.should();
 
 const EXPECTED_CLASSES_MIN = 4000;
 const EXPECTED_CLASSES_MAX = 20000;
