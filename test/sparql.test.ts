@@ -1,6 +1,5 @@
 import * as sparql from "../js/sparql";
-import { chai } from "vitest";
-chai.should();
+import { expect } from "vitest";
 
 const EXPECTED_CLASSES_MIN = 4000;
 const EXPECTED_CLASSES_MAX = 20000;
@@ -15,20 +14,20 @@ describe("sparql", () => {
 	describe("#sparql()", () => {
 		it(`${GRAPH_GROUP_SNIK} should contain between ${EXPECTED_CLASSES_MIN} and ${EXPECTED_CLASSES_MAX} classes`, () => {
 			return sparql.select("select count(?class) as ?count {?class a [rdfs:subClassOf meta:Top].}", GRAPH_GROUP_SNIK).then((bindings: Array<any>) => {
-				bindings[0].should.have.property("count");
-				parseInt(bindings[0].count.value).should.be.within(EXPECTED_CLASSES_MIN, EXPECTED_CLASSES_MAX);
+				expect(bindings[0]).toHaveProperty("count");
+				expect(parseInt(bindings[0].count.value)).to.be.within(EXPECTED_CLASSES_MIN, EXPECTED_CLASSES_MAX);
 			});
 		});
 		it(`${GRAPH_GROUP_SNIK} should contain between ${EXPECTED_INSTANCES_MIN} and ${EXPECTED_INSTANCES_MAX} instances`, () => {
 			return sparql.select("select count(?i) as ?count {?i a ?class. ?class a [rdfs:subClassOf meta:Top].}", GRAPH_GROUP_SNIK).then((bindings: Array<any>) => {
-				bindings[0].should.have.property("count");
-				parseInt(bindings[0].count.value).should.be.within(EXPECTED_INSTANCES_MIN, EXPECTED_INSTANCES_MAX);
+				expect(bindings[0]).toHaveProperty("count");
+				expect(parseInt(bindings[0].count.value)).to.be.within(EXPECTED_INSTANCES_MIN, EXPECTED_INSTANCES_MAX);
 			});
 		});
 		it(`${GRAPH_SNIK_META} should contain between ${EXPECTED_META_CLASSES_MIN} and ${EXPECTED_META_CLASSES_MAX} classes`, () => {
 			return sparql.select("select count(?class) as ?count {?class a owl:Class.}", GRAPH_SNIK_META).then((bindings: Array<any>) => {
-				bindings[0].should.have.property("count");
-				parseInt(bindings[0].count.value).should.be.within(EXPECTED_META_CLASSES_MIN, EXPECTED_META_CLASSES_MAX);
+				expect(bindings[0]).toHaveProperty("count");
+				expect(parseInt(bindings[0].count.value)).to.be.within(EXPECTED_META_CLASSES_MIN, EXPECTED_META_CLASSES_MAX);
 			});
 		});
 		it("should contain the snik subontology graphs", () => {
@@ -47,7 +46,7 @@ describe("sparql", () => {
 					"http://www.snik.eu/ontology/he",
 					"http://www.snik.eu/ontology/it4it",
 				]);
-				graphs.should.eql(expectedGraphs);
+				expect(graphs).to.be.eql(expectedGraphs);
 			});
 		});
 		/*
