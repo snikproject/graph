@@ -195,7 +195,6 @@ export class Graph {
 		for (
 			let innerSize = 0;
 			innerSize < inner.size(); // repeat until the close match chain ends
-
 		) {
 			innerSize = inner.size();
 			closeMatchEdges = inner.connectedEdges(".unfiltered").filter('[pl="closeMatch"]');
