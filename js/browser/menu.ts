@@ -294,7 +294,7 @@ export class Menu {
 						only: "snik",
 					},
 					{ action: subOntologyConnectivity, i18n: "subontology-connectivity", only: "snik" },
-					{ action: View.mainView.state.graph.resetStyle, i18n: "reset-view", hotkey: "ctrl+alt+r" },
+					{ action: () => View.mainView.state.graph.resetStyle(true), i18n: "reset-view", hotkey: "ctrl+alt+r" },
 					{
 						action: () => {
 							View.activeView().setTitle(prompt("Rename: " + View.activeView().config.title) || View.activeView().config.title);

@@ -88,12 +88,14 @@ export class Graph {
 	}
 
 	/** Removes all highlighting (except selection) and shows all hidden nodes. */
-	resetStyle(): void {
+	resetStyle(showHidden?: boolean): void {
 		this.starMode = false;
 		this.cy.startBatch();
 		this.cy.elements().removeClass("highlighted");
 		this.cy.elements().removeClass("starmode");
-		//this.cy.elements().removeClass("hidden"); // temporarily comment this out as a workaround for https://github.com/snikproject/graph/issues/464
+		if (showHidden) {
+			this.cy.elements().removeClass("hidden");
+		}
 		// keep "rdf:type"-edges hidden
 		Graph.setVisible(this.cy.edges("[p='http://www.w3.org/1999/02/22-rdf-syntax-ns#type']"), false);
 		/*
