@@ -102,6 +102,13 @@ export function deleteTriple(edge: EdgeSingular) {
 	);
 }
 
+/** Creates a human readable string of the triple that an link represents.
+ *  @param edge - the edge, whose label is determined
+ *  @returns a human readable string of the triple that an edge represents. */
+export function edgeLabel(edge: EdgeSingular): string {
+	return rdf.short(edge.data(EDGE.SOURCE)) + " " + rdf.short(edge.data(EDGE.PROPERTY)) + " " + rdf.short(edge.data(EDGE.TARGET));
+}
+
 /**
  * Prompts creation of an issue on GitHub to confirm the given LIMES link.
  * @param link The edge of the link which is to be confirmed
@@ -137,13 +144,6 @@ export function createGitHubBugReportIssue() {
 		.reduce((a, b) => a + "\n" + b)
 		.substr((-LOG_LIMIT * 3) / 4);
 	createGitHubTemplateIssue(config.git.repo.application, "", "bugreport", config.git.issueLabels.bug, Object.entries({ version, logs }));
-}
-
-/** Creates a human readable string of the triple that an link represents.
- *  @param edge - the edge, whose label is determined
- *  @returns a human readable string of the triple that an edge represents. */
-export function edgeLabel(edge: EdgeSingular): string {
-	return rdf.short(edge.data(EDGE.SOURCE)) + " " + rdf.short(edge.data(EDGE.PROPERTY)) + " " + rdf.short(edge.data(EDGE.TARGET));
 }
 
 export const checkboxKeydownListener = (box) => (e) => {
