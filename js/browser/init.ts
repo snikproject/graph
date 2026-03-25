@@ -1,4 +1,5 @@
 import { config } from "../config/config";
+import { params } from "./params";
 import { loadGraphFromSparql } from "../loadGraphFromSparql";
 import { loadGraphFromJsonFile, loadLayoutFromJsonObject } from "./load";
 import { Search } from "./search";
@@ -13,64 +14,15 @@ import { Graph } from "./graph";
 import type { LayoutJson } from "./save.ts";
 import { View } from "./view";
 
-interface Params {
-	empty: boolean;
-	benchmark: boolean;
-	instances: boolean;
-	virtual: boolean;
-	class: string;
-	json: string;
-	sparql: string;
-	graph: string;
-	sub: string;
-}
-
-/** A flag is a GET parameter with a boolean value.
-Allow setting a flag without a value, for example <https://www.snik.eu/graph?instances>.
-In this case the empty string is returned, see <https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/get>.
-The alternative is <https://www.snik.eu/graph?instances=true> but all other values are treated as false.
-This is needed in case one wants to override a flag that is active by default through the configuration. */
-function parseFlag(f: string): boolean {
-	return f === "" || f === "true";
-}
-
-/** Parse browser URL GET parameters. */
-function parseParams(): Params {
-	const url = new URL(window.location.href);
-	const defaults = {
-		sparql: config.ontology.sparql.endpoint,
-		instances: config.ontology.sparql.instances,
-	};
-	// TypeScript interfaces don't exist on runtime, keep in sync with Params interface.
-	const paramKeys = new Set(["empty", "benchmark", "instances", "virtual", "class", "json", "sparql", "graph", "sub"]);
-	const unknown = new Set(Array.from(url.searchParams.keys())).difference(paramKeys);
-	if (unknown.size > 0) {
-		log.warn("Unknown GET parameters: " + Array.from(unknown).join(", "));
-	}
-	return Object.assign(defaults, {
-		empty: parseFlag(url.searchParams.get("empty")),
-		benchmark: parseFlag(url.searchParams.get("benchmark")),
-		// load and show instances when loading from endpoint, not only classes
-		...(url.searchParams.get("instances") && { instances: parseFlag(url.searchParams.get("instances")) }),
-		virtual: parseFlag(url.searchParams.get("virtual")), // create "virtual triples" to visualize connections like domain-range
-		class: url.searchParams.get("class"),
-		json: url.searchParams.get("json"),
-		...(url.searchParams.get("sparql") && { sparql: url.searchParams.get("sparql") }), // don't overwrite default with null
-		graph: url.searchParams.get("graph"),
-		sub: url.searchParams.get("sub"),
-	});
-}
-
 /**
  * Apply parameters and load graph.
 @param graph - the graph to apply the params to
 @param params - parameter object */
-async function applyParams(graph: Graph, params: Params): Promise<void> {
+async function applyParams(graph: Graph): Promise<void> {
 	try {
 		if (params.benchmark) {
 			addBenchmarkOverlay(graph.cy);
 		}
-
 		if (params.empty) {
 			log.info(`Parameter "empty" detected. Skip loading and display file load prompt.`);
 			const loadArea = document.getElementById("loadarea");
@@ -172,8 +124,7 @@ export async function fillInitialGraph(graph: Graph): Promise<void> {
 
 	// GET parameters
 	await progress(async () => {
-		const params = parseParams();
-		await applyParams(graph, params);
+		await applyParams(graph);
 		new Search(util.getElementById("search") as HTMLFormElement);
 		initHelp();
 	});
