@@ -1,5 +1,6 @@
 /** Provides graph operations such as initialization, wayfinding and highlighting.*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
+import { params } from "./params";
 import { coloredEdgeStyle, showPropertyStyle, style } from "./style";
 import { colorschemenight } from "./colorschemenight";
 import { colorschemeday } from "./colorschemeday";
@@ -37,10 +38,20 @@ export class Graph {
 		const initTimer = timer("graph-init");
 		this.container = container;
 		this.container.style.backgroundColor = "black"; // required to show background image
+		const renderer = {
+			name: "canvas",
+			webgl: true,
+			showFps: true,
+			webglDebug: true,
+		};
+		if (params.gpu) {
+			log.warn("'gpu' flag detected: Activating experimental WebGL hardware acceleration.");
+		}
 		this.cy = cytoscape({
 			container,
 			//@ts-expect-error concat type
 			style: style.style.concat(colorschemenight),
+			...(params.gpu && { renderer }),
 			wheelSensitivity: 2,
 			minZoom: 0.02,
 			maxZoom: 7,
