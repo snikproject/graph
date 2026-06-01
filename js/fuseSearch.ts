@@ -1,7 +1,7 @@
 /** Fuzzy search with fuse.js.*/
 import * as sparql from "./sparql";
 import { config } from "./config/config";
-import Fuse, { type FuseResult } from "fuse.js";
+import Fuse, { type FuseResult, type IFuseOptions } from "fuse.js";
 import log from "loglevel";
 import { timer } from "./timer";
 
@@ -12,17 +12,16 @@ export interface Item {
 }
 let index: Fuse<Item> = null;
 
-const options = {
+const options: IFuseOptions<Item> = {
 	shouldSort: true,
-	tokenize: true,
+	// gives too loose matches
+	//useTokenSearch: true,
+	//tokenMatch: 'all',
 	threshold: 0.25,
-	maxPatternLength: 40,
 	minMatchCharLength: 3,
-	matchAllTokens: true,
 	location: 0,
 	ignoreLocation: true,
 	distance: 100,
-	id: "uri",
 	keys: [
 		{ name: "l", weight: 0.7 },
 		{ name: "def", weight: 0.3 },

@@ -96,7 +96,7 @@ export async function loadSessionFromJsonFile(event: Event): Promise<void> {
  */
 function checkVersion(type: ViewJsonType, json: any): boolean {
 	let ok: boolean = true;
-	let ts = (t) => `type ${t} (${ViewJsonType[t]})`;
+	const ts = (t) => `type ${t} (${ViewJsonType[t]})`;
 	if (
 		json.version !== VERSION &&
 		!confirm(`Your file was saved in version ${json.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`)
