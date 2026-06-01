@@ -1,9 +1,9 @@
-import hitoView from "./initialView/hito.json" assert { type: "json" };
+import hitoView from "./initialView/hito.json" with { type: "json" };
 import type { LayoutJson } from "../browser/save.ts";
 import { NODE } from "../node";
 import type { NodeSingular } from "cytoscape";
 
-let shapeMap: Map<string, string> = new Map([
+const shapeMap: Map<string, string> = new Map([
 	["Citation", "rectangle"],
 	["Classified", "ellipse"],
 	["Catalogue", "triangle"],
