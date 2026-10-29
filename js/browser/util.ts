@@ -55,7 +55,6 @@ export function createGitHubIssue(repo: string, title: string, body: string, ass
 	window.open(`${repo}/issues/new?title=${encodeURIComponent(title)}&body=${encodedBody}&assignees=${assignee}&labels=${label}`);
 }
 
-/**
 /** Open a new issue on the GitHub repository using the given template.
  * @param repo - GIT repository URL
  * @param title - issue title
@@ -187,27 +186,14 @@ export function hsvToHexColor(hue: number, saturation: number, value: number): s
 	const p = value * (1 - saturation);
 	const q = value * (1 - f * saturation);
 	const t = value * (1 - (1 - f) * saturation);
-	let r: number, g: number, b: number;
-	switch (hDash % 6) {
-		case 0:
-			((r = value), (g = t), (b = p));
-			break;
-		case 1:
-			((r = q), (g = value), (b = p));
-			break;
-		case 2:
-			((r = p), (g = value), (b = t));
-			break;
-		case 3:
-			((r = p), (g = q), (b = value));
-			break;
-		case 4:
-			((r = t), (g = p), (b = value));
-			break;
-		case 5:
-			((r = value), (g = p), (b = q));
-			break;
-	}
+	const [r, g, b] = [
+		[value, t, p],
+		[q, value, p],
+		[p, value, t],
+		[p, q, value],
+		[t, p, value],
+		[value, p, q],
+	][hDash % 6];
 	return (
 		"#" +
 		("00" + Math.floor(r * 255).toString(16)).slice(-2) + // .substr() is deprecated on some browser
