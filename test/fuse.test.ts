@@ -1,5 +1,4 @@
 import { search, createIndex } from "../js/fuseSearch";
-console.groupCollapsed;
 
 const SEARCH = {
 	CEO: [

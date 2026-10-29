@@ -110,7 +110,7 @@ export async function run(
 	} else {
 		log.debug("Separate colours unchecked");
 	}
-	activeLayout && activeLayout.stop();
+	activeLayout?.stop();
 
 	// only change the positions of the selected nodes, keep the other ones in place
 	const partLayout = cy.nodes(":selected").size() > 1;
