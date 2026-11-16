@@ -51,15 +51,25 @@
 	width: 20px;
 	height: 20px;
 }
+.lm_header .lm_tabs {
+	/* Span the tab strip over the full header height so the tabs can stretch into it. */
+	top: 0;
+	bottom: 0;
+}
 .lm_header .lm_tab {
-	font-size: 13px;
-	height: 16px;
+	/* Stretch over the full header height below a small top margin and center the title vertically,
+	   instead of stacking a fixed margin, height and padding that the dark theme's active tab
+	   padding can poke holes into, leaving a gap at the bottom of the header. */
+	display: flex;
+	align-items: center;
+	height: auto;
 	margin-top: 3px;
-	padding: 0 12px 5px;
+	padding: 0 12px;
 	padding-right: 26px;
+	font-size: 13px;
 }
 .lm_header .lm_tab i {
-	height: 20px;
+	height: 100%;
 }
 .lm_header .lm_tab .lm_close_tab {
 	width: 12px;
@@ -76,13 +86,8 @@
 	}
 	.lm_header .lm_tab {
 		font-size: 14px;
-		height: 18px;
 		margin-top: 4px;
-		padding: 0 12px 6px;
 		padding-right: 28px;
-	}
-	.lm_header .lm_tab i {
-		height: 24px;
 	}
 	.lm_header .lm_tab .lm_close_tab {
 		width: 14px;
@@ -97,13 +102,8 @@
 	}
 	.lm_header .lm_tab {
 		font-size: 16px;
-		height: 20px;
 		margin-top: 5px;
-		padding: 0 14px 7px;
 		padding-right: 30px;
-	}
-	.lm_header .lm_tab i {
-		height: 28px;
 	}
 	.lm_header .lm_tab .lm_close_tab {
 		width: 15px;
@@ -119,6 +119,11 @@
 .lm_tab.lm_active {
 	background-color: black;
 	border-top: 1px solid #ff2e88;
+}
+.lm_header .lm_tab.lm_active {
+	/* The dark theme connects active tabs to the content below with extra bottom padding,
+	   which would shift the vertically centered title now that the tab spans the full header height. */
+	padding-bottom: 0;
 }
 .lm_header {
 	z-index: 0;
