@@ -161,7 +161,7 @@ async function selectTriples(from: string, fromNamed: string, instances: boolean
     {
       {?c ?p ?d.} ${virtual ? " UNION {?p rdfs:domain ?c; rdfs:range ?d.}" : ""}
       {?c a owl:Class.} ${instances ? " UNION {?c a [a owl:Class]}" : ""}
-      {?d a owl:Class.} ${instances ? " UNION {?d a [a owl:Class}" : ""}
+      {?d a owl:Class.} ${instances ? " UNION {?d a [a owl:Class]}" : ""}
     }`;
 	// the optional part should be a union
 	// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
