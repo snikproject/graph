@@ -1,9 +1,8 @@
-import { resolve, dirname } from "path";
-import { fileURLToPath } from "url";
+import { resolve } from "path";
 import { execSync } from "child_process";
 import oxlint from "vite-plugin-oxlint";
 
-const _dirname = typeof __dirname !== "undefined" ? __dirname : dirname(fileURLToPath(import.meta.url));
+const _dirname = import.meta.dirname;
 
 export default (_) => {
 	const commitDate = execSync("git log -1 --format=%cI").toString().trimEnd();
