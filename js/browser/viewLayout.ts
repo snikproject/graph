@@ -15,10 +15,15 @@ export function getActiveContentItem(): ContentItem | null {
 	return activeContentItem;
 }
 
+/** The stack header height depending on the viewport width, with breakpoints matching the media queries in css/goldenlayout.css.
+ *  Golden Layout writes this value from the layout config as an inline style onto .lm_header, so it cannot be overridden from CSS. */
+const headerHeight = () => (window.innerWidth >= 3000 ? 32 : window.innerWidth >= 2000 ? 28 : 24);
+
 /** Create, configure and return a GoldenLayout instance.
  *  @returns the created GoldenLayout instance */
 export function goldenLayout(): GoldenLayout {
 	const layoutConfig: LayoutConfig = {
+		dimensions: { headerHeight: headerHeight() },
 		root: {
 			type: "stack",
 			content: [],
@@ -26,11 +31,13 @@ export function goldenLayout(): GoldenLayout {
 	};
 
 	const viewLayout = new GoldenLayout(layoutConfig);
+	const stacks: Array<Stack> = [];
 
 	// Golden Layout 2 has no typed stackCreated event anymore but still emits it as an unknown bubbling event
 	// whose first argument is the event with the created stack as its target.
 	(viewLayout as any).on("stackCreated", (event) => {
 		const stack = event.target as Stack;
+		stacks.push(stack);
 		const template = util.getElementById("goldenlayout-header");
 		const zoomButtons = document.importNode((template as any).content, true);
 		// Add the zoomButtons to the header
@@ -89,6 +96,19 @@ export function goldenLayout(): GoldenLayout {
 			activeContentItem = item;
 		});
 	});
+	// Golden Layout derives the header height from the layout config and writes it as an inline style onto .lm_header
+	// on every resize, so viewport width changes have to be pushed through the resolved layout config again.
+	const applyHeaderHeight = () => {
+		(viewLayout.layoutConfig.dimensions as { headerHeight: number }).headerHeight = headerHeight();
+		for (const stack of stacks) {
+			(stack.header as any).updateTabSizes();
+		}
+		viewLayout.setSize(window.innerWidth, window.innerHeight);
+	};
+	for (const breakpoint of [2000, 3000]) {
+		window.matchMedia(`(min-width: ${breakpoint}px)`).addEventListener("change", applyHeaderHeight);
+	}
+
 	(viewLayout as any).init();
 	return viewLayout;
 }
