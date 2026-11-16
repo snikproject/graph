@@ -33,6 +33,6 @@ export default (_) => {
 			},
 		},
 		plugins: [oxlint()],
-		test: { globals: true },
+		test: { globals: true, setupFiles: ["test/setup.ts"] },
 	};
 };
