@@ -3,10 +3,10 @@ import { fillInitialGraph } from "./init";
 import { ContextMenu } from "./contextmenu";
 import { nodeCommands } from "./contextmenuNodes";
 import { edgeCommands } from "./contextmenuEdges";
-import { goldenLayout } from "./viewLayout";
+import { goldenLayout, getActiveContentItem } from "./viewLayout";
 import { toJSON } from "./state";
 import log from "loglevel";
-import type { ComponentConfig, ContentItem } from "golden-layout";
+import { ContentItem, type ComponentItem } from "golden-layout";
 import { Menu } from "./menu";
 
 let viewCount: number = 0; // only used for the name, don't decrement on destroy to prevent name conflicts
@@ -19,12 +19,9 @@ let viewLayout = goldenLayout();
  *  @param depth - recursive depth */
 function traverse(x: ContentItem, depth: number): Array<ContentItem> {
 	const removeTabsArray: Array<ContentItem> = [];
-	if (x.type === "component") {
-		const config = x as unknown as ComponentConfig;
-		if (config.componentName !== "Main Graph") {
-			removeTabsArray.push(x);
-			return removeTabsArray;
-		}
+	if (ContentItem.isComponentItem(x) && x.componentType !== "Main Graph") {
+		removeTabsArray.push(x);
+		return removeTabsArray;
 	}
 	for (const item of x.contentItems) {
 		removeTabsArray.push(...traverse(item, ++depth));
@@ -57,13 +54,13 @@ export class View {
 	/** Returns the state of the active (focussed) view.
 	@returns The state of the active (focussed) view. */
 	static activeState(): ViewState {
-		return (viewLayout as any).selectedItem?.getActiveContentItem()?.config?.componentState;
+		return (getActiveContentItem() as ComponentItem | null)?.container.state as unknown as ViewState;
 	}
 
 	/** Returns the active (focussed) view.
 	@returns The active (focussed) view. */
 	static activeView(): any {
-		return (viewLayout as any).selectedItem?.getActiveContentItem();
+		return getActiveContentItem();
 	}
 
 	/** Fill the initial graph or copy over from the main view if it is not the first. */
@@ -124,7 +121,7 @@ export class View {
 		const itemConfig = {
 			title: title,
 			type: "component",
-			componentName: title,
+			componentType: title,
 			componentState: this.state,
 			isClosable: View.mainView !== null,
 		};
@@ -134,16 +131,18 @@ export class View {
 		if (View.mainView !== null) {
 			View.partViews.add(this);
 		}
-		viewLayout.registerComponent(title, function (container) {
-			//thisView.cyContainer = document.createElement("div");
-			thisView.element = container.getElement()[0];
-			container.getElement()[0].appendChild(thisView.cyContainer);
-			container.on("destroy", () => {
-				View.partViews.delete(thisView);
+		// Golden Layout 2 throws when a component type is registered twice so only register new titles.
+		if (!viewLayout.getRegisteredComponentTypeNames().includes(title)) {
+			viewLayout.registerComponent(title, function (container) {
+				thisView.element = container.getElement();
+				thisView.element.appendChild(thisView.cyContainer);
+				container.on("destroy", () => {
+					View.partViews.delete(thisView);
+				});
 			});
-		});
+		}
 
-		(viewLayout as any).root.contentItems[0].addChild(itemConfig);
+		(viewLayout as any).root.contentItems[0].addItem(itemConfig);
 
 		const graph = new Graph(thisView.cyContainer);
 		const cy = graph.cy;
@@ -161,7 +160,7 @@ export class View {
 
 	/** Close all tabs except the first one. */
 	static reset(): void {
-		const removeTabsArray = traverse(viewLayout.root, 0);
+		const removeTabsArray = traverse((viewLayout as any).root, 0);
 		for (const content of removeTabsArray) {
 			content.remove();
 		}

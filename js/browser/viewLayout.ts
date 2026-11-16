@@ -1,52 +1,46 @@
 import * as util from "./util";
-import { View } from "./view";
+import { View, type ViewState } from "./view";
 import * as layout from "../layout";
-import GoldenLayout from "golden-layout";
-import log from "loglevel";
-import "golden-layout/src/css/goldenlayout-base.css";
-import "golden-layout/src/css/goldenlayout-dark-theme.css";
+import { GoldenLayout, type LayoutConfig, type ContentItem, type Stack } from "golden-layout";
+import "golden-layout/dist/css/goldenlayout-base.css";
+import "golden-layout/dist/css/themes/goldenlayout-dark-theme.css";
 import "../../css/goldenlayout.css";
+
+/** The currently active (focused) content item.
+ * Golden Layout 2 removed the selectedItem property that version 1 had, so it is tracked manually. */
+let activeContentItem: ContentItem | null = null;
+
+/** @returns the currently active (focused) content item. */
+export function getActiveContentItem(): ContentItem | null {
+	return activeContentItem;
+}
 
 /** Create, configure and return a GoldenLayout instance.
  *  @returns the created GoldenLayout instance */
 export function goldenLayout(): GoldenLayout {
-	const layoutConfig = {
-		settings: { selectionEnabled: true },
-		content: [
-			{
-				type: "stack",
-				content: [],
-			},
-		],
+	const layoutConfig: LayoutConfig = {
+		root: {
+			type: "stack",
+			content: [],
+		},
 	};
 
 	const viewLayout = new GoldenLayout(layoutConfig);
-	// TODO: update stack on focus change
 
-	viewLayout.on("selectionChanged ", (event) => {
-		// TODO TP: This event is not firing despite following the docs. Please investigate and fix.
-		log.info("SELECTION CHANGED");
-		log.info(event);
-	});
-
-	viewLayout.on("stackCreated", function (stack) {
-		(viewLayout as any).selectItem(stack);
+	// Golden Layout 2 has no typed stackCreated event anymore but still emits it as an unknown bubbling event
+	// whose first argument is the event with the created stack as its target.
+	(viewLayout as any).on("stackCreated", (event) => {
+		const stack = event.target as Stack;
 		const template = util.getElementById("goldenlayout-header");
 		const zoomButtons = document.importNode((template as any).content, true);
 		// Add the zoomButtons to the header
-		(stack as any).header.controlsContainer.prepend(zoomButtons);
-		// When a tab is selected then select its stack. For unknown reasons this is not default behaviour of GoldenLayout.
-		// What happens when a tab is moved out of a stack? Testing showed no problems but this should be investigated for potential bugs.
+		stack.header.controlsContainerElement.prepend(zoomButtons);
 
-		(stack as any).on("activeContentItemChanged", () => {
-			(viewLayout as any).selectItem(stack);
-		});
-
-		const stackState = () => (stack as any).getActiveContentItem().config.componentState;
+		const stackState = () => stack.getActiveComponentItem()?.container.state as unknown as ViewState;
 		const cy = () => stackState().cy;
-		const controls = (stack as any).header.controlsContainer[0];
+		const controls = stack.header.controlsContainerElement;
 		const separateColours = () => View.getMenu().separateColours() && !stackState().graph.starMode;
-		const data = [
+		const data: Array<[string, () => void]> = [
 			[
 				".plussign",
 				() => {
@@ -86,9 +80,15 @@ export function goldenLayout(): GoldenLayout {
 			],
 		];
 		for (const datum of data) {
-			controls.querySelector(datum[0]).addEventListener("click", datum[1]);
+			controls.querySelector(datum[0])!.addEventListener("click", datum[1]);
 		}
+
+		// Track the active content item for View.activeView(), replacing Golden Layout 1's selectItem.
+		activeContentItem = stack.getActiveComponentItem() ?? null;
+		stack.on("activeContentItemChanged", (item) => {
+			activeContentItem = item;
+		});
 	});
-	viewLayout.init();
+	(viewLayout as any).init();
 	return viewLayout;
 }

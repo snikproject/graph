@@ -297,8 +297,9 @@ export class Menu {
 					{ action: () => View.mainView.state.graph.resetStyle(true), i18n: "reset-view", hotkey: "ctrl+alt+r" },
 					{
 						action: () => {
-							View.activeView().setTitle(prompt("Rename: " + View.activeView().config.title) || View.activeView().config.title);
-							View.activeState().title = View.activeView().config.title;
+							const view = View.activeView();
+							view.setTitle(prompt("Rename: " + view.title) || view.title);
+							View.activeState().title = view.title;
 						},
 						i18n: "change-title",
 						only: "snik",
