@@ -35,11 +35,16 @@
 }
 /* Scale the header up; the sizes hardcoded by Golden Layout 2 (20px header, 18px controls, 12px tab font)
    are very small on high resolution displays. The viewport width media queries map to physical screen sizes,
-   on a 4k monitor without display scaling the viewport is around 3840 css pixels wide. */
-.lm_header {
-	height: 24px;
-}
+   on a 4k monitor without display scaling the viewport is around 3840 css pixels wide.
+   The header element's height is deliberately not set here: Golden Layout writes it as an inline style
+   from the layout config (dimensions.headerHeight, see viewLayout.ts, whose breakpoints match below). */
 .lm_header .lm_controls {
+	/* Golden Layout never resets the ul margins, so the browser default pushes the absolutely positioned
+	   controls down and out of the short header. Span and center them over the full header height instead. */
+	margin: 0;
+	top: 0;
+	bottom: 0;
+	align-items: center;
 	list-style: none;
 }
 .lm_header .lm_controls > * {
@@ -65,9 +70,6 @@
 	transform: translateY(-50%);
 }
 @media (min-width: 2000px) {
-	.lm_header {
-		height: 28px;
-	}
 	.lm_header .lm_controls > * {
 		width: 24px;
 		height: 24px;
@@ -89,9 +91,6 @@
 	}
 }
 @media (min-width: 3000px) {
-	.lm_header {
-		height: 32px;
-	}
 	.lm_header .lm_controls > * {
 		width: 28px;
 		height: 28px;
