@@ -87,7 +87,8 @@ export default {
 	},
 	sparql: {
 		// without trailing slashes!
-		endpoint: "https://hitontology.eu/sparql",
+		// the environment variable is inlined at build time, it can be set in a .env file for development or as a Docker build argument
+		endpoint: import.meta.env.VITE_SPARQL_ENDPOINT || "https://hitontology.eu/sparql",
 		graph: "http://hitontology.eu/ontology",
 		instances: true,
 		queries: {
