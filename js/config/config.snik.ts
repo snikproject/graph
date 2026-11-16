@@ -67,7 +67,7 @@ export default {
 	sparql: {
 		// without trailing slashes!
 		// the environment variable is inlined at build time, it can be set in a .env file for development or as a Docker build argument
-		endpoint: import.meta.env.VITE_SPARQL_ENDPOINT || "https://www.snik.eu/sparql",
+		endpoint: import.meta.env.SPARQL_ENDPOINT || "https://www.snik.eu/sparql",
 		graph: "http://www.snik.eu/ontology",
 		instances: false,
 		queries: {
