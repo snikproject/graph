@@ -17,6 +17,8 @@ export default (_) => {
 	process.env.VITE_GIT_LAST_COMMIT_MESSAGE = lastCommitMessage;
 	return {
 		base: "",
+		// expose SPARQL_* variables to the client in addition to the VITE_* default, see config.snik.ts
+		envPrefix: ["VITE_", "SPARQL_"],
 		sourcemap: true,
 		build: {
 			rollupOptions: {
