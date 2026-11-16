@@ -51,7 +51,7 @@
 	height: 16px;
 	margin-top: 3px;
 	padding: 0 12px 5px;
-	padding-right: 28px;
+	padding-right: 26px;
 }
 .lm_header .lm_tab i {
 	height: 20px;
@@ -60,7 +60,9 @@
 	width: 12px;
 	height: 12px;
 	background-size: 12px;
-	top: 4px;
+	top: 50%;
+	right: 8px;
+	transform: translateY(-50%);
 }
 @media (min-width: 2000px) {
 	.lm_header {
@@ -75,7 +77,7 @@
 		height: 18px;
 		margin-top: 4px;
 		padding: 0 12px 6px;
-		padding-right: 30px;
+		padding-right: 28px;
 	}
 	.lm_header .lm_tab i {
 		height: 24px;
@@ -84,7 +86,6 @@
 		width: 14px;
 		height: 14px;
 		background-size: 14px;
-		top: 5px;
 	}
 }
 @media (min-width: 3000px) {
@@ -100,7 +101,7 @@
 		height: 20px;
 		margin-top: 5px;
 		padding: 0 14px 7px;
-		padding-right: 32px;
+		padding-right: 30px;
 	}
 	.lm_header .lm_tab i {
 		height: 28px;
@@ -109,7 +110,6 @@
 		width: 15px;
 		height: 15px;
 		background-size: 15px;
-		top: 6px;
 	}
 }
 .lm_selected .lm_header {
