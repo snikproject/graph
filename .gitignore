@@ -21,3 +21,5 @@ doc
 tsout
 paper/paper.pdf
 coverage
+.env.local
+.env.*.local

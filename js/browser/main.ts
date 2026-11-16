@@ -1,7 +1,6 @@
 /** Entry point.*/
 import { Graph } from "./graph";
 import { config } from "../config/config";
-import { loadConfigJson } from "../config/loader";
 import { initLog } from "./log";
 import { View } from "./view";
 import MicroModal from "micromodal";
@@ -69,8 +68,6 @@ async function main(): Promise<void> {
 	}
 	//@ts-expect-error mainCalled manually added
 	window.mainCalled = true;
-	// merge config.json into the configuration before anything reads it, GET parameters keep the highest priority
-	await loadConfigJson();
 	console.groupCollapsed("Initializing");
 	console.time("Initializing");
 

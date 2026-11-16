@@ -7,11 +7,10 @@ COPY . .
 
 
 RUN cp js/config/config.dist.ts js/config/config.ts
-# The SPARQL endpoint can be changed at runtime by mounting a config.json into the container, see README.
-# This build argument is kept for backwards compatibility and bakes an equivalent config.json into the image.
-ARG SPARQL_ENDPOINT
-RUN if [ -n "$SPARQL_ENDPOINT" ]; then printf '{"ontology":{"sparql":{"endpoint":"%s"}}}\n' "$SPARQL_ENDPOINT" > config.json; fi && \
-	npm run build && \
+# The endpoint is inlined into the build by Vite, see config.snik.ts.
+ARG SPARQL_ENDPOINT=https://www.snik.eu/sparql
+ENV VITE_SPARQL_ENDPOINT=$SPARQL_ENDPOINT
+RUN npm run build && \
 	npm run doc
 
 FROM pierrezemb/gostatic

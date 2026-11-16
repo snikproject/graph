@@ -5,7 +5,6 @@
 node
 node_modules
 js/config.ts
-config.json
 dist
 test
 test.*
