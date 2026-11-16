@@ -70,24 +70,19 @@ Flags are disabled by default and not need a value, for example <https://www.sni
 Default parameter values are specified in `js/config.dist.ts`.
 Values for keys starting with `ontology` are specified in the ontology config included in the config, by default `js/config/config.snik.ts`.
 
-### config.json
+### Endpoint Configuration
 
-Create a `config.json` file in the repository root to override configuration keys at runtime, without rebuilding the application.
-It is deep merged over the defaults from the configuration files, so unspecified keys keep their default values.
-The GET parameters still have the highest priority.
+The SPARQL endpoint is read from the `VITE_SPARQL_ENDPOINT` environment variable, falling back to the default endpoint.
+It is inlined into the application at build time, consistent with the static site deployment.
+The `?sparql=` GET parameter still overrides it at runtime for individual page loads.
 
-    {
-      "ontology": {
-        "sparql": {
-          "endpoint": "http://localhost/sparql"
-        }
-      }
-    }
+For development, create a `.env.local` file (gitignored):
 
-`config.json` is gitignored so that local changes do not get committed.
-It is read at runtime, both by the development server and by the built application, where it needs to be placed next to `index.html`.
-In the Docker image, mount it over `/srv/http/config.json` to change the endpoint of a running container without rebuilding it.
-The `SPARQL_ENDPOINT` build argument is still supported and bakes an equivalent config.json into the image.
+    VITE_SPARQL_ENDPOINT=http://localhost/sparql
+
+For the Docker image, pass it as a build argument:
+
+    docker build --build-arg SPARQL_ENDPOINT=http://localhost/sparql .
 
 |**Flag**|**Description**|
 |--------|-------------|
