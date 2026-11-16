@@ -72,13 +72,13 @@ Values for keys starting with `ontology` are specified in the ontology config in
 
 ### Endpoint Configuration
 
-The SPARQL endpoint is read from the `VITE_SPARQL_ENDPOINT` environment variable, falling back to the default endpoint.
+The SPARQL endpoint is read from the `SPARQL_ENDPOINT` environment variable, falling back to the default endpoint.
 It is inlined into the application at build time, consistent with the static site deployment.
 The `?sparql=` GET parameter still overrides it at runtime for individual page loads.
 
 For development, create a `.env.local` file (gitignored):
 
-    VITE_SPARQL_ENDPOINT=http://localhost/sparql
+    SPARQL_ENDPOINT=http://localhost/sparql
 
 For the Docker image, pass it as a build argument:
 
