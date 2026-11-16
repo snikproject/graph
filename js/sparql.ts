@@ -5,7 +5,6 @@ import log from "loglevel";
 export const SNIK = {
 	GRAPH_BB: "http://www.snik.eu/ontology/bb",
 	PREFIX: "http://www.snik.eu/ontology/", //problem: different prefixes for different partial ontologie,
-	ENDPOINT: "https://www.snik.eu/sparql",
 };
 
 //ASK queries should also work but better use {@link ask} instead as it is more convenient. // ask does not exist anymore
