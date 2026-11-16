@@ -72,7 +72,7 @@ Values for keys starting with `ontology` are specified in the ontology config in
 
 ### config.json
 
-Create a `public/config.json` file to override configuration keys at runtime, without rebuilding the application.
+Create a `config.json` file in the repository root to override configuration keys at runtime, without rebuilding the application.
 It is deep merged over the defaults from the configuration files, so unspecified keys keep their default values.
 The GET parameters still have the highest priority.
 
@@ -84,7 +84,8 @@ The GET parameters still have the highest priority.
       }
     }
 
-`public/config.json` is gitignored so that local changes do not get committed.
+`config.json` is gitignored so that local changes do not get committed.
+It is read at runtime, both by the development server and by the built application, where it needs to be placed next to `index.html`.
 In the Docker image, mount it over `/srv/http/config.json` to change the endpoint of a running container without rebuilding it.
 The `SPARQL_ENDPOINT` build argument is still supported and bakes an equivalent config.json into the image.
 
