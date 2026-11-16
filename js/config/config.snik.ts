@@ -92,8 +92,14 @@ export default {
 			${from}
 			${fromNamed}
 			{
-			  graph ?g {?c ?p ?d.}
-			  filter(?g!=sniko:)
+			  ${
+					virtualTriples
+						? `{ graph ?g {?c ?p ?d.} FILTER(?g != sniko:) }
+			  UNION
+			  { ?p rdfs:domain ?c. ?p rdfs:range ?d. }`
+						: `graph ?g {?c ?p ?d.}
+			  filter(?g!=sniko:)`
+				}
 			  {?c a [rdfs:subClassOf meta:Top].} ${instances ? " UNION {?c a [a [rdfs:subClassOf meta:Top]]}" : ""}
 			  {?d a [rdfs:subClassOf meta:Top].} ${instances ? " UNION {?d a [a [rdfs:subClassOf meta:Top]]}" : ""}
 			  filter(?p!=rdf:type)
