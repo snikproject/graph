@@ -7,7 +7,6 @@
 	"homepage": "https://github.com/snikproject/graph#readme",
 	"dependencies": {
 		"@types/cytoscape": "^3.21.9",
-		"@types/jquery": "^3.5.32",
 		"@types/micromodal": "^0.7.0",
 		"@types/node": "^26.6.6",
 		"@types/stats": "^0.16.30",
@@ -16,9 +15,8 @@
 		"cytoscape-euler": "^1.2.4",
 		"cytoscape-svg": "^0.4.0",
 		"fuse.js": "^7.5.0",
-		"golden-layout": "^1.5.9",
+		"golden-layout": "^2.6.0",
 		"hotkeys-js": "^4.0.8",
-		"jquery": "^3.7.1",
 		"loglevel": "^1.9.2",
 		"micromodal": "^0.7.0",
 		"notyf": "^3.10.0",
