@@ -237,7 +237,11 @@ export async function loadGraphFromSparql(cy: Core, graphs: Array<string>, insta
 	const from = graphs.map((g) => `FROM <${g}>`).reduce((a, b) => a + "\n" + b, "");
 	const fromNamed = from.replace(/FROM/g, "FROM NAMED");
 
-	const [nodes, edges] = await Promise.all([createNodes(from, instances), createEdges(from, fromNamed, instances, virtual)]);
+	const result = await Promise.all([createNodes(from, instances), createEdges(from, fromNamed, instances, virtual)]).catch(() => null);
+	if (!result) {
+		return; // leave the previously loaded graph untouched
+	}
+	const [nodes, edges] = result;
 	cy.elements().remove();
 	cy.add(nodes);
 	cy.add(edges); // will throw an error if any edge refers to a node not contained in the nodes loaded before

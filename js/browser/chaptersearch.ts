@@ -31,7 +31,7 @@ async function getClasses(sub: string, chapter: string): Promise<Set<string>> {
 		class: { value: string };
 		label: { value: string };
 	}
-	const bindings = (await sparql.select(query)) as Array<ClassBinding>;
+	const bindings = (await sparql.select(query).catch(() => [])) as Array<ClassBinding>;
 	bindings.forEach((b) => {
 		labels.set(b.class.value, b.label.value);
 	});
@@ -130,7 +130,7 @@ export async function showChapterSearch(graph: Graph, sub: string): Promise<void
 		ch: { value: string };
 		count: { value: string };
 	}
-	const bindings = (await sparql.select(chapterSizeQuery)) as Array<ChapterBinding>;
+	const bindings = (await sparql.select(chapterSizeQuery).catch(() => [])) as Array<ChapterBinding>;
 	for (const binding of bindings) {
 		const chapter = binding.ch.value;
 

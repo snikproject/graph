@@ -210,7 +210,10 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
         ?i a <${uri}>
         OPTIONAL {?i rdfs:label ?label. FILTER(LANGMATCHES(LANG(?label),"${language.getLanguage()}"))}
         } GROUP BY ?i`;
-						const bindings = await sparql.select(query);
+						const bindings = await sparql.select(query).catch(() => null);
+						if (!bindings) {
+							return;
+						}
 						let message = bindings.map((b) => b["i"].value + " " + (b["l"] ? b["l"].value : "")).reduce((a, b) => a + "\n" + b, "");
 						if (message === "") {
 							message = `Class ${uri} does not have any instances.`;
