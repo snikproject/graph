@@ -45,6 +45,7 @@ export class Filter {
   */
 	constructor(selector: string, i18n: string) {
 		this.selector = selector;
+		this.label = i18n;
 		//let input = document.createRange().createContextualFragment('<input type="checkbox" class="filterbox" autocomplete="off" checked="true">'); // can't attach events to fragments
 		const input = document.createElement("input");
 		input.type = "checkbox";
@@ -106,11 +107,46 @@ export class Filter {
 		}
 	}
 
+	/** Show or hide the elements of all filters at once.
+	@param visible - whether all filterable elements should be visible */
+	static setAll(visible: boolean): void {
+		for (const filter of filters) {
+			filter.checkbox.checked = visible;
+			filter.setVisible(visible);
+		}
+	}
+
+	/**
+	Add a filter menu entry without a checkbox that sets all filters to the same visibility.
+	@param parent - the parent element to attach the entry to
+	@param as - an array of HTML anchors that gets the new entry appended
+	@param i18n - internationalization key for the entry text
+	@param visible - the visibility that all filters will be set to */
+	private static addSetAllFilterEntry(parent: HTMLElement, as: Array<HTMLAnchorElement>, i18n: string, visible: boolean): void {
+		const a = document.createElement("a");
+		a.classList.add("dropdown-entry");
+		a.setAttribute("tabindex", "-1");
+		const div = document.createElement("div");
+		div.classList.add("dropdown-entry-checkboxtext"); // extend clickable area beyond short texts, like the checkbox labels
+		div.setAttribute("data-i18n", i18n);
+		div.addEventListener("click", () => Filter.setAll(visible));
+		a.appendChild(div);
+		a.addEventListener("keydown", (e) => {
+			if (e.key === " " || e.key === "Enter") {
+				Filter.setAll(visible);
+			}
+		});
+		parent.appendChild(a);
+		as.push(a);
+	}
+
 	/**
 Add filter entries to the filter menu.
 @param parent - the parent element to attach the entries to
 @param as - an empty array of HTML anchors to be filled */
 	static addFilterEntries(parent: HTMLElement, as: Array<HTMLAnchorElement>): void {
+		Filter.addSetAllFilterEntry(parent, as, "show-all-filters", true);
+		Filter.addSetAllFilterEntry(parent, as, "hide-all-filters", false);
 		for (const datum of filterData) {
 			const filter = new Filter(datum[0], datum[1]);
 			parent.appendChild(filter.a);
@@ -129,11 +165,14 @@ Add filter entries to the filter menu.
 	}
 
 	/** Loads the visibility values and applies it to all filters.
-@param json - JSON representation of all filters */
+	The graph itself is restored from the saved Cytoscape JSON which already contains the filter classes,
+	this only synchronizes the checkboxes. Missing values default to visible for compatibility with older save files.
+	@param json - JSON representation of all filters */
 	static fromJSON(json: object): void {
 		for (const filter of filters) {
-			filter.checkbox.checked = json[filter.label];
-			filter.visible = json[filter.label];
+			const visible = (json as Record<string, boolean>)[filter.label] ?? true;
+			filter.checkbox.checked = visible;
+			filter.visible = visible;
 		}
 	}
 }

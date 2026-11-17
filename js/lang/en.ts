@@ -21,6 +21,8 @@ export const en = {
 		"save-image-svg-complete-partial-graph": "Save SVG Image of Complete Partial Graph",
 		// filter ********************************************
 		filter: "Filter",
+		"show-all-filters": "Show all",
+		"hide-all-filters": "Hide all",
 		meta: "meta",
 		bb: "BB",
 		ob: "OB",
