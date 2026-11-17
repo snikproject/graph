@@ -144,10 +144,15 @@ export async function run(
 				log.warn("web storage not available, could not write to cache.");
 				return true;
 			}
-			const pos = positions(cy.nodes());
-			const name = storageName(layoutConfig.name, subs, separateColours);
-			localStorage.setItem(name, JSON.stringify(pos));
-			log.info("Replaced layout cache.");
+			try {
+				const pos = positions(cy.nodes());
+				const name = storageName(layoutConfig.name, subs, separateColours);
+				localStorage.setItem(name, JSON.stringify(pos));
+				log.info("Replaced layout cache.");
+			} catch (e) {
+				// storage can throw even when it exists, e.g. QuotaExceededError or when storage is blocked
+				log.warn("Could not write layout cache, continuing without caching.", e);
+			}
 		}
 	});
 	const promise = activeLayout.promiseOn("layoutready");
@@ -230,7 +235,14 @@ export async function runCached(
 	}
 	const name = storageName(layoutConfig.name, subs, separateColours);
 	// web storage
-	const cacheItem = localStorage.getItem(name);
+	let cacheItem: string | null;
+	try {
+		cacheItem = localStorage.getItem(name);
+	} catch (e) {
+		// storage can throw even when it exists, e.g. when it is blocked by the user
+		log.warn("Could not read layout cache, recalculating layout...", e);
+		return run(cy, layoutConfig, subs, separateColours, true);
+	}
 	if (cacheItem) {
 		// cache hit
 		try {
