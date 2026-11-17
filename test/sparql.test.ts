@@ -10,7 +10,12 @@ const EXPECTED_META_CLASSES_MAX = 25;
 const GRAPH_GROUP_SNIK = "http://www.snik.eu/ontology";
 const GRAPH_SNIK_META = "http://www.snik.eu/ontology/meta";
 
-describe("sparql", () => {
+// These are live integration tests against the public SPARQL endpoint. They are
+// skipped by default so that `npm test` runs hermetically; use `npm run test:live`
+// to run them (the endpoint must be reachable and contain the expected data).
+const live = process.env.SNIK_LIVE_TESTS === "1";
+
+describe.skipIf(!live)("sparql", () => {
 	describe("#sparql()", () => {
 		it(`${GRAPH_GROUP_SNIK} should contain between ${EXPECTED_CLASSES_MIN} and ${EXPECTED_CLASSES_MAX} classes`, () => {
 			return sparql.select("select count(?class) as ?count {?class a [rdfs:subClassOf meta:Top].}", GRAPH_GROUP_SNIK).then((bindings: Array<any>) => {

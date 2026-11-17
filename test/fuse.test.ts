@@ -1,4 +1,8 @@
+import { mockSparql } from "./helpers/sparqlMock";
 import { search, createIndex } from "../js/fuseSearch";
+
+// Serve the recorded SPARQL responses so the test does not need the live endpoint.
+mockSparql();
 
 const ns = (sub: string, id: string): string => `http://www.snik.eu/ontology/${sub}/${id}`;
 
@@ -26,7 +30,9 @@ const EXACT: Record<string, Array<string>> = {
 };
 
 describe("fuse#search", () => {
-	createIndex();
+	beforeAll(async () => {
+		await createIndex();
+	});
 	test("finds the expected classes", async () => {
 		for (const query in SEARCH) {
 			const uris = (await search(query)).map((x) => x.item.uri);
