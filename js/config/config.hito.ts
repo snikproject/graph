@@ -37,7 +37,7 @@ const colorLegend = () => Array.from(colorMap.entries()).reduce((ac, [n, c]) => 
 export default {
 	id: "hito",
 	name: "HITO",
-	legend: "<span>&#9632; Citation</span> <span>&#9650; Classification</span> <span>&#9679; Catalogue</span> " + colorLegend(),
+	legend: "<span>&#9632; Citation</span> <span>&#9679; Classification</span> <span>&#9650; Catalogue</span> " + colorLegend(),
 	title: "Health IT Ontology Graph",
 	initialView: hitoView as LayoutJson,
 	snik: null,
