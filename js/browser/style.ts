@@ -59,7 +59,7 @@ export const style = {
 						if (!found) {
 							const keys = Object.keys(label);
 							if (keys.length > 0) {
-								label = label[keys[0]];
+								label = label[keys[0]][0];
 							} else {
 								label = node.data(NODE.ID);
 							}
