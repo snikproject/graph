@@ -58,6 +58,21 @@ export class View {
 		return (getActiveContentItem() as ComponentItem | null)?.container.state as unknown as ViewState;
 	}
 
+	/** Sets the title of the active view in both its state and its tab.
+	@param title - the new title */
+	static setActiveTitle(title: string): void {
+		const item = getActiveContentItem() as ComponentItem | null;
+		if (!item) {
+			return;
+		}
+		// the component state is the ViewState created in the constructor
+		const state = item.container.state as unknown as ViewState;
+		if (state) {
+			state.title = title;
+		}
+		item.setTitle(title);
+	}
+
 	/** Returns the active (focussed) view.
 	@returns The active (focussed) view. */
 	static activeView(): any {
