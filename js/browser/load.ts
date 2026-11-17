@@ -232,18 +232,30 @@ function addLoadEntry(parent: Element, i18n: string, description: string, func: 
 	const a = document.createElement("a");
 	as.push(a);
 	a.classList.add("dropdown-entry");
-	a.setAttribute("tabindex", "-1");
+	a.setAttribute("tabindex", "0");
+	a.setAttribute("role", "menuitem");
+	a.href = "#"; // anchors without href cannot be focused with the keyboard
 	parent.appendChild(a);
 	const input = document.createElement("input");
 	input.type = "file";
 	input.style.display = "none";
+	input.tabIndex = -1;
 	a.appendChild(input);
 	const inner = document.createElement("span");
 	inner.innerText = description;
 	inner.setAttribute("data-i18n", i18n);
 	a.appendChild(inner);
 	// click event needs to trigger at the hidden input element so that it opens the file chooser dialog
-	a.addEventListener("click", () => input.click());
+	a.addEventListener("click", (event) => {
+		event.preventDefault(); // don't follow the placeholder href
+		input.click();
+	});
+	a.addEventListener("keydown", (event) => {
+		if (event.key === "Enter" || event.key === " ") {
+			event.preventDefault();
+			input.click();
+		}
+	});
 	// completed file chooser dialog triggers change event
 	input.addEventListener("change", func);
 }
