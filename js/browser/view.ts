@@ -8,6 +8,7 @@ import { toJSON } from "./state";
 import log from "loglevel";
 import { ContentItem, type ComponentItem } from "golden-layout";
 import { Menu, menu } from "./menu";
+import * as language from "../lang/language";
 
 let viewCount: number = 0; // only used for the name, don't decrement on destroy to prevent name conflicts
 
@@ -108,18 +109,19 @@ export class View {
 	 * @param title - optional view title
 	 */
 	constructor(initialize: boolean = true, title?: string) {
+		const partialGraph = language.getString("partial-graph") ?? "Partial Graph";
 		// if custom name, check for and prevent duplication
-		if (title !== "undefined" && viewCount > 0) {
+		if (title !== undefined && viewCount > 0) {
 			View.views().forEach((part: View) => {
 				if (part.state.title === title) {
-					title = "Teilmodell " + View.views().length;
+					title = partialGraph + " " + View.views().length;
 					return;
 				}
 			});
 		}
 
 		//find initial title of the new View
-		title = title ?? (viewCount === 0 ? "Main Graph" : "Partial Graph " + viewCount);
+		title = title ?? (viewCount === 0 ? "Main Graph" : partialGraph + " " + viewCount);
 		viewCount++;
 		// @ts-expect-error is be completed later
 		this.state = { title, name: "unnamed" };
