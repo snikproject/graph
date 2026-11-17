@@ -95,6 +95,9 @@ export const en = {
 		// other *********************************************
 		"deselect-all": "Deselect All",
 		"search-field": "Search Field",
+		close: "Close",
+		"first-subontology": "First subontology",
+		"second-subontology": "Second subontology",
 		"base-mode": "Basic Menu Items",
 		"context-menu": "Context Menu",
 		"incoming-star": "Incoming Star",

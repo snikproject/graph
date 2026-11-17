@@ -95,6 +95,9 @@ export const de = {
 		// other *********************************************
 		"deselect-all": "alle abwählen",
 		"search-field": "Suchfeld",
+		close: "Schließen",
+		"first-subontology": "Erste Subontologie",
+		"second-subontology": "Zweite Subontologie",
 		"base-mode": "Basismodus",
 		"context-menu": "Kontextmenü",
 		"incoming-star": "eingehener Stern",

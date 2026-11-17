@@ -22,6 +22,7 @@
 
 		<div id="top">
 			<form id="search" method="post">
+				<label class="visually-hidden" for="search-field" data-i18n="search-field"></label>
 				<input type="text" name="query" id="search-field" list="matches" placeholder="🔍 Class Name" />
 			</form>
 		</div>
@@ -31,7 +32,10 @@
 		<div id="search-results" class="fullscreen modal" aria-hidden="true">
 			<header>
 				<h2 id="h2:search-results">Search Results</h2>
-				<a href="javascript:void(0)" class="closebtn" data-micromodal-close>&times;</a>
+				<a href="javascript:void(0)" class="closebtn" data-micromodal-close>
+					<span aria-hidden="true">&times;</span>
+					<span class="visually-hidden" data-i18n="close"></span>
+				</a>
 			</header>
 			<table id="tab:search-results"></table>
 		</div>
@@ -39,7 +43,10 @@
 		<div id="chapter-search" class="fullscreen modal" aria-hidden="true">
 			<header>
 				<h2>Chapter Search</h2>
-				<a href="javascript:void(0)" class="closebtn" data-micromodal-close>&times;</a>
+				<a href="javascript:void(0)" class="closebtn" data-micromodal-close>
+					<span aria-hidden="true">&times;</span>
+					<span class="visually-hidden" data-i18n="close"></span>
+				</a>
 			</header>
 			<table id="tab:chapter-search-chapters" style="float: left; margin-right: 5em"></table>
 			<table id="tab:chapter-search-classes" style="float: left"></table>
@@ -48,15 +55,20 @@
 		<div id="subontology-connectivity" class="fullscreen modal" aria-hidden="true">
 			<header>
 				<h2>Choose two Subontologies to Connect</h2>
-				<a href="javascript:void(0)" class="closebtn" data-micromodal-close>&times;</a>
+				<a href="javascript:void(0)" class="closebtn" data-micromodal-close>
+					<span aria-hidden="true">&times;</span>
+					<span class="visually-hidden" data-i18n="close"></span>
+				</a>
 			</header>
 			<form id="subontology-connectivity-form">
+				<label class="visually-hidden" for="subontology-connectivity-select1" data-i18n="first-subontology"></label>
 				<select id="subontology-connectivity-select1" name="subontology-connectivity-select1">
 					<option value="ob">Orange Book</option>
 					<option value="bb">Blue Book</option>
 					<option value="he">Heinrich et al.</option>
 					<option value="ciox">CIO X</option>
 				</select>
+				<label class="visually-hidden" for="subontology-connectivity-select2" data-i18n="second-subontology"></label>
 				<select id="subontology-connectivity-select2" name="subontology-connectivity-select2">
 					<option value="bb">Blue Book</option>
 					<option value="ob">Orange Book</option>
