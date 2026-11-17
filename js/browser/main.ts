@@ -59,6 +59,19 @@ function initKeyListener(): void {
 	});
 }
 
+/** Registers global handlers for uncaught errors and unhandled promise rejections
+ * so that they are surfaced to the user (Notyf toast via the decorated loglevel)
+ * and captured in the log for bug reports instead of failing silently. */
+function initGlobalErrorHandlers(): void {
+	window.addEventListener("error", (event: ErrorEvent) => {
+		log.error(`Uncaught error: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`);
+	});
+	window.addEventListener("unhandledrejection", (event: PromiseRejectionEvent) => {
+		const reason = event.reason;
+		log.error(`Unhandled promise rejection: ${reason instanceof Error ? (reason.stack ?? reason.message) : String(reason)}`);
+	});
+}
+
 /** Entry point. Is run when DOM is loaded. */
 async function main(): Promise<void> {
 	//@ts-expect-error mainCalled manually added
@@ -72,6 +85,7 @@ async function main(): Promise<void> {
 	console.time("Initializing");
 
 	initLog();
+	initGlobalErrorHandlers();
 	initKeyListener();
 	MicroModal.init({ openTrigger: "data-custom-open" });
 

@@ -43,11 +43,14 @@ async function progress(func: Function): Promise<void> {
 		spinner.spin(document.body);
 	}
 	active++;
-	await func();
-	active--;
-	if (active <= 0) {
-		document.body.classList.remove("waiting");
-		spinner.stop();
+	try {
+		await func();
+	} finally {
+		active--;
+		if (active <= 0) {
+			document.body.classList.remove("waiting");
+			spinner.stop();
+		}
 	}
 }
 /* eslint-enable */
