@@ -140,7 +140,7 @@ export async function showChapterSearch(graph: Graph, sub: string): Promise<void
 		chapterLink.innerText = binding.ch.value;
 
 		const countCell = row.insertCell();
-		countCell.innerHTML = binding.count.value;
+		countCell.textContent = binding.count.value;
 
 		const checkCell = row.insertCell();
 		const checkBox = document.createElement("input");
