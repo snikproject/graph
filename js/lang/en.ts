@@ -3,6 +3,7 @@ export const en = {
 		// menu *******************************************************************
 		// file **********************************************
 		file: "File",
+		"load-file": "Load File",
 		"load-sparql": "Load from SPARQL endpoint",
 		"load-session": "Load session",
 		"load-view": "Load Partial Graph",

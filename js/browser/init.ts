@@ -9,6 +9,7 @@ import { progress } from "./progress";
 import log from "loglevel";
 import * as util from "./util";
 import { initHelp } from "../help";
+import * as language from "../lang/language";
 import { addBenchmarkOverlay } from "./benchmark";
 import { Graph } from "./graph";
 import type { LayoutJson } from "./save.ts";
@@ -28,7 +29,7 @@ async function applyParams(graph: Graph): Promise<void> {
 			const loadArea = document.getElementById("loadarea");
 			const center = document.createElement("center");
 			loadArea.appendChild(center);
-			center.innerHTML += `<button id="load-button" style="font-size:10vh;margin-top:20vh">Datei Laden
+			center.innerHTML += `<button id="load-button" style="font-size:10vh;margin-top:20vh"><span data-i18n="load-file">${language.getString("load-file")}</span>
       <input id="load-input" type="file" style="display:none"></input>
       </button>`;
 			const loadInput = document.getElementById("load-input");
