@@ -436,7 +436,6 @@ export class Graph {
       @param uri - The URI of a class in the graph.
       @returns whether presenting the URI succeeded */
 	presentUri(uri: string): boolean {
-		this.cy.zoom(0.6);
 		const nodes: NodeCollection = this.cy.elements().nodes().filter(`node[id= "${uri}"]`);
 		if (nodes.length < 1) {
 			log.warn(`Node not in graph. ${uri} may be available on the SPARQL endpoint but not in the graph.`);
@@ -457,6 +456,7 @@ export class Graph {
 		}
 		this.cy.elements().unselect();
 		node.select();
+		this.cy.zoom(0.6);
 		this.cy.center(node);
 		return true;
 	}
