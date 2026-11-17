@@ -67,7 +67,7 @@ For more complex operations, such as using your own ontology with SNIK Graph, yo
 
 All GET parameters are optional and must be lower case.
 Flags are disabled by default and not need a value, for example <https://www.snik.eu/graph?empty&benchmark>.
-Default parameter values are specified in `js/config.dist.ts`.
+Default parameter values are specified in `js/config/config.dist.ts`.
 Values for keys starting with `ontology` are specified in the ontology config included in the config, by default `js/config/config.snik.ts`.
 
 ### Endpoint Configuration
@@ -93,7 +93,7 @@ For the Docker image, pass it as a build argument:
 
 |**Parameter**|**Type**|**Config Key**|**Default**|**Description**|
 |-------------|--------|--------------|-----------|---------------|
-|class|URI|||Center and highlight the given class, e.g. <https://www.snik.eu/graph?clazz=http://www.snik.eu/ontology/bb/Management>. Skips the default view.|
+|class|URI|||Center and highlight the given class, e.g. <https://www.snik.eu/graph?class=http://www.snik.eu/ontology/bb/Management>. Skips the default view.|
 |json|URL|||Skip initial graph loading and instead load a [Cytoscape.js JSON](https://js.cytoscape.org/#notation/elements-json) object from the given URL.|
 |sparql|URL|ontology.sparql.endpoint|<https://www.snik.eu/sparql>|SPARQL endpoint to load the graph from|
 |graph|URI|ontology.sparql.graph|<https://www.snik.eu/ontology>|SPARQL RDF graph or RDF graph group|
@@ -112,9 +112,9 @@ The top-level keys are:
 | `nodeSize`| Height and width of a node in pixels | `39` |
 | `activeOptions` | Initially active style options, choose a subset of: `["showproperty","day", "edgecolor"]`; partially described in [the manual](./html/manual.html). | `["edgecolor"]` |
 | `searchCloseMatch` | When searching for a resource, also show resources connected to it by `skos:closeMatch`. | `true` |
-| `logLevelConsole` | Only used for mobile, desktop will always use `cxttapstart` | `"debug" as LogLevelDesc` |
-| `logLevelDisplay` | Only used for mobile, desktop will always use `cxttapstart` | `"info" as LogLevelDesc` |
-| `logLevelMemory` | Only used for mobile, desktop will always use `cxttapstart` | `"debug" as LogLevelDesc` |
+| `logLevelConsole` | Log level for the browser console. | `"debug" as LogLevelDesc` |
+| `logLevelDisplay` | Log level up to which toast notifications are displayed. | `"info" as LogLevelDesc` |
+| `logLevelMemory` | Log level up to which messages are kept in memory for bug reports. | `"debug" as LogLevelDesc` |
 | `layoutCacheMinRecall` | Preset layout minimum recall required to have it applied. | `0.95` |
 | `layoutCacheMinPrecision` | Preset layout minimum precision required to have it applied. | `0.5` |
 | `language` | Default language of the interface, choose either `"de"` or `"en"`. | `"en"` |
@@ -170,7 +170,7 @@ The subkeys are:
 
 ##### Help links
 
-If you do not want to display ome or more of these, set them to a falsy value (like `null`).
+If you do not want to display one or more of these, set them to a falsy value (like `null`).
 
 |**Key**|**Description**|**Example**|
 |-------|---------------|-----------|
@@ -197,7 +197,7 @@ This is done via methods which take a cytoscape node and return either a shape n
 |**Key**|**Description**|**Example**|
 |-------|---------------|-----------|
 | `endpoint` | SPARQL endpoint to use. Sends queries to this server. | `"https://www.snik.eu/sparql"` |
-| `graph` | Base URI / SPARQL graph to use. | `""http://www.snik.eu/ontology"` |
+| `graph` | Base URI / SPARQL graph to use. | `"http://www.snik.eu/ontology"` |
 | `instances` | Whether to display instances of classes. May not work. | `false` |
 | `queries` | SPARQL-queries to query for classes and triples. See below. | `{ nodes: ..., triples: ... }` |
 
@@ -280,7 +280,7 @@ A more in-depth description of the issue labels, and where each type is created:
 Make sure it runs locally before updating on the server, see releasechecklist.md.
 
 ### Code Style
-Specified in the [configuration files of oxlint](oxlintrc.json) and [Prettier](.prettierrc).
+Specified in the [configuration file of oxlint](.oxlintrc.json) and [Prettier](.prettierrc).
 
 #### Formatting
 [Prettier](https://prettier.io/) guarantees consistent formatting without time-intensive manual efforts.
@@ -351,7 +351,7 @@ You then also need to add a label for the new button in [the file for the defaul
 ### The devs told me a bug was fixed but it still occurs
 Browsers may hold an old version of SNIK Graph in the cache.
 Go to "Help" -> "About SNIK Graph" to see if you have the newest version and if not delete your browser cache.
-If it still occurs, please update the issue if one already exists, if not please file an new issue using "Help" -> "Submit Feedback about the Visualization".
+If it still occurs, please update the issue if one already exists, if not please file a new issue using "Help" -> "Submit a Bug Report".
 
 ## License
 SNIK Graph has a license with copyleft, the [GPLv3](LICENSE) for details.
