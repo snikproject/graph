@@ -34,7 +34,7 @@ const colorschemeday = [
 		},
 	},
 	{
-		selector: "edge[!selected]",
+		selector: "edge:unselected",
 		css: {
 			"line-color": function (edge) {
 				// highlight skos interlinks
