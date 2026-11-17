@@ -8,6 +8,7 @@ import { Graph, Direction } from "./graph";
 import type { MenuItem } from "./contextmenu";
 import * as sparql from "../sparql";
 import * as language from "../lang/language";
+import { showMessage } from "./dialog";
 
 const eventify = (f) => (event) => f(event.target); // simplify multiplex expressions on event.target
 
@@ -157,7 +158,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 				{
 					id: "debug",
 					selector: "node",
-					onClickFunction: (event) => alert(JSON.stringify(event.target.data(), null, 2)),
+					onClickFunction: (event) => console.info(JSON.stringify(event.target.data(), null, 2)),
 				},
 			],
 		},
@@ -212,11 +213,11 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
         OPTIONAL {?i rdfs:label ?label. FILTER(LANGMATCHES(LANG(?label),"${language.getLanguage()}"))}
         }`;
 						const bindings = await sparql.select(query);
-						let message = bindings.map((b) => b["i"].value + " " + (b["l"] ? b["l"].value : "")).reduce((a, b) => a + "\n" + b, "");
+						let message = bindings.map((b) => b["i"].value + " " + (b["l"] ? b["l"].value : "")).join("\n");
 						if (message === "") {
 							message = `Class ${uri} does not have any instances.`;
 						}
-						alert(message);
+						showMessage(message, "Instances");
 					},
 				},
 			],

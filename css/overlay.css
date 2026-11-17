@@ -74,3 +74,46 @@ body.day .fullscreen a:hover,
 body.day .fullscreen a:focus {
 	color: #333333;
 }
+
+/* Non-blocking message and confirmation dialog, see js/browser/dialog.ts. */
+#dialog {
+	box-sizing: border-box;
+	width: 36em;
+	max-width: 90%;
+	padding: 1em 1.5em;
+	background-color: #222222;
+	color: #eeeeee;
+	border: 1px solid #666666;
+	border-radius: 4px;
+}
+
+#dialog::backdrop {
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+#dialog h2 {
+	margin-top: 0;
+}
+
+#dialog p {
+	margin-bottom: 0;
+	white-space: pre-line;
+	overflow-wrap: anywhere;
+}
+
+#dialog .dialog-buttons {
+	display: flex;
+	flex-direction: row-reverse;
+	gap: 0.5em;
+	margin-top: 1em;
+}
+
+body.day #dialog {
+	background-color: #ffffff;
+	color: #000000;
+	border-color: #999999;
+}
+
+body.day #dialog::backdrop {
+	background-color: rgba(255, 255, 255, 0.75);
+}

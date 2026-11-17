@@ -5,6 +5,7 @@ import { ViewJsonType } from "./save"; //eslint-disable-line no-duplicate-import
 import { config } from "../config/config";
 import { fromJSON } from "./state";
 import { VERSION } from "./util";
+import { showConfirm } from "./dialog";
 import log from "loglevel";
 import * as language from "../lang/language";
 import { Graph } from "./graph";
@@ -76,7 +77,7 @@ export const loadGraphFromJsonFile = (graph: Graph) => (event: Event) => {
 @param event - a file input change event
 */
 export async function loadSessionFromJsonFile(event: Event): Promise<void> {
-	if (config.multiview.warnOnSessionLoad && !confirm("This will override the current session. Continue?")) {
+	if (config.multiview.warnOnSessionLoad && !(await showConfirm("This will override the current session. Continue?", "Load Session"))) {
 		return;
 	}
 	uploadJson(event, async (json: Session) => {
@@ -87,7 +88,10 @@ export async function loadSessionFromJsonFile(event: Event): Promise<void> {
 		// compare versions of file and package.json and warn if deprecated
 		if (
 			json.state.version !== VERSION &&
-			!confirm(`Your file was saved in version ${json.state.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`)
+			!(await showConfirm(
+				`Your file was saved in version ${json.state.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`,
+				"Version Mismatch"
+			))
 		) {
 			return;
 		}
@@ -114,12 +118,15 @@ export async function loadSessionFromJsonFile(event: Event): Promise<void> {
  * @param json - the input data
  * @returns - version and type of input correct
  */
-function checkVersion(type: ViewJsonType, json: any): boolean {
+async function checkVersion(type: ViewJsonType, json: any): Promise<boolean> {
 	let ok: boolean = true;
 	const ts = (t) => `type ${t} (${ViewJsonType[t]})`;
 	if (
 		json.version !== VERSION &&
-		!confirm(`Your file was saved in version ${json.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`)
+		!(await showConfirm(
+			`Your file was saved in version ${json.version}, but SNIK Graph has version ${VERSION}, so it may not work properly. Continue anyway?`,
+			"Version Mismatch"
+		))
 	) {
 		ok = false;
 	} else if (json.type === undefined) {
@@ -135,9 +142,9 @@ function checkVersion(type: ViewJsonType, json: any): boolean {
 /** Loads a stored view from a JSON file.
 @param event - a file input change event */
 export function loadView(event: Event): void {
-	uploadJson(event, (json: ViewJson) => {
+	uploadJson(event, async (json: ViewJson) => {
 		// compare versions of file and package.json and warn if deprecated
-		if (!checkVersion(ViewJsonType.VIEW, json)) {
+		if (!(await checkVersion(ViewJsonType.VIEW, json))) {
 			return;
 		}
 
@@ -147,9 +154,9 @@ export function loadView(event: Event): void {
 	});
 }
 
-export function loadLayoutFromJsonObject(json: LayoutJson, graph: Graph) {
+export async function loadLayoutFromJsonObject(json: LayoutJson, graph: Graph): Promise<void> {
 	// compare versions of file and package.json and warn if deprecated
-	if (!checkVersion(ViewJsonType.LAYOUT, json)) {
+	if (!(await checkVersion(ViewJsonType.LAYOUT, json))) {
 		return;
 	}
 	const cy = graph.cy;
@@ -210,8 +217,8 @@ export function loadLayoutFromJsonObject(json: LayoutJson, graph: Graph) {
 @param event - a file input change event */
 export function loadLayout(event: Event): void {
 	console.groupCollapsed("Loading JSON Layout file into View.");
-	uploadJson(event, (json: LayoutJson) => {
-		loadLayoutFromJsonObject(json, View.activeState().graph);
+	uploadJson(event, async (json: LayoutJson) => {
+		await loadLayoutFromJsonObject(json, View.activeState().graph);
 		console.info("Finished loading layout from file.");
 		console.groupEnd();
 	});

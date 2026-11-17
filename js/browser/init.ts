@@ -78,7 +78,7 @@ async function applyParams(graph: Graph): Promise<void> {
 		Graph.setVisible(graph.cy.edges("[p='http://www.w3.org/1999/02/22-rdf-syntax-ns#type']"), false);
 		if (config.ontology?.initialView) {
 			const json: LayoutJson = config.ontology.initialView;
-			loadLayoutFromJsonObject(json, View.activeState().graph);
+			await loadLayoutFromJsonObject(json, View.activeState().graph);
 		}
 		// This old code path is never run because we have an initial view with predefined positions for SNIK.
 		// Keep it for now as a way to quickly visualize additions, such as the new bb2 subontology.

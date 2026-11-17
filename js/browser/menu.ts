@@ -5,6 +5,7 @@ import { loadGraphFromSparql } from "../loadGraphFromSparql";
 import * as language from "../lang/language";
 import * as util from "./util";
 import MicroModal from "micromodal";
+import { showMessage } from "./dialog";
 import { config } from "../config/config";
 import { progress } from "./progress";
 import { showChapterSearch } from "./chaptersearch";
@@ -143,7 +144,7 @@ export class Menu {
 	static about(): void {
 		const cy = View?.activeState()?.graph?.cy;
 		const s = `\n${cy?.nodes()?.size()} nodes, ${cy?.edges()?.size()} edges loaded.`;
-		window.alert(util.gitInfo() + s);
+		showMessage(util.gitInfo() + s, "About SNIK Graph");
 	}
 
 	/** Show all nodes that are connected via close matches to visible nodes. */

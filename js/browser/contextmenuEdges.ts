@@ -60,7 +60,8 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 				{
 					id: "debug",
 					onClickFunction: (event) => {
-						alert(JSON.stringify(event.target.data(), null, 2));
+						// debug output only, no need to block the user with a dialog
+						console.info(JSON.stringify(event.target.data(), null, 2));
 					},
 				},
 			],
