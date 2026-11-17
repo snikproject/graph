@@ -117,82 +117,71 @@ export class Graph {
     */
 		this.cy.endBatch();
 	}
-	/** Show all nodes and edges on a shortest path between "from " and "to".
+	/** Show all nodes and edges on a shortest path between "from" and "to".
     Hide all other nodes except when in star mode.
+    @param from - path source node
     @param to - path target node
     @param starPath - whether to show the star around all nodes on the path
-    @returns a function that given a source node shows that path if possible and returns whether a path could be found
+    @returns whether a path could be found
     */
-	showPath(to: NodeSingular, starPath?: boolean) {
-		return (from: NodeSingular): boolean => {
-			if (!from) {
-				log.error("No path source.");
-				return false;
-			}
-			if (from === to) {
-				log.warn(`Path source ${from.data(NODE.ID)} equals target.`);
-				return false;
-			}
-			const elements = this.cy.elements(".unfiltered");
-			const aStar = elements.aStar({
-				root: from,
-				goal: to,
-			});
-			const path = aStar.path;
-			if (path) {
-				this.cy.startBatch();
-				this.cy.add(path);
-				if (starPath) {
-					const edges = path.connectedEdges(".unfiltered");
-					path.merge(edges);
-					path.merge(edges.connectedNodes(".unfiltered"));
-				}
-				Graph.starStyle(path);
-				if (this.starMode) {
-					// otherwise path might not be seen if it lies fully in an existing star
-					// deactivate so that multiple paths can be seen at once when multiplexing
-					// this.cy.elements().unselect();
-					path.select();
-				} else {
-					this.starMode = true;
-					Graph.setVisible(elements.not(path), false);
-				}
-				this.cy.endBatch();
-			} else {
-				if (!this.starMode) {
-					this.resetStyle();
-				} // keep it as it was before the path operation
-				log.warn("No path found!");
-				return false;
-			}
-			return true;
-		};
+	showPath(from: NodeSingular, to: NodeSingular, starPath?: boolean): boolean {
+		if (!from) {
+			log.error("No path source.");
+			return false;
+		}
+		if (from === to) {
+			log.warn(`Path source ${from.data(NODE.ID)} equals target.`);
+			return false;
+		}
+		const elements = this.cy.elements(".unfiltered");
+		const aStar = elements.aStar({
+			root: from,
+			goal: to,
+		});
+		const path = aStar.path;
+		if (!path) {
+			if (!this.starMode) {
+				this.resetStyle();
+			} // keep it as it was before the path operation
+			log.warn("No path found!");
+			return false;
+		}
+		this.cy.startBatch();
+		this.cy.add(path);
+		if (starPath) {
+			const edges = path.connectedEdges(".unfiltered");
+			path.merge(edges);
+			path.merge(edges.connectedNodes(".unfiltered"));
+		}
+		Graph.starStyle(path);
+		if (this.starMode) {
+			// select the path so that it is visible even if it lies fully in an existing star; don't unselect everything else so that several paths can be shown at once
+			path.select();
+		} else {
+			this.starMode = true;
+			Graph.setVisible(elements.not(path), false);
+		}
+		this.cy.endBatch();
+		return true;
 	}
-	/** Multiplex star operations.
+	/** Show a star around the given node and the selected nodes in another view.
+      @param node - the node the operation was triggered on
       @param changeLayout - arrange the given node and its close matches in the center and the connected nodes in a circle around them.
-      @param direction - show edges that originate from node, not those that end in it. Optional and defaults to false.
-      @returns show star function applied to multiple nodes  */
-	showStarMultiplexed(changeLayout: boolean = false, direction?: Direction): (_nodes: NodeCollection) => void {
-		return this.multiplex((nodes) => this.showStar(nodes, changeLayout, direction), undefined, true);
-	}
-
-	/** Multiplex star operations into a new view.
-      @param changeLayout - arrange the given node and its close matches in the center and the connected nodes in a circle around them.
-      @param direction - only show edges that originate from node, not those that end in it. Optional and defaults to false.
-      @returns show star function applied to multiple nodes  */
-	async showStarMultiplexedNew(changeLayout: boolean = false, direction: Direction = Direction.BOTH, alwaysNew: boolean = false) {
+      @param direction - only show edges that originate from node, not those that end in it.
+      @param alwaysNew - whether to open a new view even if this graph is not the main view. */
+	async showStarInAnotherView(
+		node: NodeSingular,
+		changeLayout: boolean = false,
+		direction: Direction = Direction.BOTH,
+		alwaysNew: boolean = false
+	): Promise<void> {
 		const graph = await this.newGraph(alwaysNew);
-		const f = (_node: NodeSingular) => {
-			graph.multiplex(
-				(nodes: NodeCollection) => graph.showStar(graph.assimilateNodes(nodes), changeLayout, direction),
-				graph.assimilateNodes(this.cy.nodes(":selected")),
-				true
-			)(_node);
-			return graph;
-		};
-		return f;
+		graph.applyToCollection(
+			(nodes) => graph.showStar(graph.assimilateNodes(nodes), changeLayout, direction),
+			node,
+			graph.assimilateNodes(this.cy.nodes(":selected"))
+		);
 	}
-
 	/** Highlight the give node and all its directly connected nodes (in both directions).
       Hide all other nodes except when in star mode.
       @param center - node or collection of nodes. center of the star
@@ -293,7 +282,7 @@ export class Graph {
       */
 	showWorm(from: NodeSingular, to: NodeSingular): boolean {
 		this.starMode = true;
-		if (this.showPath(to)(from)) {
+		if (this.showPath(from, to)) {
 			this.showStar(to);
 			return true;
 		}
@@ -306,7 +295,7 @@ export class Graph {
       */
 	showDoubleStar(to: NodeSingular): boolean {
 		const from = this.getSource();
-		if (!this.showPath(to)(from)) {
+		if (!this.showPath(from, to)) {
 			return false;
 		}
 		this.showStar(to);
@@ -486,44 +475,40 @@ export class Graph {
 		this.cy.fit(this.cy.elements(":selected"));
 		return true;
 	}
-	/**  Multiplex takes a function that takes exactly one parameter in the form of a a single cytoscape Node, such as a star.
-	 * It returns a function that executes the given function one or more times with different input based on the following criteria:
-	 * If the nodes parameter is given, then multiplex uses it as input.
-	 * For example multiplexing a star on a collection of nodes will execute that star for each node in the collection.
-	 * If the nodes parameter is not given, but more than one node is selected, then multiplex uses the nodes selected in this graph as input.
-	 * If the direct parameter is truthy then f will be called exactly once directly passing in the input as single parameter instead of looping over it.
-	 * If the nodes parameter is not given and the set of selected nodes has size 0 or 1, then the given function is executed with the original input.
-	 * Whatever happens, the singular input parameter of the returned function is always included as well.
-	 * TODO: This function is hard to maintain, simplify if possible.
-	 * @param f - a function that accepts a single node
-	 * @param nodes - The nodes, each of which will be passed as parameter to a separate call of the given function. Can be null or undefined,
-	 * @param direct - whether the input is a cytoscape collection that can be passed directly into the function without looping, which can be much faster if possible.
-	 * @returns the function described above. */
-	multiplex(f: any, nodes?: NodeCollection, direct?: boolean) {
-		//multiplex(f: (node?: NodeSingular | NodeCollection) => void, nodes?: NodeCollection, direct?: boolean) {
-		return (ele?: NodeSingular) => {
+	/** The nodes an operation should act on: the given collection or, when more than one node is selected, the selection, plus the node the operation was triggered on.
+	 * @param nodes - explicit collection, takes precedence over the selection
+	 * @param ele - the node the operation was triggered on
+	 * @returns the nodes to act on, or null if there is neither an explicit collection nor a selection */
+	private actOn(nodes?: NodeCollection, ele?: NodeSingular): NodeCollection | null {
+		let base = nodes;
+		if (!base) {
 			const selected = this.cy.nodes(":selected");
-			let collection = nodes;
-			// nodes parameter is preferred
-			if (!nodes && selected.size() > 1) {
-				collection = selected;
-			}
-			if (collection) {
-				if (ele) {
-					collection = collection.union(ele);
-				}
-				log.debug("multiplexing of " + collection.size() + " elements (direct=" + direct + ")");
-				if (direct) {
-					f(collection);
-				} else {
-					for (let i = 0; i < collection.length; i++) {
-						f(collection[i]);
-					}
-				}
-			} else {
-				f(ele);
-			}
-		};
+			base = selected.size() > 1 ? selected : null;
+		}
+		return base && ele ? base.union(ele) : base;
+	}
+	/** Apply a function once to all nodes an operation should act on, for functions that support node collections.
+	 * @param f - the function
+	 * @param ele - the node the operation was triggered on
+	 * @param nodes - explicit collection, takes precedence over the selection */
+	applyToCollection(f: (nodes: NodeCollection) => void, ele?: NodeSingular, nodes?: NodeCollection): void {
+		const target = this.actOn(nodes, ele);
+		if (target) {
+			log.debug(`Applying to ${target.size()} nodes as a collection.`);
+		}
+		f(target ?? ele);
+	}
+	/** Apply a function once per node an operation should act on, for functions that only support single nodes.
+	 * @param f - the function
+	 * @param ele - the node the operation was triggered on
+	 * @param nodes - explicit collection, takes precedence over the selection */
+	applyPerNode(f: (node: NodeSingular) => void, ele?: NodeSingular, nodes?: NodeCollection): void {
+		const target = this.actOn(nodes, ele);
+		if (target) {
+			target.forEach(f);
+		} else {
+			f(ele);
+		}
 	}
 	/** Move all matching nodes together.
 	 * @param distance - the distance between them */

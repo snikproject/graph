@@ -91,7 +91,7 @@ async function applyParams(graph: Graph): Promise<void> {
 			const center = graph.cy.nodes(`node[id='${config.ontology.snik.center}']`);
 			Graph.setVisible(center, true);
 			for (let i = 0; i < config.ontology.snik.centerDepth; i++) {
-				graph.showStarMultiplexed()(graph.cy.elements(":visible"));
+				graph.showStar(graph.cy.elements(":visible"));
 			}
 			await layout.run(graph.cy, layout.eulerTight);
 			graph.cy.elements().unselect();
