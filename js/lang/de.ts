@@ -106,6 +106,9 @@ export const de = {
 		"combine-close-matches": "kombiniere close matches",
 		"class-use": "Klassenbenutzung",
 		"show-instances": "Instanzen dieser Klasse zeigen",
+		"chapter-search": "Kapitelsuche",
+		"choose-subontologies": "Wählen Sie zwei Subontologien aus",
+		"show-connectivity": "Konnektivität anzeigen",
 	},
 	messageStrings: {
 		"no-search-results-for": "Keine Suchresultate für",
