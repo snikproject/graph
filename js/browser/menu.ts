@@ -424,9 +424,7 @@ export class Menu {
 
 		// colorize edges dependent on type
 		this.coloredEdgesBox.addEventListener("change", () => {
-			const colorize = this.coloredEdges();
-			log.debug("Set coloredEdges to " + colorize);
-			(config as any).edgesColorized = colorize;
+			log.debug("Set coloredEdges to " + this.coloredEdges());
 			// redraw all canvas
 			for (const view of View.views()) {
 				view.state.graph.applyStyle(this.dayMode(), this.coloredEdges(), this.showProperty());

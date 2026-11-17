@@ -164,7 +164,7 @@ export class View {
 		this.initialized = initialize ? this.fill() : Promise.resolve();
 		this.initialized.then(() => {
 			const options = toJSON().options;
-			this.state.graph.applyStyle(options.dayMode, options.edgesColorized, options.showProperty);
+			this.state.graph.applyStyle(options.dayMode, options.coloredEdges, options.showProperty);
 			this.recreateContextMenus();
 		});
 	}
