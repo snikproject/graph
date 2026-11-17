@@ -126,7 +126,6 @@ export async function fillInitialGraph(graph: Graph): Promise<void> {
 	await progress(async () => {
 		await applyParams(graph);
 		new Search(util.getElementById("search") as HTMLFormElement);
-		initHelp();
 	});
 	initHelp();
 }

@@ -30,23 +30,6 @@ export interface MenuItem {
 export class ContextMenu {
 	graph: Graph;
 
-	/**
-	 * Add a logging wrapper to a context menu command.
-	 * @param  cmd - the context menu command to wrap if it isn't already wrapped
-	 * @param  messageFunction - a function that describes the element */
-	static logWrap(cmd: { onClickFunction; content }, messageFunction: (ele: Element) => any): void {
-		if (cmd?.onClickFunction?.wrapped) {
-			return;
-		}
-
-		const tmp = cmd.onClickFunction;
-		cmd.onClickFunction = (ele: Element) => {
-			log.debug("Context Menu: Operation " + cmd.content + " on " + messageFunction(ele));
-			tmp(ele);
-		};
-		cmd.onClickFunction.wrapped = true;
-	}
-
 	/** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
 	 * The extension itself is already registered through the plain HTML/JS import in index.html,
 	 * which makes available cy.contextMenus().
