@@ -23,6 +23,10 @@ export function setLanguage(lang: string): boolean {
 		return false;
 	}
 	language = lang;
+	// keep assistive technology informed about the interface language, guard for non-browser environments like tests
+	if (typeof document !== "undefined") {
+		document.documentElement.lang = lang;
+	}
 	return true;
 }
 
