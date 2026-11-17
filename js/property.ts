@@ -25,7 +25,7 @@ const propertyData = [
 	["rdfs:subClassOf", "subclass of", null, null, false, true],
 	//  ["","","","",false,true],
 	["skos:closeMatch", "close", null, null, true, false],
-	["skos:boardMatch", "boarder", null, null, true, false],
+	["skos:broadMatch", "broader", null, null, true, false],
 	["skos:narrowMatch", "narrower", null, null, true, false],
 	["skos:relatedMatch", "related", null, null, true, false],
 ];
