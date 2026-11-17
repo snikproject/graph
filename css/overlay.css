@@ -63,3 +63,14 @@ td > a.search-class2 {
 td > a.search-class3 {
 	color: darkred;
 }
+
+/* Day mode light variants, activated by the day mode option which toggles the body class "day" (see the day mode listener in menu.ts). */
+body.day .overlay-legend,
+body.day .fullscreen {
+	background-color: rgba(255, 255, 255, 0.9);
+}
+
+body.day .fullscreen a:hover,
+body.day .fullscreen a:focus {
+	color: #333333;
+}

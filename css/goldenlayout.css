@@ -128,3 +128,53 @@
 .lm_header {
 	z-index: 0;
 }
+/* Day mode light overrides for the imported Golden Layout dark theme and the rules above,
+   activated by the day mode option which toggles the body class "day" (see the day mode listener in menu.ts). */
+body.day .lm_goldenlayout,
+body.day .lm_content,
+body.day .lm_transition_indicator {
+	background-color: white;
+}
+body.day .lm_transition_indicator {
+	border: 1px dashed #aaaaaa;
+}
+body.day .lm_header .lm_tab {
+	color: #555555;
+	background-color: #f2f2f2;
+	box-shadow: 2px -2px 2px rgba(0, 0, 0, 0.1);
+}
+body.day .lm_selected .lm_header {
+	background-color: white;
+	border-bottom: 1px solid #ff2e88;
+}
+body.day .lm_tab:hover,
+body.day .lm_tab.lm_active {
+	background-color: white;
+	color: black;
+	border-top: 1px solid #ff2e88;
+}
+body.day .lm_header .lm_tab.lm_active {
+	box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.1);
+}
+body.day .lm_header .lm_controls .lm_tabdropdown:before {
+	color: black;
+}
+/* The header icons are inline SVGs with a hardcoded light gray fill, repeat them with a dark fill for day mode. */
+body.day .plussign {
+	background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23333' d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/></svg>");
+}
+body.day .minussign {
+	background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23333' d='M19 13H5v-2h14v2z'/></svg>");
+}
+body.day .addsign {
+	background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23333' d='M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z'/></svg>");
+}
+body.day .recalculatesign {
+	background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23333' d='M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z'/></svg>");
+}
+body.day .tightlayoutsign {
+	background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><g fill='none' stroke='%23333' stroke-width='2'><circle cx='8.5' cy='8.5' r='4.5'/><circle cx='15.5' cy='8.5' r='4.5'/><circle cx='12' cy='15' r='4.5'/></g></svg>");
+}
+body.day .compoundlayoutsign {
+	background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><g fill='none' stroke='%23333' stroke-width='2'><rect x='3' y='3' width='18' height='18'/><rect x='8' y='8' width='8' height='8'/></g></svg>");
+}

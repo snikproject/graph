@@ -384,6 +384,8 @@ export class Menu {
 			log.debug("Set separate colours to " + this.separateColours());
 		});
 		this.dayModeBox.addEventListener("change", () => {
+			// the graph canvas colors are switched per view in applyStyle, the menu, tab headers and overlays via the body class
+			document.body.classList.toggle("day", this.dayMode());
 			for (const view of View.views()) {
 				view.state.graph.applyStyle(this.dayMode(), this.coloredEdges(), this.showProperty());
 			}
