@@ -203,7 +203,6 @@ export function loadLayoutFromJsonObject(json: LayoutJson, graph: Graph) {
 		cy.elements().unselect();
 		cy.center(nodes);
 		cy.fit(nodes);
-		console.log("Loaded %d visible nodes into the graph. Hid %d nodes.", nodes.size(), toHide.size());
 	});
 	// todo: fit view to visible elements, not make it so far away
 	// todo: check performance
@@ -228,7 +227,6 @@ Add an upload entry to the file menu.
 @param description - the text of the menu item
 @param func - the function to be executed when the user clicks on the menu entry
 @param as - the file menu in the form of anchor elements that get styled by CSS
-//param optionsFromJson a function that loads session options, such as whether day mode is activated
 */
 function addLoadEntry(parent: Element, i18n: string, description: string, func: EventListener, as: Array<HTMLAnchorElement>): void {
 	const a = document.createElement("a");
@@ -248,7 +246,6 @@ function addLoadEntry(parent: Element, i18n: string, description: string, func: 
 	a.addEventListener("click", () => input.click());
 	// completed file chooser dialog triggers change event
 	input.addEventListener("change", func);
-	// TODO: use optionsFromJson
 }
 
 /**
