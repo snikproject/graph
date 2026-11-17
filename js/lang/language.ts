@@ -4,7 +4,16 @@ import { en } from "./en";
 import { de } from "./de";
 import log from "loglevel";
 
-const strings = {
+/** All translations of a single language. */
+interface LanguageStrings {
+	idStrings: Record<string, string>;
+	messageStrings: Record<string, string>;
+	contextMenuStrings?: Record<string, string>;
+	/** Lazily created union of all string categories. */
+	all?: Record<string, string>;
+}
+
+const strings: Record<string, LanguageStrings> = {
 	en: en,
 	de: de,
 	fa: { idStrings: {}, messageStrings: {} }, // for future Persian UI labels and for Persian class labels
@@ -50,16 +59,16 @@ export function getString(key: string, hotkey?: string): string {
 	const s = ss.all[key];
 	if (!s) {
 		log.error("Internationalization string not found for key " + key);
-		return null;
+		return key;
 	}
 	return s + (hotkey ? ` (${hotkey.toUpperCase()})` : "");
 }
 
 /**
  * returns the id strings for the active language
- * @returns description
+ * @returns map of i18n keys to the localized strings of HTML elements
  */
-export function getIdStrings(): Array<string> {
+export function getIdStrings(): Record<string, string> {
 	return strings[language].idStrings;
 }
 
