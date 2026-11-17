@@ -309,13 +309,12 @@ export class Graph {
       */
 	showDoubleStar(to: NodeSingular): boolean {
 		const from = this.getSource();
-		if (this.showPath(to)) {
-			this.showStar(to);
-
-			this.showStar(from);
-			return true;
+		if (!this.showPath(to)(from)) {
+			return false;
 		}
-		return false;
+		this.showStar(to);
+		this.showStar(from);
+		return true;
 	}
 	/** Get the equivalent elements in this graph of the given elements from another graph.
 	 * @param eles - elements from another graph
