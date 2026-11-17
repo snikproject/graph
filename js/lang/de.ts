@@ -62,8 +62,8 @@ export const de = {
 		"bb-chapter-search": "BB Kapitelsuche",
 		"ob-chapter-search": "OB Kapitelsuche",
 		"reset-view": "Ansicht des Gesamtgraphen zurücksetzen",
-		"move-match-nearby": "Zeige close matches verbunden",
-		"move-match-on-top": "Zeige close matches übereinander",
+		"move-match-nearby": "Gleiche nahe aneinander bewegen",
+		"move-match-on-top": "Gleiche aufeinander bewegen",
 		"subontology-connectivity": "Konnektivität zwischen Subontologien",
 		"change-title": "Titel des aktuellen Teilgraphen ändern",
 		// services ******************************************
