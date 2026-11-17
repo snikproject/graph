@@ -610,8 +610,9 @@ export class Menu {
 	 *  @param json - an option object */
 	optionsFromJSON(json): void {
 		const currentOptions = this.optionsToJSON();
-		for (const [name, checked] of Object.entries(json)) {
-			if (currentOptions[name] !== checked) {
+		for (const [name, checked] of Object.entries(currentOptions)) {
+			// Ignore options that are unknown in this version, e.g. from older or newer session files.
+			if (json[name] !== undefined && json[name] !== checked) {
 				(this as any).optionBoxes[name].click();
 			}
 		}
