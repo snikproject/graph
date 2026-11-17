@@ -17,6 +17,7 @@ Errors while reading, parsing or applying the file are reported to the user via 
 @param callback - the code to execute, receives the parsed JSON object */
 function uploadJson(event: Event, callback: (_o: object) => any): void {
 	const file = (event.target as HTMLInputElement).files[0];
+	const input = event.target as HTMLInputElement;
 	const reader = new FileReader();
 
 	reader.onerror = () => log.error(language.getString("file-read-error"));
@@ -35,6 +36,8 @@ function uploadJson(event: Event, callback: (_o: object) => any): void {
 		}
 	};
 	reader.readAsText(file);
+	// Allow selecting the same file again: without clearing the value the change event would not fire twice.
+	input.value = "";
 }
 /**
  * Clear the graph and load the contents of the Cytoscape.js JSON file in it.
