@@ -4,6 +4,7 @@ import assert from "assert"; // 'assert.js' does not work for some reason, proba
 const shortlongs = [
 	["meta:EntityType", "http://www.snik.eu/ontology/meta/EntityType"],
 	["bb:Box", "http://www.snik.eu/ontology/bb/Box"],
+	["bb2:Box2", "http://www.snik.eu/ontology/bb2/Box2"],
 	["ob:Orb", "http://www.snik.eu/ontology/ob/Orb"],
 	["he:Test", "http://www.snik.eu/ontology/he/Test"],
 	["ciox:Cio", "http://www.snik.eu/ontology/ciox/Cio"],
@@ -28,6 +29,37 @@ describe("rdf", function () {
 			for (const sl of shortlongs) {
 				assert.equal(sl[1], rdf.long(sl[0]));
 			}
+		});
+	});
+
+	describe("#longPrefix()", function () {
+		test("should return the URI expansion of the matching prefix", function () {
+			assert.equal(rdf.longPrefix("http://www.snik.eu/ontology/bb/Box"), "http://www.snik.eu/ontology/bb/");
+			assert.equal(rdf.longPrefix("https://example.com/Box"), null);
+		});
+	});
+
+	describe("#sub()", function () {
+		test("should return the subontology of path style uris", function () {
+			assert.equal(rdf.sub("http://www.snik.eu/ontology/bb/Function"), "http://www.snik.eu/ontology/bb");
+			assert.equal(rdf.sub("http://www.snik.eu/ontology/bb2/Function"), "http://www.snik.eu/ontology/bb2");
+			assert.equal(rdf.sub("http://www.snik.eu/ontology/it4it/Function"), "http://www.snik.eu/ontology/it4it");
+		});
+		test("should return the subontology of fragment style uris", function () {
+			assert.equal(rdf.sub("http://www.snik.eu/ontology/bb#Function"), "http://www.snik.eu/ontology/bb");
+			assert.equal(rdf.sub("http://www.snik.eu/ontology/bb2#Function"), "http://www.snik.eu/ontology/bb2");
+		});
+		test("should return null for non-snik uris", function () {
+			assert.equal(rdf.sub("https://example.com/Function"), null);
+		});
+	});
+
+	describe("#short() and #long() should only replace at the start", function () {
+		test("long should not replace prefix-like substrings in the middle of a string", function () {
+			assert.equal(rdf.long("path/with/it:colon"), "path/with/it:colon");
+		});
+		test("short should not replace expansion-like substrings in the middle of a string", function () {
+			assert.equal(rdf.short("http://example.com/http://www.snik.eu/ontology/bb/"), "http://example.com/http://www.snik.eu/ontology/bb/");
 		});
 	});
 });
