@@ -1,8 +1,12 @@
+import { mockSparql } from "./helpers/sparqlMock";
 import * as layout from "../js/layout";
 import { loadGraphFromSparql } from "../js/loadGraphFromSparql";
 import { SNIK } from "../js/sparql";
 import cytoscape from "cytoscape";
 import { assert } from "vite-plus/test";
+
+// Serve the recorded SPARQL responses so the test does not need the live endpoint.
+mockSparql();
 
 describe("cytoscape", () => {
 	let cy;
@@ -15,8 +19,10 @@ describe("cytoscape", () => {
 	});
 	test("load graph from SPARQL", async () => {
 		await loadGraphFromSparql(cy, graphs);
-		assert.closeTo(cy.nodes().size(), 1134, 100);
-	}, 10000);
+		// exact counts against the recorded fixture (test/fixtures/graph-*.json)
+		assert.equal(cy.nodes().size(), 34);
+		assert.equal(cy.edges().size(), 25);
+	});
 	test("calculate layout", async () => {
 		assert(await layout.run(cy, layout.euler, subs));
 		// cose is more realistic for SNIK Graph but takes over a minute
