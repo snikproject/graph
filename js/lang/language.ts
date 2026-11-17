@@ -111,5 +111,3 @@ export function updateHtml(): void {
 		log.debug(`UpdateHtml: i18n keys ${unused.toString()} not used`);
 	}
 }
-/** Update all context menus using their ID tag */
-export function updateContextMenus(): void {}
