@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 FROM node
 WORKDIR /src
-COPY package.json .
-RUN npm install --no-fund --ignore-scripts --no-audit
+COPY package.json package-lock.json .
+RUN npm ci --no-fund --ignore-scripts --no-audit
 COPY . .
 
 

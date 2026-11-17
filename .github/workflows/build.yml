@@ -26,12 +26,12 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           cache: 'npm'
-          cache-dependency-path: '**/package.json'
+          cache-dependency-path: '**/package-lock.json'
 
       - name: Install
         run: |
           cp js/config/config.dist.ts js/config/config.ts
-          npm install --no-fund --ignore-scripts --no-audit
+          npm ci --no-fund --ignore-scripts --no-audit
 
       - name: Lint
         run: |

@@ -4,8 +4,8 @@
 # To access the .git dir of the parent folder, this Dockerfile is build with the parent folder as context.
 FROM node
 WORKDIR /src
-COPY graph/package.json graph/package.json
-RUN npm install --no-fund --ignore-scripts --no-audit --prefix ./graph
+COPY graph/package.json graph/package-lock.json graph/
+RUN npm ci --no-fund --ignore-scripts --no-audit --prefix ./graph
 # The .dockerignore of the graph folder is ignored, so we need to copy each directory separately to not pick up useless junk like node_modules.
 COPY graph/js graph/js
 COPY graph/img graph/img

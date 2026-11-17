@@ -1,6 +1,15 @@
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 version: 2
 updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    assignees: ["KonradHoeffner"]
+    schedule:
+      interval: "weekly"
+
   - package-ecosystem: "github-actions"
     directory: "/.github/workflows"
     commit-message:
