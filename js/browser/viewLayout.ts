@@ -88,7 +88,16 @@ export function goldenLayout(): GoldenLayout {
 			],
 		];
 		for (const datum of data) {
-			controls.querySelector(datum[0])!.addEventListener("click", datum[1]);
+			const control = controls.querySelector(datum[0])!;
+			control.addEventListener("click", datum[1]);
+			// The controls are list items rather than buttons, so keyboard activation has to be handled explicitly.
+			control.addEventListener("keydown", (event) => {
+				const key = (event as KeyboardEvent).key;
+				if (key === "Enter" || key === " ") {
+					event.preventDefault();
+					datum[1]();
+				}
+			});
 		}
 
 		// Track the active content item for View.activeView(), replacing Golden Layout 1's selectItem.
