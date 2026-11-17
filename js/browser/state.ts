@@ -10,6 +10,7 @@ export const state = {
 export interface StateJson {
 	filters;
 	options;
+	version?: string;
 }
 
 /** Saves the visibility values of all filters.
@@ -23,6 +24,7 @@ export function toJSON(): StateJson {
 /** Loads the visibility values and apllies it to all filters.
  * @param json - the JSON representation of the state */
 export function fromJSON(json: StateJson): void {
-	Filter.fromJSON(json.filters);
-	menu.optionsFromJSON(json.options);
+	// Older or hand-edited session files may not contain all parts, keep the current values in that case.
+	Filter.fromJSON(json.filters ?? {});
+	menu.optionsFromJSON(json.options ?? {});
 }
