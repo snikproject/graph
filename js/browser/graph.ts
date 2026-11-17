@@ -584,14 +584,11 @@ export class Graph {
 				for (let j = 0; j < nodes.length; j++) {
 					const l = nodes[j].data("l");
 					for (const key in l) {
-						if (!labels[key]) {
-							labels[key] = new Set();
-						}
-						l[key].forEach((ll) => labels[key].add(ll));
+						labels[key] = labels[key] ? labels[key].union(l[key]) : new Set(l[key]);
 					}
 				}
 				for (const key in labels) {
-					labels[key] = [[...labels[key]].reduce((a, b) => a + ", " + b)];
+					labels[key] = [[...labels[key]].join(", ")];
 				}
 				const priorities = ["bb", "ob", "he", "it4it", "ciox", "bb2"];
 				const priority = (source) => {

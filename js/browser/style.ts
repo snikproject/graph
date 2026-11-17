@@ -71,7 +71,8 @@ export const style = {
 					if (node.data(NODE.HAS_INSTANCE)) {
 						label += "*";
 					}
-					return label;
+					// RDF labels may contain lone surrogates, which break text rendering.
+					return label.toWellFormed();
 				},
 			},
 		},

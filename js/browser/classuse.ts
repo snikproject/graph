@@ -102,7 +102,7 @@ export async function classUse(clazz: string, subTop: string): Promise<void> {
 	Graph.setVisible(graph.cy.elements(), false);
 	graph.starMode = true;
 
-	const classes = new Set([...inner, ...middle, ...outer, ...outerx]);
+	const classes = inner.union(middle).union(outer).union(outerx);
 	const selectedNodes = graph.cy.collection(`node[id='${clazz}']`);
 
 	for (const c of classes) {
