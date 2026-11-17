@@ -64,6 +64,7 @@ li a {
 }
 
 .dropdown-menu:hover,
+.dropdown-menu:focus,
 .dropdown-entry:hover,
 .dropdown-entry:focus {
 	background-color: #550000;
@@ -138,6 +139,7 @@ body.day .dropdown-content > * {
 }
 
 body.day .dropdown-menu:hover,
+body.day .dropdown-menu:focus,
 body.day .dropdown-entry:hover,
 body.day .dropdown-entry:focus {
 	background-color: #ffdddd;
