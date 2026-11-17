@@ -458,7 +458,11 @@ export class Menu {
 			span.classList.add("dropdown-menu");
 			// no need to set label here, they are recalculated later anyways
 			span.setAttribute("data-i18n", menuElement.i18n);
-			span.setAttribute("tabindex", "-1");
+			// keyboard and screen reader accessibility: focusable menu opener with menuitem semantics
+			span.setAttribute("tabindex", "0");
+			span.setAttribute("role", "menuitem");
+			span.setAttribute("aria-haspopup", "true");
+			span.setAttribute("aria-expanded", "false");
 			const div = document.createElement("div");
 			li.appendChild(div);
 			div.classList.add("dropdown-content");
@@ -470,9 +474,11 @@ export class Menu {
 				for (const otherDiv of document.getElementsByClassName("dropdown-content")) {
 					if (div !== otherDiv) {
 						otherDiv.classList.remove("show");
+						otherDiv.parentElement?.querySelector(".dropdown-menu")?.setAttribute("aria-expanded", "false");
 					}
 				}
 				div.classList.toggle("show");
+				span.setAttribute("aria-expanded", div.classList.contains("show") ? "true" : "false");
 			});
 			const as: Array<HTMLAnchorElement> = [];
 			aas.push(as);
@@ -487,7 +493,8 @@ export class Menu {
 				if (entry.hotkey) {
 					a.setAttribute("hotkey", entry.hotkey);
 				}
-				a.setAttribute("tabindex", "-1");
+				a.setAttribute("tabindex", "0");
+				a.setAttribute("role", "menuitem");
 				div.appendChild(a);
 				a.innerHTML = language.getString(entry.i18n);
 				switch (typeof entry.action) {
@@ -497,7 +504,12 @@ export class Menu {
 						break;
 					}
 					case "function": {
-						a.addEventListener("click", entry.action);
+						// anchors without href are not focusable by keyboard, use a placeholder href
+						a.href = "#";
+						a.addEventListener("click", (e) => {
+							e.preventDefault(); // don't navigate to the placeholder href
+							(entry.action as (...args: Array<any>) => any)(e);
+						});
 						// we only use hotkeys for functions
 						const hotkey = entry.hotkey;
 						if (hotkey) {
@@ -512,6 +524,11 @@ export class Menu {
 			}
 			span.addEventListener("keydown", (event) => {
 				switch (event.key) {
+					case " ":
+					case "Enter":
+						event.preventDefault();
+						span.click();
+						break;
 					case "ArrowLeft":
 						spans[(i - 1 + spans.length) % spans.length].focus(); // positive modulo
 						spans[(i - 1 + spans.length) % spans.length].click();
