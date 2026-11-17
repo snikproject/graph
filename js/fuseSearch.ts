@@ -128,7 +128,11 @@ export async function createIndex(): Promise<Array<object>> {
 */
 export async function search(userQuery: string): Promise<Array<FuseResult<Item>>> {
 	if (!index) {
-		await createIndex();
+		try {
+			await createIndex();
+		} catch {
+			return []; // select() already logged the error, retry on the next search
+		}
 	}
 	const result = index.search(userQuery);
 	return result;

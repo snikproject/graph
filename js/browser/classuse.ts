@@ -62,7 +62,10 @@ export async function classUse(clazz: string, subTop: string): Promise<void> {
 		outer: { value: string };
 		outerx: { value: string };
 	}
-	const bindings = (await sparql.select(query)) as Array<ClassUseBinding>;
+	const bindings = (await sparql.select(query).catch(() => null)) as Array<ClassUseBinding> | null;
+	if (!bindings) {
+		return;
+	}
 
 	const [inner, middle, outer, outerx] = [new Set(), new Set(), new Set(), new Set()];
 

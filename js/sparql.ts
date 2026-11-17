@@ -7,13 +7,25 @@ export const SNIK = {
 	PREFIX: "http://www.snik.eu/ontology/", //problem: different prefixes for different partial ontologie,
 };
 
+const TIMEOUT = 30_000; // milliseconds
+
 /** Whether queries are answered by the local RDF snapshot instead of the remote endpoint. */
 export function useLocal(): boolean {
 	return config.ontology.sparql.local;
 }
 
+/** Fetch a SPARQL URL, failing on timeouts and HTTP errors. */
+async function sparqlFetch(url: string): Promise<Response> {
+	const response = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT) });
+	if (!response.ok) {
+		throw new Error(`SPARQL endpoint returned HTTP status ${response.status} ${response.statusText}.`);
+	}
+	return response;
+}
+
 //ASK queries should also work but better use {@link ask} instead as it is more convenient. // ask does not exist anymore
 /** Query public SNIK SPARQL endpoint with a SELECT query.
+Throws an error if the endpoint cannot be reached, the response has an error status code or the response is not valid SPARQL JSON.
 @param query - A valid SPARQL query.
 @param graph - An optional SPARQL graph.
 @param endpoint - An optional SPARQL endpoint. May override FROM statements.
@@ -35,10 +47,11 @@ export async function select(query: string, graph?: string, endpoint: string = c
 		url += "&default-graph-uri=" + encodeURIComponent(graph);
 	}
 	try {
-		const response: Response = await fetch(url);
-		const json: JSON = await response.json();
-		const bindings: Array<object> = json["results"].bindings;
-
+		const json = await (await sparqlFetch(url)).json();
+		const bindings: Array<object> = json.results?.bindings;
+		if (!bindings) {
+			throw new Error("SPARQL endpoint returned a response without result bindings.");
+		}
 		if (browser) {
 			console.groupCollapsed("SPARQL " + query.split("\n", 1)[0] + "...");
 		}
@@ -58,12 +71,10 @@ export async function select(query: string, graph?: string, endpoint: string = c
 		if (browser) {
 			console.groupEnd();
 		}
-
 		return bindings;
 	} catch (err) {
-		log.error(err);
-		log.error(`Error executing SPARQL query:\n${query}\nURL: ${url}\n\n`);
-		return [];
+		log.error(`Error executing SPARQL query:\n${query}\nURL: ${url}\n${err}`);
+		throw err;
 	}
 }
 
@@ -91,8 +102,7 @@ export async function describe(uri: string, graphOpt?: string): Promise<string> 
 		(graphOpt ? "&default-graph-uri=" + encodeURIComponent(graphOpt) : "");
 
 	try {
-		const response = await fetch(url);
-		return await response.text();
+		return await (await sparqlFetch(url)).text();
 	} catch (err) {
 		throw new Error(`Error executing SPARQL query ${query}: ${err}`);
 	}
