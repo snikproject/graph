@@ -7,7 +7,7 @@ import { goldenLayout, getActiveContentItem } from "./viewLayout";
 import { toJSON } from "./state";
 import log from "loglevel";
 import { ContentItem, type ComponentItem } from "golden-layout";
-import { Menu } from "./menu";
+import { Menu, menu } from "./menu";
 
 let viewCount: number = 0; // only used for the name, don't decrement on destroy to prevent name conflicts
 
@@ -63,12 +63,18 @@ export class View {
 		return getActiveContentItem();
 	}
 
+	/** Make this the main view and reuse the existing menu singleton or create it if it doesn't exist.
+	Called on startup and after a session load, which recreates the views without calling fill(). */
+	private makeMainView(): void {
+		View.mainView = this;
+		this.menu = menu ?? new Menu();
+	}
+
 	/** Fill the initial graph or copy over from the main view if it is not the first. */
 	async fill(): Promise<void> {
 		const graph = this.state.graph;
 		if (View.mainView === null) {
-			View.mainView = this;
-			this.menu = new Menu();
+			this.makeMainView();
 			firstFinished = fillInitialGraph(graph);
 			await firstFinished;
 			log.debug(`Main view ${this.state.name} loaded with ${graph.cy.elements().size()} elements.`);
@@ -141,6 +147,11 @@ export class View {
 				});
 			});
 		}
+		// Session loading recreates the views without calling fill(), so the first loaded view becomes the new main view here.
+		// This has to happen after the isClosable check and part view registration so that the new main view is not closeable.
+		if (!initialize && View.mainView === null) {
+			this.makeMainView();
+		}
 
 		(viewLayout as any).root.contentItems[0].addItem(itemConfig);
 
@@ -165,6 +176,9 @@ export class View {
 			content.remove();
 		}
 		View.partViews.clear();
+		// the layout is recreated, so the main view is gone and the next created view becomes the new main view
+		// the menu singleton is intentionally kept and reused by the new main view
+		View.mainView = null;
 		viewCount = 0;
 		viewLayout.destroy();
 		viewLayout = goldenLayout();
