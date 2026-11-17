@@ -21,5 +21,11 @@ describe("language", () => {
 				assert.deepEqual(Object.keys(all.en[key]), Object.keys(all.de[key]), `German or English not fully translated; missing keys in section ${key}`);
 			}
 		});
+		test("should fall back to English for partially translated languages", () => {
+			assert(language.setLanguage("fa"), "Persian language not found.");
+			assert.equal(language.getString("file"), "File");
+			assert.isAbove(Object.keys(language.getIdStrings()).length, 27);
+			assert(language.setLanguage("en"));
+		});
 	});
 });
