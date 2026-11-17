@@ -14,7 +14,7 @@ on:
       - 'LICENSE'
       - 'README.md'
       - 'paper'
-      - 'oxlintrc.json'
+      - '.oxlintrc.json'
 
 jobs:
   build:
@@ -32,6 +32,14 @@ jobs:
         run: |
           cp js/config/config.dist.ts js/config/config.ts
           npm install --no-fund --ignore-scripts --no-audit
+
+      - name: Lint
+        run: |
+          npm run lint
+
+      - name: Typecheck
+        run: |
+          npm run typecheck
 
       - name: Test
         run: |
