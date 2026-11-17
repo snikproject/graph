@@ -582,20 +582,23 @@ export class Menu {
 		language.updateHtml();
 	}
 
-	/** Close the dropdown if the user clicks outside of the menu.
+	/** Close all open dropdown menus. */
+	static hideDropdowns(): void {
+		const dropdowns = document.getElementsByClassName("dropdown-content");
+		Array.from(dropdowns).forEach((d) => d.classList.remove("show"));
+	}
+	/** Close the dropdown if the user clicks outside of the menu or on an entry that triggers an action.
 	 *  @param e - a click event */
 	static closeListener(e: any): void {
-		if (
-			e &&
-			e.target &&
-			e.target.matches &&
-			!e.target.matches(".dropdown-entry") &&
-			!e.target.matches(".dropdown-menu") &&
-			!e.target.matches("input.filterbox")
-		) {
+		if (!e || !e.target || !e.target.matches) {
+			return;
+		}
+		// entries with a checkbox (filters, options) stay open to allow multiple selections, all other entries close the menu
+		const entry = typeof e.target.closest === "function" ? e.target.closest(".dropdown-entry") : null;
+		const keepsMenuOpen = entry !== null && entry.querySelector("input") !== null;
+		if (!keepsMenuOpen && !e.target.matches(".dropdown-menu") && !e.target.matches("input.filterbox")) {
 			// don't close while user edits the text field of the custom filter
-			const dropdowns = document.getElementsByClassName("dropdown-content");
-			Array.from(dropdowns).forEach((d) => d.classList.remove("show"));
+			Menu.hideDropdowns();
 		}
 	}
 	/** Save session-based options (not user preferences) to JSON. */
