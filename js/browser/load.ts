@@ -47,6 +47,7 @@ function uploadJson(event: Event, callback: (_o: object) => any): void {
 function loadGraphFromJson(graph: Graph, json): void {
 	const cy = graph.cy;
 	cy.elements().remove();
+	graph.pathSource = null; // the previous source node no longer exists
 	cy.json(json);
 	cy.elements().addClass("unfiltered");
 	const visibleFraction = (1.0 * graph.cy.elements(":visible").size()) / graph.cy.elements().size();
