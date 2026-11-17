@@ -45,7 +45,7 @@ export class Search {
 			View.activeState().graph.presentUri(uris[0]);
 			return true;
 		}
-		if (uris.length === SEARCH_LIMIT) {
+		if (uris.length >= SEARCH_LIMIT) {
 			util.getElementById("h2:search-results").innerHTML = `First ${SEARCH_LIMIT} Search Results for "${query}"`;
 		} else {
 			util.getElementById("h2:search-results").innerHTML = `${uris.length} Search Results for "${query}"`;
@@ -141,10 +141,16 @@ export class Search {
 	 *  @param userQuery - the search query as given by the user
 	 *  @returns false to prevent page reload triggered by submit.*/
 	async showSearch(userQuery): Promise<false> {
+		// ignore empty queries, they would only open the dialog with a "No Search Results" header
+		if (!userQuery.trim()) {
+			MicroModal.close("search-results");
+			return false;
+		}
 		MicroModal.show("search-results");
 		// fuse returns results ordered by increasing score, where a low score is a better match than a high score
 		const items = await fuse.search(userQuery);
-		const uris = items.map((x) => x.item.uri);
+		// fuse.search is unbounded by default, limit the number of rendered rows and tell the user when the list is truncated
+		const uris = items.slice(0, SEARCH_LIMIT).map((x) => x.item.uri);
 		this.showSearchResults(userQuery, uris);
 		return false; // prevent page reload triggered by submit
 	}
