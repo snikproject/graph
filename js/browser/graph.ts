@@ -388,10 +388,10 @@ export class Graph {
       @returns whether node is not null
       */
 	setSource(node: NodeSingular): boolean {
-		log.debug("Setting path source to " + node.data(NODE.ID));
 		if (!node) {
 			return false;
 		}
+		log.debug("Setting path source to " + node.data(NODE.ID));
 		if (node.length !== 1) {
 			log.error("Invalid source. Length != 1");
 			return false;
