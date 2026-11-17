@@ -13,7 +13,6 @@ import log from "loglevel";
 const SEARCH_LIMIT = 100;
 
 export class Search {
-	resultNodes = [];
 	/** Add search functionality to the form.
 	 *  @param form - a form with a search field named "query" */
 	constructor(form: HTMLFormElement) {
@@ -30,7 +29,6 @@ export class Search {
 	 * @returns whether the search results are nonempty.
 	 */
 	showSearchResults(query: string, uris: Array<string>): boolean {
-		this.resultNodes = [];
 		const table = util.getElementById("tab:search-results") as HTMLTableElement;
 		// clear leftovers from last time
 		while (table.rows.length > 0) {
@@ -107,35 +105,6 @@ export class Search {
 			});
 		}
 		return true;
-	}
-	/** Searches the SPARQL endpoint for classes with the given label.
-      Case and space insensitive when not using bif:contains. Can be used by node.js.
-      @deprecated Old search without fuse index. Not used anymore.
-      @param userQuery - the search query as given by the user
-      @returns A promise with an array of class URIs.
-      */
-	async search(userQuery: string): Promise<Array<string>> {
-		// prevent invalid SPARQL query and injection by keeping only alphanumeric English and German characters
-		// if other languages with other characters are to be supported, extend the regular expression
-		// remove space to make queries space insensitive, as people might search for URI suffixes which can be similar to the label so we get more recall
-		// works in conjuction with also ignoring whitespace for labels in the SPARQL query
-		// If this results in too low of a precision, the search can be made space sensitive again by changing /[\x22\x27\x5C\x0A\x0D ]/ to /[\x22\x27\x5C\x0A\x0D]/
-		// and adapting the SPARQL query along with it.
-		// Does not work with bif:contains.
-		// to avoid injection attacks and errors, so not allowed characters are replaced to match sparul syntax
-		// [156]  	STRING_LITERAL1	  ::=  	"'" ( ([^#x27#x5C#xA#xD]) | ECHAR )* "'"
-		// [157]  	STRING_LITERAL2	  ::=  	'"' ( ([^#x22#x5C#xA#xD]) | ECHAR )* '"'
-		// source: https://www.w3.org/TR/sparql11-query/#func-lcase
-		// Hexadecimal escape sequences require a leading zero in JavaScript, see https://mathiasbynens.be/notes/javascript-escapes.
-		const searchQuery = userQuery.replace(/[\x22\x27\x5C\x0A\x0D -]/g, "");
-		// use this when labels are available, URIs are not searched
-		const sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
-        {?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l),"[ -]","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${SEARCH_LIMIT}`;
-		log.debug(sparqlQuery);
-		const bindings = await sparql.select(sparqlQuery);
-		return bindings.map((b) => b["s"].value);
-		//		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
-		//filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
 	}
 	/** Search the class labels and display the result to the user.
 	 *  @param userQuery - the search query as given by the user

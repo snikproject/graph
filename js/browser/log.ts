@@ -48,6 +48,8 @@ export function initLog(): void {
 	});
 
 	log.setLevel(config.logLevelConsole);
+	// initialize the log memory so that it is accessible even before the first log statement, e.g. for the bug report
+	log["logs"] = [];
 	const levels = ["error", "warn", "info", "debug", "trace"]; // no point in decorating silent
 	const value = { silent: 0, error: 1, warn: 2, info: 3, debug: 4, trace: 5 };
 	// wrap the loglevel functions in a "decorator" that adds logging to memory and to display

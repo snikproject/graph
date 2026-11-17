@@ -62,7 +62,7 @@ export function createGitHubIssue(repo: string, title: string, body: string, ass
  * @param fields - form field keys and string values
  */
 export function createGitHubTemplateIssue(repo: string, title: string, template: string, label: string, fields: [string, string][]): void {
-	const encodedFields = fields.map(([key, value]) => `&${key}=${encodeURIComponent(value)}`).reduce((a, b) => a + b);
+	const encodedFields = fields.map(([key, value]) => `&${key}=${encodeURIComponent(value)}`).reduce((a, b) => a + b, "");
 	window.open(
 		`${repo}/issues/new?template=${template}.yml&assignees=${config.git.defaultIssueAssignee}&labels=${label}&title=${encodeURIComponent(title)}${encodedFields}`
 	);
