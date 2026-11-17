@@ -116,6 +116,9 @@ export function updateHtml(): void {
 				case "SPAN":
 					element.textContent = s;
 					break;
+				case "INPUT":
+					(element as HTMLInputElement).value = s;
+					break;
 				default:
 					log.warn(`Cannot assign text "${s}" to element with i18n key ${key} because its tag type ${element.tagName} is unsupported.`);
 			}
