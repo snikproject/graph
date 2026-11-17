@@ -532,14 +532,17 @@ export class Menu {
 						span.click();
 						break;
 					case "ArrowLeft":
+						event.preventDefault();
 						spans[(i - 1 + spans.length) % spans.length].focus(); // positive modulo
 						spans[(i - 1 + spans.length) % spans.length].click();
 						break;
 					case "ArrowRight":
+						event.preventDefault();
 						spans[(i + 1) % spans.length].focus();
 						spans[(i + 1) % spans.length].click();
 						break;
 					case "ArrowDown":
+						event.preventDefault();
 						as[0].focus();
 						break;
 				}
@@ -557,17 +560,21 @@ export class Menu {
 				as[j].addEventListener("keydown", (event) => {
 					switch (event.key) {
 						case "ArrowLeft":
+							event.preventDefault();
 							spans[(i - 1 + spans.length) % spans.length].focus(); // positive modulo
 							spans[(i - 1 + spans.length) % spans.length].click();
 							break;
 						case "ArrowRight":
+							event.preventDefault();
 							spans[(i + 1) % spans.length].focus();
 							spans[(i + 1) % spans.length].click();
 							break;
 						case "ArrowUp":
+							event.preventDefault();
 							as[(j - 1 + as.length) % as.length].focus();
 							break;
 						case "ArrowDown":
+							event.preventDefault();
 							as[(j + 1) % as.length].focus();
 							break;
 					}
