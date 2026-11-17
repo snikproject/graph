@@ -97,12 +97,12 @@ export async function loadSessionFromJsonFile(event: Event): Promise<void> {
 
 		// First graph is an instance of Graph from graph.js; the second one is the graph attribute from the Cytoscape JSON format.
 		loadGraphFromJson(mainView.state.graph, json.mainGraph.graph);
-		View.activeView().setTitle(json.mainGraph.title);
+		View.setActiveTitle(json.mainGraph.title);
 		for (let i = 0; i < json.tabs.length; i++) {
 			const view = new View(false);
 			promises.push(view.initialized);
 			loadGraphFromJson(view.state.graph, json.tabs[i].graph);
-			View.activeView().setTitle(json.tabs[i].title);
+			View.setActiveTitle(json.tabs[i].title);
 		}
 		await Promise.all(promises);
 		fromJSON(json.state); // update changed values, keep existing values that don't exist in the save file
@@ -143,7 +143,7 @@ export function loadView(event: Event): void {
 
 		const view = new View(false);
 		loadGraphFromJson(view.state.graph, json.graph);
-		View.activeView().setTitle(json.title);
+		View.setActiveTitle(json.title);
 	});
 }
 
