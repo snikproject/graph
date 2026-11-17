@@ -56,6 +56,14 @@ const a = document.createElement("a"); // reused for all saving, not visible to 
 document.body.appendChild(a);
 a.style.display = "none";
 
+// Revoking synchronously after the click can abort the download.
+const REVOKE_DELAY_MS = 1000;
+
+// Revoking a non-blob URL (such as a data URL) is a no-op.
+function revokeLater(url: string): void {
+	setTimeout(() => window.URL.revokeObjectURL(url), REVOKE_DELAY_MS);
+}
+
 /**
 Create a JSON file out of a JSON data string and lets the user save it.
 Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-without-link
@@ -69,7 +77,7 @@ export function saveJson(data: object, fileName: string): void {
 	a.href = url;
 	a.download = fileName;
 	a.click();
-	window.URL.revokeObjectURL(url);
+	revokeLater(url);
 	log.debug("JSON File saved: " + fileName);
 }
 
@@ -83,7 +91,7 @@ export function saveUrl(url: string, fileName: string): void {
 	a.href = url;
 	a.download = fileName;
 	a.click();
-	window.URL.revokeObjectURL(url);
+	revokeLater(url);
 	log.debug("File saved: " + fileName);
 }
 
