@@ -1,5 +1,6 @@
 /** Creates the circular context menu that can be opened on top of an edge.*/
 import * as util from "./util";
+import * as rdf from "../rdf";
 import { config } from "../config/config";
 import { EDGE } from "../edge";
 import { Graph } from "./graph";
@@ -17,8 +18,18 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 			selector: "edge",
 			onClickFunction: (event) => {
 				const edge = event.target;
-				const body = `Problem with the edge [${util.edgeLabel(edge)}](${edge.data(EDGE.SOURCE)}):\n\n`;
-				util.createGitHubIssue(config.git.repo.ontology, util.edgeLabel(edge), body);
+				const source = edge.data(EDGE.SOURCE);
+				const property = edge.data(EDGE.PROPERTY);
+				const target = edge.data(EDGE.TARGET);
+				const axiom = edge.data(EDGE.AXIOM);
+				let body = `Problem with the edge ${util.edgeLabel(edge)}:\n\n`;
+				body += `Source: [${rdf.short(source)}](${source})\n`;
+				body += `Property: [${rdf.short(property)}](${property})\n`;
+				body += `Target: [${rdf.short(target)}](${target})\n`;
+				if (axiom) {
+					body += `Axiom: [${rdf.short(axiom)}](${axiom})\n`;
+				}
+				util.createGitHubIssue(config.git.repo.ontology, "Problem with the edge " + util.edgeLabel(edge), body);
 			},
 		},
 		{

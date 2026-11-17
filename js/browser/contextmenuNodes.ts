@@ -60,8 +60,9 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			selector: "node",
 			onClickFunction: (event) => {
 				const node = event.target;
-				const body = `Problem with the class [${rdf.short(node.data(NODE.ID))}](${node.data(NODE.ID)}):\n\n`;
-				util.createGitHubIssue(config.git.repo.ontology, node.data(NODE.ID), body);
+				const uri = node.data(NODE.ID);
+				const body = `Problem with the class [${rdf.short(uri)}](${uri}):\n\n`;
+				util.createGitHubIssue(config.git.repo.ontology, "Problem with the class " + rdf.short(uri), body);
 			},
 		},
 
