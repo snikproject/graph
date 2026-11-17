@@ -200,7 +200,6 @@ export class Graph {
       @param changeLayout - arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
       @param direction - only show edges that originate from node, not those that end in it. Optional and defaults to false. */
 	showStar(center: NodeCollection, changeLayout: boolean = false, direction?: Direction): void {
-		console.log("center", center);
 		this.cy.startBatch();
 		// open 2 levels deep on closeMatch
 		let inner = center; // if you don't want to include close match, keep inner at that
@@ -234,7 +233,6 @@ export class Graph {
 			this.starMode = true;
 			Graph.setVisible(this.cy.elements().not(star), false);
 		}
-		console.log("star", star);
 		Graph.starStyle(star);
 		//const visible = this.cy.nodes(".unfiltered").not(".hidden");
 		//Graph.starStyle(visible.edgesWith(visible));
