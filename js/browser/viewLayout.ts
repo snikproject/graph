@@ -1,6 +1,7 @@
 import * as util from "./util";
 import { View, type ViewState } from "./view";
 import * as layout from "../layout";
+import { config } from "../config/config";
 import { GoldenLayout, type LayoutConfig, type ContentItem, type Stack } from "golden-layout";
 import "golden-layout/dist/css/goldenlayout-base.css";
 import "golden-layout/dist/css/themes/goldenlayout-dark-theme.css";
@@ -69,20 +70,20 @@ export function goldenLayout(): GoldenLayout {
 			[
 				".recalculatesign",
 				() => {
-					layout.run(cy(), layout.euler, (layoutConfig as any).defaultSubOntologies, separateColours(), true);
+					layout.run(cy(), layout.euler, config.ontology?.snik?.defaultSubOntologies, separateColours(), true);
 				},
 			],
 			[
 				".tightlayoutsign",
 				() => {
-					layout.run(cy(), layout.eulerTight, (layoutConfig as any).defaultSubOntologies, separateColours(), true);
+					layout.run(cy(), layout.eulerTight, config.ontology?.snik?.defaultSubOntologies, separateColours(), true);
 				},
 			],
 			// The compound layout does not work with separate colours so set the latter always to false.
 			[
 				".compoundlayoutsign",
 				() => {
-					layout.run(cy(), layout.cose, (layoutConfig as any).defaultSubOntologies, false, true);
+					layout.run(cy(), layout.cose, config.ontology?.snik?.defaultSubOntologies, false, true);
 				},
 			],
 		];
