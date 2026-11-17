@@ -9,8 +9,6 @@ import type { MenuItem } from "./contextmenu";
 import * as sparql from "../sparql";
 import * as language from "../lang/language";
 
-const eventify = (f) => (event) => f(event.target); // simplify multiplex expressions on event.target
-
 /** Menu entries
 @param graph - the graph that the commands should apply to, if any
 @returns the base commands */
@@ -37,15 +35,15 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 				},
 				{
 					id: "compound-star",
-					onClickFunction: (event) => graph.multiplex(graph.showStar, event.target.children(), true)(),
+					onClickFunction: (event) => graph.applyToCollection(graph.showStar, undefined, event.target.children()),
 				},
 				{
 					id: "compound-incoming-star",
-					onClickFunction: (event) => graph.multiplex((node) => graph.showStar(node, false, Direction.IN), event.target.children(), true)(),
+					onClickFunction: (event) => graph.applyToCollection((node) => graph.showStar(node, false, Direction.IN), undefined, event.target.children()),
 				},
 				{
 					id: "compound-outgoing-star",
-					onClickFunction: (event) => graph.multiplex((node) => graph.showStar(node, false, Direction.OUT), event.target.children(), true)(),
+					onClickFunction: (event) => graph.applyToCollection((node) => graph.showStar(node, false, Direction.OUT), undefined, event.target.children()),
 				},
 				{
 					id: "compound-path-source",
@@ -77,8 +75,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 		{
 			id: "hide",
 			selector: "node",
-			onClickFunction: eventify(graph.multiplex((node) => Graph.setVisible(node, false))),
-			//onClickFunction: eventMultiplex(graph, event, (node) => Graph.setVisible(node, false)),
+			onClickFunction: (event) => graph.applyPerNode((node) => Graph.setVisible(node, false), event.target),
 		},
 		{
 			id: "set-path-source",
@@ -98,33 +95,32 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 			id: "star",
 			selector: "node",
 			onClickFunction: async (event) => {
-				(await graph.showStarMultiplexedNew(false, Direction.BOTH))(event.target);
+				await graph.showStarInAnotherView(event.target);
 			},
 		},
 		{
 			id: "incoming-star",
 			selector: "node",
 			onClickFunction: async (event) => {
-				(await graph.showStarMultiplexedNew(false, Direction.IN))(event.target);
+				await graph.showStarInAnotherView(event.target, false, Direction.IN);
 			},
 		},
 		{
 			id: "outgoing-star",
 			selector: "node",
 			onClickFunction: async (event) => {
-				(await graph.showStarMultiplexedNew(false, Direction.OUT))(event.target);
+				await graph.showStarInAnotherView(event.target, false, Direction.OUT);
 			},
 		},
 		{
 			id: "path",
 			selector: "node",
-			// onClickFunction: eventify(graph.multiplex(graph.showPath)), // does not work for unknown reasons
-			onClickFunction: (event) => graph.multiplex(graph.showPath(event.target))(graph.getSource()),
+			onClickFunction: (event) => graph.applyPerNode((from) => graph.showPath(from, event.target), graph.getSource()),
 		},
 		{
 			id: "spiderworm",
 			selector: "node",
-			// multiplexing spiderworm leads to errors and has not been needed
+			// applying this to several nodes leads to errors and has not been needed
 			onClickFunction: (event) => graph.showWorm(graph.getSource(), event.target),
 		},
 		// {
@@ -169,19 +165,19 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 				{
 					id: "doublestar",
 					selector: "node",
-					onClickFunction: (event) => graph.multiplex(graph.showDoubleStar)(event.target),
+					onClickFunction: (event) => graph.applyPerNode(graph.showDoubleStar, event.target),
 				},
 				{
 					id: "starpath",
 					selector: "node",
-					onClickFunction: (event) => graph.multiplex(graph.showPath(event.target, true))(graph.getSource()),
+					onClickFunction: (event) => graph.applyPerNode((from) => graph.showPath(from, event.target, true), graph.getSource()),
 				},
 				{
 					id: "circlestar",
 					selector: "node",
 					// circle star hides all other nodes so we always open it in a new view even if we are not in the main one
 					onClickFunction: async (event) => {
-						(await graph.showStarMultiplexedNew(true, Direction.BOTH, true))(event.target);
+						await graph.showStarInAnotherView(event.target, true, Direction.BOTH, true);
 					},
 				},
 				{
@@ -201,7 +197,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 				{
 					id: "close-match",
 					selector: "node",
-					onClickFunction: eventify(graph.multiplex(graph.showCloseMatch, undefined, true)),
+					onClickFunction: (event) => graph.applyToCollection(graph.showCloseMatch, event.target),
 				},
 				{
 					id: "show-instances",
