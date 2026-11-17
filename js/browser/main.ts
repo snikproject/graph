@@ -17,6 +17,10 @@ function initKeyListener(): void {
 		if (!el || el.nodeName !== "BODY") {
 			return;
 		}
+		// Let the browser and operating system handle combinations such as Ctrl+S (save) or Ctrl+P (print).
+		if (e.ctrlKey || e.metaKey || e.altKey) {
+			return;
+		}
 
 		const layoutState = View.activeState();
 		if (!layoutState) {
