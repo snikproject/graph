@@ -36,7 +36,7 @@ export function createGitHubIssue(repo: string, title: string, body: string, ass
 	let encodedBody = encodeURIComponent(body);
 	if (logs) {
 		const encodedLogs = logs.map((l) => encodeURIComponent(l.trim()));
-		let encodedLog = encodedLogs.reduce((a, b) => a + "%0A" + b);
+		let encodedLog = encodedLogs.reduce((a, b) => a + "%0A" + b, "");
 
 		while (encodedLog.length > LOG_LIMIT) {
 			// remove log elements from the front until the length of the log is under the limit to avoid 414 Error URI too large
@@ -138,10 +138,11 @@ export function createGitHubBugReportIssue() {
 	// cannot reuse the equivalent code from createGitHubIssue because this is pre-encoding, handling should be unified in the future
 	// filter out already encoded parts which are SPARQL queries that take too much space
 	// encoding increases size slightly, 3/4 should be enough, reduce if it causes errors
-	const logs = log["logs"]
+	const logs = (log["logs"] ?? [])
+		.map((entry) => String(entry))
 		.filter((x) => !x.includes("%20"))
-		.reduce((a, b) => a + "\n" + b)
-		.substr((-LOG_LIMIT * 3) / 4);
+		.reduce((a, b) => a + "\n" + b, "")
+		.slice((-LOG_LIMIT * 3) / 4);
 	createGitHubTemplateIssue(config.git.repo.application, "", "bugreport", config.git.issueLabels.bug, Object.entries({ version, logs }));
 }
 
