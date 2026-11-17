@@ -24,15 +24,19 @@ let activeLayout: Layouts;
 @example storageName("euler",new Set(["meta","ob","bb"]));
 */
 function storageName(layoutName: string, subs: Array<string>, separateColours: boolean = false): string {
-	return (
-		"layout" +
-		layoutName +
-		subs
-			.sort()
-			.toString()
-			.replace(/[^a-z]/g, "") +
-		!!separateColours
-	);
+	// only strip separators, not digits, otherwise different subontologies like "bb" and "bb2" would collide on the same cache key
+	const subString = [...subs]
+		.sort()
+		.toString()
+		.replace(/[^a-z0-9]/gi, "");
+	// include a hash of the endpoint so that caches from different endpoints on the same origin don't collide
+	// and so that switching endpoints invalidates old caches instead of serving stale layouts
+	const endpoint = config.ontology.sparql.endpoint;
+	let endpointHash = 0;
+	for (let i = 0; i < endpoint.length; i++) {
+		endpointHash = (endpointHash * 31 + endpoint.charCodeAt(i)) | 0;
+	}
+	return "layout" + layoutName + subString + endpointHash + !!separateColours;
 }
 
 /** Returns an array containing the positions of the given nodes
@@ -177,7 +181,7 @@ export async function presetLayout(cy: Core, pos: Array<Array<object>>): Promise
 		},
 	};
 	const status = await run(cy, layoutConfig);
-	if (misses > 0 || hits < positions.length) {
+	if (misses > 0 || hits < pos.length) {
 		log.debug(`...${hits}/${cy.nodes().size()} node positions set. ${pos.length - hits} superfluous layout positions .`);
 		const precision = hits / pos.length;
 		const recall = hits / cy.nodes().size();
