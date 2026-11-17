@@ -102,11 +102,10 @@ export interface TabContent {
 }
 
 /** Saves the contents of all views as a custom JSON file. */
-export function saveSession(options): void {
+export function saveSession(): void {
 	const mainGraph = {
 		title: View.mainView.state.title,
 		graph: View.mainView.state.cy.json(),
-		options,
 	};
 	delete mainGraph.graph["style"]; // the style gets corrupted on export due to including functions, the default style will be used instead
 
