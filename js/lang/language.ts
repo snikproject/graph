@@ -46,17 +46,30 @@ export function getLanguage(): string {
 	return language;
 }
 
+/** Returns the lazily created union of all string categories of a language.
+ * @param ss - the strings of a single language
+ * @returns all strings of that language by key */
+function allStrings(ss: LanguageStrings): Record<string, string> {
+	if (!ss.all) {
+		ss.all = { ...ss.idStrings, ...ss.messageStrings, ...ss.contextMenuStrings };
+	}
+	return ss.all;
+}
+
 /**
  * @param key - language independent key
  * @param hotkey - optional key combination to be displayed next to this string
  * @returns language dependend string
  */
 export function getString(key: string, hotkey?: string): string {
-	const ss = strings[language];
-	if (!ss.all) {
-		ss.all = { ...ss.idStrings, ...ss.messageStrings, ...ss.contextMenuStrings };
+	let s = allStrings(strings[language])[key];
+	if (!s) {
+		// Fall back to English so that partially translated languages show readable text instead of internal keys.
+		s = allStrings(strings.en)[key];
+		if (s) {
+			log.debug(`Internationalization string ${key} not found for language ${language}, using English.`);
+		}
 	}
-	const s = ss.all[key];
 	if (!s) {
 		log.error("Internationalization string not found for key " + key);
 		return key;
@@ -69,7 +82,8 @@ export function getString(key: string, hotkey?: string): string {
  * @returns map of i18n keys to the localized strings of HTML elements
  */
 export function getIdStrings(): Record<string, string> {
-	return strings[language].idStrings;
+	// Include the English keys so that updateHtml() also updates elements of partially translated languages.
+	return { ...strings.en.idStrings, ...strings[language].idStrings };
 }
 
 // return everything
