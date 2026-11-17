@@ -32,7 +32,7 @@ let active = 0;
  * Not thread safe but javascript is single threaded for now.
  * @param func - any function that should have its progress displayed while it is running */
 async function progress(func: Function): Promise<void> {
-	if (!window) {
+	if (typeof window === "undefined") {
 		return;
 	} // ignore when running in nodejs
 	if (!spinner) {
