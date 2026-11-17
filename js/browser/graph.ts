@@ -550,19 +550,26 @@ export class Graph {
 			nodes[j].shift({ x: distance * Math.cos((2 * Math.PI * j) / (nodes.length - 1)), y: distance * Math.sin((2 * Math.PI * j) / (nodes.length - 1)) });
 		}
 	}
+	/** Detach and remove the compound parent nodes created by combineMatch. */
+	private removeMatchParents(): void {
+		const parents = this.cy.nodes("[id ^= 'parent']");
+		parents.children().move({ parent: null });
+		parents.remove();
+	}
 	/** Sets whether close matches are grouped in compound nodes.
 	 * @param enabled - Whether to activate or deactivate combine match mode. **/
 	async combineMatch(enabled: boolean): Promise<void> {
 		await progress(() => {
 			if (!enabled) {
 				this.cy.startBatch();
-				this.cy.nodes(":child").move({ parent: null });
-				this.cy.nodes("[id ^= 'parent']").remove();
+				this.removeMatchParents();
 				this.matchComponents.length = 0;
 				this.cy.endBatch();
 				return;
 			}
 			this.cy.startBatch();
+			// combineMatch can be called repeatedly while the option is enabled, e.g. on every visibility change through applyOptions(), so remove outdated parents first to avoid duplicate element IDs.
+			this.removeMatchParents();
 			// Can be calculated only once per session but then it needs to be synchronized with in-visualization ontology edits.
 			const matchEdges = this.cy.edges('[pl="closeMatch"]').filter(".unfiltered").not(".hidden");
 			const matchGraph = this.cy.nodes(".unfiltered").not(".hidden").union(matchEdges);
