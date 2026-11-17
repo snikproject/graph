@@ -359,7 +359,7 @@ export class Graph {
 					ele = view.state.cy.getElementById(id);
 					// if the query does not return an empty collection, we found the element
 					if (ele.length !== 0) {
-						console.debug("Found!");
+						log.debug(`Found ${id} in another view.`);
 						// add it to our graph!
 						this.cy.add(ele);
 						break;
