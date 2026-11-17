@@ -37,7 +37,7 @@ export class Search {
 			table.deleteRow(0);
 		}
 		if (uris.length === 0) {
-			util.getElementById("h2:search-results").innerHTML = `No Search Results for "${query}"`;
+			util.getElementById("h2:search-results").textContent = `No Search Results for "${query}"`;
 			return false;
 		}
 		if (uris.length === 1) {
@@ -46,9 +46,9 @@ export class Search {
 			return true;
 		}
 		if (uris.length >= SEARCH_LIMIT) {
-			util.getElementById("h2:search-results").innerHTML = `First ${SEARCH_LIMIT} Search Results for "${query}"`;
+			util.getElementById("h2:search-results").textContent = `First ${SEARCH_LIMIT} Search Results for "${query}"`;
 		} else {
-			util.getElementById("h2:search-results").innerHTML = `${uris.length} Search Results for "${query}"`;
+			util.getElementById("h2:search-results").textContent = `${uris.length} Search Results for "${query}"`;
 		}
 		// Preprocessing: Classify URIs as (0) in graph and visible, (1) in graph and hidden but not filtered, (2) in graph and filtered and (3) not in the graph.
 		const uriType = {};
@@ -79,12 +79,28 @@ export class Search {
 			});
 			const locateCell = row.insertCell();
 			const lodLiveCell = row.insertCell();
-			(window as any).presentUri = View.activeState().graph.presentUri;
-			// todo: listener to add to selected uris
-			locateCell.innerHTML = `<a class="search-class${uriType[uri]}" href="javascript:MicroModal.close('search-results');window.presentUri('${uri}');void(0)">
-          ${uri.replace(sparql.SNIK.PREFIX, "")}</a>`;
-			const html = `<a class="search-class${uriType[uri]}" href="${uri}" target="_blank">Description</a>`;
-			lodLiveCell.innerHTML = html;
+			// build the result links with the DOM API instead of innerHTML so that neither the user query
+			// nor URIs from the endpoint can inject HTML or javascript: URLs (XSS)
+			const locateLink = document.createElement("a");
+			locateLink.className = "search-class" + uriType[uri];
+			locateLink.textContent = uri.replace(sparql.SNIK.PREFIX, "");
+			locateLink.href = "#";
+			locateLink.addEventListener("click", (e) => {
+				e.preventDefault();
+				MicroModal.close("search-results");
+				View.activeState().graph.presentUri(uri);
+			});
+			locateCell.appendChild(locateLink);
+			const lodLiveLink = document.createElement("a");
+			lodLiveLink.className = "search-class" + uriType[uri];
+			lodLiveLink.textContent = "Description";
+			// only link to http(s) URIs, never to javascript: or data: URLs
+			if (/^https?:/i.test(uri)) {
+				lodLiveLink.href = uri;
+			}
+			lodLiveLink.target = "_blank";
+			lodLiveLink.rel = "noopener";
+			lodLiveCell.appendChild(lodLiveLink);
 		});
 		const row = table.insertRow(0);
 		row.insertCell();
