@@ -51,7 +51,6 @@ export function createGitHubIssue(repo: string, title: string, body: string, ass
 	if (!label) {
 		label = "";
 	}
-	console.log(label);
 	window.open(`${repo}/issues/new?title=${encodeURIComponent(title)}&body=${encodedBody}&assignees=${assignee}&labels=${label}`);
 }
 
