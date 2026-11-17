@@ -10,7 +10,7 @@ import { ContentItem, type ComponentItem } from "golden-layout";
 import { Menu, menu } from "./menu";
 import * as language from "../lang/language";
 
-let viewCount: number = 0; // only used for the name, don't decrement on destroy to prevent name conflicts
+let viewCount: number = 0; // only used for the default titles, don't decrement on destroy to prevent title conflicts
 
 let firstFinished = null; // following instances need to wait for the first to load
 let viewLayout = goldenLayout();
@@ -33,7 +33,6 @@ function traverse(x: ContentItem, depth: number): Array<ContentItem> {
 export interface ViewState {
 	title: string;
 	graph: Graph;
-	name: string;
 	cy: cytoscape.Core;
 }
 
@@ -78,7 +77,7 @@ export class View {
 			this.makeMainView();
 			firstFinished = fillInitialGraph(graph);
 			await firstFinished;
-			log.debug(`Main view ${this.state.name} loaded with ${graph.cy.elements().size()} elements.`);
+			log.debug(`Main view ${this.state.title} loaded with ${graph.cy.elements().size()} elements.`);
 		} else {
 			await firstFinished;
 			graph.cy.add(View.mainView.state.cy.elements()); // don't load again, copy from first view
@@ -124,7 +123,7 @@ export class View {
 		title = title ?? (viewCount === 0 ? "Main Graph" : partialGraph + " " + viewCount);
 		viewCount++;
 		// @ts-expect-error is be completed later
-		this.state = { title, name: "unnamed" };
+		this.state = { title };
 
 		const itemConfig = {
 			title: title,
