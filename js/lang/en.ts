@@ -104,6 +104,12 @@ export const en = {
 	},
 	messageStrings: {
 		"no-search-results-for": "No Search Results for",
+		"load-failed": "Loading failed, aborting. See the developer console for details.",
+		"invalid-json-file": "The selected file is not valid JSON.",
+		"invalid-session-file": "The selected file is not a valid SNIK Graph session file.",
+		"file-read-error": "The selected file could not be read.",
+		"unknown-file-format": "Unknown file format, aborting.",
+		"wrong-file-type": "Wrong file type, aborting. File type and requested type are:",
 		"ontology-issue-warning":
 			"Please note that this is only for feedback about the ontology! Please check if there is already an issue for your problem. If not, we will consider your feedback ASAP.",
 	},
