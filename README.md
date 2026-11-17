@@ -43,7 +43,7 @@ When using SNIK Graph as a Git submodule, use `docker build -f Dockerfile.submod
 
 ## Usage Requirements
 Optimized for PC with mouse, does not work well on mobile devices.
-Requires a browser with [ES6 module support](https://caniuse.com/es6-module).
+Requires a browser with [ES2025 Set methods](https://caniuse.com/mdn-javascript_builtins_set_difference) (Chrome/Edge 122+, Firefox 127+, Safari 17+).
 
 ## Documentation
 

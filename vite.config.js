@@ -20,6 +20,8 @@ export default (_) => {
 		envPrefix: ["VITE_", "SPARQL_"],
 		sourcemap: true,
 		build: {
+			// ES2025 is the declared baseline, see README.md, so don't down-level below it.
+			target: "es2025",
 			rollupOptions: {
 				input: {
 					main: resolve(_dirname, "index.html"),

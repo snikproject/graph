@@ -33,9 +33,9 @@ function parseParams(): Params {
 	};
 	// TypeScript interfaces don't exist on runtime, keep in sync with Params interface.
 	const paramKeys = new Set(["empty", "benchmark", "instances", "virtual", "class", "json", "sparql", "graph", "sub", "gpu"]);
-	const unknown = new Set(Array.from(url.searchParams.keys())).difference(paramKeys);
+	const unknown = new Set<string>(url.searchParams.keys()).difference(paramKeys);
 	if (unknown.size > 0) {
-		log.warn("Unknown GET parameters: " + Array.from(unknown).join(", "));
+		log.warn("Unknown GET parameters: " + [...unknown].join(", "));
 	}
 	return Object.assign(defaults, {
 		empty: parseFlag(url.searchParams.get("empty")),
