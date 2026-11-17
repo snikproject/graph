@@ -54,9 +54,11 @@ export function initLog(): void {
 	for (const level of levels) {
 		const tmp = log[level]; // save that particular original logging function of the loglevel library
 		log[level] = (
-			message // overwrite that function with a new function
+			...args: any[] // overwrite that function with a new function
 		) => {
-			tmp(message); // execute the saved original function, which writes to console
+			tmp(...args); // execute the saved original function, which writes to console
+			// loglevel accepts additional arguments, such as exceptions or objects, which are lost otherwise
+			const message = args.map((arg) => (typeof arg === "string" ? arg : String(arg))).join(" ");
 			if (value[level] <= value[config.logLevelMemory]) {
 				if (!log["logs"]) {
 					log["logs"] = [];
