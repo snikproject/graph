@@ -102,6 +102,12 @@ export const de = {
 	},
 	messageStrings: {
 		"no-search-results-for": "Keine Suchresultate für",
+		"load-failed": "Laden fehlgeschlagen, Abbruch. Details stehen in der Entwicklerkonsole.",
+		"invalid-json-file": "Die ausgewählte Datei ist kein gültiges JSON.",
+		"invalid-session-file": "Die ausgewählte Datei ist keine gültige SNIK-Graph-Sitzungsdatei.",
+		"file-read-error": "Die ausgewählte Datei konnte nicht gelesen werden.",
+		"unknown-file-format": "Unbekanntes Dateiformat, Abbruch.",
+		"wrong-file-type": "Falscher Dateityp, Abbruch. Dateityp und angeforderter Typ sind:",
 		"ontology-issue-warning":
 			"Bitte hier nur Feedback zur Ontologie hinterlassen! Bitte prüfen Sie vorher, ob es schon eine Issue mit diesem Thema gibt. Wenn nicht, bearbeiten wir Ihr Feedback so schnell wie möglich.",
 	},

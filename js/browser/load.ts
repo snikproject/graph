@@ -6,18 +6,34 @@ import { config } from "../config/config";
 import { fromJSON } from "./state";
 import { VERSION } from "./util";
 import log from "loglevel";
+import * as language from "../lang/language";
 import { Graph } from "./graph";
 import type { NodeCollection, NodeSingular, Position } from "cytoscape";
 
 /**
 Uploads a JSON file from the user.
+Errors while reading, parsing or applying the file are reported to the user via error messages instead of failing silently.
 @param event - a file input change event
-@param callback - the code to execute */
+@param callback - the code to execute, receives the parsed JSON object */
 function uploadJson(event: Event, callback: (_o: object) => any): void {
 	const file = (event.target as HTMLInputElement).files[0];
 	const reader = new FileReader();
 
-	reader.onload = () => callback(JSON.parse(reader.result as string));
+	reader.onerror = () => log.error(language.getString("file-read-error"));
+	reader.onload = async () => {
+		let json: object;
+		try {
+			json = JSON.parse(reader.result as string);
+		} catch (e) {
+			log.error(`${language.getString("invalid-json-file")}\n${e}`);
+			return;
+		}
+		try {
+			await callback(json);
+		} catch (e) {
+			log.error(`${language.getString("load-failed")}\n${e}`);
+		}
+	};
 	reader.readAsText(file);
 }
 /**
@@ -64,6 +80,10 @@ export async function loadSessionFromJsonFile(event: Event): Promise<void> {
 		return;
 	}
 	uploadJson(event, async (json: Session) => {
+		if (!json.state || !json.mainGraph || !Array.isArray(json.tabs)) {
+			log.error(language.getString("invalid-session-file"));
+			return;
+		}
 		// compare versions of file and package.json and warn if deprecated
 		if (
 			json.state.version !== VERSION &&
@@ -103,10 +123,10 @@ function checkVersion(type: ViewJsonType, json: any): boolean {
 	) {
 		ok = false;
 	} else if (json.type === undefined) {
-		alert(`Unknown file format, aborting.`);
+		log.error(language.getString("unknown-file-format"));
 		ok = false;
 	} else if (json.type !== type) {
-		alert(`Your file was saved as ${ts(json.type)}, but you are trying to load ${ts(type)}, aborting.`);
+		log.error(`${language.getString("wrong-file-type")}: ${ts(json.type)}, ${ts(type)}.`);
 		ok = false;
 	}
 	return ok;
