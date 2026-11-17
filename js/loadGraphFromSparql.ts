@@ -232,9 +232,15 @@ export async function loadGraphFromSparql(cy: Core, graphs: Array<string>, insta
 	const from = graphs.map((g) => `FROM <${g}>`).reduce((a, b) => a + "\n" + b, "");
 	const fromNamed = from.replace(/FROM/g, "FROM NAMED");
 
-	const [nodes, edges] = await Promise.all([createNodes(from, instances), createEdges(from, fromNamed, instances, virtual)]);
-	cy.elements().remove();
-	cy.add(nodes);
-	cy.add(edges); // will throw an error if any edge refers to a node not contained in the nodes loaded before
-	cy.elements().addClass("unfiltered");
+	try {
+		const [nodes, edges] = await Promise.all([createNodes(from, instances), createEdges(from, fromNamed, instances, virtual)]);
+		cy.elements().remove();
+		cy.add(nodes);
+		cy.add(edges); // will throw an error if any edge refers to a node not contained in the nodes loaded before
+		cy.elements().addClass("unfiltered");
+	} catch (err) {
+		// The graph is left untouched so that the previously loaded content stays visible.
+		log.error(`Could not load the graph from the SPARQL endpoint. The previously shown graph was left unchanged.`);
+		log.error(err);
+	}
 }
