@@ -187,7 +187,7 @@ export class Menu {
 						i18n: "load-sparql",
 					},
 
-					{ action: () => save.saveSession(this.optionsToJSON()), i18n: "save-session" },
+					{ action: () => save.saveSession(), i18n: "save-session" },
 					{ action: () => save.saveGraph(View.activeState().graph), i18n: "save-snik-graph" },
 					{ action: () => save.saveView(View.activeState()), i18n: "save-view" },
 					{ action: () => save.saveLayout(View.activeState()), i18n: "save-layout" },
@@ -581,7 +581,7 @@ export class Menu {
 	}
 	/** Save session-based options (not user preferences) to JSON. */
 	optionsToJSON(): object {
-		const sessionOptions = ["separateColours", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges"];
+		const sessionOptions = ["separateColours", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges", "showProperty"];
 		const options = {};
 
 		for (const option of sessionOptions) {
