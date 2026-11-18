@@ -27,7 +27,7 @@ export class Graph {
 	cy: Core;
 	selectedNode: NodeSingular | null = null;
 	starMode: boolean = false;
-	matchComponents: Array<Collection> = [];
+	moveMatchNotified: boolean = false;
 	pathSource: NodeSingular | null = null;
 	container: HTMLElement;
 	instancesLoaded: boolean = false;
@@ -531,13 +531,16 @@ export class Graph {
 	/** Move all matching nodes together.
 	 * @param distance - the distance between them */
 	moveAllMatches(distance: number): void {
-		for (let i = 0; i < this.matchComponents.length; i++) {
-			const comp = this.matchComponents[i];
-			if (comp.length === 1) {
-				continue;
+		for (const comp of this.closeMatchComponents()) {
+			if (comp.length > 1) {
+				this.moveNodes(comp.nodes(), distance);
 			}
-			this.moveNodes(comp.nodes(), distance);
 		}
+	}
+	/** @returns the connected components of the visible close match graph, i.e. the node groups that combine match turns into compound nodes */
+	private closeMatchComponents(): Array<Collection> {
+		const matchEdges = this.cy.edges('[pl="closeMatch"]').filter(".unfiltered").not(".hidden");
+		return this.cy.nodes(".unfiltered").not(".hidden").union(matchEdges).components();
 	}
 	/**
 	 * position in a circle around the first node
@@ -562,26 +565,19 @@ export class Graph {
 			if (!enabled) {
 				this.cy.startBatch();
 				this.removeMatchParents();
-				this.matchComponents.length = 0;
 				this.cy.endBatch();
 				return;
 			}
 			this.cy.startBatch();
 			// combineMatch can be called repeatedly while the option is enabled, e.g. on every visibility change through applyOptions(), so remove outdated parents first to avoid duplicate element IDs.
 			this.removeMatchParents();
-			// Can be calculated only once per session but then it needs to be synchronized with in-visualization ontology edits.
-			const matchEdges = this.cy.edges('[pl="closeMatch"]').filter(".unfiltered").not(".hidden");
-			const matchGraph = this.cy.nodes(".unfiltered").not(".hidden").union(matchEdges);
-			if (!(this as any).moveMatchNotified && this.cy.nodes(":visible").size() > 1000) {
+			if (!this.moveMatchNotified && this.cy.nodes(":visible").size() > 1000) {
 				log.info("Combining Matches. Consider using Move Matches Nearby or Move Matches on top of each other.");
-				(this as any).moveMatchNotified = true;
+				this.moveMatchNotified = true;
 			}
-			{
-				this.matchComponents.length = 0;
-			}
-			this.matchComponents.push(...matchGraph.components());
-			for (let i = 0; i < this.matchComponents.length; i++) {
-				const comp = this.matchComponents[i];
+			const components = this.closeMatchComponents();
+			for (let i = 0; i < components.length; i++) {
+				const comp = components[i];
 				if (comp.length === 1) {
 					continue;
 				}
