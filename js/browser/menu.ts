@@ -27,7 +27,7 @@ function subOntologyConnectivity(): void {
 		MicroModal.close("subontology-connectivity");
 		const connect = new View();
 		await connect.initialized;
-		const subs: Array<string> = [(form[0] as any).value, (form[1] as any).value];
+		const subs: Array<string> = [(form[0] as HTMLSelectElement).value, (form[1] as HTMLSelectElement).value];
 		log.debug(`Showing connectivity between the subontologies ${subs[0]} and ${subs[1]}.`);
 		const subGraphs = subs.map((s) => connect.state.cy.nodes(`[source="${s}"]`));
 		const connections = subGraphs[0].edgesWith(subGraphs[1]);
@@ -79,6 +79,10 @@ export class Menu {
 	dayModeBox: HTMLInputElement;
 	coloredEdgesBox: HTMLInputElement;
 	showPropertyBox: HTMLInputElement;
+	gridBox: HTMLInputElement;
+	cumulativeSearchBox: HTMLInputElement;
+	combineMatchModeBox: HTMLInputElement;
+	optionBoxes: Record<string, HTMLInputElement> = {};
 	/** Construct the main menu bar. */
 	constructor() {
 		if (menu) {
@@ -352,7 +356,6 @@ export class Menu {
 		// names of options to be added
 		const names = ["separateColours", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "coloredEdges", "showProperty"]; // ,"starNewView"
 
-		(this as any).optionBoxes = {};
 		for (const name of names) {
 			log.trace("Add option " + name);
 
@@ -367,7 +370,7 @@ export class Menu {
 
 			// <input> checkbox
 			const box = document.createElement("input");
-			(this as any).optionBoxes[name] = box;
+			this.optionBoxes[name] = box;
 			box.type = "checkbox";
 			box.autocomplete = "off";
 			box.id = name + "Box";
@@ -397,9 +400,9 @@ export class Menu {
 			}
 			log.debug("Set showProperty to " + this.showProperty());
 		});
-		(this as any).gridBox.addEventListener("change", () => {
-			document.body.classList[(this as any).gridBox.checked ? "add" : "remove"]("grid");
-			log.debug("set gridBox to " + (this as any).gridBox.checked);
+		this.gridBox.addEventListener("change", () => {
+			document.body.classList[this.gridBox.checked ? "add" : "remove"]("grid");
+			log.debug("set gridBox to " + this.gridBox.checked);
 		});
 		if (config.activeOptions.includes("day")) {
 			this.dayModeBox.click();
@@ -408,14 +411,14 @@ export class Menu {
 			this.showPropertyBox.click();
 		}
 		// is only used by the main tab
-		(this as any).cumulativeSearchBox.addEventListener("change", () => {
-			log.debug("Set cumulative search to " + (this as any).cumulativeSearchBox.checked);
+		this.cumulativeSearchBox.addEventListener("change", () => {
+			log.debug("Set cumulative search to " + this.cumulativeSearchBox.checked);
 		});
 
-		(this as any).combineMatchModeBox.addEventListener("change", () => {
+		this.combineMatchModeBox.addEventListener("change", () => {
 			// Combine matches is *not* active in a new tab if the user first copies, then turns combine matches on and finally pastes.
 			// In this case, "combine matches" needs to be deactivated and activated again to take effect on the paste result.
-			log.debug("Set combine match mode to " + (this as any).combineMatchModeBox.checked);
+			log.debug("Set combine match mode to " + this.combineMatchModeBox.checked);
 			// give the browser time to update the checkbox, see https://stackoverflow.com/questions/64442639/how-to-give-instant-user-feedback-on-slow-checkbox-listeners-in-javascript?noredirect=1#comment113950377_64442639
 			setTimeout(() => {
 				this.combineMatches();
@@ -602,7 +605,7 @@ export class Menu {
 		const options = {};
 
 		for (const option of sessionOptions) {
-			options[option] = (this as any).optionBoxes[option].checked;
+			options[option] = this.optionBoxes[option].checked;
 		}
 		return options;
 	}
@@ -613,7 +616,7 @@ export class Menu {
 		for (const [name, checked] of Object.entries(currentOptions)) {
 			// Ignore options that are unknown in this version, e.g. from older or newer session files.
 			if (json[name] !== undefined && json[name] !== checked) {
-				(this as any).optionBoxes[name].click();
+				this.optionBoxes[name].click();
 			}
 		}
 	}
@@ -622,7 +625,7 @@ export class Menu {
 	 * Applies the options selected in the menu tab "Options", for example Combine Match Mode.
 	 */
 	applyOptions() {
-		if ((this as any).combineMatchModeBox.checked) {
+		if (this.combineMatchModeBox.checked) {
 			this.combineMatches();
 		}
 	}
@@ -633,6 +636,6 @@ export class Menu {
 	private combineMatches() {
 		View.views()
 			.map((v) => v.state.graph)
-			.forEach((graph) => graph.combineMatch((this as any).combineMatchModeBox.checked));
+			.forEach((graph) => graph.combineMatch(this.combineMatchModeBox.checked));
 	}
 }
