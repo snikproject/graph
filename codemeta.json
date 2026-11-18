@@ -1,0 +1,88 @@
+{
+	"@context": "https://doi.org/10.5063/schema/codemeta-3.0",
+	"@type": "SoftwareSourceCode",
+	"name": "SNIK Graph",
+	"description": "Interactive web application that visualizes the SNIK ontology of information management in hospital information systems as a graph, with star, path and search operations.",
+	"version": "25.01",
+	"license": "https://spdx.org/licenses/GPL-3.0-only.html",
+	"url": "https://www.snik.eu/graph",
+	"codeRepository": "https://github.com/snikproject/graph",
+	"issueTracker": "https://github.com/snikproject/graph/issues",
+	"identifier": "https://doi.org/10.5281/zenodo.11997333",
+	"keywords": ["information management", "hospital information system", "visualization", "linked data", "ontology"],
+	"programmingLanguage": ["TypeScript", "JavaScript", "HTML", "CSS"],
+	"runtimePlatform": "Web browser",
+	"author": [
+		{
+			"@type": "Person",
+			"givenName": "Konrad",
+			"familyName": "Höffner",
+			"email": "konrad.hoeffner@uni-leipzig.de",
+			"@id": "https://orcid.org/0000-0001-7358-3217",
+			"affiliation": {
+				"@type": "Organization",
+				"name": "Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University"
+			}
+		},
+		{
+			"@type": "Person",
+			"givenName": "Thomas",
+			"familyName": "Pause",
+			"@id": "https://orcid.org/0000-0001-5832-4890",
+			"affiliation": {
+				"@type": "Organization",
+				"name": "Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University"
+			}
+		},
+		{
+			"@type": "Person",
+			"givenName": "Franziska",
+			"familyName": "Jahn",
+			"@id": "https://orcid.org/0000-0002-7687-8544",
+			"affiliation": {
+				"@type": "Organization",
+				"name": "Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University"
+			}
+		},
+		{
+			"@type": "Person",
+			"givenName": "Hannes Raphael",
+			"familyName": "Brunsch",
+			"@id": "https://orcid.org/0009-0004-5081-9820",
+			"affiliation": {
+				"@type": "Organization",
+				"name": "Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University"
+			}
+		},
+		{
+			"@type": "Person",
+			"name": "Anna Brakemeier",
+			"affiliation": {
+				"@type": "Organization",
+				"name": "Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University"
+			}
+		},
+		{
+			"@type": "Person",
+			"givenName": "Alfred",
+			"familyName": "Winter",
+			"@id": "https://orcid.org/0000-0003-0179-954X",
+			"affiliation": {
+				"@type": "Organization",
+				"name": "Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University"
+			}
+		}
+	],
+	"citation": {
+		"@type": "ScholarlyArticle",
+		"name": "SNIK Graph—Visualizing Knowledge about Management of Hospital Information Systems",
+		"identifier": "https://doi.org/10.21105/jose.00180",
+		"datePublished": "2024-07",
+		"isPartOf": {
+			"@type": "Periodical",
+			"name": "Journal of Open Source Education",
+			"volumeNumber": "7",
+			"issueNumber": "77"
+		}
+	}
+}
