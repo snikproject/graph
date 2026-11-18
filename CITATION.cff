@@ -29,7 +29,7 @@ authors:
     affiliation: 'Institute for Medical Informatics, Statistics and Epidemiology, Medical Faculty, Leipzig University'
     orcid: 'https://orcid.org/0000-0003-0179-954X'
 repository-code: 'https://github.com/snikproject/graph'
-url: 'https://crates.io/crates/hdt'
+url: 'https://www.snik.eu/graph'
 keywords:
   - information management
   - hospital information system

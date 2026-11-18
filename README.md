@@ -319,7 +319,7 @@ If the website and the SPARQL endpoint are on different domains, you may need to
 
 ## Citation information, meta data and archiving
 If you want to cite SNIK Graph, please refer to our [publication in the Journal of Open Source Education (JOSE)](https://doi.org/10.21105/jose.00180).
-Citation info and meta data is documented in CITATION.cff, which is also used by Zenodo to populate the metadata of the [Zenodo record](https://doi.org/10.5281/zenodo.11997333) for each SNIK Graph release.
+Citation info and meta data is documented in CITATION.cff, which is also used by Zenodo to populate the metadata of the [Zenodo record](https://doi.org/10.5281/zenodo.11997333) for each SNIK Graph release. The same metadata is available in machine-readable form in codemeta.json.
 
 ## FAQ
 
