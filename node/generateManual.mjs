@@ -1,6 +1,6 @@
 /** Generates the HTML user manual using the help data describing the menu and context menu. */
 import fs from "fs";
-import { help } from "../js/help.ts";
+import { help } from "../js/helpData.ts";
 import * as language from "../js/lang/language.ts";
 // provide the log global to language.js, only show warnings and errors
 global.log = { debug: () => {}, info: () => {}, warn: console.warn, error: console.error };

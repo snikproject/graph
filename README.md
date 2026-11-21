@@ -28,7 +28,6 @@ Open the displayed local link in a browser.
 Developing on Windows is not recommended but possible with the following adaptions:
 
 * Instead of `cp js/config/config.dist.ts js/config/config.ts`, do `copy js\config\config.dist.ts js\config\config.ts` or use the Explorer to copy the file.
-* lint-staged fails on Windows with "Current directory is not a git directory!". Skip the Husky commit hook with `git commit --no-verify`.
 
 ### Docker
 
@@ -270,7 +269,7 @@ A more in-depth description of the issue labels, and where each type is created:
 * `npm run preview` serve the `dist` folder
 * `npm run test` run unit tests
 * `npm run doc` generate API documentation
-* `npm run prepare` automatically run on `npm install`, prepare Husky Prettier commit hook
+* `npm run prepare` automatically run on `npm install`, install the Vite+ Git hooks
 
 ### Update
 1. `git pull`
@@ -280,14 +279,13 @@ A more in-depth description of the issue labels, and where each type is created:
 Make sure it runs locally before updating on the server, see releasechecklist.md.
 
 ### Code Style
-Specified in the [configuration file of oxlint](.oxlintrc.json) and [Prettier](.prettierrc).
+Specified in the `lint` and `fmt` blocks of [vite.config.ts](vite.config.ts).
 
 #### Formatting
-[Prettier](https://prettier.io/) guarantees consistent formatting without time-intensive manual efforts.
-On `npm install`, [Husky](https://github.com/typicode/husky) sets up a Git hook for you to automatically apply Prettier on every commit.
-Staged files are identified by [lint-staged](https://github.com/okonet/lint-staged).
-If the automatic formatting Hook fails, for example currently on Windows, please always manually run `npx prettier js -w --cache` before commiting.
-If you use an IDE you may automate this by applying Prettier on save.
+[Oxfmt](https://oxc.rs/docs/guide/usage/formatter) guarantees consistent formatting without time-intensive manual efforts.
+On `npm install`, [Vite+](https://viteplus.dev/) sets up a Git hook that runs `vp staged` on every commit.
+If the automatic formatting hook fails, manually run `npx vp fmt js` before committing.
+If you use an IDE you may automate this by applying Oxfmt on save.
 
 #### Linting
 There should be no errors and as few warnings as possible.

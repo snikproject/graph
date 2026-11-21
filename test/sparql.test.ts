@@ -1,5 +1,5 @@
 import * as sparql from "../js/sparql";
-import { expect } from "vitest";
+import { expect } from "vite-plus/test";
 
 const EXPECTED_CLASSES_MIN = 4000;
 const EXPECTED_CLASSES_MAX = 20000;

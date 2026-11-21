@@ -1,7 +1,9 @@
 blueorange.cyjs
 .*
 !.github
-!.husky
+!.vite-hooks
+!.vite-hooks/pre-commit
+.vite-hooks/_
 *~
 cytoscape.js
 target
