@@ -3,7 +3,7 @@
 	"@type": "SoftwareSourceCode",
 	"name": "SNIK Graph",
 	"description": "Interactive web application that visualizes the SNIK ontology of information management in hospital information systems as a graph, with star, path and search operations.",
-	"version": "25.01",
+	"version": "26.11",
 	"license": "https://spdx.org/licenses/GPL-3.0-only.html",
 	"url": "https://www.snik.eu/graph",
 	"codeRepository": "https://github.com/snikproject/graph",

@@ -35,7 +35,7 @@ There must be no errors.
 ### Linting
 
 There must be no errors and as few warnings as possible.
-Configured in `oxlintrc.json`.
+Configured in `vite.config.ts`.
 Can be integrated into IDEs and editors like Atom.
 
 - [ ] `npm run lint`

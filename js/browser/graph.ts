@@ -281,7 +281,6 @@ export class Graph {
       @returns whether a path could be found
       */
 	showWorm(from: NodeSingular, to: NodeSingular): boolean {
-		this.starMode = true;
 		if (this.showPath(from, to)) {
 			this.showStar(to);
 			return true;
