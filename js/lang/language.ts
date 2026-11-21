@@ -113,6 +113,7 @@ export function updateHtml(): void {
 				case "A":
 				case "BUTTON":
 				case "DIV":
+				case "LABEL":
 				case "SPAN":
 					element.textContent = s;
 					break;
