@@ -4,6 +4,7 @@ import * as util from "./util";
 import * as language from "../lang/language";
 import type { Graph } from "./graph";
 import MicroModal from "micromodal";
+import log from "loglevel";
 
 const chapters: Map<string, Array<string>> = new Map();
 const labels = new Map();
@@ -29,7 +30,11 @@ async function getClasses(sub: string, chapter: string): Promise<Set<string>> {
 		class: { value: string };
 		label: { value: string };
 	}
-	const bindings = (await sparql.select(query)) as Array<ClassBinding>;
+	const bindings = (await sparql.select(query).catch((err: Error) => {
+		log.error(`Could not load the classes of chapter ${chapter} from the SPARQL endpoint.`);
+		log.error(err);
+		return [];
+	})) as Array<ClassBinding>;
 	bindings.forEach((b) => {
 		labels.set(b.class.value, b.label.value);
 	});
@@ -127,7 +132,11 @@ export async function showChapterSearch(graph: Graph, sub: string): Promise<void
 		ch: { value: string };
 		count: { value: string };
 	}
-	const bindings = (await sparql.select(chapterSizeQuery)) as Array<ChapterBinding>;
+	const bindings = (await sparql.select(chapterSizeQuery).catch((err: Error) => {
+		log.error("Could not load the chapter list from the SPARQL endpoint.");
+		log.error(err);
+		return [];
+	})) as Array<ChapterBinding>;
 	for (const binding of bindings) {
 		const chapter = binding.ch.value;
 

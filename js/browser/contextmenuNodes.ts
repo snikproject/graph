@@ -8,6 +8,7 @@ import { Graph, Direction } from "./graph";
 import type { MenuItem } from "./contextmenu";
 import * as sparql from "../sparql";
 import * as language from "../lang/language";
+import log from "loglevel";
 
 /** Menu entries
 @param graph - the graph that the commands should apply to, if any
@@ -208,7 +209,14 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
         ?i a <${uri}>
         OPTIONAL {?i rdfs:label ?label. FILTER(LANGMATCHES(LANG(?label),"${language.getLanguage()}"))}
         }`;
-						const bindings = await sparql.select(query);
+						const bindings = await sparql.select(query).catch((err: Error) => {
+							log.error(`Could not load the instances of ${uri} from the SPARQL endpoint.`);
+							log.error(err);
+							return null;
+						});
+						if (!bindings) {
+							return;
+						}
 						let message = bindings.map((b) => b["i"].value + " " + (b["l"] ? b["l"].value : "")).reduce((a, b) => a + "\n" + b, "");
 						if (message === "") {
 							message = `Class ${uri} does not have any instances.`;

@@ -36,7 +36,7 @@ interface IndexBinding {
 
 /** Create fulltext index from SPARQL endpoint.
 @returns the index items for testing*/
-export async function createIndex(): Promise<Array<object>> {
+export async function createIndex(): Promise<Array<Item>> {
 	if (typeof window !== "undefined") {
 		console.groupCollapsed("Create Fuse.js index");
 	}
@@ -80,12 +80,24 @@ export async function createIndex(): Promise<Array<object>> {
 }
 
 /** Searches the Fuse index for resources with a similar label.
+Builds the index on the first call, deduplicating concurrent builds with a shared in-flight promise.
+If the index cannot be built, logs the error (which shows a toast) and returns no results.
+The next call retries building the index.
 @param userQuery - search query as given by a user
 @returns the class URIs found.
 */
+let indexPromise: Promise<Array<Item>> | null = null;
 export async function search(userQuery: string): Promise<Array<FuseResult<Item>>> {
 	if (!index) {
-		await createIndex();
+		indexPromise ??= createIndex();
+		try {
+			await indexPromise;
+		} catch (err) {
+			indexPromise = null; // allow a retry on the next search
+			log.error("Could not build the search index, search is unavailable until this succeeds.");
+			log.error(err);
+			return [];
+		}
 	}
 	const result = index.search(userQuery);
 	return result;

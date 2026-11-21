@@ -7,8 +7,11 @@ export const SNIK = {
 	PREFIX: "http://www.snik.eu/ontology/", //problem: different prefixes for different partial ontologie,
 };
 
+const TIMEOUT = 30_000; // milliseconds
+
 //ASK queries should also work but better use {@link ask} instead as it is more convenient. // ask does not exist anymore
 /** Query public SNIK SPARQL endpoint with a SELECT query.
+Throws an error if the endpoint cannot be reached, the response has an error status code or the response is not valid SPARQL JSON.
 @param query - A valid SPARQL query.
 @param graph - An optional SPARQL graph.
 @param endpoint - An optional SPARQL endpoint. May override FROM statements.
@@ -21,35 +24,43 @@ export async function select(query: string, graph?: string, endpoint: string = c
 		url += "&default-graph-uri=" + encodeURIComponent(graph);
 	}
 	try {
-		const response: Response = await fetch(url);
+		const response: Response = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT) });
+		if (!response.ok) {
+			throw new Error(`SPARQL endpoint returned HTTP status ${response.status} ${response.statusText}.`);
+		}
 		const json: JSON = await response.json();
 		const bindings: Array<object> = json["results"].bindings;
+		if (!bindings) {
+			throw new Error("SPARQL endpoint returned a response without result bindings.");
+		}
 
 		if (browser) {
 			console.groupCollapsed("SPARQL " + query.split("\n", 1)[0] + "...");
 		}
-		//is never entered on our data with limitation to 99
-		if (browser && bindings.length < 100) {
-			console.table(
-				bindings.map((b) =>
-					Object.keys(b).reduce((result, key) => {
-						result[key] = b[key].value;
-						return result;
-					}, {})
-				)
-			);
-		}
-		log.debug(query);
-		log.debug(url);
-		if (browser) {
-			console.groupEnd();
+		try {
+			//is never entered on our data with limitation to 99
+			if (browser && bindings.length < 100) {
+				console.table(
+					bindings.map((b) =>
+						Object.keys(b).reduce((result, key) => {
+							result[key] = b[key].value;
+							return result;
+						}, {})
+					)
+				);
+			}
+			log.debug(query);
+			log.debug(url);
+		} finally {
+			if (browser) {
+				console.groupEnd();
+			}
 		}
 
 		return bindings;
 	} catch (err) {
-		log.error(err);
-		log.error(`Error executing SPARQL query:\n${query}\nURL: ${url}\n\n`);
-		return [];
+		// Errors are not swallowed here but rethrown with context so that callers can distinguish them from empty results.
+		throw new Error(`Error executing SPARQL query:\n${query}\nURL: ${url}\n${err}`);
 	}
 }
 
@@ -68,7 +79,10 @@ export async function describe(uri: string, graphOpt?: string): Promise<string> 
 		(graphOpt ? "&default-graph-uri=" + encodeURIComponent(graphOpt) : "");
 
 	try {
-		const response = await fetch(url);
+		const response = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT) });
+		if (!response.ok) {
+			throw new Error(`SPARQL endpoint returned HTTP status ${response.status} ${response.statusText}.`);
+		}
 		return await response.text();
 	} catch (err) {
 		throw new Error(`Error executing SPARQL query ${query}: ${err}`);
