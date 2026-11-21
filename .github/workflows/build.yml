@@ -14,7 +14,6 @@ on:
       - 'LICENSE'
       - 'README.md'
       - 'paper'
-      - '.oxlintrc.json'
 
 jobs:
   build:

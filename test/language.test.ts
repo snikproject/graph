@@ -1,5 +1,5 @@
 import * as language from "../js/lang/language";
-import { assert } from "vitest";
+import { assert } from "vite-plus/test";
 
 describe("language", () => {
 	describe("#getStrings()", () => {

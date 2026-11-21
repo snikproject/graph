@@ -8,7 +8,7 @@
 		"allowSyntheticDefaultImports": true,
 		"isolatedModules": true,
 		"typeRoots": ["./node_modules/@types", "./node_modules"],
-		"types": ["vite/client", "node", "vitest/globals"],
+		"types": ["node"],
 		"module": "esnext",
 		"moduleResolution": "bundler",
 		"esModuleInterop": true,

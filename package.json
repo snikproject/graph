@@ -25,15 +25,12 @@
 		"tippy.js": "^6.3.7"
 	},
 	"devDependencies": {
-		"husky": "^9.1.7",
-		"lint-staged": "^17.0.7",
-		"prettier": "^3.8.3",
 		"typedoc": "^0.28.20",
 		"typedoc-plugin-merge-modules": "^7.0.0",
 		"typescript": "^6.0.3",
-		"vite": "^8.3.5",
-		"vite-plugin-oxlint": "2.2.1",
-		"vitest": "^5.0.5"
+		"vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
+		"vitest": "5.1.0",
+		"vite-plus": "1.7.0"
 	},
 	"keywords": [
 		"graph",
@@ -48,25 +45,17 @@
 		"url": "https://github.com/snikproject/graph/issues"
 	},
 	"scripts": {
-		"dev": "vite",
-		"build": "vite build --sourcemap true",
-		"preview": "vite preview",
-		"test": "vitest run --pool=forks",
-		"lint": "oxlint",
-		"fix": "oxlint --fix",
+		"dev": "vp dev",
+		"build": "vp build --sourcemap true",
+		"preview": "vp preview",
+		"test": "vp test run --pool=forks",
+		"lint": "vp lint",
+		"fix": "vp lint --fix",
 		"typecheck": "tsc --noEmit",
-		"fmt": "prettier --write js --cache",
+		"fmt": "vp fmt js",
 		"doc": "typedoc --plugin typedoc-plugin-merge-modules",
-		"manual": "vite-node node/generateManual.mjs && prettier --write html/manual.html",
-		"prepare": "husky"
-	},
-	"lint-staged": {
-		"*.{js,mjs,ts}": [
-			"prettier --write --cache"
-		],
-		"*.{html,css,json}": [
-			"prettier --write --cache"
-		]
+		"manual": "vpx node/generateManual.mjs && vp fmt html/manual.html",
+		"prepare": "vp config --no-agent"
 	},
 	"repository": {
 		"type": "git",
@@ -82,5 +71,9 @@
 			"url": "https://github.com/ThomasPause"
 		}
 	],
-	"license": "GPLv3"
+	"license": "GPLv3",
+	"overrides": {
+		"vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
+		"vitest": "5.1.0"
+	}
 }
