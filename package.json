@@ -49,7 +49,6 @@
 		"build": "vp build --sourcemap true",
 		"preview": "vp preview",
 		"test": "vp test run --pool=forks",
-		"test:live": "SNIK_LIVE_TESTS=1 vp test run --pool=forks",
 		"lint": "vp lint",
 		"fix": "vp lint --fix",
 		"typecheck": "tsc --noEmit",
