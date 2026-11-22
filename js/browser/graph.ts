@@ -268,7 +268,8 @@ export class Graph {
 		// connect new nodes with all existing unfiltered visible ones
 		Graph.setVisible(outerNodes.edgesWith(this.cy.nodes(".unfiltered").not(".hidden")));
 
-		const visible = this.cy.nodes(":visible");
+		// Use classes instead of ":visible" because Cytoscape only updates that selector on render, so it is stale right after hiding the rest of the graph.
+		const visible = this.cy.nodes(".unfiltered").not(".hidden");
 		if (visible.size() < 100) {
 			this.cy.fit(visible, 100);
 		}
