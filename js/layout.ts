@@ -132,6 +132,7 @@ export async function run(
 			const newCenter = center(elements.nodes());
 			// move the nodes so that the center is at the same spot as before
 			elements.nodes().shift({ x: oldCenter.x - newCenter.x, y: oldCenter.y - newCenter.y });
+			cy.fit(elements, 100);
 		}
 		layoutTimer.stop();
 		if (separateColours) {
