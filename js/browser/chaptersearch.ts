@@ -117,11 +117,11 @@ export async function showChapterSearch(graph: Graph, sub: string): Promise<void
 	});
 
 	// fetch chapters and their class count
-	const chapterSizeQuery = `SELECT COUNT(DISTINCT(?c)) AS ?count ?ch
+	const chapterSizeQuery = `SELECT (COUNT(DISTINCT ?c) AS ?count) ?ch
   FROM <http://www.snik.eu/ontology/${sub}>
   {
     ?c meta:chapter/meta:subChapterOf* ?ch.
-  } ORDER BY ASC(?ch)`;
+  } GROUP BY ?ch ORDER BY ASC(?ch)`;
 
 	interface ChapterBinding {
 		ch: { value: string };
