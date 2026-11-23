@@ -42,7 +42,8 @@ When using SNIK Graph as a Git submodule, use `docker build -f Dockerfile.submod
 
 ## Usage Requirements
 Optimized for PC with mouse, does not work well on mobile devices.
-Requires a browser with [ES2025 Set methods](https://caniuse.com/mdn-javascript_builtins_set_difference) (Chrome/Edge 122+, Firefox 127+, Safari 17+).
+Requires a browser with [ES2025 Set methods](https://caniuse.com/mdn-javascript_builtins_set_difference) (Chrome/Edge 122+, Firefox 127+, Safari 17+) and WebAssembly reference types (Chrome/Edge 96+, Firefox 79+, Safari 15+).
+The local RDF engine downloads about 4.3 MB of WebAssembly and 2.2 MB of ontology data on first use, compressed by the web server.
 
 ## Documentation
 
@@ -69,32 +70,42 @@ Flags are disabled by default and not need a value, for example <https://www.sni
 Default parameter values are specified in `js/config/config.dist.ts`.
 Values for keys starting with `ontology` are specified in the ontology config included in the config, by default `js/config/config.snik.ts`.
 
-### Endpoint Configuration
+### Data Sources
 
-The SPARQL endpoint is read from the `SPARQL_ENDPOINT` environment variable, falling back to the default endpoint.
-It is inlined into the application at build time, consistent with the static site deployment.
-The `?sparql=` GET parameter still overrides it at runtime for individual page loads.
+SNIK is loaded from a local RDF snapshot by default, not from a SPARQL endpoint.
+The snapshot is read directly from the [ontology repository](https://github.com/snikproject/ontology) and queried with Oxigraph WebAssembly in the browser.
+Standalone builds fetch the files from `https://raw.githubusercontent.com/snikproject/ontology/master/`.
+The `SPARQL_ONTOLOGY_BASE` build variable overrides that base, for example to serve a local checkout:
 
-For development, create a `.env.local` file (gitignored):
+    docker build --build-arg SPARQL_ONTOLOGY_BASE=/graph-ontology/ .
+
+The Docker Compose setup bind-mounts the sibling `ontology` checkout read-only under `/graph-ontology/`, so it needs no copy of the ontology and no endpoint.
+The standalone `Dockerfile` leaves the variable empty and therefore loads from GitHub.
+
+The SPARQL endpoint is an explicit compatibility and fallback mode:
+
+* `?remote` uses the configured endpoint instead of the snapshot.
+* If loading or querying the snapshot fails, the application logs a warning and falls back to the endpoint for the rest of the session.
+* `SPARQL_ENDPOINT` sets the endpoint at build time; `?sparql=` overrides it for one page load.
+* HITO has no snapshot and always uses its endpoint.
+
+For development against a local endpoint, create a `.env.local` file (gitignored):
 
     SPARQL_ENDPOINT=http://localhost/sparql
-
-For the Docker image, pass it as a build argument:
-
-    docker build --build-arg SPARQL_ENDPOINT=http://localhost/sparql .
 
 |**Flag**|**Description**|
 |--------|-------------|
 |empty|Skip initial graph loading and show button to load a local [Cytoscape.js JSON](https://js.cytoscape.org/#notation/elements-json) file.|
 |benchmark|Add an overlay with performance statistics such as FPS and number of classes.|
-|instances|Load and show instances when loading from SPARQL endpoint, not only classes.|
+|instances|Load and show instances, not only classes.|
+|remote|Use the configured SPARQL endpoint instead of the local RDF snapshot.|
 |virtual|Create "virtual triples" to visualize connections like domain-range.|
 
 |**Parameter**|**Type**|**Config Key**|**Default**|**Description**|
 |-------------|--------|--------------|-----------|---------------|
 |class|URI|||Center and highlight the given class, e.g. <https://www.snik.eu/graph?class=http://www.snik.eu/ontology/bb/Management>. Skips the default view.|
 |json|URL|||Skip initial graph loading and instead load a [Cytoscape.js JSON](https://js.cytoscape.org/#notation/elements-json) object from the given URL.|
-|sparql|URL|ontology.sparql.endpoint|<https://www.snik.eu/sparql>|SPARQL endpoint to load the graph from|
+|sparql|URL|ontology.sparql.endpoint|<https://www.snik.eu/sparql>|SPARQL endpoint used with `remote` or as fallback|
 |graph|URI|ontology.sparql.graph|<https://www.snik.eu/ontology>|SPARQL RDF graph or RDF graph group|
 |sub|comma-separated list|helperGraphs + defaultSubOntologies|meta,bb,bb2,ob,ciox,he,it4it,limes-exact,match|List of subgraphs to load, only applies to SNIK.|
 
@@ -195,7 +206,8 @@ This is done via methods which take a cytoscape node and return either a shape n
 ##### SPARQL-Config for custom ontology
 |**Key**|**Description**|**Example**|
 |-------|---------------|-----------|
-| `endpoint` | SPARQL endpoint to use. Sends queries to this server. | `"https://www.snik.eu/sparql"` |
+| `endpoint` | SPARQL endpoint used in remote and fallback mode. | `"https://www.snik.eu/sparql"` |
+| `local` | Query the local RDF snapshot instead of the endpoint. Use `?remote` at runtime to override it. | `true` |
 | `graph` | Base URI / SPARQL graph to use. | `"http://www.snik.eu/ontology"` |
 | `instances` | Whether to display instances of classes. May not work. | `false` |
 | `queries` | SPARQL-queries to query for classes and triples. See below. | `{ nodes: ..., triples: ... }` |
@@ -313,7 +325,8 @@ Feel free to contribute a PR with a new language by copying and adapting `js/lan
 
 ## Adaptation
 If you like SNIK Graph and want to use it with different data, please open an issue.
-If the website and the SPARQL endpoint are on different domains, you may need to [enable CORS in the SPARQL endpoint](http://vos.openlinksw.com/owiki/wiki/VOS/VirtTipsAndTricksCORsEnableSPARQLURLs).
+The default snapshot mode only needs CORS for the ontology file host.
+If you use the SPARQL endpoint in remote or fallback mode and it is on a different domain, you may need to [enable CORS in the SPARQL endpoint](http://vos.openlinksw.com/owiki/wiki/VOS/VirtTipsAndTricksCORsEnableSPARQLURLs).
 
 ## Citation information, meta data and archiving
 If you want to cite SNIK Graph, please refer to our [publication in the Journal of Open Source Education (JOSE)](https://doi.org/10.21105/jose.00180).
