@@ -17,9 +17,9 @@ COPY graph/.git graph/.git
 WORKDIR /src/graph
 RUN cp js/config/config.dist.ts js/config/config.ts
 # The endpoint and ontology base are inlined into the build by Vite, see config.snik.ts and sparqlLocal.ts.
-# The sibling ontology checkout is copied below, so the graph does not need the SPARQL endpoint.
+# docker-compose.yml bind-mounts the sibling ontology checkout under /graph-ontology/.
 ARG SPARQL_ENDPOINT=https://www.snik.eu/sparql
-ARG SPARQL_ONTOLOGY_BASE=/graph-ontology/
+ARG SPARQL_ONTOLOGY_BASE=
 ENV SPARQL_ONTOLOGY_BASE=${SPARQL_ONTOLOGY_BASE}
 RUN npm run build && \
 	npm run doc
@@ -28,5 +28,3 @@ FROM pierrezemb/gostatic
 WORKDIR /srv/http
 COPY --from=0 /src/graph/dist .
 COPY --from=0 /src/graph/doc ./doc
-# Serve the local ontology files under a path that does not collide with RickView's /ontology/.
-COPY ontology/meta.ttl ontology/bb.ttl ontology/ob.ttl ontology/ciox.ttl ontology/he.ttl ontology/it4it.ttl ontology/bb2.ttl ontology/limes.nt ontology/match.nt ontology/LICENSE ./graph-ontology/
