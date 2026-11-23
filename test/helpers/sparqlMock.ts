@@ -4,13 +4,13 @@ import { fuseIndex, graphClasses, graphTriples } from "../fixtures/sparqlRespons
 /** @param query - a SPARQL query as built by the application
  * @returns the recorded response matching that query */
 function responseFor(query: string): object {
-	if (query.includes("?c as ?uri")) {
+	if (/\?c\s+as\s+\?uri/i.test(query)) {
 		return fuseIndex; // js/fuseSearch.ts
 	}
 	if (query.includes("?c ?p ?d")) {
 		return graphTriples; // loadGraphFromSparql.ts selectTriples
 	}
-	if (query.includes("SELECT DISTINCT(?c)")) {
+	if (/SELECT\s+DISTINCT\s*\(?\s*\?c\s*\)?/i.test(query)) {
 		return graphClasses; // loadGraphFromSparql.ts selectClasses
 	}
 	throw new Error(`No SPARQL fixture for query: ${query.slice(0, 160)}`);
