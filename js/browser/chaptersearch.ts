@@ -16,7 +16,7 @@ const selectedChapters = new Set();
 @param chapter - the chapter string value exactly as in the SPARQL triples, such as "5.3".
 */
 async function getClasses(sub: string, chapter: string): Promise<Set<string>> {
-	const query = `SELECT DISTINCT(?class) ?label
+	const query = `SELECT DISTINCT ?class ?label
   FROM <http://www.snik.eu/ontology/${sub}>
   {
     ?class meta:chapter/meta:subChapterOf* <${chapter}>.

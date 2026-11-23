@@ -52,6 +52,9 @@ async function applyParams(graph: Graph): Promise<void> {
 			return;
 		}
 		log.debug("Loading from SPARQL Endpoint " + params.sparql);
+		if (params.remote) {
+			config.ontology.sparql.local = false;
+		}
 		config.ontology.sparql.endpoint = params.sparql;
 		const graphs: string[] = [];
 		if (config.ontology.snik) {

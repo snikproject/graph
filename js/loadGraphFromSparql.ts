@@ -23,8 +23,8 @@ async function selectClasses(from: string): Promise<Array<ClassBinding>> {
 
 	const nodeQuerySimple = `
   PREFIX ov: <http://open.vocab.org/terms/>
-  SELECT ?c
-  GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") as ?l
+  SELECT DISTINCT ?c
+  (GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l)
   ?src
   ${from}
   {
@@ -32,6 +32,7 @@ async function selectClasses(from: string): Promise<Array<ClassBinding>> {
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?src ov:defines ?c.}
   }
+  GROUP BY ?c ?src
   `;
 	// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
 	// @ts-ignore Needed to easily swap different config files, we handle it not existing here
@@ -113,13 +114,14 @@ async function createClassNodes(from: string): Promise<Array<ElementDefinition>>
 async function selectInstances(from: string): Promise<Array<object>> {
 	const sparqlInstancesTimer = timer("sparql-classes");
 	const instanceQuery = `SELECT
-  DISTINCT(?i)
-  GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
+  DISTINCT ?i
+  (GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l)
   ${from}
   {
     ?i a [a owl:Class].
     OPTIONAL {?i rdfs:label ?l.}
   }
+  GROUP BY ?i
   `;
 	const json = await sparql.select(instanceQuery);
 	sparqlInstancesTimer.stop(json.length + " instances");

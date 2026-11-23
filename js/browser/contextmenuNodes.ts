@@ -204,10 +204,10 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 					onClickFunction: async (event) => {
 						const node = event.target;
 						const uri = node.data(NODE.ID);
-						const query = `SELECT ?i STR(SAMPLE(?label)) AS ?l {
+						const query = `SELECT ?i (STR(SAMPLE(?label)) AS ?l) {
         ?i a <${uri}>
         OPTIONAL {?i rdfs:label ?label. FILTER(LANGMATCHES(LANG(?label),"${language.getLanguage()}"))}
-        }`;
+        } GROUP BY ?i`;
 						const bindings = await sparql.select(query);
 						let message = bindings.map((b) => b["i"].value + " " + (b["l"] ? b["l"].value : "")).reduce((a, b) => a + "\n" + b, "");
 						if (message === "") {

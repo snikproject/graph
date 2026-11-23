@@ -7,6 +7,11 @@ export const SNIK = {
 	PREFIX: "http://www.snik.eu/ontology/", //problem: different prefixes for different partial ontologie,
 };
 
+/** Whether queries are answered by the local RDF snapshot instead of the remote endpoint. */
+export function useLocal(): boolean {
+	return !!config.ontology.sparql.local && typeof window !== "undefined";
+}
+
 //ASK queries should also work but better use {@link ask} instead as it is more convenient. // ask does not exist anymore
 /** Query public SNIK SPARQL endpoint with a SELECT query.
 @param query - A valid SPARQL query.
@@ -15,6 +20,15 @@ export const SNIK = {
 @returns A promise of a set of SPARQL select result bindings.
 */
 export async function select(query: string, graph?: string, endpoint: string = config.ontology.sparql.endpoint): Promise<Array<object>> {
+	if (useLocal()) {
+		try {
+			const { localSelect } = await import("./sparqlLocal");
+			return await localSelect(query, graph);
+		} catch (err) {
+			log.warn("Local RDF query failed, falling back to the SPARQL endpoint.", err);
+			config.ontology.sparql.local = false;
+		}
+	}
 	const browser = typeof window !== "undefined";
 	let url = endpoint + "?query=" + encodeURIComponent(query) + "&format=json";
 	if (graph) {

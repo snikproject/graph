@@ -8,6 +8,7 @@ export interface Params {
 	instances: boolean;
 	gpu: boolean;
 	virtual: boolean;
+	remote: boolean;
 	class: string;
 	json: string;
 	sparql: string;
@@ -32,7 +33,7 @@ function parseParams(): Params {
 		instances: config.ontology.sparql.instances,
 	};
 	// TypeScript interfaces don't exist on runtime, keep in sync with Params interface.
-	const paramKeys = new Set(["empty", "benchmark", "instances", "virtual", "class", "json", "sparql", "graph", "sub", "gpu"]);
+	const paramKeys = new Set(["empty", "benchmark", "instances", "virtual", "remote", "class", "json", "sparql", "graph", "sub", "gpu"]);
 	const unknown = new Set<string>(url.searchParams.keys()).difference(paramKeys);
 	if (unknown.size > 0) {
 		log.warn("Unknown GET parameters: " + [...unknown].join(", "));
@@ -44,6 +45,7 @@ function parseParams(): Params {
 		...(url.searchParams.get("instances") && { instances: parseFlag(url.searchParams.get("instances")) }),
 		gpu: parseFlag(url.searchParams.get("gpu")),
 		virtual: parseFlag(url.searchParams.get("virtual")), // create "virtual triples" to visualize connections like domain-range
+		remote: parseFlag(url.searchParams.get("remote")), // use the configured SPARQL endpoint instead of the local snapshot
 		class: url.searchParams.get("class"),
 		json: url.searchParams.get("json"),
 		...(url.searchParams.get("sparql") && { sparql: url.searchParams.get("sparql") }), // don't overwrite default with null

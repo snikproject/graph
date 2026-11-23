@@ -31,7 +31,48 @@ const options: IFuseOptions<Item> = {
 interface IndexBinding {
 	uri: { value: string };
 	l: { value: string };
-	def: { value: string };
+	def?: { value: string };
+}
+
+interface IndexRow {
+	c: { value: string };
+	l?: { value: string };
+	def?: { value: string };
+}
+
+/** Merge separate label, alias, close-match and definition queries into the shape of the old aggregate query. */
+function mergeIndexRows(rows: Array<Array<IndexRow>>, definitions: Array<IndexRow>): Array<IndexBinding> {
+	const map = new Map<string, { l: Set<string>; def?: string }>();
+	for (const row of rows.flat()) {
+		const item = map.get(row.c.value) ?? { l: new Set<string>() };
+		map.set(row.c.value, item);
+		if (row.l) {
+			item.l.add(row.l.value);
+		}
+	}
+	for (const row of definitions) {
+		const item = map.get(row.c.value);
+		if (item && row.def) {
+			item.def ??= row.def.value;
+		}
+	}
+	return [...map].map(([uri, item]) => ({ uri: { value: uri }, l: { value: [...item.l].join("|") }, ...(item.def && { def: { value: item.def } }) }));
+}
+
+/** Local Oxigraph plans the UNION of class and instance labels very poorly, so ask for each part separately. */
+async function localIndexBindings(): Promise<Array<IndexBinding>> {
+	const prefixes = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>`;
+	const from = `FROM <${config.ontology.sparql.graph}>`;
+	const rows = (await Promise.all([
+		sparql.select(`${prefixes} SELECT ?c ?l ${from} { ?c a owl:Class; rdfs:label ?l. }`),
+		sparql.select(`${prefixes} SELECT ?c ?l ${from} { ?c a ?t. ?t a owl:Class. ?c rdfs:label ?l. }`),
+		sparql.select(`${prefixes} SELECT ?c ?l ${from} { ?c skos:altLabel ?l. }`),
+		config.searchCloseMatch ? sparql.select(`${prefixes} SELECT ?c ?l ${from} { ?c skos:closeMatch|^skos:closeMatch ?cm. ?cm rdfs:label|skos:altLabel ?l. }`) : [],
+		sparql.select(`${prefixes} SELECT ?c ?def ${from} { ?c skos:definition ?def. }`),
+	])) as Array<Array<IndexRow>>;
+	return mergeIndexRows(rows.slice(0, 4), rows[4]);
 }
 
 /** Create fulltext index from SPARQL endpoint.
@@ -56,7 +97,7 @@ export async function createIndex(): Promise<Array<object>> {
     ${config.searchCloseMatch ? "UNION {?c skos:closeMatch|^skos:closeMatch ?cm. ?cm rdfs:label|skos:altLabel ?l.}" : ""}
     OPTIONAL {?c skos:definition ?def.}
   }`;
-	const bindings = (await sparql.select(sparqlQuery)) as Array<IndexBinding>;
+	const bindings = (sparql.useLocal() ? await localIndexBindings() : await sparql.select(sparqlQuery)) as Array<IndexBinding>;
 	const items: Array<Item> = [];
 	for (const b of bindings) {
 		const suffix = b.uri.value.replace(/.*\//, "");
@@ -67,7 +108,7 @@ export async function createIndex(): Promise<Array<object>> {
 		items.push(item);
 		item.l = [...new Set(item.l)]; // remove duplicates
 
-		if (b.def.value) {
+		if (b.def?.value) {
 			item.def = b.def.value;
 		}
 	}
