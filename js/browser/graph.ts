@@ -574,7 +574,7 @@ export class Graph {
 				for (let j = 0; j < nodes.length; j++) {
 					const l = nodes[j].data("l");
 					for (const key in l) {
-						labels[key] = labels[key] ? labels[key].union(l[key]) : new Set(l[key]);
+						labels[key] = labels[key] ? labels[key].union(new Set(l[key])) : new Set(l[key]);
 					}
 				}
 				for (const key in labels) {
