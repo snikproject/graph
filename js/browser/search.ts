@@ -16,6 +16,20 @@ export class Search {
 	/** Add search functionality to the form.
 	 *  @param form - a form with a search field named "query" */
 	constructor(form: HTMLFormElement) {
+		const input = form.querySelector<HTMLInputElement>("[name=query]")!;
+		// Capture Ctrl+K before the browser can turn it into an address-bar search.
+		window.addEventListener(
+			"keydown",
+			(event) => {
+				if ((event.ctrlKey || event.metaKey) && !event.shiftKey && !event.altKey && event.key.toLowerCase() === "k") {
+					event.preventDefault();
+					event.stopImmediatePropagation();
+					input.focus();
+					input.select();
+				}
+			},
+			true
+		);
 		form.addEventListener("submit", (event: Event) => {
 			event.preventDefault();
 			// @ts-expect-error event target is the form itself
