@@ -20,6 +20,7 @@
 		"loglevel": "^1.9.2",
 		"micromodal": "^0.7.0",
 		"notyf": "^3.10.0",
+		"oxigraph": "^0.5.13",
 		"spin.js": "^4.1.2",
 		"stats.js": "^0.17.0",
 		"tippy.js": "^6.3.7"

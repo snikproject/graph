@@ -1,5 +1,6 @@
 import type { NodeSingular } from "cytoscape";
 import { NODE } from "../node";
+import { SPARQL_PREFIXES } from "../sparqlPrefixes";
 import snikView from "./initialView/snik.json" with { type: "json" };
 import type { LayoutJson } from "../browser/save.ts";
 
@@ -68,17 +69,19 @@ export default {
 		// without trailing slashes!
 		// the environment variable is inlined at build time, it can be set in a .env file for development or as a Docker build argument
 		endpoint: import.meta.env.SPARQL_ENDPOINT || "https://www.snik.eu/sparql",
+		// answer queries from the ontology repository; add ?remote to use the endpoint
+		// override the file base with SPARQL_ONTOLOGY_BASE for a local mirror
+		local: true,
 		graph: "http://www.snik.eu/ontology",
 		instances: false,
 		queries: {
 			nodes: (from) => `
-			PREFIX ov: <http://open.vocab.org/terms/>
-			PREFIX meta: <http://www.snik.eu/ontology/meta/>
-			SELECT DISTINCT(?c)
-			GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
-			SAMPLE(?st) AS ?st
+			${SPARQL_PREFIXES}
+			SELECT DISTINCT ?c
+			(GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l)
+			(SAMPLE(?st) AS ?st)
 			?src
-			SAMPLE(?inst) AS ?inst
+			(SAMPLE(?inst) AS ?inst)
 			${from}
 			{
 			  ?c a [rdfs:subClassOf meta:Top].
@@ -86,8 +89,9 @@ export default {
 			  OPTIONAL {?c rdf:type ?st. FILTER(?st!=owl:Class)}
 			  OPTIONAL {?c rdfs:label ?l.}
 			  OPTIONAL {?inst a ?c.}
-			}`,
-			triples: (from, fromNamed, virtualTriples, instances) => `PREFIX sniko: <http://www.snik.eu/ontology/>
+			}
+			GROUP BY ?c ?src`,
+			triples: (from, fromNamed, virtualTriples, instances) => `${SPARQL_PREFIXES}
 			select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
 			${from}
 			${fromNamed}
@@ -110,7 +114,8 @@ export default {
 				owl:annotatedProperty ?p;
 				owl:annotatedTarget ?d.
 			  }
-			}`,
+			}
+			GROUP BY ?c ?p ?d ?g`,
 		},
 	},
 	filter: [

@@ -19,7 +19,7 @@ export const help = {
 	menu: {
 		file: {
 			"": "Holds different file options like loading and saving the graph in different ways.",
-			"load-sparql": "Discard the currently loaded graph and load all ontologies of SNIK.",
+			"load-sparql": "Discard the currently loaded graph and reload all ontologies of SNIK from the active data source.",
 			"load-session": "Load a complete session from a Cytoscape JSON File. Caution: Discards all changes!",
 			"load-view": "Load a saved view (partial graph) and include it in the current session.",
 			"load-layout": "Load a saved layout of a partial graph and include it in the current session.",

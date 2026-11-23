@@ -1,5 +1,6 @@
 /**Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.*/
 import * as sparql from "./sparql";
+import { SPARQL_PREFIXES } from "./sparqlPrefixes";
 import { timer } from "./timer";
 import { config } from "./config/config";
 import log from "loglevel";
@@ -22,9 +23,9 @@ async function selectClasses(from: string): Promise<Array<ClassBinding>> {
 	const sparqlClassesTimer = timer("sparql-classes");
 
 	const nodeQuerySimple = `
-  PREFIX ov: <http://open.vocab.org/terms/>
-  SELECT ?c
-  GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") as ?l
+  ${SPARQL_PREFIXES}
+  SELECT DISTINCT ?c
+  (GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l)
   ?src
   ${from}
   {
@@ -32,6 +33,7 @@ async function selectClasses(from: string): Promise<Array<ClassBinding>> {
     OPTIONAL {?c rdfs:label ?l.}
     OPTIONAL {?src ov:defines ?c.}
   }
+  GROUP BY ?c ?src
   `;
 	// eslint-disable-next-line ban-ts-comment Needed to easily swap different config files, ts-expect-error not suitable when defined
 	// @ts-ignore Needed to easily swap different config files, we handle it not existing here
@@ -103,7 +105,7 @@ async function createClassNodes(from: string): Promise<Array<ElementDefinition>>
 		}
 	}
 
-	log.debug(bindings.length + " Nodes loaded from SPARQL");
+	log.debug(bindings.length + " Nodes loaded");
 	return nodes;
 }
 
@@ -112,14 +114,16 @@ async function createClassNodes(from: string): Promise<Array<ElementDefinition>>
  @returns SPARQL JSON result */
 async function selectInstances(from: string): Promise<Array<object>> {
 	const sparqlInstancesTimer = timer("sparql-classes");
-	const instanceQuery = `SELECT
-  DISTINCT(?i)
-  GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
+	const instanceQuery = `${SPARQL_PREFIXES}
+  SELECT
+  DISTINCT ?i
+  (GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l)
   ${from}
   {
     ?i a [a owl:Class].
     OPTIONAL {?i rdfs:label ?l.}
   }
+  GROUP BY ?i
   `;
 	const json = await sparql.select(instanceQuery);
 	sparqlInstancesTimer.stop(json.length + " instances");
@@ -156,6 +160,7 @@ async function createInstanceNodes(from: string): Promise<Array<object>> {
 async function selectTriples(from: string, fromNamed: string, instances: boolean, virtual: boolean): Promise<Array<object>> {
 	const sparqlPropertiesTimer = timer("sparql-properties");
 	const tripleQuerySimple = `
+    ${SPARQL_PREFIXES}
     select  ?c ?p ?d
     ${from}
     {
@@ -199,7 +204,7 @@ async function createEdges(from: string, fromNamed: string, instances: boolean, 
 			//position: { x: 200, y: 200 }
 		});
 	}
-	log.debug(json.length + " Edges loaded from SPARQL");
+	log.debug(json.length + " Edges loaded");
 	return edges;
 }
 
@@ -228,7 +233,7 @@ async function createNodes(from: string, instances: boolean): Promise<Array<Elem
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
 export async function loadGraphFromSparql(cy: Core, graphs: Array<string>, instances: boolean = false, virtual: boolean = false): Promise<void> {
-	log.debug(`Loading graph from endpoint ${config.ontology.sparql.endpoint} with graphs ${graphs.join(",")}.`);
+	log.debug(`Loading graph from ${sparql.useLocal() ? "local RDF files" : "endpoint " + config.ontology.sparql.endpoint} with graphs ${graphs.join(",")}.`);
 	const from = graphs.map((g) => `FROM <${g}>`).reduce((a, b) => a + "\n" + b, "");
 	const fromNamed = from.replace(/FROM/g, "FROM NAMED");
 

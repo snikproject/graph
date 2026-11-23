@@ -51,7 +51,10 @@ async function applyParams(graph: Graph): Promise<void> {
 			layout.run(graph.cy, layout.eulerTight);
 			return;
 		}
-		log.debug("Loading from SPARQL Endpoint " + params.sparql);
+		if (params.remote) {
+			config.ontology.sparql.local = false;
+		}
+		log.debug(`Loading from ${sparql.useLocal() ? "local RDF files" : "SPARQL endpoint " + params.sparql}`);
 		config.ontology.sparql.endpoint = params.sparql;
 		const graphs: string[] = [];
 		if (config.ontology.snik) {

@@ -4,7 +4,7 @@ export const de = {
 		// file **********************************************
 		file: "Datei",
 		"load-file": "Datei laden",
-		"load-sparql": "Lade aus dem SPARQL Endpunkt",
+		"load-sparql": "Ontologie neu laden",
 		"load-session": "Lade gespeicherte Sitzung",
 		"load-view": "Lade Teilgraph",
 		"load-layout": "Lade Layout von Teilgraph",

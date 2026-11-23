@@ -1,5 +1,6 @@
 /** Search classes by chapter.*/
 import * as sparql from "../sparql";
+import { SPARQL_PREFIXES } from "../sparqlPrefixes";
 import * as util from "./util";
 import * as language from "../lang/language";
 import type { Graph } from "./graph";
@@ -16,7 +17,8 @@ const selectedChapters = new Set();
 @param chapter - the chapter string value exactly as in the SPARQL triples, such as "5.3".
 */
 async function getClasses(sub: string, chapter: string): Promise<Set<string>> {
-	const query = `SELECT DISTINCT(?class) ?label
+	const query = `${SPARQL_PREFIXES}
+  SELECT DISTINCT ?class ?label
   FROM <http://www.snik.eu/ontology/${sub}>
   {
     ?class meta:chapter/meta:subChapterOf* <${chapter}>.
@@ -117,11 +119,12 @@ export async function showChapterSearch(graph: Graph, sub: string): Promise<void
 	});
 
 	// fetch chapters and their class count
-	const chapterSizeQuery = `SELECT COUNT(DISTINCT(?c)) AS ?count ?ch
+	const chapterSizeQuery = `${SPARQL_PREFIXES}
+  SELECT (COUNT(DISTINCT ?c) AS ?count) ?ch
   FROM <http://www.snik.eu/ontology/${sub}>
   {
     ?c meta:chapter/meta:subChapterOf* ?ch.
-  } ORDER BY ASC(?ch)`;
+  } GROUP BY ?ch ORDER BY ASC(?ch)`;
 
 	interface ChapterBinding {
 		ch: { value: string };

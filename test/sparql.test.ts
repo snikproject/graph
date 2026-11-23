@@ -1,4 +1,5 @@
 import * as sparql from "../js/sparql";
+import { SPARQL_PREFIXES } from "../js/sparqlPrefixes";
 import { expect } from "vite-plus/test";
 
 const EXPECTED_CLASSES_MIN = 4000;
@@ -13,25 +14,27 @@ const GRAPH_SNIK_META = "http://www.snik.eu/ontology/meta";
 describe("sparql", () => {
 	describe("#sparql()", () => {
 		it(`${GRAPH_GROUP_SNIK} should contain between ${EXPECTED_CLASSES_MIN} and ${EXPECTED_CLASSES_MAX} classes`, () => {
-			return sparql.select("select count(?class) as ?count {?class a [rdfs:subClassOf meta:Top].}", GRAPH_GROUP_SNIK).then((bindings: Array<any>) => {
+			return sparql.select(`${SPARQL_PREFIXES} SELECT (COUNT(?class) AS ?count) WHERE { ?class a [rdfs:subClassOf meta:Top]. }`, GRAPH_GROUP_SNIK).then((bindings: Array<any>) => {
 				expect(bindings[0]).toHaveProperty("count");
 				expect(parseInt(bindings[0].count.value)).to.be.within(EXPECTED_CLASSES_MIN, EXPECTED_CLASSES_MAX);
 			});
-		});
+		}, 30000);
 		it(`${GRAPH_GROUP_SNIK} should contain between ${EXPECTED_INSTANCES_MIN} and ${EXPECTED_INSTANCES_MAX} instances`, () => {
-			return sparql.select("select count(?i) as ?count {?i a ?class. ?class a [rdfs:subClassOf meta:Top].}", GRAPH_GROUP_SNIK).then((bindings: Array<any>) => {
-				expect(bindings[0]).toHaveProperty("count");
-				expect(parseInt(bindings[0].count.value)).to.be.within(EXPECTED_INSTANCES_MIN, EXPECTED_INSTANCES_MAX);
-			});
-		});
+			return sparql
+				.select(`${SPARQL_PREFIXES} SELECT (COUNT(?i) AS ?count) WHERE { ?i a ?class. ?class a [rdfs:subClassOf meta:Top]. }`, GRAPH_GROUP_SNIK)
+				.then((bindings: Array<any>) => {
+					expect(bindings[0]).toHaveProperty("count");
+					expect(parseInt(bindings[0].count.value)).to.be.within(EXPECTED_INSTANCES_MIN, EXPECTED_INSTANCES_MAX);
+				});
+		}, 30000);
 		it(`${GRAPH_SNIK_META} should contain between ${EXPECTED_META_CLASSES_MIN} and ${EXPECTED_META_CLASSES_MAX} classes`, () => {
-			return sparql.select("select count(?class) as ?count {?class a owl:Class.}", GRAPH_SNIK_META).then((bindings: Array<any>) => {
+			return sparql.select(`${SPARQL_PREFIXES} SELECT (COUNT(?class) AS ?count) WHERE { ?class a owl:Class. }`, GRAPH_SNIK_META).then((bindings: Array<any>) => {
 				expect(bindings[0]).toHaveProperty("count");
 				expect(parseInt(bindings[0].count.value)).to.be.within(EXPECTED_META_CLASSES_MIN, EXPECTED_META_CLASSES_MAX);
 			});
-		});
+		}, 30000);
 		it("should contain the snik subontology graphs", () => {
-			return sparql.select("select distinct(?g) {graph ?g {?x a|rdfs:subClassOf meta:EntityType.}}").then((bindings: Array<any>) => {
+			return sparql.select(`${SPARQL_PREFIXES} SELECT DISTINCT ?g WHERE { GRAPH ?g { ?x a|rdfs:subClassOf meta:EntityType. } }`).then((bindings: Array<any>) => {
 				const graphs = new Set();
 				for (const binding of bindings) {
 					graphs.add(binding.g.value);
@@ -69,9 +72,10 @@ describe("sparql", () => {
 	});
 
 	describe("#describe()", () => {
-		it("should return a turtle description of meta:Top", () => {
-			sparql.describe("http://www.snik.eu/ontology/meta/Top").then((nt) => assert(nt!.includes("meta:EntityType	rdfs:subClassOf	meta:Top")));
-		});
+		it("should return a description of meta:Top", async () => {
+			const nt = await sparql.describe("http://www.snik.eu/ontology/meta/Top");
+			expect(nt).toContain("http://www.snik.eu/ontology/meta/EntityType");
+		}, 30000);
 	});
 });
 

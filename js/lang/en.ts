@@ -4,7 +4,7 @@ export const en = {
 		// file **********************************************
 		file: "File",
 		"load-file": "Load File",
-		"load-sparql": "Load from SPARQL endpoint",
+		"load-sparql": "Reload ontology",
 		"load-session": "Load session",
 		"load-view": "Load Partial Graph",
 		"load-layout": "Load Layout of Partial Graph",
