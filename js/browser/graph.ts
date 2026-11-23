@@ -217,6 +217,8 @@ export class Graph {
 		star.merge(star.children());
 		// show edges between outer nodes to visible nodes
 		const outerNodes = nodes.difference(inner);
+		// Nodes that were hidden still use the artificial positions from loadLayoutFromJsonObject, so arrange them instead of fitting a huge empty area.
+		const reveal = star.nodes().filter(".hidden").size() > 0;
 		if (changeLayout || !this.starMode) {
 			this.starMode = true;
 			Graph.setVisible(this.cy.elements().not(star), false);
@@ -224,45 +226,29 @@ export class Graph {
 		Graph.starStyle(star);
 		//const visible = this.cy.nodes(".unfiltered").not(".hidden");
 		//Graph.starStyle(visible.edgesWith(visible));
-		if (changeLayout) {
-			const sorted = nodes.sort((a, b) => {
-				const pa = Math.min(
-					a.edgesTo(inner).map((n) =>
-						n
-							.data("pl")
-							.split("")
-							.reduce((na, nb) => na + nb.charCodeAt(0), 0)
-					)
-				);
-				const pb = Math.min(
-					b.edgesTo(inner).map((n) =>
-						n
-							.data("pl")
-							.split("")
-							.reduce((na, nb) => na + nb.charCodeAt(0), 0)
-					)
-				);
-				return pa - pb;
-			});
-			sorted
-				.layout({
-					name: "concentric",
-					fit: true,
-					levelWidth: function () {
-						return 1;
-					},
-					minNodeSpacing: 175,
-					concentric: function (layoutNode) {
-						if (inner.contains(layoutNode)) {
-							return 2;
-						}
-						if (outerNodes.contains(layoutNode)) {
-							return 1;
-						}
-						throw new Error("unexpected node in star");
-					},
-				})
-				.run();
+		if (changeLayout || (reveal && star.nodes().size() < 100)) {
+			// A concentric circle gets too large for larger stars and hides all labels when fitted, so let cose pack them instead.
+			const layoutOptions =
+				!changeLayout && star.nodes().size() > 20
+					? { name: "cose", animate: false, fit: true, numIter: 500, randomize: true }
+					: {
+							name: "concentric",
+							fit: true,
+							levelWidth: function () {
+								return 1;
+							},
+							minNodeSpacing: 175,
+							concentric: function (layoutNode) {
+								if (inner.contains(layoutNode)) {
+									return 2;
+								}
+								if (outerNodes.contains(layoutNode)) {
+									return 1;
+								}
+								return 0;
+							},
+						};
+			star.nodes().layout(layoutOptions).run();
 		}
 		this.cy.endBatch();
 		// connect new nodes with all existing unfiltered visible ones
