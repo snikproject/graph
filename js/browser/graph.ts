@@ -458,12 +458,17 @@ export class Graph {
 		if (!this.cumulativeSearch()) {
 			this.resetStyle();
 		}
+		// Hidden nodes still sit at their unused positions, so fitting them would zoom far out without showing anything.
 		const resultNodes = this.cy
-			.elements()
-			.nodes()
+			.nodes(".unfiltered")
+			.not(".hidden")
 			.filter((node) => {
 				return uris.includes(node.data(NODE.ID));
 			});
+		if (resultNodes.length < 1) {
+			log.warn("All search results are filtered out, hidden, or not in the graph.");
+			return false;
+		}
 		if (hideOthers) {
 			Graph.setVisible(this.cy.elements(), false);
 			Graph.setVisible(resultNodes.union(resultNodes.edgesTo(resultNodes)), true);
@@ -472,7 +477,7 @@ export class Graph {
 		this.cy.elements().unselect();
 		resultNodes.select();
 		resultNodes.edgesTo(resultNodes).select();
-		this.cy.fit(this.cy.elements(":selected"));
+		this.cy.fit(resultNodes.union(resultNodes.edgesTo(resultNodes)), 100);
 		return true;
 	}
 	/** The nodes an operation should act on: the given collection or, when more than one node is selected, the selection, plus the node the operation was triggered on.
