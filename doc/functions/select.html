@@ -15,7 +15,8 @@
 <li class="">
 <div class="tsd-signature tsd-anchor-link" id="select"><span class="tsd-kind-call-signature">select</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">query</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">graph</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">endpoint</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><a href="#select" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Query public SNIK SPARQL endpoint with a SELECT query.</p>
+<div class="tsd-comment tsd-typography"><p>Query public SNIK SPARQL endpoint with a SELECT query.
+Throws an error if the endpoint cannot be reached, the response has an error status code or the response is not valid SPARQL JSON.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -32,7 +33,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4><p>A promise of a set of SPARQL select result bindings.</p>
 <aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/snikproject/graph/blob/f1094eb3d769514c1e8a47f97a655404476954b2/js/sparql.ts#L17">sparql.ts:17</a></li></ul></aside></div></li></ul></section></div>
+<li>Defined in <a href="https://github.com/snikproject/graph/blob/011cfed6e363f3781578b9c77e7e59bc3b5d991f/js/sparql.ts#L20">sparql.ts:20</a></li></ul></aside></div></li></ul></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
