@@ -4,15 +4,19 @@ import { defineConfig } from "vite-plus";
 
 const _dirname = import.meta.dirname;
 
-const commitDate = execSync("git log -1 --format=%cI").toString().trimEnd();
-const branchName = execSync("git rev-parse --abbrev-ref HEAD").toString().trimEnd();
-const commitHash = execSync("git rev-parse HEAD").toString().trimEnd();
-const lastCommitMessage = execSync("git show -s --format=%s").toString().trimEnd();
+// Git metadata is optional so Docker builds from a submodule, where .git points outside the build context, still work.
+const git = (command: string): string => {
+	try {
+		return execSync(command, { stdio: ["ignore", "pipe", "ignore"] }).toString().trimEnd();
+	} catch {
+		return "unknown";
+	}
+};
 
-process.env.VITE_GIT_COMMIT_DATE = commitDate;
-process.env.VITE_GIT_BRANCH_NAME = branchName;
-process.env.VITE_GIT_COMMIT_HASH = commitHash;
-process.env.VITE_GIT_LAST_COMMIT_MESSAGE = lastCommitMessage;
+process.env.VITE_GIT_COMMIT_DATE ||= git("git log -1 --format=%cI");
+process.env.VITE_GIT_BRANCH_NAME ||= git("git rev-parse --abbrev-ref HEAD");
+process.env.VITE_GIT_COMMIT_HASH ||= git("git rev-parse HEAD");
+process.env.VITE_GIT_LAST_COMMIT_MESSAGE ||= git("git show -s --format=%s");
 
 export default defineConfig({
 	lint: {

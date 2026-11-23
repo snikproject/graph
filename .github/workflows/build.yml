@@ -10,7 +10,6 @@ on:
       - '.github/dependabot.yml'
       - '.github/workflows/release.yml'
       - 'Dockerfile'
-      - 'Dockerfile.submodule'
       - 'LICENSE'
       - 'README.md'
       - 'paper'

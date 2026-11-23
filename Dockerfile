@@ -12,6 +12,15 @@ RUN cp js/config/config.dist.ts js/config/config.ts
 ARG SPARQL_ENDPOINT=https://www.snik.eu/sparql
 ARG SPARQL_ONTOLOGY_BASE=
 ENV SPARQL_ONTOLOGY_BASE=${SPARQL_ONTOLOGY_BASE}
+# Optional commit metadata for the about dialog; Vite falls back to git or "unknown".
+ARG GIT_COMMIT_DATE
+ARG GIT_BRANCH_NAME
+ARG GIT_COMMIT_HASH
+ARG GIT_LAST_COMMIT_MESSAGE
+ENV VITE_GIT_COMMIT_DATE=${GIT_COMMIT_DATE} \
+	VITE_GIT_BRANCH_NAME=${GIT_BRANCH_NAME} \
+	VITE_GIT_COMMIT_HASH=${GIT_COMMIT_HASH} \
+	VITE_GIT_LAST_COMMIT_MESSAGE=${GIT_LAST_COMMIT_MESSAGE}
 RUN npm run build && \
 	npm run doc
 
