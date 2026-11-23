@@ -9,7 +9,7 @@ export const SNIK = {
 
 /** Whether queries are answered by the local RDF snapshot instead of the remote endpoint. */
 export function useLocal(): boolean {
-	return !!config.ontology.sparql.local && typeof window !== "undefined";
+	return config.ontology.sparql.local && typeof window !== "undefined";
 }
 
 //ASK queries should also work but better use {@link ask} instead as it is more convenient. // ask does not exist anymore

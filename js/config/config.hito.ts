@@ -89,6 +89,8 @@ export default {
 		// without trailing slashes!
 		// the environment variable is inlined at build time, it can be set in a .env file for development or as a Docker build argument
 		endpoint: import.meta.env.SPARQL_ENDPOINT || "https://hitontology.eu/sparql",
+		// no local RDF snapshot for HITO, always use the endpoint
+		local: false,
 		graph: "http://hitontology.eu/ontology",
 		instances: true,
 		queries: {
