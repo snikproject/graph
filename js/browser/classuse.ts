@@ -1,5 +1,6 @@
 /** Show the environment of a single node using a special layout.*/
 import * as sparql from "../sparql";
+import { SPARQL_PREFIXES } from "../sparqlPrefixes";
 import { NODE } from "../node";
 import { Graph } from "./graph";
 import { View } from "./view";
@@ -30,7 +31,8 @@ export async function classUse(clazz: string, subTop: string): Promise<void> {
 	const [innerType, middleType, outerType] = types[subTop];
 
 	const query =
-		`select distinct ?inner ?middle ?outer ?outerx
+		`${SPARQL_PREFIXES}
+    select distinct ?inner ?middle ?outer ?outerx
     {
       <${clazz}> (rdfs:subClassOf|skos:closeMatch|^skos:closeMatch)* ?inner.
       ?inner rdf:type ${innerType}.

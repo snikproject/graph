@@ -1,5 +1,5 @@
 /** Local SPARQL engine backed by the SNIK ontology repository.
-The public functions mirror the subset of {@link ./sparql} used by the application but return SPARQL JSON bindings. */
+The public functions mirror the subset of {@link ./sparql} used by the application but return rows of RDF/JS terms. */
 import init, { Store, namedNode } from "oxigraph/web.js";
 import wasmUrl from "oxigraph/web_bg.wasm?url";
 import log from "loglevel";
@@ -20,15 +20,6 @@ const FILES = [
 ].map((file) => ({ ...file, url: BASE + file.file }));
 const GRAPHS = FILES.map((file) => PREFIX + file.graph);
 const FILE_BY_GRAPH = new Map(FILES.map((file) => [PREFIX + file.graph, file]));
-const PREFIXES = {
-	rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-	rdfs: "http://www.w3.org/2000/01/rdf-schema#",
-	owl: "http://www.w3.org/2002/07/owl#",
-	skos: "http://www.w3.org/2004/02/skos/core#",
-	xsd: "http://www.w3.org/2001/XMLSchema#",
-	meta: PREFIX + "meta/",
-	sniko: PREFIX,
-};
 const FROM = /\bFROM\s+(NAMED\s+)?<([^>]+)>/gi;
 
 let storePromise: Promise<Store> | undefined;
@@ -78,30 +69,9 @@ function expand(iri: string): Array<string> {
 	return matches.length > 0 ? matches : [iri];
 }
 
-/** Add missing prefixes and rewrite the Virtuoso-specific `DISTINCT(?var)` syntax. */
-function normalize(query: string): string {
-	const declared = new Set([...query.matchAll(/\bPREFIX\s+([\w-]+):/gi)].map((match) => match[1].toLowerCase()));
-	const prefix = Object.entries(PREFIXES)
-		.filter(([name]) => !declared.has(name))
-		.map(([name, iri]) => `PREFIX ${name}: <${iri}>`)
-		.join("\n");
-	const queryWithoutFrom = query.replace(/\bFROM\s+NAMED\s+<[^>]+>/gi, "").replace(/\bFROM\s+<[^>]+>/gi, "");
-	return `${prefix}\n${queryWithoutFrom}`.replace(/\bSELECT\s+DISTINCT\s*\((\?\w+)\)/gi, "SELECT DISTINCT $1");
-}
-
-/** Convert an RDF/JS term to the SPARQL JSON binding shape expected by the application. */
-function binding(term): object {
-	if (term.termType === "Literal") {
-		const result: Record<string, string> = { type: term.language ? "literal" : "typed-literal", value: term.value };
-		if (term.language) {
-			result["xml:lang"] = term.language;
-		}
-		if (term.datatype?.value && term.datatype.value !== "http://www.w3.org/2001/XMLSchema#string") {
-			result.datatype = term.datatype.value;
-		}
-		return result;
-	}
-	return { type: term.termType === "NamedNode" ? "uri" : "bnode", value: term.value };
+/** Remove FROM clauses; they are passed to Oxigraph as dataset arguments instead. */
+function withoutFrom(query: string): string {
+	return query.replace(/\bFROM\s+NAMED\s+<[^>]+>/gi, "").replace(/\bFROM\s+<[^>]+>/gi, "");
 }
 
 /** Execute a SELECT query against the ontology snapshot. */
@@ -125,7 +95,7 @@ export async function localSelect(query: string, graph?: string): Promise<Array<
 		log.info(`Loaded local RDF snapshot with ${store.size} quads.`);
 		logged = true;
 	}
-	const result = store.query(normalize(query), {
+	const result = store.query(withoutFrom(query), {
 		default_graph: [...defaultGraphs].map(namedNode),
 		use_default_graph_as_union: true,
 		...(namedGraphs.size > 0 && { named_graphs: [...namedGraphs].map(namedNode) }),
@@ -133,5 +103,5 @@ export async function localSelect(query: string, graph?: string): Promise<Array<
 	if (!Array.isArray(result)) {
 		throw new Error("Local SPARQL query did not return SELECT bindings.");
 	}
-	return result.map((row) => Object.fromEntries([...row].map(([name, term]) => [name, binding(term)])));
+	return result.map((row) => Object.fromEntries(row));
 }

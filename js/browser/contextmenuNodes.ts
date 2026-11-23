@@ -7,6 +7,7 @@ import * as util from "./util";
 import { Graph, Direction } from "./graph";
 import type { MenuItem } from "./contextmenu";
 import * as sparql from "../sparql";
+import { SPARQL_PREFIXES } from "../sparqlPrefixes";
 import * as language from "../lang/language";
 
 /** Menu entries
@@ -204,7 +205,8 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 					onClickFunction: async (event) => {
 						const node = event.target;
 						const uri = node.data(NODE.ID);
-						const query = `SELECT ?i (STR(SAMPLE(?label)) AS ?l) {
+						const query = `${SPARQL_PREFIXES}
+						SELECT ?i (STR(SAMPLE(?label)) AS ?l) {
         ?i a <${uri}>
         OPTIONAL {?i rdfs:label ?label. FILTER(LANGMATCHES(LANG(?label),"${language.getLanguage()}"))}
         } GROUP BY ?i`;

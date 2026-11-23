@@ -1,5 +1,6 @@
 import type { NodeSingular } from "cytoscape";
 import { NODE } from "../node";
+import { SPARQL_PREFIXES } from "../sparqlPrefixes";
 import snikView from "./initialView/snik.json" with { type: "json" };
 import type { LayoutJson } from "../browser/save.ts";
 
@@ -75,8 +76,7 @@ export default {
 		instances: false,
 		queries: {
 			nodes: (from) => `
-			PREFIX ov: <http://open.vocab.org/terms/>
-			PREFIX meta: <http://www.snik.eu/ontology/meta/>
+			${SPARQL_PREFIXES}
 			SELECT DISTINCT ?c
 			(GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l)
 			(SAMPLE(?st) AS ?st)
@@ -91,7 +91,7 @@ export default {
 			  OPTIONAL {?inst a ?c.}
 			}
 			GROUP BY ?c ?src`,
-			triples: (from, fromNamed, virtualTriples, instances) => `PREFIX sniko: <http://www.snik.eu/ontology/>
+			triples: (from, fromNamed, virtualTriples, instances) => `${SPARQL_PREFIXES}
 			select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
 			${from}
 			${fromNamed}

@@ -1,5 +1,6 @@
 /** Fuzzy search with fuse.js.*/
 import * as sparql from "./sparql";
+import { SPARQL_PREFIXES } from "./sparqlPrefixes";
 import { config } from "./config/config";
 import Fuse, { type FuseResult, type IFuseOptions } from "fuse.js";
 import log from "loglevel";
@@ -61,16 +62,15 @@ function mergeIndexRows(rows: Array<Array<IndexRow>>, definitions: Array<IndexRo
 
 /** Local Oxigraph plans the UNION of class and instance labels very poorly, so ask for each part separately. */
 async function localIndexBindings(): Promise<Array<IndexBinding>> {
-	const prefixes = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>`;
 	const from = `FROM <${config.ontology.sparql.graph}>`;
 	const rows = (await Promise.all([
-		sparql.select(`${prefixes} SELECT ?c ?l ${from} { ?c a owl:Class; rdfs:label ?l. }`),
-		sparql.select(`${prefixes} SELECT ?c ?l ${from} { ?c a ?t. ?t a owl:Class. ?c rdfs:label ?l. }`),
-		sparql.select(`${prefixes} SELECT ?c ?l ${from} { ?c skos:altLabel ?l. }`),
-		config.searchCloseMatch ? sparql.select(`${prefixes} SELECT ?c ?l ${from} { ?c skos:closeMatch|^skos:closeMatch ?cm. ?cm rdfs:label|skos:altLabel ?l. }`) : [],
-		sparql.select(`${prefixes} SELECT ?c ?def ${from} { ?c skos:definition ?def. }`),
+		sparql.select(`${SPARQL_PREFIXES} SELECT ?c ?l ${from} { ?c a owl:Class; rdfs:label ?l. }`),
+		sparql.select(`${SPARQL_PREFIXES} SELECT ?c ?l ${from} { ?c a ?t. ?t a owl:Class. ?c rdfs:label ?l. }`),
+		sparql.select(`${SPARQL_PREFIXES} SELECT ?c ?l ${from} { ?c skos:altLabel ?l. }`),
+		config.searchCloseMatch
+			? sparql.select(`${SPARQL_PREFIXES} SELECT ?c ?l ${from} { ?c skos:closeMatch|^skos:closeMatch ?cm. ?cm rdfs:label|skos:altLabel ?l. }`)
+			: [],
+		sparql.select(`${SPARQL_PREFIXES} SELECT ?c ?def ${from} { ?c skos:definition ?def. }`),
 	])) as Array<Array<IndexRow>>;
 	return mergeIndexRows(rows.slice(0, 4), rows[4]);
 }
@@ -83,10 +83,11 @@ export async function createIndex(): Promise<Array<object>> {
 	}
 	const indexTimer = timer("Create Fuse search index");
 	log.debug("Create Fuse Search Index with searchCloseMatch = " + config.searchCloseMatch);
-	const sparqlQuery = `select
-  ?c as ?uri
-  group_concat(distinct(str(?l));separator="|") as ?l
-  group_concat(distinct(str(?def));separator="|") as ?def
+	const sparqlQuery = `${SPARQL_PREFIXES}
+  select
+  (?c as ?uri)
+  (group_concat(distinct(str(?l));separator="|") as ?l)
+  (group_concat(distinct(str(?def));separator="|") as ?def)
   from <${config.ontology.sparql.graph}>
   {
     {
@@ -96,7 +97,8 @@ export async function createIndex(): Promise<Array<object>> {
     UNION {?c skos:altLabel ?l.}
     ${config.searchCloseMatch ? "UNION {?c skos:closeMatch|^skos:closeMatch ?cm. ?cm rdfs:label|skos:altLabel ?l.}" : ""}
     OPTIONAL {?c skos:definition ?def.}
-  }`;
+  }
+  GROUP BY ?c`;
 	const bindings = (sparql.useLocal() ? await localIndexBindings() : await sparql.select(sparqlQuery)) as Array<IndexBinding>;
 	const items: Array<Item> = [];
 	for (const b of bindings) {

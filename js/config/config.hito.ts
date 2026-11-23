@@ -1,6 +1,7 @@
 import hitoView from "./initialView/hito.json" with { type: "json" };
 import type { LayoutJson } from "../browser/save.ts";
 import { NODE } from "../node";
+import { SPARQL_PREFIXES } from "../sparqlPrefixes";
 import type { NodeSingular } from "cytoscape";
 
 const shapeMap: Map<string, string> = new Map([
@@ -102,12 +103,12 @@ export default {
 			 * @returns A string containing a SPARQL query which still needs to be executed
 			 */
 			nodes: (from: string): string => `
-			PREFIX ov: <http://open.vocab.org/terms/>
-			SELECT DISTINCT(?c)
-			GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
-			SAMPLE(?st) AS ?st
-			SAMPLE(?inst) AS ?inst
+			${SPARQL_PREFIXES}
+			SELECT DISTINCT ?c
+			(GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l)
+			(SAMPLE(?st) AS ?st)
 			?src
+			(SAMPLE(?inst) AS ?inst)
 			${from}
 			{
 			  ?c rdfs:label ?l.
@@ -116,6 +117,7 @@ export default {
 			  OPTIONAL {?src ov:defines ?c.}
 			  OPTIONAL {?c rdf:type ?st. FILTER(?st!=owl:Class)}
 			}
+			GROUP BY ?c ?src
 			`,
 			/**
 			 * Loads all triples from HITO which we display.
@@ -126,6 +128,7 @@ export default {
 			 * @returns A string containing a SPARQL query which still needs to be executed
 			 */
 			triples: (from: string, fromNamed: string, virtualTriples: boolean, instances: boolean): string => `
+			${SPARQL_PREFIXES}
 			select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
 			${from}
 			${fromNamed}
@@ -143,7 +146,8 @@ export default {
 			  graph ?g {?c ?p ?d.} 
 			  filter(?p!=owl:equivalentClass)
 			}
-			}`,
+			}
+			GROUP BY ?c ?p ?d ?g`,
 		},
 	},
 	filter: [],

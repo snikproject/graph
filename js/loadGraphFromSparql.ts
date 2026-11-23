@@ -1,5 +1,6 @@
 /**Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.*/
 import * as sparql from "./sparql";
+import { SPARQL_PREFIXES } from "./sparqlPrefixes";
 import { timer } from "./timer";
 import { config } from "./config/config";
 import log from "loglevel";
@@ -22,7 +23,7 @@ async function selectClasses(from: string): Promise<Array<ClassBinding>> {
 	const sparqlClassesTimer = timer("sparql-classes");
 
 	const nodeQuerySimple = `
-  PREFIX ov: <http://open.vocab.org/terms/>
+  ${SPARQL_PREFIXES}
   SELECT DISTINCT ?c
   (GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l)
   ?src
@@ -113,7 +114,8 @@ async function createClassNodes(from: string): Promise<Array<ElementDefinition>>
  @returns SPARQL JSON result */
 async function selectInstances(from: string): Promise<Array<object>> {
 	const sparqlInstancesTimer = timer("sparql-classes");
-	const instanceQuery = `SELECT
+	const instanceQuery = `${SPARQL_PREFIXES}
+  SELECT
   DISTINCT ?i
   (GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l)
   ${from}
@@ -158,6 +160,7 @@ async function createInstanceNodes(from: string): Promise<Array<object>> {
 async function selectTriples(from: string, fromNamed: string, instances: boolean, virtual: boolean): Promise<Array<object>> {
 	const sparqlPropertiesTimer = timer("sparql-properties");
 	const tripleQuerySimple = `
+    ${SPARQL_PREFIXES}
     select  ?c ?p ?d
     ${from}
     {
