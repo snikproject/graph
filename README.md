@@ -38,7 +38,7 @@ Developing on Windows is not recommended but possible with the following adaptio
 
 Open <http://localhost:8043/> in a browser.
 
-When using SNIK Graph as a Git submodule, use `docker build -f Dockerfile.submodule .. -t snik-graph` instead, so that Git commit information can be included in the about dialogue, otherwise the build fails.
+The same Dockerfile also works for submodule checkouts when the graph directory is the build context, for example `docker build graph -t snik-graph` from the parent repository. Docker builds do not require Git metadata; if it is unavailable, the about dialog shows `unknown` for the commit details. You can still supply it with the `GIT_COMMIT_DATE`, `GIT_BRANCH_NAME`, `GIT_COMMIT_HASH` and `GIT_LAST_COMMIT_MESSAGE` build arguments.
 
 ## Usage Requirements
 Optimized for PC with mouse, does not work well on mobile devices.
