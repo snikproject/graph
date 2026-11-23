@@ -1,6 +1,6 @@
 /** Local SPARQL engine backed by the SNIK ontology repository.
 The public functions mirror the subset of {@link ./sparql} used by the application but return rows of RDF/JS terms. */
-import init, { Store, namedNode } from "oxigraph/web.js";
+import type { NamedNode, Quad, Store } from "oxigraph/node.js";
 import wasmUrl from "oxigraph/web_bg.wasm?url";
 import log from "loglevel";
 
@@ -23,10 +23,19 @@ const FILE_BY_GRAPH = new Map(FILES.map((file) => [PREFIX + file.graph, file]));
 const FROM = /\bFROM\s+(NAMED\s+)?<([^>]+)>/gi;
 
 let storePromise: Promise<Store> | undefined;
+let namedNode: (value: string) => NamedNode;
 const loadedGraphs = new Map<string, Promise<void>>();
 let logged = false;
 
+/** Oxigraph ships separate browser and Node builds; Vite replaces `import.meta.env.SSR` at build time so only one is bundled. */
 async function createStore(): Promise<Store> {
+	if (import.meta.env.SSR) {
+		const node = await import("oxigraph/node.js");
+		namedNode = node.namedNode;
+		return new node.Store();
+	}
+	const { default: init, Store, namedNode: makeNode } = await import("oxigraph/web.js");
+	namedNode = makeNode;
 	await init({ module_or_path: wasmUrl });
 	return new Store();
 }
@@ -84,10 +93,14 @@ export async function localSelect(query: string, graph?: string): Promise<Array<
 		}
 	}
 	if (graph) {
-		defaultGraphs.add(graph);
+		expand(graph).forEach((iri) => defaultGraphs.add(iri));
 	}
 	if (defaultGraphs.size === 0 && namedGraphs.size === 0) {
 		GRAPHS.forEach((iri) => defaultGraphs.add(iri));
+	}
+	// A GRAPH pattern without FROM NAMED should still see the ontology graphs.
+	if (namedGraphs.size === 0 && /\bGRAPH\b/i.test(query)) {
+		GRAPHS.forEach((iri) => namedGraphs.add(iri));
 	}
 	await Promise.all([...defaultGraphs, ...namedGraphs].map(loadGraph));
 	const store = await getStore();
@@ -104,4 +117,17 @@ export async function localSelect(query: string, graph?: string): Promise<Array<
 		throw new Error("Local SPARQL query did not return SELECT bindings.");
 	}
 	return result.map((row) => Object.fromEntries(row));
+}
+
+/** Describe a resource from the local snapshot as N-Triples, including incoming and outgoing triples. */
+export async function localDescribe(uri: string): Promise<string> {
+	await Promise.all(GRAPHS.map(loadGraph));
+	const store = await getStore();
+	const options = { default_graph: GRAPHS.map(namedNode), use_default_graph_as_union: true };
+	const outgoing = store.query(`CONSTRUCT { <${uri}> ?p ?o } WHERE { <${uri}> ?p ?o }`, options);
+	const incoming = store.query(`CONSTRUCT { ?s ?p <${uri}> } WHERE { ?s ?p <${uri}> }`, options);
+	if (!Array.isArray(outgoing) || !Array.isArray(incoming)) {
+		throw new Error("Local SPARQL describe did not return triples.");
+	}
+	return ([...outgoing, ...incoming] as Array<Quad>).map((quad) => `${quad.subject} ${quad.predicate} ${quad.object} .`).join("\n");
 }

@@ -9,7 +9,7 @@ export const SNIK = {
 
 /** Whether queries are answered by the local RDF snapshot instead of the remote endpoint. */
 export function useLocal(): boolean {
-	return config.ontology.sparql.local && typeof window !== "undefined";
+	return config.ontology.sparql.local;
 }
 
 //ASK queries should also work but better use {@link ask} instead as it is more convenient. // ask does not exist anymore
@@ -73,6 +73,15 @@ export async function select(query: string, graph?: string, endpoint: string = c
 @returns A promise of the SPARQL describe result as text.
 */
 export async function describe(uri: string, graphOpt?: string): Promise<string> {
+	if (useLocal()) {
+		try {
+			const { localDescribe } = await import("./sparqlLocal");
+			return await localDescribe(uri);
+		} catch (err) {
+			log.warn("Local RDF describe failed, falling back to the SPARQL endpoint.", err);
+			config.ontology.sparql.local = false;
+		}
+	}
 	const query = "describe <" + uri + ">";
 	const url =
 		config.ontology.sparql.endpoint +
