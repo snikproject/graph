@@ -115,7 +115,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 		{
 			id: "path",
 			selector: "node",
-			onClickFunction: (event) => graph.applyPerNode((from) => graph.showPath(from, event.target), graph.getSource()),
+			onClickFunction: (event) => graph.showPath(graph.getSource(), event.target),
 		},
 		{
 			id: "spiderworm",
@@ -170,7 +170,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 				{
 					id: "starpath",
 					selector: "node",
-					onClickFunction: (event) => graph.applyPerNode((from) => graph.showPath(from, event.target, true), graph.getSource()),
+					onClickFunction: (event) => graph.showPath(graph.getSource(), event.target, true),
 				},
 				{
 					id: "circlestar",
