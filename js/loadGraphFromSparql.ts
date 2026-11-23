@@ -104,7 +104,7 @@ async function createClassNodes(from: string): Promise<Array<ElementDefinition>>
 		}
 	}
 
-	log.debug(bindings.length + " Nodes loaded from SPARQL");
+	log.debug(bindings.length + " Nodes loaded");
 	return nodes;
 }
 
@@ -201,7 +201,7 @@ async function createEdges(from: string, fromNamed: string, instances: boolean, 
 			//position: { x: 200, y: 200 }
 		});
 	}
-	log.debug(json.length + " Edges loaded from SPARQL");
+	log.debug(json.length + " Edges loaded");
 	return edges;
 }
 
@@ -230,7 +230,7 @@ async function createNodes(from: string, instances: boolean): Promise<Array<Elem
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
 export async function loadGraphFromSparql(cy: Core, graphs: Array<string>, instances: boolean = false, virtual: boolean = false): Promise<void> {
-	log.debug(`Loading graph from endpoint ${config.ontology.sparql.endpoint} with graphs ${graphs.join(",")}.`);
+	log.debug(`Loading graph from ${sparql.useLocal() ? "local RDF files" : "endpoint " + config.ontology.sparql.endpoint} with graphs ${graphs.join(",")}.`);
 	const from = graphs.map((g) => `FROM <${g}>`).reduce((a, b) => a + "\n" + b, "");
 	const fromNamed = from.replace(/FROM/g, "FROM NAMED");
 
