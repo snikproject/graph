@@ -36,7 +36,7 @@ const loadedGraphs = new Map<string, Promise<void>>();
 let logged = false;
 
 async function createStore(): Promise<Store> {
-	await init(wasmUrl);
+	await init({ module_or_path: wasmUrl });
 	return new Store();
 }
 
