@@ -55,7 +55,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 		},
 		{
 			id: "edit",
-			selector: "node",
+			selector: "node:childless",
 			onClickFunction: (event) => {
 				const node = event.target;
 				const uri = node.data(NODE.ID);
@@ -66,7 +66,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 
 		{
 			id: "class-use",
-			selector: "node",
+			selector: "node:childless",
 			onClickFunction: (event) => {
 				const node = event.target;
 				classUse(node.data(NODE.ID), node.data(NODE.SUBTOP));
@@ -79,47 +79,47 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 		},
 		{
 			id: "set-path-source",
-			selector: "node",
+			selector: "node:childless",
 			onClickFunction: (event) => {
 				graph.setSource(event.target);
 			},
 		},
 		{
 			id: "description",
-			selector: "node",
+			selector: "node:childless",
 			onClickFunction: (event) => {
 				window.open(event.target.data(NODE.ID));
 			},
 		},
 		{
 			id: "star",
-			selector: "node",
+			selector: "node:childless",
 			onClickFunction: async (event) => {
 				await graph.showStarInAnotherView(event.target);
 			},
 		},
 		{
 			id: "incoming-star",
-			selector: "node",
+			selector: "node:childless",
 			onClickFunction: async (event) => {
 				await graph.showStarInAnotherView(event.target, false, Direction.IN);
 			},
 		},
 		{
 			id: "outgoing-star",
-			selector: "node",
+			selector: "node:childless",
 			onClickFunction: async (event) => {
 				await graph.showStarInAnotherView(event.target, false, Direction.OUT);
 			},
 		},
 		{
 			id: "path",
-			selector: "node",
+			selector: "node:childless",
 			onClickFunction: (event) => graph.showPath(graph.getSource(), event.target),
 		},
 		{
 			id: "spiderworm",
-			selector: "node",
+			selector: "node:childless",
 			// applying this to several nodes leads to errors and has not been needed
 			onClickFunction: (event) => graph.showWorm(graph.getSource(), event.target),
 		},
@@ -160,7 +160,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 		},
 		{
 			id: "ext",
-			selector: "node",
+			selector: "node:childless",
 			submenu: [
 				{
 					id: "doublestar",
