@@ -4,7 +4,7 @@ export const help = {
 	},
 	"Multiview-Functionality": {
 		"": "SNIK Graph supports the organization and management of different partial models in separate views.To copy a part of the whole graph, press 'C' or 'S' and to insert it into a new model press 'V' or 'P'.",
-		"search-field": "Search the currently active view for resources by entering a full or partial name.",
+		"search-field": "Search the currently active view for resources by entering a full or partial name. Hotkey: Ctrl+K.",
 		"View-specific menu": {
 			"": "The view-specific menu can be found in the upper right position of each view, described from left to right.",
 			img: "viewmenu.png",
