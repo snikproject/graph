@@ -118,7 +118,10 @@ export async function run(
 
 	// only change the positions of the selected nodes, keep the other ones in place
 	const partLayout = cy.nodes(":selected").size() > 1;
-	const elements = partLayout ? cy.elements(":selected") : cy.elements(":visible");
+	const candidates = partLayout ? cy.elements(":selected") : cy.elements(":visible");
+	const nodes = candidates.nodes();
+	// Edges count as selected/visible even when their other endpoint is not part of the layout (e.g. visibility: hidden), which crashes the euler layout, so only keep edges that connect two laid out nodes.
+	const elements = nodes.union(nodes.edgesWith(nodes).intersect(candidates));
 	// Because it is a partial graph, the relation to the whole graph should still be discernable. That is why we preserve the center position of that partial graph and restore it later.
 	const oldCenter = partLayout ? center(elements.nodes()) : undefined;
 
