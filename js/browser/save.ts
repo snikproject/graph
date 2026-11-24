@@ -1,6 +1,6 @@
 /** Lets the user save files generated from the loaded graph. */
 import { config } from "../config/config";
-import { toJSON } from "./state";
+import { toJSON, type StateJson } from "./state";
 import { View, type ViewState } from "./view";
 import { VERSION } from "./util";
 import type { Graph } from "./graph";
@@ -18,7 +18,7 @@ export interface ViewJson {
 	version: string;
 	title: string;
 	type: ViewJsonType.VIEW;
-	graph: { elements: { nodes?: cytoscape.ElementDefinition[]; edges?: cytoscape.ElementDefinition[] } } & Record<string, any>;
+	graph: { elements: { nodes?: cytoscape.ElementDefinition[]; edges?: cytoscape.ElementDefinition[] } } & Record<string, unknown>;
 }
 
 export interface LayoutJson {
@@ -40,8 +40,8 @@ export interface NodeLayout {
 
 export interface Session {
 	tabs: Array<TabContent>;
-	state: any;
-	mainGraph: any;
+	state: StateJson;
+	mainGraph: { title: string; graph: ViewJson["graph"] };
 }
 
 const a = document.createElement("a"); // reused for all saving, not visible to the user
@@ -89,7 +89,7 @@ export function saveUrl(url: string, fileName: string): void {
 
 /** Saves the whole layouted graph as a Cytoscape JSON file.
  *  @param graph - the graph to save */
-export function saveGraph(graph): void {
+export function saveGraph(graph: Graph): void {
 	const json = graph.cy.json();
 	delete json.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 	saveJson(json, "snik.json");
@@ -98,7 +98,7 @@ export function saveGraph(graph): void {
 export interface TabContent {
 	title: string;
 	/** Cytoscape.js graph as JSON */
-	graph: any;
+	graph: ViewJson["graph"];
 }
 
 /** Saves the contents of all views as a custom JSON file. */

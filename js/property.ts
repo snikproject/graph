@@ -3,7 +3,9 @@ import * as rdf from "./rdf";
 import { NODE } from "./node";
 import log from "loglevel";
 
-const propertyData = [
+export type PropertyData = [uri: string, label: string, domain: string | null, range: string | null, interontology: boolean, restriction: boolean];
+
+const propertyData: Array<PropertyData> = [
 	["meta:isAssociatedWith", "is associated with", null, null, false, true],
 	["meta:isBasedOn", "is based on", "EntityType", "EntityType", false, true],
 	["meta:homonym", "sounds similar but is different", null, null, false, false],
@@ -43,7 +45,7 @@ export class Property {
 
 	/** Sets up the property from an array.
 	 * @param array - Contains 6 propertys: [uri,label,domain,range,interontology,restriction]. */
-	constructor(array: Array<any>) {
+	constructor(array: PropertyData) {
 		[this.uri, this.label, this.domain, this.range, this.interontology, this.restriction] = array;
 		this.uri = rdf.long(this.uri);
 	}

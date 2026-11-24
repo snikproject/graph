@@ -24,7 +24,7 @@ export function initLog(): void {
 	for (const level of levels) {
 		const tmp = log[level]; // save that particular original logging function of the loglevel library
 		log[level] = (
-			...args: any[] // overwrite that function with a new function
+			...args: unknown[] // overwrite that function with a new function
 		) => {
 			tmp(...args); // execute the saved original function, which writes to console
 			// loglevel accepts additional arguments, such as exceptions or objects, which are lost otherwise

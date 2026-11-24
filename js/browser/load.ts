@@ -118,7 +118,7 @@ export async function loadSessionFromJsonFile(event: Event): Promise<void> {
  * @param json - the input data
  * @returns - version and type of input correct
  */
-function checkVersion(type: ViewJsonType, json: any): boolean {
+function checkVersion(type: ViewJsonType, json: { version?: string; type?: ViewJsonType }): boolean {
 	let ok: boolean = true;
 	const ts = (t) => `type ${t} (${ViewJsonType[t]})`;
 	if (
