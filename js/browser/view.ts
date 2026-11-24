@@ -6,7 +6,7 @@ import { edgeCommands } from "./contextmenuEdges";
 import { goldenLayout, getActiveContentItem } from "./viewLayout";
 import { toJSON } from "./state";
 import log from "loglevel";
-import { ContentItem, type ComponentItem } from "golden-layout";
+import { ContentItem, type ComponentItem, type ComponentItemConfig } from "golden-layout";
 import { Menu, menu } from "./menu";
 import * as language from "../lang/language";
 
@@ -140,7 +140,13 @@ export class View {
 		// @ts-expect-error is be completed later
 		this.state = { title };
 
-		const itemConfig = { title: title, type: "component", componentType: title, componentState: this.state, isClosable: View.mainView !== null };
+		const itemConfig: ComponentItemConfig = {
+			title: title,
+			type: "component",
+			componentType: title,
+			componentState: this.state,
+			isClosable: View.mainView !== null,
+		};
 
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const thisView = this; // supply this to callback
@@ -163,7 +169,7 @@ export class View {
 			this.makeMainView();
 		}
 
-		(viewLayout as any).root.contentItems[0].addItem(itemConfig);
+		viewLayout.root!.addItem(itemConfig);
 
 		const graph = new Graph(thisView.cyContainer);
 		const cy = graph.cy;
@@ -181,7 +187,7 @@ export class View {
 
 	/** Close all tabs except the first one. */
 	static reset(): void {
-		const removeTabsArray = traverse((viewLayout as any).root, 0);
+		const removeTabsArray = traverse(viewLayout.root!, 0);
 		for (const content of removeTabsArray) {
 			content.remove();
 		}

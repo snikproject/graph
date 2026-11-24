@@ -173,7 +173,7 @@ in pos are set to position `{x:0,y:0}`, positions without matching node id are i
 @example `presetLayout(cy,[["http://www.snik.eu...",{"x":0,"y":0}],...]);`
 */
 export async function presetLayout(cy: Core, pos: Array<Array<object>>): Promise<boolean> {
-	const map = new Map(pos as any);
+	const map = new Map(pos as Array<[string, Position]>);
 	let hits = 0;
 	let misses = 0;
 	const layoutConfig = {

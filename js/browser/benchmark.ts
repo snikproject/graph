@@ -9,12 +9,12 @@ export function addBenchmarkOverlay(cy: cytoscape.Core): void {
 	const basics = 2;
 	for (let i = 0; i < basics + 2; i++) {
 		const stats = new Stats();
-		(stats as any).domElement.style.cssText = `position:absolute;top:0px;right:${100 * i}px;`;
+		stats.dom.style.cssText = `position:absolute;top:0px;right:${100 * i}px;`;
 		document.body.appendChild(stats.dom);
 		statss.push(stats);
 	}
-	const nodeStatsPanel = statss[basics].addPanel(new (Stats as any).Panel("Nodes", "#ff8", "#221"));
-	const edgeStatsPanel = statss[basics + 1].addPanel(new (Stats as any).Panel("Edges", "#f8f", "#212"));
+	const nodeStatsPanel = statss[basics].addPanel(new Stats.Panel("Nodes", "#ff8", "#221"));
+	const edgeStatsPanel = statss[basics + 1].addPanel(new Stats.Panel("Edges", "#f8f", "#212"));
 	for (let i = 0; i < statss.length; i++) {
 		statss[i].showPanel(Math.min(i, statss.length - 2));
 	}

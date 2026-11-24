@@ -63,7 +63,7 @@ export class Graph {
 	/** Returns, whether cumulative search is activated.
 	 *  @returns whether cumulative search is activated. */
 	cumulativeSearch(): boolean {
-		return ((document.getElementById("cumulativeSearchBox") || {}) as any).checked; // menu may not be initialized yet
+		return (document.getElementById("cumulativeSearchBox") as HTMLInputElement | null)?.checked ?? false; // menu may not be initialized yet
 	}
 
 	/** Show (unhide) the given elements or hide them using visibility: hidden.
@@ -359,9 +359,6 @@ export class Graph {
 			log.error("Invalid source. Length != 1");
 			return false;
 		}
-		if ((this as any).pathTarget) {
-			this.cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
-		}
 		if (this.pathSource) {
 			this.pathSource.removeClass("source");
 		}
@@ -380,7 +377,7 @@ export class Graph {
 	 * @param showProperty - Show the property as edge label even on all edges, else only show edge labels on unselected edges.
 	 */
 	applyStyle(dayScheme: boolean, coloredEdges: boolean, showProperty: boolean): void {
-		let baseStyle = style.style as any;
+		let baseStyle: Array<{ selector: string; css: object }> = style.style;
 		if (dayScheme) {
 			this.container.style.backgroundColor = "white";
 			baseStyle = baseStyle.concat(colorschemeday);
