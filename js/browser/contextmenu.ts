@@ -11,11 +11,7 @@ import submenuIndicatorImg from "cytoscape-context-menus/assets/submenu-indicato
 import * as language from "../lang/language";
 import log from "loglevel";
 
-const config = {
-	menuItems: [] as Array<MenuItem>,
-	evtType: "cxttap",
-	submenuIndicator: { src: submenuIndicatorImg, width: 12, height: 12 },
-};
+const config = { menuItems: [] as Array<MenuItem>, evtType: "cxttap", submenuIndicator: { src: submenuIndicatorImg, width: 12, height: 12 } };
 
 // cytoscape-context-menus extension does not have type hints
 export interface MenuItem {

@@ -23,13 +23,7 @@ const headerHeight = () => (window.innerWidth >= 3000 ? 32 : window.innerWidth >
 /** Create, configure and return a GoldenLayout instance.
  *  @returns the created GoldenLayout instance */
 export function goldenLayout(): GoldenLayout {
-	const layoutConfig: LayoutConfig = {
-		dimensions: { headerHeight: headerHeight() },
-		root: {
-			type: "stack",
-			content: [],
-		},
-	};
+	const layoutConfig: LayoutConfig = { dimensions: { headerHeight: headerHeight() }, root: { type: "stack", content: [] } };
 
 	const viewLayout = new GoldenLayout(layoutConfig);
 	const stacks: Array<Stack> = [];

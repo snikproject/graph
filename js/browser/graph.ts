@@ -38,12 +38,7 @@ export class Graph {
 		const initTimer = timer("graph-init");
 		this.container = container;
 		this.container.style.backgroundColor = "black"; // required to show background image
-		const renderer = {
-			name: "canvas",
-			webgl: true,
-			showFps: true,
-			webglDebug: true,
-		};
+		const renderer = { name: "canvas", webgl: true, showFps: true, webglDebug: true };
 		if (params.gpu) {
 			log.warn("'gpu' flag detected: Activating experimental WebGL hardware acceleration.");
 		}
@@ -134,10 +129,7 @@ export class Graph {
 			return false;
 		}
 		const elements = this.cy.elements(".unfiltered");
-		const aStar = elements.aStar({
-			root: from,
-			goal: to,
-		});
+		const aStar = elements.aStar({ root: from, goal: to });
 		const path = aStar.path;
 		if (!path) {
 			if (!this.starMode) {
@@ -575,10 +567,7 @@ export class Graph {
 					return p; // prevent null value on prefix that is new or outside of SNIK
 				};
 				nodes = nodes.sort((a, b) => priority(a.data(NODE.SOURCE)) - priority(b.data(NODE.SOURCE))); // cytoscape collection sort is not in place
-				this.cy.add({
-					group: "nodes",
-					data: { id: id, l: labels },
-				});
+				this.cy.add({ group: "nodes", data: { id: id, l: labels } });
 				for (let j = 0; j < nodes.length; j++) {
 					nodes[j].move({ parent: id });
 				}

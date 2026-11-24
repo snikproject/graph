@@ -20,10 +20,7 @@ const SEARCH: Record<string, Array<string>> = {
 };
 
 /** Queries whose complete result set is fixed. They fail if the search becomes sloppier, e.g. by matching single tokens. */
-const EXACT: Record<string, Array<string>> = {
-	"3lgm2 mentity type": [ns("bb", "3LGM2EntityType")],
-	zzzz: [],
-};
+const EXACT: Record<string, Array<string>> = { "3lgm2 mentity type": [ns("bb", "3LGM2EntityType")], zzzz: [] };
 
 describe("fuse#search", () => {
 	createIndex();

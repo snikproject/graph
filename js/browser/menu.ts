@@ -201,30 +201,12 @@ export class Menu {
 						},
 						i18n: "recalculate-layout-replace",
 					},
-					{
-						action: () => save.savePng(View.activeState().graph, this.dayMode(), false, false),
-						i18n: "save-image-png-visible-region",
-					},
-					{
-						action: () => save.savePng(View.activeState().graph, this.dayMode(), true, false),
-						i18n: "save-image-png-complete-partial-graph",
-					},
-					{
-						action: () => save.savePng(View.activeState().graph, this.dayMode(), false, true),
-						i18n: "save-image-png-visible-region-high-res",
-					},
-					{
-						action: () => save.savePng(View.activeState().graph, this.dayMode(), true, true),
-						i18n: "save-image-png-complete-partial-graph-high-res",
-					},
-					{
-						action: () => save.saveSvg(View.activeState().graph, this.dayMode(), false),
-						i18n: "save-image-svg-visible-region",
-					},
-					{
-						action: () => save.saveSvg(View.activeState().graph, this.dayMode(), true),
-						i18n: "save-image-svg-complete-partial-graph",
-					},
+					{ action: () => save.savePng(View.activeState().graph, this.dayMode(), false, false), i18n: "save-image-png-visible-region" },
+					{ action: () => save.savePng(View.activeState().graph, this.dayMode(), true, false), i18n: "save-image-png-complete-partial-graph" },
+					{ action: () => save.savePng(View.activeState().graph, this.dayMode(), false, true), i18n: "save-image-png-visible-region-high-res" },
+					{ action: () => save.savePng(View.activeState().graph, this.dayMode(), true, true), i18n: "save-image-png-complete-partial-graph-high-res" },
+					{ action: () => save.saveSvg(View.activeState().graph, this.dayMode(), false), i18n: "save-image-svg-visible-region" },
+					{ action: () => save.saveSvg(View.activeState().graph, this.dayMode(), true), i18n: "save-image-svg-complete-partial-graph" },
 					{ action: () => new View(), i18n: "new-view" },
 				],
 			},

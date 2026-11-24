@@ -18,12 +18,7 @@ export interface ViewJson {
 	version: string;
 	title: string;
 	type: ViewJsonType.VIEW;
-	graph: {
-		elements: {
-			nodes?: cytoscape.ElementDefinition[];
-			edges?: cytoscape.ElementDefinition[];
-		};
-	} & Record<string, any>;
+	graph: { elements: { nodes?: cytoscape.ElementDefinition[]; edges?: cytoscape.ElementDefinition[] } } & Record<string, any>;
 }
 
 export interface LayoutJson {
@@ -40,10 +35,7 @@ export enum ViewJsonType {
 
 export interface NodeLayout {
 	uri: string;
-	position: {
-		x: number;
-		y: number;
-	};
+	position: { x: number; y: number };
 }
 
 export interface Session {
@@ -111,10 +103,7 @@ export interface TabContent {
 
 /** Saves the contents of all views as a custom JSON file. */
 export function saveSession(): void {
-	const mainGraph = {
-		title: View.mainView.state.title,
-		graph: View.mainView.state.cy.json(),
-	};
+	const mainGraph = { title: View.mainView.state.title, graph: View.mainView.state.cy.json() };
 	delete mainGraph.graph["style"]; // the style gets corrupted on export due to including functions, the default style will be used instead
 
 	const session: Session = { tabs: [], state: toJSON(), mainGraph };
@@ -135,12 +124,7 @@ export function saveSession(): void {
 /** Saves the contents of the current view as a custom JSON file.
  *  @param state - a GoldenLayout view state */
 export function saveView(state: ViewState): void {
-	const json: ViewJson = {
-		version: VERSION,
-		title: state.title,
-		type: ViewJsonType.VIEW,
-		graph: state.cy.json(),
-	};
+	const json: ViewJson = { version: VERSION, title: state.title, type: ViewJsonType.VIEW, graph: state.cy.json() };
 	delete json.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 	saveJson(json, "snik-view.json");
 }
@@ -149,12 +133,7 @@ export function saveView(state: ViewState): void {
  *  @param state - a GoldenLayout view state */
 export function saveLayout(state: ViewState): void {
 	const layout = state.cy.nodes(":visible").map((node) => [node.data(NODE.ID), node.position()]) as CustomJsonLayout;
-	const json: LayoutJson = {
-		version: VERSION,
-		title: state.title,
-		type: ViewJsonType.LAYOUT,
-		graph: layout,
-	};
+	const json: LayoutJson = { version: VERSION, title: state.title, type: ViewJsonType.LAYOUT, graph: layout };
 	// no need to delete style because we didn't copy it
 	saveJson(json, "snik-layout.json");
 }

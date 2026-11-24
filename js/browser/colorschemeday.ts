@@ -2,31 +2,10 @@
 import { EDGE } from "../edge";
 
 const colorschemeday = [
-	{
-		selector: "node",
-		css: {
-			color: "black",
-			"border-color": "black",
-		},
-	},
-	{
-		selector: "node:selected",
-		css: {
-			"background-color": "rgb(0,0,255)",
-		},
-	},
-	{
-		selector: "node.source",
-		css: {
-			"border-color": "rgb(128,0,128)",
-		},
-	},
-	{
-		selector: "node.target",
-		css: {
-			"border-color": "rgb(0,165,165)",
-		},
-	},
+	{ selector: "node", css: { color: "black", "border-color": "black" } },
+	{ selector: "node:selected", css: { "background-color": "rgb(0,0,255)" } },
+	{ selector: "node.source", css: { "border-color": "rgb(128,0,128)" } },
+	{ selector: "node.target", css: { "border-color": "rgb(0,165,165)" } },
 	{
 		selector: "edge",
 		css: {

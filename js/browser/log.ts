@@ -8,42 +8,10 @@ export function initLog(): void {
 	const notyf = new Notyf({
 		duration: 10000,
 		types: [
-			{
-				type: "warn",
-				backgroundColor: "orange",
-				icon: {
-					className: "material-icons",
-					tagName: "i",
-					text: "warning",
-				},
-			},
-			{
-				type: "info",
-				backgroundColor: "green",
-				icon: {
-					className: "material-icons",
-					tagName: "i",
-					text: "info",
-				},
-			},
-			{
-				type: "debug",
-				backgroundColor: "blue",
-				icon: {
-					className: "material-icons",
-					tagName: "i",
-					text: "debug",
-				},
-			},
-			{
-				type: "trace",
-				backgroundColor: "darkgray",
-				icon: {
-					className: "material-icons",
-					tagName: "i",
-					text: "trace",
-				},
-			},
+			{ type: "warn", backgroundColor: "orange", icon: { className: "material-icons", tagName: "i", text: "warning" } },
+			{ type: "info", backgroundColor: "green", icon: { className: "material-icons", tagName: "i", text: "info" } },
+			{ type: "debug", backgroundColor: "blue", icon: { className: "material-icons", tagName: "i", text: "debug" } },
+			{ type: "trace", backgroundColor: "darkgray", icon: { className: "material-icons", tagName: "i", text: "trace" } },
 		],
 	});
 

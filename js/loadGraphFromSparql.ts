@@ -137,14 +137,7 @@ async function createInstanceNodes(from: string): Promise<Array<object>> {
 	const json = await selectInstances(from);
 	const nodes: Array<ElementDefinition> = [];
 	for (let i = 0; i < json.length; i++) {
-		nodes.push({
-			group: "nodes",
-			data: {
-				id: json[i]["i"].value,
-				l: parseLabels(json[i]["l"].value),
-				instance: true,
-			},
-		});
+		nodes.push({ group: "nodes", data: { id: json[i]["i"].value, l: parseLabels(json[i]["l"].value), instance: true } });
 	}
 	return nodes;
 }

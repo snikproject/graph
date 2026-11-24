@@ -26,18 +26,9 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 						graph.cy.remove(event.target);
 					},
 				},
-				{
-					id: "move-match-on-top",
-					onClickFunction: (event) => graph.moveNodes(event.target.children(), 0),
-				},
-				{
-					id: "move-match-nearby",
-					onClickFunction: (event) => graph.moveNodes(event.target.children(), 100),
-				},
-				{
-					id: "compound-star",
-					onClickFunction: (event) => graph.applyToCollection(graph.showStar, undefined, event.target.children()),
-				},
+				{ id: "move-match-on-top", onClickFunction: (event) => graph.moveNodes(event.target.children(), 0) },
+				{ id: "move-match-nearby", onClickFunction: (event) => graph.moveNodes(event.target.children(), 100) },
+				{ id: "compound-star", onClickFunction: (event) => graph.applyToCollection(graph.showStar, undefined, event.target.children()) },
 				{
 					id: "compound-incoming-star",
 					onClickFunction: (event) => graph.applyToCollection((node) => graph.showStar(node, false, Direction.IN), undefined, event.target.children()),
@@ -73,11 +64,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 				classUse(node.data(NODE.ID), node.data(NODE.SUBTOP));
 			},
 		},
-		{
-			id: "hide",
-			selector: "node",
-			onClickFunction: (event) => graph.applyPerNode((node) => Graph.setVisible(node, false), event.target),
-		},
+		{ id: "hide", selector: "node", onClickFunction: (event) => graph.applyPerNode((node) => Graph.setVisible(node, false), event.target) },
 		{
 			id: "set-path-source",
 			selector: "node:childless",
@@ -113,11 +100,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 				await graph.showStarInAnotherView(event.target, false, Direction.OUT);
 			},
 		},
-		{
-			id: "path",
-			selector: "node:childless",
-			onClickFunction: (event) => graph.showPath(graph.getSource(), event.target),
-		},
+		{ id: "path", selector: "node:childless", onClickFunction: (event) => graph.showPath(graph.getSource(), event.target) },
 		{
 			id: "spiderworm",
 			selector: "node:childless",
@@ -152,27 +135,15 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 						util.deleteClass(event.target);
 					},
 				},
-				{
-					id: "debug",
-					selector: "node",
-					onClickFunction: (event) => alert(JSON.stringify(event.target.data(), null, 2)),
-				},
+				{ id: "debug", selector: "node", onClickFunction: (event) => alert(JSON.stringify(event.target.data(), null, 2)) },
 			],
 		},
 		{
 			id: "ext",
 			selector: "node:childless",
 			submenu: [
-				{
-					id: "doublestar",
-					selector: "node",
-					onClickFunction: (event) => graph.applyPerNode(graph.showDoubleStar, event.target),
-				},
-				{
-					id: "starpath",
-					selector: "node",
-					onClickFunction: (event) => graph.showPath(graph.getSource(), event.target, true),
-				},
+				{ id: "doublestar", selector: "node", onClickFunction: (event) => graph.applyPerNode(graph.showDoubleStar, event.target) },
+				{ id: "starpath", selector: "node", onClickFunction: (event) => graph.showPath(graph.getSource(), event.target, true) },
 				{
 					id: "circlestar",
 					selector: "node",
@@ -195,11 +166,7 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 						graph.cy.nodes(":selected").positions(() => event.target.position());
 					},
 				},
-				{
-					id: "close-match",
-					selector: "node",
-					onClickFunction: (event) => graph.applyToCollection(graph.showCloseMatch, event.target),
-				},
+				{ id: "close-match", selector: "node", onClickFunction: (event) => graph.applyToCollection(graph.showCloseMatch, event.target) },
 				{
 					id: "show-instances",
 					onClickFunction: async (event) => {

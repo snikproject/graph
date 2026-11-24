@@ -76,30 +76,10 @@ export const style = {
 				},
 			},
 		},
-		{
-			selector: "node.source",
-			css: {
-				"border-width": 5.0,
-			},
-		},
-		{
-			selector: "node.target",
-			css: {
-				"border-width": 5.0,
-			},
-		},
-		{
-			selector: "node.highlighted",
-			css: {
-				"border-width": 5.0,
-			},
-		},
-		{
-			selector: "node:selected",
-			css: {
-				"border-width": 8.0,
-			},
-		},
+		{ selector: "node.source", css: { "border-width": 5.0 } },
+		{ selector: "node.target", css: { "border-width": 5.0 } },
+		{ selector: "node.highlighted", css: { "border-width": 5.0 } },
+		{ selector: "node:selected", css: { "border-width": 8.0 } },
 		{
 			selector: "edge",
 			css: {
@@ -138,25 +118,9 @@ export const style = {
 				},
 			},
 		},
-		{
-			selector: "edge.highlighted,edge:selected",
-			css: {
-				width: 4.0,
-				opacity: 1.0,
-			},
-		},
-		{
-			selector: ".filtered",
-			css: {
-				display: "none",
-			},
-		},
-		{
-			selector: ".hidden",
-			css: {
-				visibility: "hidden",
-			},
-		},
+		{ selector: "edge.highlighted,edge:selected", css: { width: 4.0, opacity: 1.0 } },
+		{ selector: ".filtered", css: { display: "none" } },
+		{ selector: ".hidden", css: { visibility: "hidden" } },
 		{
 			selector: "$node > node", // compound nodes
 			css: {
@@ -169,12 +133,7 @@ export const style = {
 				"background-opacity": "0", // colorless
 			},
 		},
-		{
-			selector: "node[i]",
-			css: {
-				shape: "star",
-			},
-		},
+		{ selector: "node[i]", css: { shape: "star" } },
 		{
 			selector: "node",
 			css: {
@@ -198,18 +157,8 @@ function edgeColor(edge) {
 }
 
 export const coloredEdgeStyle = [
-	{
-		selector: "edge",
-		css: {
-			color: edgeColor,
-		},
-	},
-	{
-		selector: "edge:unselected",
-		css: {
-			"line-color": edgeColor,
-		},
-	},
+	{ selector: "edge", css: { color: edgeColor } },
+	{ selector: "edge:unselected", css: { "line-color": edgeColor } },
 ];
 
 export const showPropertyStyle = [

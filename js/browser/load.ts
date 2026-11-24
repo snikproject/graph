@@ -167,10 +167,7 @@ export function loadLayoutFromJsonObject(json: LayoutJson, graph: Graph) {
 			//@ts-expect-error compiler doesnt know JSON objects
 			json.graph
 				.flatMap((jsonNode: CustomJsonLayoutElement) => {
-					const position: Position = {
-						x: jsonNode[1].x,
-						y: jsonNode[1].y,
-					};
+					const position: Position = { x: jsonNode[1].x, y: jsonNode[1].y };
 					// first check if we find any
 					const cytoNodes: NodeCollection = cy.nodes("node[id='" + jsonNode[0] + "']");
 					if (cytoNodes.size() === 0) {

@@ -28,10 +28,7 @@ function parseFlag(f: string): boolean {
 /** Parse browser URL GET parameters. */
 function parseParams(): Params {
 	const url = new URL(window.location.href);
-	const defaults = {
-		sparql: config.ontology.sparql.endpoint,
-		instances: config.ontology.sparql.instances,
-	};
+	const defaults = { sparql: config.ontology.sparql.endpoint, instances: config.ontology.sparql.instances };
 	// TypeScript interfaces don't exist on runtime, keep in sync with Params interface.
 	const paramKeys = new Set(["empty", "benchmark", "instances", "virtual", "remote", "class", "json", "sparql", "graph", "sub", "gpu"]);
 	const unknown = new Set<string>(url.searchParams.keys()).difference(paramKeys);
