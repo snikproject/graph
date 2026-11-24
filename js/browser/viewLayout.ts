@@ -7,6 +7,22 @@ import "golden-layout/dist/css/goldenlayout-base.css";
 import "golden-layout/dist/css/themes/goldenlayout-dark-theme.css";
 import "../../css/goldenlayout.css";
 
+// Golden Layout 2 still emits "stackCreated" as an untyped bubbling event whose first argument is the event with the created stack as its target.
+// The trimmed public typings also exclude the internal root item and the header's tab size update.
+declare module "golden-layout" {
+	namespace EventEmitter {
+		interface EventParamsMap {
+			stackCreated: [{ target: Stack }];
+		}
+	}
+	interface GoldenLayout {
+		root: (ContentItem & { addItem(itemConfig: RootItemConfig): number }) | undefined;
+	}
+	interface Header {
+		updateTabSizes(): void;
+	}
+}
+
 /** The currently active (focused) content item.
  * Golden Layout 2 removed the selectedItem property that version 1 had, so it is tracked manually. */
 let activeContentItem: ContentItem | null = null;
@@ -30,11 +46,10 @@ export function goldenLayout(): GoldenLayout {
 
 	// Golden Layout 2 has no typed stackCreated event anymore but still emits it as an unknown bubbling event
 	// whose first argument is the event with the created stack as its target.
-	(viewLayout as any).on("stackCreated", (event) => {
-		const stack = event.target as Stack;
+	viewLayout.on("stackCreated", (event) => {
+		const stack = event.target;
 		stacks.push(stack);
-		const template = util.getElementById("goldenlayout-header");
-		const zoomButtons = document.importNode((template as any).content, true);
+		const zoomButtons = document.importNode(util.getElementById<HTMLTemplateElement>("goldenlayout-header").content, true);
 		// Add the zoomButtons to the header
 		stack.header.controlsContainerElement.prepend(zoomButtons);
 
@@ -105,7 +120,7 @@ export function goldenLayout(): GoldenLayout {
 	const applyHeaderHeight = () => {
 		(viewLayout.layoutConfig.dimensions as { headerHeight: number }).headerHeight = headerHeight();
 		for (const stack of stacks) {
-			(stack.header as any).updateTabSizes();
+			stack.header.updateTabSizes();
 		}
 		viewLayout.setSize(window.innerWidth, window.innerHeight);
 	};
@@ -113,6 +128,6 @@ export function goldenLayout(): GoldenLayout {
 		window.matchMedia(`(min-width: ${breakpoint}px)`).addEventListener("change", applyHeaderHeight);
 	}
 
-	(viewLayout as any).init();
+	viewLayout.init();
 	return viewLayout;
 }

@@ -15,13 +15,13 @@ const LOG_LIMIT = 6000;
 
 /** getElementById with exception handling.
  * @param id - an HTML DOM id
- * @returns the element with the given id */
-export function getElementById(id: string): HTMLElement {
+ * @returns the element with the given id, cast to the expected HTML element type */
+export function getElementById<T extends HTMLElement = HTMLElement>(id: string): T {
 	const el = document.getElementById(id);
 	if (!el) {
 		throw new Error(`Element with id ${id} does not exist.`);
 	}
-	return el;
+	return el as T;
 }
 
 /** Open a new issue on the GitHub repository.

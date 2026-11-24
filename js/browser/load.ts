@@ -15,7 +15,7 @@ Uploads a JSON file from the user.
 Errors while reading, parsing or applying the file are reported to the user via error messages instead of failing silently.
 @param event - a file input change event
 @param callback - the code to execute, receives the parsed JSON object */
-function uploadJson(event: Event, callback: (_o: object) => any): void {
+function uploadJson(event: Event, callback: (_o: object) => void): void {
 	const file = (event.target as HTMLInputElement).files[0];
 	const input = event.target as HTMLInputElement;
 	const reader = new FileReader();
@@ -54,7 +54,7 @@ function loadGraphFromJson(graph: Graph, json): void {
 	const starMode = visibleFraction < 0.8;
 	log.debug("Load Graph from File: Visible fraction: " + visibleFraction + " set star mode to " + starMode);
 	if (graph.cy.nodes(":child").size() > 0) {
-		(document.getElementById("combineMatchModeBox") as any).checked = true;
+		(document.getElementById("combineMatchModeBox") as HTMLInputElement).checked = true;
 	}
 	graph.starMode = starMode;
 	const visible = cy.nodes(":visible");

@@ -14,6 +14,7 @@ import { Graph } from "./graph";
 import { View } from "./view";
 import log from "loglevel";
 import hotkeys from "hotkeys-js";
+import type { NodeSingular } from "cytoscape";
 
 /** Shows how any two subontologies are interconnected. The user chooses two subontologies and gets shown all pairs between them. */
 function subOntologyConnectivity(): void {
@@ -44,7 +45,7 @@ function subOntologyConnectivity(): void {
 				},
 
 				minNodeSpacing: 60,
-				concentric: function (layoutNode: any) {
+				concentric: function (layoutNode: NodeSingular) {
 					if (subGraphs[0].contains(layoutNode)) {
 						return 2;
 					}

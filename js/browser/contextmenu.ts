@@ -17,8 +17,9 @@ const config = { menuItems: [] as Array<MenuItem>, evtType: "cxttap", submenuInd
 export interface MenuItem {
 	content?: string;
 	id: string;
-	selector?: "node" | "node:childless" | "node:compound" | `edge${any}`;
+	selector?: "node" | "node:childless" | "node:compound" | `edge${string}`;
 	submenu?: Array<MenuItem>;
+	tooltipText?: string;
 	onClickFunction?(event: Event | { target: any }): void;
 }
 
@@ -48,7 +49,7 @@ export class ContextMenu {
 
 	/** Add tooltips to all menu entries.
 	 *  @param cxtMenu - a context menu without tooltips */
-	static addTooltip(cxtMenu: any): void {
+	static addTooltip(cxtMenu: MenuItem): void {
 		(cxtMenu.submenu ?? []).forEach(ContextMenu.addTooltip);
 		cxtMenu.tooltipText = flatHelp[cxtMenu.id] || flatHelp[cxtMenu.id.replace("edge-", "")]; // may be undefined
 	}

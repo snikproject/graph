@@ -22,7 +22,7 @@ const filters: Array<Filter> = [];
 const GRAPH_GETS_ADDITIONS = true;
 
 // apply a function to all cytoscape cores in all tabs
-const multicy = (f: (cy: cytoscape.Core) => any) =>
+const multicy = (f: (cy: cytoscape.Core) => void) =>
 	View.views()
 		.map((v: View) => v.state.cy)
 		.forEach((cy) => f(cy));
