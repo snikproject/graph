@@ -11,10 +11,12 @@ const EXPECTED_META_CLASSES_MAX = 25;
 const GRAPH_GROUP_SNIK = "http://www.snik.eu/ontology";
 const GRAPH_SNIK_META = "http://www.snik.eu/ontology/meta";
 
+type Binding = Record<string, { value: string }>;
+
 describe("sparql", () => {
 	describe("#sparql()", () => {
 		it(`${GRAPH_GROUP_SNIK} should contain between ${EXPECTED_CLASSES_MIN} and ${EXPECTED_CLASSES_MAX} classes`, () => {
-			return sparql.select(`${SPARQL_PREFIXES} SELECT (COUNT(?class) AS ?count) WHERE { ?class a [rdfs:subClassOf meta:Top]. }`, GRAPH_GROUP_SNIK).then((bindings: Array<any>) => {
+			return sparql.select(`${SPARQL_PREFIXES} SELECT (COUNT(?class) AS ?count) WHERE { ?class a [rdfs:subClassOf meta:Top]. }`, GRAPH_GROUP_SNIK).then((bindings: Array<Binding>) => {
 				expect(bindings[0]).toHaveProperty("count");
 				expect(parseInt(bindings[0].count.value)).to.be.within(EXPECTED_CLASSES_MIN, EXPECTED_CLASSES_MAX);
 			});
@@ -22,20 +24,20 @@ describe("sparql", () => {
 		it(`${GRAPH_GROUP_SNIK} should contain between ${EXPECTED_INSTANCES_MIN} and ${EXPECTED_INSTANCES_MAX} instances`, () => {
 			return sparql
 				.select(`${SPARQL_PREFIXES} SELECT (COUNT(?i) AS ?count) WHERE { ?i a ?class. ?class a [rdfs:subClassOf meta:Top]. }`, GRAPH_GROUP_SNIK)
-				.then((bindings: Array<any>) => {
+				.then((bindings: Array<Binding>) => {
 					expect(bindings[0]).toHaveProperty("count");
 					expect(parseInt(bindings[0].count.value)).to.be.within(EXPECTED_INSTANCES_MIN, EXPECTED_INSTANCES_MAX);
 				});
 		}, 30000);
 		it(`${GRAPH_SNIK_META} should contain between ${EXPECTED_META_CLASSES_MIN} and ${EXPECTED_META_CLASSES_MAX} classes`, () => {
-			return sparql.select(`${SPARQL_PREFIXES} SELECT (COUNT(?class) AS ?count) WHERE { ?class a owl:Class. }`, GRAPH_SNIK_META).then((bindings: Array<any>) => {
+			return sparql.select(`${SPARQL_PREFIXES} SELECT (COUNT(?class) AS ?count) WHERE { ?class a owl:Class. }`, GRAPH_SNIK_META).then((bindings: Array<Binding>) => {
 				expect(bindings[0]).toHaveProperty("count");
 				expect(parseInt(bindings[0].count.value)).to.be.within(EXPECTED_META_CLASSES_MIN, EXPECTED_META_CLASSES_MAX);
 			});
 		}, 30000);
 		it("should contain the snik subontology graphs", () => {
-			return sparql.select(`${SPARQL_PREFIXES} SELECT DISTINCT ?g WHERE { GRAPH ?g { ?x a|rdfs:subClassOf meta:EntityType. } }`).then((bindings: Array<any>) => {
-				const graphs = new Set();
+			return sparql.select(`${SPARQL_PREFIXES} SELECT DISTINCT ?g WHERE { GRAPH ?g { ?x a|rdfs:subClassOf meta:EntityType. } }`).then((bindings: Array<Binding>) => {
+				const graphs = new Set<string>();
 				for (const binding of bindings) {
 					graphs.add(binding.g.value);
 				}

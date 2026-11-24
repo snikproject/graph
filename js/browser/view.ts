@@ -74,8 +74,9 @@ export class View {
 
 	/** Returns the active (focussed) view.
 	@returns The active (focussed) view. */
-	static activeView(): any {
-		return getActiveContentItem();
+	static activeView(): ComponentItem | null {
+		const item = getActiveContentItem();
+		return item && ContentItem.isComponentItem(item) ? item : null;
 	}
 
 	/** Make this the main view and reuse the existing menu singleton or create it if it doesn't exist.

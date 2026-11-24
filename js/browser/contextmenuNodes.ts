@@ -22,7 +22,6 @@ export function nodeCommands(graph: Graph): Array<MenuItem> {
 				{
 					id: "open",
 					onClickFunction: (event) => {
-						event.target.children().move({ event: null });
 						graph.cy.remove(event.target);
 					},
 				},
