@@ -20,7 +20,7 @@ export interface MenuItem {
 	selector?: "node" | "node:childless" | "node:compound" | `edge${string}`;
 	submenu?: Array<MenuItem>;
 	tooltipText?: string;
-	onClickFunction?(event: Event | { target: any }): void;
+	onClickFunction?(event: { target: cytoscape.CollectionReturnValue }): void;
 }
 
 /** context menu for nodes and edges */

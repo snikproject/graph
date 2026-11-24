@@ -494,7 +494,7 @@ export class Menu {
 						a.href = "#";
 						a.addEventListener("click", (e) => {
 							e.preventDefault(); // don't navigate to the placeholder href
-							(entry.action as (...args: Array<any>) => any)(e);
+							(entry.action as (e: Event) => void)(e);
 						});
 						// we only use hotkeys for functions
 						const hotkey = entry.hotkey;
@@ -580,14 +580,15 @@ export class Menu {
 	}
 	/** Close the dropdown if the user clicks outside of the menu or on an entry that triggers an action.
 	 *  @param e - a click event */
-	static closeListener(e: any): void {
-		if (!e || !e.target || !e.target.matches) {
+	static closeListener(e?: MouseEvent): void {
+		const target = e?.target;
+		if (!(target instanceof Element)) {
 			return;
 		}
 		// entries with a checkbox (filters, options) stay open to allow multiple selections, all other entries close the menu
-		const entry = typeof e.target.closest === "function" ? e.target.closest(".dropdown-entry") : null;
+		const entry = target.closest(".dropdown-entry");
 		const keepsMenuOpen = entry !== null && entry.querySelector("input") !== null;
-		if (!keepsMenuOpen && !e.target.matches(".dropdown-menu") && !e.target.matches("input.filterbox")) {
+		if (!keepsMenuOpen && !target.matches(".dropdown-menu") && !target.matches("input.filterbox")) {
 			// don't close while user edits the text field of the custom filter
 			Menu.hideDropdowns();
 		}

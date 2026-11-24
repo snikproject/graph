@@ -26,7 +26,7 @@ export default defineConfig({
 			"typescript/no-use-before-define": "error",
 			"typescript/no-inferrable-types": "off",
 			"typescript/ban-ts-comment": "warn",
-			"typescript/no-explicit-any": "warn",
+			"typescript/no-explicit-any": "error",
 			"typescript/no-this-alias": "warn",
 			"typescript/no-shadow": "warn",
 			"typescript/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
