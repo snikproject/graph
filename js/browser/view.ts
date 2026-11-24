@@ -140,13 +140,7 @@ export class View {
 		// @ts-expect-error is be completed later
 		this.state = { title };
 
-		const itemConfig = {
-			title: title,
-			type: "component",
-			componentType: title,
-			componentState: this.state,
-			isClosable: View.mainView !== null,
-		};
+		const itemConfig = { title: title, type: "component", componentType: title, componentState: this.state, isClosable: View.mainView !== null };
 
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const thisView = this; // supply this to callback

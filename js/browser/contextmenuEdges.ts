@@ -32,11 +32,7 @@ export function edgeCommands(graph: Graph): Array<MenuItem> {
 				util.createGitHubIssue(config.git.repo.ontology, "Problem with the edge " + util.edgeLabel(edge), body);
 			},
 		},
-		{
-			id: "edge-hide",
-			selector: "edge",
-			onClickFunction: (event) => Graph.setVisible(event.target, false),
-		},
+		{ id: "edge-hide", selector: "edge", onClickFunction: (event) => Graph.setVisible(event.target, false) },
 		{
 			id: "edge-description",
 			selector: "edge",

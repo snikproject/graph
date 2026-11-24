@@ -17,29 +17,13 @@ export const config = {
 	layoutCacheMinRecall: 0.95,
 	layoutCacheMinPrecision: 0.5,
 	language: "en",
-	download: {
-		image: {
-			max: { width: 5000, height: 4000 },
-			standard: { width: 1920, height: 1920 },
-		},
-	},
+	download: { image: { max: { width: 5000, height: 4000 }, standard: { width: 1920, height: 1920 } } },
 	// Change this when you want to use a different ontology. Refer to ./config.snik.ts and ./config.hito.ts for examples.
 	ontology: ontologyConf,
-	multiview: {
-		initialTabs: 1,
-		warnOnSessionLoad: true,
-	},
+	multiview: { initialTabs: 1, warnOnSessionLoad: true },
 	git: {
 		defaultIssueAssignee: "KonradHoeffner", // if you fork, please change
-		issueLabels: {
-			bug: "bug",
-			confirmLink: "link",
-			deleteTriple: "deletetriple",
-			deleteClass: "deleteclass",
-		},
-		repo: {
-			ontology: "https://github.com/snikproject/ontology",
-			application: "https://github.com/snikproject/graph",
-		},
+		issueLabels: { bug: "bug", confirmLink: "link", deleteTriple: "deletetriple", deleteClass: "deleteclass" },
+		repo: { ontology: "https://github.com/snikproject/ontology", application: "https://github.com/snikproject/graph" },
 	},
 };

@@ -3,9 +3,7 @@ import { Filter } from "./filter";
 import { menu } from "./menu";
 import { VERSION } from "./util";
 
-export const state = {
-	version: VERSION,
-};
+export const state = { version: VERSION };
 
 export interface StateJson {
 	filters;

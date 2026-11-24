@@ -103,10 +103,7 @@ export async function createIndex(): Promise<Array<object>> {
 	const items: Array<Item> = [];
 	for (const b of bindings) {
 		const suffix = b.uri.value.replace(/.*\//, "");
-		const item: Item = {
-			uri: b.uri.value,
-			l: [...b.l.value.split("|"), suffix],
-		};
+		const item: Item = { uri: b.uri.value, l: [...b.l.value.split("|"), suffix] };
 		items.push(item);
 		item.l = [...new Set(item.l)]; // remove duplicates
 
